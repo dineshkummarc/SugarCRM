@@ -207,13 +207,14 @@ if(isset($focus->body_html)) $xtpl->assign("BODY_HTML", $focus->body_html); else
 
 
 if(true) {
-	require_once("include/SugarTinyMCE.php");
-	$tiny = new SugarTinyMCE();
-    $tiny->defaultConfig['cleanup_on_startup']=true;
-    $tiny->defaultConfig['height']=600;
-	$tinyHtml = $tiny->getInstance();
-	$xtpl->assign("tiny", $tinyHtml);
-	
+    if ( !isTouchScreen() ) {
+        require_once("include/SugarTinyMCE.php");
+        $tiny = new SugarTinyMCE();
+        $tiny->defaultConfig['cleanup_on_startup']=true;
+        $tiny->defaultConfig['height']=600;
+        $tinyHtml = $tiny->getInstance();
+        $xtpl->assign("tiny", $tinyHtml);
+	}
 	///////////////////////////////////////
 	////	MACRO VARS
 	$xtpl->assign("INSERT_VARIABLE_ONCLICK", "insert_variable(document.EditView.variable_text.value)");

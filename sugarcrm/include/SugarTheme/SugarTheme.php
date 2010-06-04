@@ -832,7 +832,7 @@ EOHTML;
         $jsFilePath = create_cache_directory($this->getJSPath()."/$jsFileName");
         
         // minify the js
-        if ( !inDeveloperMode() && !sugar_is_file($jsFilePath) ) {
+        if ( !inDeveloperMode() && !sugar_is_file(str_replace('.js','-min.js',$jsFilePath)) ) {
             $jsFileContents = JSMin::minify($jsFileContents);
             $jsFilePath = str_replace('.js','-min.js',$jsFilePath);
         }

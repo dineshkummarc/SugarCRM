@@ -96,7 +96,8 @@
 			{counter start=0 name="colCounter" print=false assign="colCounter"}
 			{foreach from=$displayColumns key=col item=params}
 				<td scope='row' align='{$params.align|default:'left'}' {if $params.nowrap}nowrap='nowrap' {/if}valign='top'><span sugar="sugar{$colCounter}b">
-					{if $params.link && !$params.customCode}
+					{if $col == 'NAME' || $params.bold}<b>{/if}
+				    {if $params.link && !$params.customCode}
 						<{$pageData.tag.$id[$params.ACLTag]|default:$pageData.tag.$id.MAIN} href="#" onMouseOver="javascript:lvg_nav('{if $params.dynamic_module}{$rowData[$params.dynamic_module]}{else}{$params.module|default:$pageData.bean.moduleDir}{/if}', '{$rowData[$params.id]|default:$rowData.ID}', 'd', {$smarty.foreach.rowIteration.iteration}, this);"  onFocus="javascript:lvg_nav('{if $params.dynamic_module}{$rowData[$params.dynamic_module]}{else}{$params.module|default:$pageData.bean.moduleDir}{/if}', '{$rowData[$params.id]|default:$rowData.ID}', 'd', {$smarty.foreach.rowIteration.iteration}, this);">
 						{/if}
 					{if $params.customCode} 
@@ -108,7 +109,7 @@
 					{if $params.link && !$params.customCode}
 						</{$pageData.tag.$id[$params.ACLTag]|default:$pageData.tag.$id.MAIN}>
                     {/if}
-
+                    {if $col == 'NAME' || $params.bold}</b>{/if}
 				</span sugar='sugar{$colCounter}b'></td>
 				{counter name="colCounter"}
 			{/foreach}

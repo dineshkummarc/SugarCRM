@@ -71,8 +71,8 @@ $subpanel_layout = array(
 			'vname' => 'LBL_LIST_DATE_CLOSED',
 			'width' => '15%',
 		),
-		'amount'=>array(
-			'vname' => 'LBL_LIST_AMOUNT',
+		'amount_usdollar'=>array(
+			'vname' => 'LBL_LIST_AMOUNT_USDOLLAR',
 			'width' => '15%',
 		),
 	   	'assigned_user_name' => array (
@@ -90,9 +90,6 @@ $subpanel_layout = array(
 			'widget_class' => 'SubPanelRemoveButton',
 		 	'module' => 'Leads',
 	 		'width' => '4%',
-		),
-		'amount_usdollar'=>array(
-			'usage'=>'query_only',
 		),
 		'currency_id'=>array(
 			'usage'=>'query_only',

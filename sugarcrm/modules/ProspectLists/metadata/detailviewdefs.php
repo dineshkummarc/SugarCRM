@@ -58,16 +58,17 @@ array('customCode'=> '<input title="{$APP.LBL_EXPORT}"  class="button" type="but
       'assigned_user_name',
   ),
 
-
   array (
-      'created_by_name',
-      'modified_by_name',
-  ),
-
-  array (
-      'date_entered',
-      'date_modified',
-  ),
+      array (
+        'name' => 'date_modified',
+        'label' => 'LBL_DATE_MODIFIED',
+        'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
+      ),
+      array (
+        'name' => 'date_entered',
+        'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
+      ),
+    ),
 
   array (
       array('name'=>'entry_count','label'=>'LBL_ENTRIES'),

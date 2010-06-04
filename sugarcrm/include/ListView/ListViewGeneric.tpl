@@ -132,7 +132,8 @@
 			{foreach from=$displayColumns key=col item=params}
 			    {strip}
 				<td scope='row' align='{$params.align|default:'left'}' valign="top" {if ($params.type == 'teamset')}class="nowrap"{/if}>
-					{if $params.link && !$params.customCode}
+					{if $col == 'NAME' || $params.bold}<b>{/if}
+				    {if $params.link && !$params.customCode}
 						<{$pageData.tag.$id[$params.ACLTag]|default:$pageData.tag.$id.MAIN} href="#" onMouseOver="javascript:lvg_nav('{if $params.dynamic_module}{$rowData[$params.dynamic_module]}{else}{$params.module|default:$pageData.bean.moduleDir}{/if}', '{$rowData[$params.id]|default:$rowData.ID}', 'd', {$offset}, this)"  onFocus="javascript:lvg_nav('{if $params.dynamic_module}{$rowData[$params.dynamic_module]}{else}{$params.module|default:$pageData.bean.moduleDir}{/if}', '{$rowData[$params.id]|default:$rowData.ID}', 'd', {$offset}, this)">
 						{/if}
 					{if $params.customCode} 
@@ -144,6 +145,7 @@
 					{if $params.link && !$params.customCode}
 						</{$pageData.tag.$id[$params.ACLTag]|default:$pageData.tag.$id.MAIN}>
                     {/if}
+                    {if $col == 'NAME' || $params.bold}</b>{/if}
 				</td>
 				{/strip}
 				{counter name="colCounter"}

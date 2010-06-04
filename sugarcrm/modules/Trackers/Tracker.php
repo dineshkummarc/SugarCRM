@@ -78,23 +78,23 @@ class Tracker extends SugarBean
      * @param mixed module_name Optional - return only items from this module, a string of the module or array of modules
      * @return array list
      */
-	function get_recently_viewed($user_id, $modules)
+	function get_recently_viewed($user_id, $modules = '')
     {
     	$path = 'modules/Trackers/BreadCrumbStack.php';
 		if(defined('TEMPLATE_URL'))$path = SugarTemplateUtilities::getFilePath($path);
     	require_once($path);
         if(empty($_SESSION['breadCrumbs'])) { 
             $breadCrumb = new BreadCrumbStack($user_id, $modules);
-            $_SESSION['breadCrumbs'] = $breadCrumb;	
+            
         } else {
-	        $breadCrumb = $_SESSION['breadCrumbs'];
+        	$breadCrumb = $_SESSION['breadCrumbs'];
 	        $module_query = '';
 	        if(!empty($modules)) {
 	           $module_query = is_array($modules) ? ' AND module_name IN (\'' . implode("','" , $modules) . '\')' :  ' AND module_name = \'' . $modules . '\'';
-	        } 
-	        
+	        }
+	         
 	        $query = 'SELECT item_id, item_summary, module_name, id FROM ' . $this->table_name . ' WHERE id = (SELECT MAX(id) as id FROM ' . $this->table_name . ' WHERE user_id = \'' . $user_id . '\' AND visible = 1' . $module_query . ')';
-	       	$result = $this->db->limitQuery($query,0,10,true,$query);
+	        $result = $this->db->limitQuery($query,0,10,true,$query);
 	        while(($row = $this->db->fetchByAssoc($result))) {
 	               $breadCrumb->push($row);
 	        }
@@ -104,7 +104,7 @@ class Tracker extends SugarBean
         return $list;
     }
 
-    function makeInvisibleForAll($item_id)
+	function makeInvisibleForAll($item_id)
     {
         $query = "UPDATE $this->table_name SET visible = 0 WHERE item_id = '$item_id' AND visible = 1";
         $this->db->query($query, true);

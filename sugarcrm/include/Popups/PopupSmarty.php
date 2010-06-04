@@ -143,7 +143,6 @@ class PopupSmarty extends ListViewSmarty{
 		
 		$this->processArrows($data['pageData']['ordering']);
 		$this->th->ss->assign('prerow', $this->multiSelect);
-		$this->th->ss->assign('clearAll', $GLOBALS['app_strings']['LBL_CLEARALL']);
 		$this->th->ss->assign('rowColor', array('oddListRow', 'evenListRow'));
 		$this->th->ss->assign('bgColor', array($odd_bg, $even_bg));
         $this->th->ss->assign('contextMenus', $this->contextMenus);

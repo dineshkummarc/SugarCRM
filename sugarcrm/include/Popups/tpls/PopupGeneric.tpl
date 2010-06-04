@@ -248,7 +248,6 @@
 		</tr>
 	</table>
 	{if $prerow}
-	<a href='javascript:sListView.check_all(document.MassUpdate, "mass[]", false);'>{$clearAll}</a>
 	<script>
 	{literal}function lvg_dtails(id){return SUGAR.util.getAdditionalDetails( '{/literal}{$module}{literal}',id, 'adspan_'+id);}{/literal}
 	</script>

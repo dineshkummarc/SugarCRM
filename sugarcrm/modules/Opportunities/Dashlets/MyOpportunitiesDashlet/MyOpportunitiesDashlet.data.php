@@ -59,7 +59,7 @@ $dashletData['MyOpportunitiesDashlet']['columns'] = array('name' => array('width
                                                                                   'id' => 'account_id',
                                                                                   'ACLTag' => 'ACCOUNT'),
                                                           'amount_usdollar' => array('width'   => '15', 
-                                                                            'label'   => 'LBL_AMOUNT',
+                                                                            'label'   => 'LBL_AMOUNT_USDOLLAR',
                                                                             'default' => true,
                                                                             'currency_format' => true),
                                                           'date_closed' => array('width'   => '15', 

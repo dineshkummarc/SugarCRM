@@ -158,14 +158,14 @@ class MssqlHelper extends DBHelper
         )
     {
         $sql='';
+        $constraints = $this->get_field_default_constraint_name($tablename);
         if ($this->isFieldArray($fieldDefs)) {
-      		foreach ($fieldDefs as $def)
+            foreach ($fieldDefs as $def)
       		{
           		//if the column is being modified drop the default value
           		//constraint if it exists. alterSQLRep will add the constraint back
-          		$def_ctrt_name = $this->get_field_default_constraint_name($tablename, $def['name']);
-          		if (!empty($def_ctrt_name)) {
-          			$sql.=" ALTER TABLE " . $tablename . " DROP CONSTRAINT " . $def_ctrt_name;
+          		if (!empty($constraints[$def['name']])) {
+          			$sql.=" ALTER TABLE " . $tablename . " DROP CONSTRAINT " . $constraints[$def['name']];
           		}
 
           		$columns[] = $this->alterSQLRep($action, $def, $ignoreRequired,$tablename);
@@ -174,9 +174,8 @@ class MssqlHelper extends DBHelper
         else {
             //if the column is being modified drop the default value
       		//constraint if it exists. alterSQLRep will add the constraint back
-      		$def_ctrt_name = $this->get_field_default_constraint_name($tablename, $fieldDefs['name']);
-      		if (!empty($def_ctrt_name)) {
-      			$sql.=" ALTER TABLE " . $tablename . " DROP CONSTRAINT " . $def_ctrt_name;
+      		if (!empty($constraints[$fieldDefs['name']])) {
+      			$sql.=" ALTER TABLE " . $tablename . " DROP CONSTRAINT " . $constraints[$fieldDefs['name']];
       		}
 
           	$columns[] = $this->alterSQLRep($action, $fieldDefs, $ignoreRequired,$tablename);
@@ -420,7 +419,10 @@ EOSQL;
             if (!empty($row['IS_NULLABLE']) && $row['IS_NULLABLE'] == 'NO' && (empty($row['KEY']) || !stristr($row['KEY'],'PRI')))
                 $columns[strtolower($row['COLUMN_NAME'])]['required'] = 'true';
             
-			$column_def = $this->db->getOne("select cdefault from syscolumns where id = object_id('relationships') and name = '$column_name'");
+            $column_def = 0;
+            if ( strtolower($tablename) == 'relationships' ) {
+                $column_def = $this->db->getOne("select cdefault from syscolumns where id = object_id('relationships') and name = '$column_name'");
+            }
             if ( $column_def != 0 ) {
                 $matches = array();
                 $row['COLUMN_DEF'] = html_entity_decode($row['COLUMN_DEF'],ENT_QUOTES);
@@ -596,11 +598,16 @@ EOSQL;
      */
 	private function get_field_default_constraint_name(
         $table, 
-        $column
+        $column = null
         ) 
     {
+        static $results = array();
+        
+        if ( empty($column) && isset($results[$table]) )
+            return $results[$table];
+        
         $query = <<<EOQ
-select s.name, o.name, c.name, d.name ctrt
+select s.name, o.name, c.name dtrt, d.name ctrt
     from sys.default_constraints as d
         join sys.objects as o
             on o.object_id = d.parent_object_id
@@ -608,12 +615,23 @@ select s.name, o.name, c.name, d.name ctrt
             on c.object_id = o.object_id and c.column_id = d.parent_column_id
         join sys.schemas as s
             on s.schema_id = o.schema_id
-    where o.name = '$table' and c.name = '$column'
+    where o.name = '$table'
 EOQ;
+        if ( !empty($column) )
+            $query .= " and c.name = '$column'";
         $res = $this->db->query($query);
-        $row = $this->db->fetchByAssoc($res);
-        if (!empty($row))
-			return $row['ctrt'];
+        if ( !empty($column) ) {
+            $row = $this->db->fetchByAssoc($res);
+            if (!empty($row)) 
+                return $row['ctrt'];
+        }
+        else {
+            $returnResult = array();
+            while ( $row = $this->db->fetchByAssoc($res) )
+                $returnResult[$row['dtrt']] = $row['ctrt'];
+            $results[$table] = $returnResult;
+            return $returnResult;
+        }
 		
         return null;
 	}

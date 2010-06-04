@@ -335,10 +335,7 @@ EOQ;
 			}
 		}
 		</script>'; 
-		if (!empty($_REQUEST['mode']) && strtoupper($_REQUEST['mode']) == 'MULTISELECT') {
-                   $output_html .= "<a class='listViewCheckLink' href='javascript:sListView.check_all(document.MassUpdate, \"mass[]\", false);'>".$GLOBALS['app_strings']['LBL_CLEARALL']."</a>";
-		}
-        $output_html .= insert_popup_footer();
+		$output_html .= insert_popup_footer();
         return $output_html;
 	}
 } // end of class Popup_Picker

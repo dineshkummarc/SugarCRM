@@ -136,7 +136,7 @@ EOHTML;
 		require_once 'include/SearchForm/SearchForm2.php' ;
 		$where = '';
 		
-		$searchEmail = preg_match("/^\w+(['\.\-\+]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+\$/", $query);
+		$searchEmail = preg_match("/^([^\%]|\%)*@([^\%]|\%)*$/", $query);
 		
 		foreach($modules as $moduleName){ 
 			if (empty($primary_module)) $primary_module=$moduleName;
@@ -156,7 +156,7 @@ EOHTML;
 					$searchFields[$moduleName][$k]['value'] = $query;
 
 					if(!empty($GLOBALS['dictionary'][$class]['unified_search'])){  
-						if(empty($GLOBALS['dictionary'][$class]['fields'][$k]['unified_search']) || $GLOBALS['dictionary'][$class]['fields'][$k]['type'] == 'relate'){
+						if(empty($GLOBALS['dictionary'][$class]['fields'][$k]['unified_search'])){
 							
 							if(isset($searchFields[$moduleName][$k]['db_field'])){
 								foreach($searchFields[$moduleName][$k]['db_field'] as $field){
@@ -182,7 +182,6 @@ EOHTML;
 							case 'date':
 							case 'datetime':
 							case 'bool':
-							case 'relate':
 								unset($searchFields[$moduleName][$k]);
 							default:
 								$return_fields[] = $k;

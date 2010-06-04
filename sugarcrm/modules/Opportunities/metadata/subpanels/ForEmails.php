@@ -75,6 +75,9 @@ $subpanel_layout = array(
 			'widget_class' => 'SubPanelRemoveButton',
 			'width' => '4%',
 		),				
+		'currency_id'=>array(
+			'usage'=>'query_only',
+		),
 	),
 );
 

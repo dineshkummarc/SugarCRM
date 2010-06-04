@@ -57,6 +57,7 @@ $listViewDefs['Documents'] = array(
     'label' => 'LBL_NAME',
     'link' => true,
     'default' => true,
+    'bold' => true,
   ),
   'CATEGORY_ID' => 
   array (

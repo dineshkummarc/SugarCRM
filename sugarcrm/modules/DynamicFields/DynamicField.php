@@ -388,6 +388,12 @@ class DynamicField {
                             }
                         }
                     }
+                    if ( $field['type'] == 'bool' ) {
+                        if ( $this->bean->$name === FALSE )
+                            $this->bean->$name = '0';
+                        elseif ( $this->bean->$name === TRUE )
+                            $this->bean->$name = '1';
+                    }
 					if(($field['type'] == 'date' || $field['type'] == 'datetimecombo') && (empty($this->bean->$name )|| $this->bean->$name == '1900-01-01')){
                     	$quote = '';
                         $this->bean->$name = 'NULL';

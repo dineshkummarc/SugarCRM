@@ -378,18 +378,38 @@ class EditViewMerge{
 	protected function mergeFields() {
 		foreach($this->customFields as $field=>$data) {
 			//if we have this field in both the new fields and the original fields - it has existed since the last install/upgrade
-			if(isset($this->newFields[$field]) && isset($this->originalFields[$field])){
+			if(isset($this->newFields[$field]) && isset($this->originalFields[$field])){				
 				//if both the custom field and the original match then we take the location of the custom field since it hasn't moved
 				$loc = $this->customFields[$field]['loc'];
 				$loc['source'] = 'custom';	
 
-				//echo var_export($loc, true);
-				//but we still merge the meta data of the three
-				$this->mergedFields[$field] = array(
-					'data'=>$this->mergeField($this->originalFields[$field]['data'], $this->newFields[$field]['data'], $this->customFields[$field]['data']), 
-					'loc'=>$loc);
+				$do_merge = true;
 				
+				//Address fields present a special problem...
+				if(preg_match('/(alt_|primary_|billing_|shipping_)address_street/i', $field, $matches)) {
+				   $prefix = $matches[1];
+				   $city = $prefix . 'address_city';
+				   $postal_code = $prefix . 'address_postalcode';
+				   $state = $prefix . 'address_state';
+				   $country = $prefix . 'address_country';
+				   
+				   if(isset($this->customFields[$city]) || 
+				      isset($this->customFields[$postal_code]) || 
+				      isset($this->customFields[$state]) || 
+				      isset($this->customFields[$country])) {
+                            $do_merge = false;
+                            $this->mergedFields[$field] = array(
+							'data'=>$this->customFields[$field]['data'], 
+							'loc'=>$loc);
+				      }
+				}			
 				
+				if($do_merge) {
+					//but we still merge the meta data of the three
+					$this->mergedFields[$field] = array(
+						'data'=>$this->mergeField($this->originalFields[$field]['data'], $this->newFields[$field]['data'], $this->customFields[$field]['data']), 
+						'loc'=>$loc);
+				}
 			//if it's not set in the new fields then it was a custom field or an original field so we take the custom fields data and set the location source to custom
 			} else if(!isset($this->newFields[$field])){
 				$this->mergedFields[$field] = $data;
@@ -526,24 +546,6 @@ class EditViewMerge{
 		$this->originalFields = $this->getFields($this->originalData[$this->module][$this->viewDefs][$this->panelName]);
 		$this->originalPanelIds = $this->getPanelIds($this->originalData[$this->module][$this->viewDefs][$this->panelName]);
 		$this->customFields = $this->getFields($this->customData[$this->module][$this->viewDefs][$this->panelName]);
-
-		//Special handling to rename certain variables for DetailViews
-		if($this->viewDefs == 'DetailView') {
-			$rename_fields = array();
-			foreach($this->customFields as $field_id=>$field){
-			    //Check to see if we need to rename the field for special cases
-				if(!empty($this->fieldConversionMapping[$this->module][$field_id])) {
-				   $rename_fields[$field_id] = $this->fieldConversionMapping[$this->module][$field['data']['name']];
-				   $this->customFields[$field_id]['data']['name'] = $this->fieldConversionMapping[$this->module][$field['data']['name']];
-				}				
-			}
-
-			foreach($rename_fields as $original_index=>$new_index) {
-				$this->customFields[$new_index] = $this->customFields[$original_index];
-				unset($this->customFields[$original_index]);
-			}
-		}
-		
 		$this->customPanelIds = $this->getPanelIds($this->customData[$this->module][$this->viewDefs][$this->panelName]);		
 		$this->newFields = $this->getFields($this->newData[$this->module][$this->viewDefs][$this->panelName]);
 		//echo var_export($this->newFields, true);

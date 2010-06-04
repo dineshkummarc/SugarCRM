@@ -116,7 +116,7 @@ function checkResourceSettings(){
 }
 
 
-function verifyArguments($argv,$usage_dce,$usage_regular){
+function verifyArguments($argv,$usage_regular){
     $upgradeType = '';
     $cwd = getcwd(); // default to current, assumed to be in a valid SugarCRM root dir.
     if(isset($argv[3])) {
@@ -131,28 +131,7 @@ function verifyArguments($argv,$usage_dce,$usage_regular){
     }
 
     //check if this is an instance
-    if(is_file("{$cwd}/ini_setup.php")){
-        // this is an instance
-        $upgradeType = constant('DCE_INSTANCE');
-        //now that this is dce instance we want to make sure that there are
-        // 7 arguments
-        if(count($argv) < 7) {
-            echo "*******************************************************************************\n";
-            echo "*** ERROR: Missing required parameters.  Received ".count($argv)." argument(s), require 7.\n";
-            echo $usage_dce;
-            echo "FAILURE\n";
-            die();
-        }
-        // this is an instance
-        if(!is_dir($argv[1])) { // valid directory . template path?
-            echo "*******************************************************************************\n";
-            echo "*** ERROR: First argument must be a full path to the template. Got [ {$argv[1]} ].\n";
-            echo $usage_dce;
-            echo "FAILURE\n";
-            die();
-        }
-    }
-    else if(is_file("{$cwd}/include/entryPoint.php")) {
+    if(is_file("{$cwd}/include/entryPoint.php")) {
         //this should be a regular sugar install
         $upgradeType = constant('SUGARCRM_INSTALL');
         //check if this is a valid zip file
@@ -199,27 +178,6 @@ $_SERVER['PHP_SELF'] = 'silentUpgrade.php';
 
 ///////////////////////////////////////////////////////////////////////////////
 ////	USAGE
-$usage_dce =<<<eoq1
-Usage: php.exe -f silentUpgrade2.php [upgradeZipFile] [logFile] [pathToSugarInstance]
-
-On Command Prompt Change directory to where silentUpgrade.php resides. Then type path to
-php.exe followed by -f silentUpgrade.php and the arguments.
-
-Example:
-    [path-to-PHP/]php.exe -f silentUpgrade.php [path-to-upgrade-package/]SugarEnt-Upgrade-4.5.1-to-5.0.0b.zip [path-to-log-file/]silentupgrade.log  [path-to-sugar-instance/]Sugar451e
-                             [Old Template path] [skipdbupgrade] [exitOrContinue]
-
-Arguments:
-    New Template Path or Upgrade Package : Upgrade package name. Template2 (upgrade to)location.
-    silentupgrade.log                    : Silent Upgarde log file.
-    Sugar451e/DCE                        : Sugar or DCE Instance instance being upgraded.
-    Old Template path                    : Template1 (upgrade from) Instance is being upgraded.
-    skipDBupgrade                        : If set to Yes then silentupgrade will only upgrade files. Default is No.
-    exitOnConflicts                      : If set to No and conflicts are found then Upgrade continues. Default Yes.
-    pathToDCEClient                      : This is path to to DCEClient directory
-
-eoq1;
-
 $usage_regular =<<<eoq2
 Usage: php.exe -f silentUpgrade.php [upgradeZipFile] [logFile] [pathToSugarInstance] [admin-user]
 
@@ -259,7 +217,7 @@ define('DCE_INSTANCE', 'DCE_Instance');
 global $cwd;
 $cwd = getcwd(); // default to current, assumed to be in a valid SugarCRM root dir.
 
-$upgradeType = verifyArguments($argv,$usage_dce,$usage_regular);
+$upgradeType = verifyArguments($argv,$usage_regular);
 
 $path			= $argv[2]; // custom log file, if blank will use ./upgradeWizard.log
 $subdirs		= array('full', 'langpack', 'module', 'patch', 'theme', 'temp');
@@ -488,11 +446,6 @@ if(count($errors) > 0) {
 		logThis("****** SilentUpgrade ERROR: {$error}", $path);
 	}
 	echo "FAILED\n";
-} else if($upgradeType == constant('DCE_INSTANCE')) {
-	logThis("***** SilentUpgrade completed successfully.", $path);
-	echo "********************************************************************\n";
-	echo "*************************** SUCCESS*********************************\n";
-	echo "********************************************************************\n";
 } else {
 	logThis("***** SilentUpgrade completed successfully.", $path);
 	echo "********************************************************************\n";

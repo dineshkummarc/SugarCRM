@@ -552,11 +552,15 @@ class SugarBean
      */
     function getFieldValue($name)
     {
-    	if (!isset($this->$name))
-    	{
+    	if (!isset($this->$name)){
     		return FALSE;
     	}
-
+		if($this->$name === TRUE){
+			return 1;
+		}
+		if($this->$name === FALSE){
+			return 0;
+		}
     	return $this->$name;
     }
 
@@ -1323,7 +1327,6 @@ class SugarBean
 
 		$this->_sendNotifications($check_notify);
 
-		
 		if ($this->db->dbType == "oci8")
 		{
 		}
@@ -1349,6 +1352,12 @@ class SugarBean
 					// Only assign variables that have been set.
 					if(isset($this->$field))
 					{
+						//bug: 37908 - this is to handle the issue where the bool value is false, but strlen(false) <= so it will 
+						//set the default value. TODO change this code to esend all fields through getFieldValue() like DbHelper->insertSql
+						if(!empty($value['type']) && $value['type'] == 'bool'){
+							$this->$field = $this->getFieldValue($field);
+						}
+					
 						if(strlen($this->$field) <= 0)
 						{
 							if(!$isUpdate && isset($value['default']) && (strlen($value['default']) > 0))
@@ -1428,6 +1437,12 @@ class SugarBean
 						// Only assign variables that have been set.
 						if(isset($this->$field))
 						{
+							//bug: 37908 - this is to handle the issue where the bool value is false, but strlen(false) <= so it will 
+							//set the default value. TODO change this code to esend all fields through getFieldValue() like DbHelper->insertSql
+							if(!empty($value['type']) && $value['type'] == 'bool'){
+								$this->$field = $this->getFieldValue($field);
+							}
+							
 							if(strlen($this->$field) <= 0)
 							{
 								if(!$isUpdate && isset($value['default']) && (strlen($value['default']) > 0))
@@ -1490,6 +1505,11 @@ class SugarBean
 							if($trimmed_field =='')
 							{
 								continue;
+							}
+							//bug: 37908 - this is to handle the issue where the bool value is false, but strlen(false) <= so it will 
+							//set the default value. TODO change this code to esend all fields through getFieldValue() like DbHelper->insertSql
+							if(!empty($value['type']) && $value['type'] == 'bool'){
+								$this->$field = $this->getFieldValue($field);
 							}
                             //added check for ints because sql-server does not like casting varchar with a decimal value
                             //into an int.

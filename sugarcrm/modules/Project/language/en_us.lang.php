@@ -45,7 +45,7 @@ $mod_strings = array (
     'LBL_HISTORY_TITLE' => 'History',
 
 	'LBL_ID' => 'Id:',
-	'LBL_DATE_ENTERED' => 'Date Entered:',
+	'LBL_DATE_ENTERED' => 'Date Created:',
 	'LBL_DATE_MODIFIED' => 'Date Modified:',
 	'LBL_ASSIGNED_USER_ID' => 'Assigned To:',
     'LBL_ASSIGNED_USER_NAME' => 'Assigned to:',

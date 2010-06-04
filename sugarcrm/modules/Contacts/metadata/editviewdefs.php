@@ -132,7 +132,6 @@ $viewdefs['Contacts']['EditView'] = array(
           array (
             'name' => 'alt_address_street',
             'hideLabel' => true,
-            'colspan' => 2,
             'type' => 'address',
             'displayParams' => 
             array (
