@@ -21398,13 +21398,12 @@ $sugar_demodata['bug_seed_names'] = array(
 );
 
 $sugar_demodata['note_seed_names_and_Descriptions'] = array(
-	array('More Account Information','This could turn into a 3,000 user opportunity'),
-	array('Call Information','We had a call.  The call went well.'),
-	array('Birthday Information','The Owner was born in October'),
-	array('Holiday Gift','The holiday gift was appreciated.  Put them on the list for next year as well.')
+	array('More Account Information','This account could turn into a 3,000-user opportunity.'),
+	array('Call Information','The initial sales call went well. Will follow up with contact in 3 days.'),
 );
+
 $sugar_demodata['call_seed_data_names'] = array(
-	'Get More information on the proposed deal',
+	'Get more information on the proposed deal',
 	'Left a message',
 	'Bad time, will call back',
 	'Discuss Review Process'
@@ -21457,7 +21456,7 @@ $sugar_demodata['meeting_seed_data_names'] = array(
 	'Demo', 
 	'Introduce all players',
 );
-$sugar_demodata['meeting_seed_data_descriptions'] = 'Meeting to discuss project plan and hash out the details of implementation';
+$sugar_demodata['meeting_seed_data_descriptions'] = '';
 
 //emails
 $sugar_demodata['email_seed_data_subjects'] = array(
@@ -21634,8 +21633,8 @@ $sugar_demodata['contract_seed_data'][] = array(
 ); 
 
 $sugar_demodata['project_seed_data']['audit'] = array(
-	'name' => 'Create new project plan for audit',
-	'description' => 'Annual audit coming up next month.',
+	'name' => 'Create new plan for the annual audit',
+	'description' => 'The annual audit is coming up next month.',
 	'estimated_start_date' => '2010-11-01',
 	'estimated_end_date' => '2010-12-31',
 	'status' => 'Draft',
@@ -21643,7 +21642,7 @@ $sugar_demodata['project_seed_data']['audit'] = array(
 );
 
 $sugar_demodata['project_seed_data']['audit']['project_tasks'][] = array(
-	'name' => 'Communicate to stakeholders',
+	'name' => 'Communicate with internal stakeholders',
 	'date_start' => '2010/11/1',
 	'date_finish' => '2010/11/8',
 	'description' => 'Schedule individual meetings with Will, Max, and Sarah.',
@@ -21656,27 +21655,27 @@ $sugar_demodata['project_seed_data']['audit']['project_tasks'][] = array(
 	'name' => 'Create draft of the plan',
 	'date_start' => '2010/11/5',
 	'date_finish' => '2010/11/20',
-	'description' => 'Schedule individual meetings with Will, Max, and Sarah.',
+	'description' => 'Start new plan document, including all of the information from the initial discussion meetings.',
 	'duration' => '12',
 	'duration_unit' => 'Days',
 	'percent_complete' => 38,
 );
 
 $sugar_demodata['project_seed_data']['audit']['project_tasks'][] = array(
-	'name' => 'Field work for collecting data.',
+	'name' => 'Perform field studies to collect data',
 	'date_start' => '2010/11/5',
 	'date_finish' => '2010/11/13',
-	'description' => 'We need to get approval from all stakeholders on the plan',
+	'description' => 'Obtain approval from all stakeholders of the plan.',
 	'duration' => '17',
 	'duration_unit' => 'Days',
 	'percent_complete' => 75,
 );
 
 $sugar_demodata['project_seed_data']['audit']['project_tasks'][] = array(
-	'name' => 'Create draft of the plan',
+	'name' => 'Update draft of the plan',
 	'date_start' => '2010/11/12',
 	'date_finish' => '2010/11/19',
-	'description' => 'Schedule the meeting with the head of business units to solicit help.',
+	'description' => 'Schedule a meeting with the heads of the business units to review the plan.',
 	'duration' => '6',
 	'duration_unit' => 'Days',
 	'percent_complete' => 0,
@@ -21686,7 +21685,7 @@ $sugar_demodata['project_seed_data']['audit']['project_tasks'][] = array(
 	'name' => 'Gather data from meetings',
 	'date_start' => '2010/11/20',
 	'date_finish' => '2010/11/20',
-	'description' => 'Need to organize the data and put it in the right spreadsheet.',
+	'description' => 'Need to organize the data and create charts to represent the data.',
 	'duration' => '1',
 	'duration_unit' => 'Days',
 	'percent_complete' => 0,

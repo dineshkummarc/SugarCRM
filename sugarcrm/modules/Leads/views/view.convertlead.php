@@ -323,6 +323,8 @@ class ViewConvertLead extends SugarView
 				}
 			}
 			
+       	 	$this->copyAddressFields($bean, $beans['Contacts']);
+       	 	
 			$bean->save();
         }
         if (!empty($lead))
@@ -508,6 +510,42 @@ class ViewConvertLead extends SugarView
 				}
 			}
 		}
+	}
+	
+	protected function copyAddressFields($bean, $contact)
+	{
+	//Copy over address info from the contact to any beans with address not set
+	        foreach($bean->field_defs as $field => $def)
+			{
+				if(!isset($_REQUEST[$bean->module_dir . $field]) && strpos($field, "_address_") !== false)
+				{
+					$set = "primary";
+					if (strpos($field, "alt_") !== false || strpos($field, "shipping_") !== false)
+						$set = "alt";
+					$type = "";
+						
+					if(strpos($field, "_address_street_2") !== false)
+						$type = "_address_street_2";
+					else if(strpos($field, "_address_street_3") !== false)
+						$type = "_address_street_3";
+					else if(strpos($field, "_address_street_4") !== false)
+						$type = "";
+					else if(strpos($field, "_address_street") !== false)
+						$type = "_address_street";
+					else if(strpos($field, "_address_city") !== false)
+						$type = "_address_city";
+					else if(strpos($field, "_address_state") !== false)
+						$type = "_address_state";
+					else if(strpos($field, "_address_postalcode") !== false)
+						$type = "_address_postalcode";
+					else if(strpos($field, "_address_country") !== false)
+						$type = "_address_country";
+						
+						$var = $set.$type;
+					if (isset($contact->$var))
+						$bean->$field = $contact->$var;
+				}
+			}
 	}
     
 

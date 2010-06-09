@@ -144,12 +144,17 @@ class SearchMerge extends ListViewMerge{
 	 * @return BOOLEAN - if the merged file was saved if false is passed in for the save parameter it always returns true
 	 */
 	public function merge($module, $original_file, $new_file, $custom_file=false, $save=true){
+		//Bug 37207
+		if($module == 'Connectors') {
+		   return false;
+		}			
+		
 		$this->clear();
 		$this->log("\n\n". 'Starting a merge in ' . get_class($this));
 		$this->log('merging the following files');
 		$this->log('original file:'  . $original_file);
 		$this->log('new file:'  . $new_file);
-		$this->log('custom file:'  . $custom_file);
+		$this->log('custom file:'  . $custom_file);	
 		if(empty($custom_file) && $save){
 			return true;
 		}else{			

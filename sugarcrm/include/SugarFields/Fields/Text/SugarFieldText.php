@@ -39,6 +39,7 @@ class SugarFieldText extends SugarFieldBase {
 
 	function getDetailViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex) {
 		$displayParams['nl2br'] = true;
+		$displayParams['strip_tags'] = true;
 		$displayParams['url2html'] = true;
 		return parent::getDetailViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex);
     }

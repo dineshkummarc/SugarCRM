@@ -43,15 +43,19 @@ function smarty_function_sugarvar($params, &$smarty)
     $_contents =  '$'. $object . '.' . $member . '.' . $params['key'];
 	if(empty($params['stringFormat']) && empty($params['string'])) {
 		$_contents = '{' . $_contents;
+		if(!empty($params['htmlentitydecode'])){
+		    $_contents .= '|escape:\'htmlentitydecode\'';	
+		}
+		if(!empty($displayParams['strip_tags'])){
+			$_contents .= '|strip_tags';
+		}
 		if(!empty($displayParams['url2html'])){
 			$_contents .= '|url2html';
 		}	
 		if(!empty($displayParams['nl2br'])){
 			$_contents .= '|nl2br';
-		}
-		if(!empty($params['htmlentitydecode'])){
-		    $_contents .= '|escape:\'htmlentitydecode\'';	
-		}
+		}	
+		
 		$_contents .= '}';
     }
     return $_contents;
