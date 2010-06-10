@@ -562,22 +562,6 @@ if($upgradeType == constant('DCE_INSTANCE')){
 		require_once("{$argv[4]}/modules/UpgradeWizard/uw_utils.php");
 	}
 
-	if(is_file("$argv[1]/manifest.php")) {
-		// provides $manifest array
-		//include("$instanceUpgradePath/manifest.php");
-		if(!isset($manifest)) {
-			die("\nThe patch did not contain a proper manifest.php file.  Cannot continue.\n\n");
-		} else {
-			$error = validate_manifest($manifest);
-			if(!empty($error)) {
-				$error = strip_tags(br2nl($error));
-				die("\n{$error}\n\nFAILURE\n");
-			}
-		}
-	} else {
-		die("\nThe patch did not contain a proper manifest.php file.  Cannot continue.\n\n");
-	}
-
     $ce_to_pro_ent = isset($manifest['name']) && ($manifest['name'] == 'SugarCE to SugarPro' || $manifest['name'] == 'SugarCE to SugarEnt');
 	$_SESSION['upgrade_from_flavor'] = $manifest['name'];
 	

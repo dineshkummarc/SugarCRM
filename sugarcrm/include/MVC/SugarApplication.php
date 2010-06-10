@@ -227,7 +227,13 @@ class SugarApplication
 					$this->controller->action = 'SetTimezone';
 					$record = $GLOBALS['current_user']->id;
 				}else{
-					$this->handleOfflineClient();
+					if($this->controller->action != 'AdminWizard' 
+			            && $this->controller->action != 'EmailUIAjax' 
+			            && $this->controller->action != 'Wizard' 
+			            && $this->controller->action != 'SaveAdminWizard' 
+			            && $this->controller->action != 'SaveUserWizard'){
+							$this->handleOfflineClient();
+			            }
 				}
 			}
 		}

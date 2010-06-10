@@ -21400,6 +21400,8 @@ $sugar_demodata['bug_seed_names'] = array(
 $sugar_demodata['note_seed_names_and_Descriptions'] = array(
 	array('More Account Information','This account could turn into a 3,000-user opportunity.'),
 	array('Call Information','The initial sales call went well. Will follow up with contact in 3 days.'),
+	array('Birthday Information','The Owner was born in October'),
+	array('Holiday Gift','The holiday gift was appreciated.  Put them on the list for next year as well.')
 );
 
 $sugar_demodata['call_seed_data_names'] = array(
