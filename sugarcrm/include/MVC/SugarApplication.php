@@ -79,7 +79,8 @@ class SugarApplication
 		$this->loadDisplaySettings();
 		$this->loadLicense();
 		$this->loadGlobals();
-		$this->setupResourceManagement($module);		
+		$this->setupResourceManagement($module);
+		$this->checkHTTPReferer();		
 		$this->controller->execute();
 		sugar_cleanup();
 	}
@@ -400,7 +401,49 @@ class SugarApplication
 			$_REQUEST['action'] = $this->default_action;
 		}
 	}
+	/**
+	 * 
+	 * Checks a request to ensure the request is coming from a valid source or it is for one of the white listed actions
+	 */
+	function checkHTTPReferer(){
+		global $sugar_config;
+		$whiteListActions = (!empty($sugar_config['http_referer']['actions']))?$sugar_config['http_referer']['actions']:array('index', 'ListView', 'DetailView', 'EditView');
+		if(!empty($_SERVER['HTTP_REFERER']) && !empty($_SERVER['SERVER_NAME'])){
+			$http_ref = parse_url($_SERVER['HTTP_REFERER']);
+			if($http_ref['host'] !== $_SERVER['SERVER_NAME']  && !in_array($this->controller->action, $whiteListActions) && 
+				(empty($sugar_config['http_referer']['list']) || !in_array($http_ref['host'], $sugar_config['http_referer']['list']))){
+				header("Cache-Control: no-cache, must-revalidate");
+				$whiteListActions[] = $this->controller->action;
+				$whiteListString = "'" . implode("', '", $whiteListActions) . "'";
+				
+				echo <<<EOQ
+					<div align='center' style='background:lightgray'>
+					<h3 style='color:red'>Possible Cross Site Request Forgery (XSRF) Attack Detected</h3>
+					<h4>If you think this is a mistake please ask your administrator to add the following site to the acceptable referer list</h4>
+					<h3>{$http_ref['host']}</h3>
+					<h4><a href='javascript:void(0);' onclick='document.getElementById("directions").style.display="";'>Click here for directions to add this site to the acceptable referer list</a></h4>
+					</div>
+					<div id='directions' style='display:none'>
+						<h3>Directions</h3>
+						<ol>
+							<li>On your file system go to the root of your SugarCRM instance
+							<li>Open the file config_override.php. If it does not exist, create it. (it should be at the same level as index.php and config.php)
+							<li>Make sure the file starts with <pre>&lt;?php</pre> followed by a new line
+							<li>Add the following line to your config_override.php file<br> <pre>\$sugar_config['http_referer']['list'][] = '{$http_ref['host']}';</pre>
+							<li>Save the file and it should work
+						</ol>
+						<h3>Attempted action ({$this->controller->action})</h3>
+						If you feel this is a valid action that should be allowed from any referer, add the following to your config_override.php file
+						<ul><li><pre>\$sugar_config['http_referer']['actions'] =array( $whiteListString ); </pre></ul>
+					</div>
+					
+					
+EOQ;
+			sugar_cleanup(true);
+			}
 		
+		}
+	}	
 	function startSession(){
 		if(isset($_REQUEST['MSID'])) {
 			session_id($_REQUEST['MSID']);

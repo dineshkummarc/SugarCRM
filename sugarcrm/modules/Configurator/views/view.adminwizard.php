@@ -62,7 +62,7 @@ class ViewAdminwizard extends SugarView
 	 */
 	public function display()
 	{
-	    global $current_user, $mod_strings, $app_list_strings, $sugar_config, $locale;
+	    global $current_user, $mod_strings, $app_list_strings, $sugar_config, $locale, $sugar_version;
 	    
 	    if(!is_admin($current_user)){
             sugar_die('Admin Only');
@@ -91,6 +91,7 @@ class ViewAdminwizard extends SugarView
         $this->ss->assign('CSS', '<link rel="stylesheet" type="text/css" href="'.SugarThemeRegistry::current()->getCSSURL('wizard.css').'" />');
 	    $this->ss->assign('LANGUAGES', get_languages());
 	    $this->ss->assign('config', $sugar_config);
+	    $this->ss->assign('SUGAR_VERSION', $sugar_version);
 	    $this->ss->assign('settings', $focus->settings);
 	    $this->ss->assign('exportCharsets', get_select_options_with_id($locale->getCharsetSelect(), $sugar_config['default_export_charset']));
 	    $this->ss->assign('getNameJs', $locale->getNameJs());

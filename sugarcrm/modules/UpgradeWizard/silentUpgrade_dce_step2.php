@@ -551,14 +551,21 @@ if($upgradeType == constant('DCE_INSTANCE')){
     if( isset( $manifest['copy_files']['from_dir'] ) && $manifest['copy_files']['from_dir'] != "" ){
 	    $zip_from_dir   = $manifest['copy_files']['from_dir'];
 	}
+	
 	$instanceUpgradePath = "{$argv[1]}/{$zip_from_dir}";
+	$_SESSION['sugar_version_file'] = '';
+	$srcFile = clean_path("{$instanceUpgradePath}/sugar_version.php");
+	if(file_exists($srcFile)) {
+	   $_SESSION['sugar_version_file'] = $srcFile;
+	}	
+	
+	
 	global $instancePath;
 	$instancePath = $instanceUpgradePath;
 	$_SESSION['instancePath'] = $instancePath;
 	if(file_exists("{$instanceUpgradePath}/modules/UpgradeWizard/uw_utils.php")){
 		require_once("{$instanceUpgradePath}/modules/UpgradeWizard/uw_utils.php");
-	}
-	else{
+	} else{
 		require_once("{$argv[4]}/modules/UpgradeWizard/uw_utils.php");
 	}
 
@@ -642,6 +649,59 @@ if($upgradeType == constant('DCE_INSTANCE')){
         $oldModuleList = $moduleList;
         include($newtemplate_path.'/include/modules.php');
         $newModuleList = $moduleList;
+        
+		///    RELOAD NEW DEFINITIONS
+		global $ACLActions, $beanList, $beanFiles;
+		include($argv[4].'/modules/ACLActions/actiondefs.php');
+
+		//First repair the databse to ensure it is up to date with the new vardefs/tabledefs
+		logThis('About to repair the database.', $path);
+		//Use Repair and rebuild to update the database.
+		global $dictionary; 
+		require_once($argv[4].'/modules/Administration/QuickRepairAndRebuild.php');
+		$rac = new RepairAndClear();
+		$rac->clearVardefs();
+		$rac->rebuildExtensions();
+		
+		$repairedTables = array();
+		foreach ($beanFiles as $bean => $file) {
+			if(file_exists($file)){
+				unset($GLOBALS['dictionary'][$bean]);
+				require_once($file);
+				$focus = new $bean ();
+				if(empty($focus->table_name) || isset($repairedTables[$focus->table_name])) {
+				   continue;
+				}
+		
+				if (($focus instanceOf SugarBean)) {
+					$sql = $db->repairTable($focus, true);
+					if(!empty($sql)) {
+			   		   logThis($sql, $path);
+			   		   $repairedTables[$focus->table_name] = true;
+					}
+				}
+			}
+		}
+		
+		unset ($dictionary);
+		include ($argv[4].'/modules/TableDictionary.php');
+		foreach ($dictionary as $meta) {
+			$tablename = $meta['table'];
+		
+			if(isset($repairedTables[$tablename])) {
+			   continue;
+			}
+			
+			$fielddefs = $meta['fields'];
+			$indices = $meta['indices'];
+			$sql = $GLOBALS['db']->repairTableParams($tablename, $fielddefs, $indices, true);
+			if(!empty($sql)) {
+			    logThis($sql, $path);
+			    $repairedTables[$tablename] = true;
+			}
+			
+		}		
+		logThis('database repaired', $path);         
 
         //include tab controller 
         require_once($newtemplate_path.'/modules/MySettings/TabController.php');

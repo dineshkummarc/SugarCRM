@@ -21400,15 +21400,15 @@ $sugar_demodata['bug_seed_names'] = array(
 $sugar_demodata['note_seed_names_and_Descriptions'] = array(
 	array('More Account Information','This account could turn into a 3,000-user opportunity.'),
 	array('Call Information','The initial sales call went well. Will follow up with contact in 3 days.'),
-	array('Birthday Information','The Owner was born in October'),
-	array('Holiday Gift','The holiday gift was appreciated.  Put them on the list for next year as well.')
+	array('Met at SugarCon 2010','Contact expressed interest in becoming a partner.'),
+	array('Attended CRM Exceleration Event in Asia','Contact\'s event registration fee was comped.')
 );
 
 $sugar_demodata['call_seed_data_names'] = array(
 	'Get more information on the proposed deal',
 	'Left a message',
 	'Bad time, will call back',
-	'Discuss Review Process'
+	'Discuss review process'
 );
 
 //titles
@@ -21420,7 +21420,7 @@ $sugar_demodata['titles'] = array(
 	"Director Sales",
 	"Mgr Operations",
 	"IT Developer",
-	""
+	"Senior Product Manager"
 );
 
 

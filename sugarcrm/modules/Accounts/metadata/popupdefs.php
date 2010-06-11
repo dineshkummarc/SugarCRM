@@ -60,6 +60,11 @@ $popupMeta = array(
 			'link' => true,	
 			'default' => true,								        
 		),
+	    'BILLING_ADDRESS_STREET' => array(
+			'width' => '10', 
+			'label' => 'LBL_BILLING_ADDRESS_STREET',
+			'default' => false,										        
+		),		
 		'BILLING_ADDRESS_CITY' => array(
 			'width' => '10', 
 			'label' => 'LBL_LIST_CITY',
@@ -75,11 +80,21 @@ $popupMeta = array(
 	        'label' => 'LBL_COUNTRY',
 	        'default' => true,
 		),
-	    'ASSIGNED_USER_NAME' => array(
+	    'BILLING_ADDRESS_POSTALCODE' => array(
+			'width' => '10', 
+			'label' => 'LBL_BILLING_ADDRESS_POSTALCODE',
+			'default' => false,										        
+		),	
+		'ASSIGNED_USER_NAME' => array(
 	        'width' => '2', 
 	        'label' => 'LBL_LIST_ASSIGNED_USER',
 	        'default' => true,
 		),
+	    'PHONE_OFFICE' => array(
+		    'width' => '10', 
+			'label' => 'LBL_LIST_PHONE',
+		    'default' => false
+		),		
 	),
 	'searchdefs'   => array(
 	 	'name', 

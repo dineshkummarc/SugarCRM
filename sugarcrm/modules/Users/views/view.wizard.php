@@ -67,7 +67,7 @@ class ViewWizard extends SugarView
 	 */
 	public function display()
     {
-        global $mod_strings, $current_user, $locale, $sugar_config, $app_list_strings;
+        global $mod_strings, $current_user, $locale, $sugar_config, $app_list_strings, $sugar_version;
         
 		$themeObject = SugarThemeRegistry::current();
 		$css = $themeObject->getCSS();
@@ -81,6 +81,7 @@ class ViewWizard extends SugarView
 		$this->ss->assign('ID', $current_user->id);
 		$this->ss->assign('USER_NAME', $current_user->user_name);
 		$this->ss->assign('FIRST_NAME', $current_user->first_name);
+		$this->ss->assign('SUGAR_VERSION', $sugar_version);
 		$this->ss->assign('LAST_NAME', $current_user->last_name);
 		$this->ss->assign('TITLE', $current_user->title);
 		$this->ss->assign('DEPARTMENT', $current_user->department);

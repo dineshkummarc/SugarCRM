@@ -486,6 +486,16 @@ function get_linked_records($get_module, $from_module, $get_id) {
 
 	$from_mod->load_relationship($field);
 	$id_arr = $from_mod->$field->get();
+	
+	//bug: 38065 
+	if ($get_module == 'EmailAddresses') {
+		$emails = $from_mod->emailAddress->addresses;
+		$email_arr = array();
+		foreach ($emails as $email) {
+			$email_arr[] = $email['email_address_id'];
+		}
+		return $email_arr;
+	}
 
 	return $id_arr;
 }
