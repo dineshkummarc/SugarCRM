@@ -285,7 +285,7 @@ class EmailUI {
 				    	"cookie", "sugarwidgets" 
 				    ],
 				    loadOptional: true,
-				    skin: "",
+				    skin: { base: 'blank', defaultSkin: '' },
 				    onSuccess: email2init,
 				    allowRollup: true,
 				    base: "include/javascript/yui/build/"
@@ -1240,6 +1240,8 @@ eoq;
 				'opt_out'			=> 0,
 				'reply_to_address'	=> 1
 			);
+			
+			$focus->email1 = $address;
 
 			if(!empty($name)) {
 				$focus->last_name = trim(array_pop($name));

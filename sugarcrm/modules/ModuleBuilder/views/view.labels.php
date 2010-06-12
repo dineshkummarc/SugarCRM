@@ -80,6 +80,9 @@ class ViewLabels extends ViewModulefields
 
         global $beanList;
         $objectName = $beanList[$editModule];
+        if($objectName == 'aCase') {
+            $objectName = 'Case';
+        }
 
         VardefManager::loadVardef($editModule, $objectName);
         global $dictionary;

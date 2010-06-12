@@ -377,6 +377,11 @@ $xtpl->assign("MERGE_VERIFY",$merge_verify);
 
 global $beanList;
 
+//Jenny - Bug 8386 - The object_name couldn't be found because it was searching for
+// 'Case' instead of 'aCase'.
+if ($focus->merge_bean->object_name == 'Case') {
+    $focus->merge_bean->object_name = 'aCase';
+}
 
 $mod=array_search($focus->merge_bean->object_name,$beanList);
 $mod_strings = return_module_language($current_language, $mod);

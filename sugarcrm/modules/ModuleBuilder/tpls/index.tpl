@@ -64,8 +64,8 @@ closeMenus();
 var MBLoader = new YAHOO.util.YUILoader({
     require : ["layout", "element", "tabview", "treeview", "history", "cookie", "sugarwidgets"],
     loadOptional: true,
-    skin: "",
-    onSuccess: ModuleBuilder.init,
+    skin: { base: 'blank', defaultSkin: '' },
+	onSuccess: ModuleBuilder.init,
     allowRollup: true,
     base: "include/javascript/yui/build/"
 });

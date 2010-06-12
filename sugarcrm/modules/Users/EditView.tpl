@@ -631,7 +631,7 @@ function startOutBoundEmailSettingsTest()
     var loader = new YAHOO.util.YUILoader({
     require : ["element","sugarwidgets"],
     loadOptional: true,
-    skin: "",
+    skin: { base: 'blank', defaultSkin: '' },
     onSuccess: testOutboundSettings,
     allowRollup: true,
     base: "include/javascript/yui/build/"

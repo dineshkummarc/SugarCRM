@@ -92,7 +92,7 @@ function disableReturnSubmission(e) {
                 {$MOD.LBL_WIZARD_WELCOME_NOSMTP}
                 {/if}
                 </td>
-                <td><iframe src="http://apps.sugarcrm.com/dashlet/{$SUGAR_VERSION}/sugarcrm-new-user-wizard.html" width="480" height="320"></iframe></td>
+                <td><iframe src="http://apps.sugarcrm.com/dashlet/{$SUGAR_VERSION}/sugarcrm-new-user-wizard.html" width="480" height="320" scrolling=no></iframe></td>
                 </tr>
                 </table>
                 </td>
@@ -429,7 +429,7 @@ function startOutBoundEmailSettingsTest()
     var loader = new YAHOO.util.YUILoader({
     require : ["element","sugarwidgets"],
     loadOptional: true,
-    skin: "",
+    skin: { base: 'blank', defaultSkin: '' },
     onSuccess: testOutboundSettings,
     allowRollup: true,
     base: "include/javascript/yui/build/"

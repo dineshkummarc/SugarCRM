@@ -131,6 +131,8 @@ class ViewModulefield extends SugarView
 
             $objectName = $beanList[$moduleName];
             $className = $objectName;
+            if($objectName == 'aCase') // Bug 17614 - renamed aCase as Case in vardefs for backwards compatibililty with 451 modules
+                $objectName = 'Case';
 			
 			$module = new $className();
             

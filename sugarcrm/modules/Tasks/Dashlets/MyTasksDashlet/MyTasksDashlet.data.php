@@ -77,7 +77,7 @@ $dashletData['MyTasksDashlet']['columns'] = array('set_complete' => array('width
                                                    'date_modified' => array('width'   => '15', 
                                                                            'label'   => 'LBL_DATE_MODIFIED'),    
                                                    'created_by' => array('width'   => '8', 
-                                                                         'label'   => $app_strings['LBL_CREATED'],
+                                                                         'label'   => $GLOBALS['app_strings']['LBL_CREATED'],
                                                                          'sortable' => false),
                                                    'assigned_user_name' => array('width'   => '8', 
                                                                                  'label'   => 'LBL_LIST_ASSIGNED_USER'),

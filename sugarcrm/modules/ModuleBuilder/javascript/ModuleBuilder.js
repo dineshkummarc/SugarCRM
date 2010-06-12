@@ -841,6 +841,7 @@ if (typeof(ModuleBuilder) == 'undefined') {
 				function(){}			
 			);
 			
+			ModuleBuilder.failed = function(){};
 			//Reload the page
 			window.setTimeout("window.location.assign(window.location.href.split('#')[0])", 2000);
 			
