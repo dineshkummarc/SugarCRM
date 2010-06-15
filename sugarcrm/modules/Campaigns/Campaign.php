@@ -288,12 +288,19 @@ class Campaign extends SugarBean {
         //add filtering by marketing id, if it exists
         if (!empty($mkt_id)) $query_array['where'] = $query_array['where']. " AND marketing_id ='$mkt_id' ";
 		
-        
-        if(isset($query_array['group_by'])) {
+        //B.F. #37943 
+        if( isset($query_array['group_by']) && $this->db->dbType != 'mysql' ) 
+        { 
+            $group_by = str_replace("campaign_log", "cl", $query_array['group_by']);
+            $query_array['from'] .= " INNER JOIN (select min(id) as id from campaign_log cl GROUP BY $group_by  ) secondary
+			                         on campaign_log.id = secondary.id	";
+            unset($query_array['group_by']);
+        }
+        else if(isset($query_array['group_by'])) {
            $query_array['where'] = $query_array['where'] . ' GROUP BY ' . $query_array['group_by'];
            unset($query_array['group_by']);
         }
-        
+       
         $query = (implode(" ",$query_array));
         return $query;     
 	}
@@ -325,7 +332,7 @@ class Campaign extends SugarBean {
 
 		//get select query from email man
 		$man = new EmailMan();
-		$listquery= $man->create_new_list_query('',str_replace(array("WHERE","where"),"",$query_array['where']),null,$query_array);	
+		$listquery= $man->create_queue_items_query('',str_replace(array("WHERE","where"),"",$query_array['where']),null,$query_array);	
 		return $listquery;
 		
 	}

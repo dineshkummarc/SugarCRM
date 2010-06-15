@@ -621,12 +621,7 @@ if($upgradeType == constant('DCE_INSTANCE')){
     		///////////////////////////////////////////////////////////////////////////////
 	////	HANDLE POSTINSTALL SCRIPTS
 		//if(empty($errors)) {
-		logThis('Starting post_install()...', $path);
-		$file = "{$argv[1]}/".constant('SUGARCRM_POST_INSTALL_FILE');
-		if(is_file($file)) {
-			include($file);
-			post_install();
-		}
+
 			//clean vardefs
 		logThis('Performing UWrebuild()...', $path);
 			UWrebuild();
@@ -797,12 +792,32 @@ if($upgradeType == constant('DCE_INSTANCE')){
 		checkConfigForPermissions();
 		 //}
     }
-		//as last step, rebuild the language files and rebuild relationships
-		if(file_exists($newtemplate_path.'/modules/Administration/RebuildJSLang.php')) {
-			logThis("begin rebuilding js language files.", $path);
-			include($newtemplate_path.'/modules/Administration/RebuildJSLang.php');
-			@rebuildRelations($newtemplate_path.'/');
-		}
+    
+	// clear out the theme cache
+	if(!class_exists('SugarThemeRegistry')){
+	    require_once('include/SugarTheme/SugarTheme.php');
+	}
+	SugarThemeRegistry::buildRegistry();
+	SugarThemeRegistry::clearAllCaches();    
+	    
+	// re-minify the JS source files
+	$_REQUEST['root_directory'] = getcwd();
+	$_REQUEST['js_rebuild_concat'] = 'rebuild';
+	require_once('jssource/minify.php');  
+    
+	logThis('Starting post_install()...', $path);
+	$file = "{$argv[1]}/".constant('SUGARCRM_POST_INSTALL_FILE');
+	if(is_file($file)) {
+	    include($file);
+		post_install();
+	}  
+    
+	//as last step, rebuild the language files and rebuild relationships
+	if(file_exists($newtemplate_path.'/modules/Administration/RebuildJSLang.php')) {
+		logThis("begin rebuilding js language files.", $path);
+		include($newtemplate_path.'/modules/Administration/RebuildJSLang.php');
+		@rebuildRelations($newtemplate_path.'/');
+	}
 		
 	logThis('post_install() done.', $path);    
     logThis("***** SilentUpgrade completed successfully.", $path);

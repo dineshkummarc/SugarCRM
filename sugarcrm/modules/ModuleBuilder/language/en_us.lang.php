@@ -107,6 +107,14 @@ $mod_strings = array(
 		'Available' => '<b>Available</b> fields are not shown by default, but can be added to ListViews by users.',
 		'Default'	=> '<b>Default</b> fields appear in ListViews that are not customized by users.'
 	),
+	'popupListViewEditor'=>array(
+		'modify'	=> 'All of the fields that can be displayed in the <b>ListView</b> appear here.<br><br>The <b>Default</b> column contains the fields that are displayed in the ListView by default.<br/><br/>The <b>Hidden</b> column contains fields that can be added to the Default or Available column.',
+		'savebtn'	=> 'Click <b>Save & Deploy</b> to save changes you made and to make them active within the module.',
+		'historyBtn'=> 'Click <b>View History</b> to view and restore a previously saved layout from the history.', 
+		'historyDefault'=> 'Click <b>Restore Default</b> to restore a view to its original layout.',
+		'Hidden' 	=> '<b>Hidden</b> fields not currently available for users to see in ListViews.',
+		'Default'	=> '<b>Default</b> fields appear in ListViews that are not customized by users.'
+	),
 	'searchViewEditor'=>array(
 		'modify'	=> 'All of the fields that can be displayed in the <b>Search</b> form appear here.<br><br>The <b>Default</b> column contains the fields that will be displayed in the Search form.<br/><br/>The <b>Hidden</b> column contains fields available for you as an admin to add to the Search form.',
 		'savebtn'	=> 'Clicking <b>Save & Deploy</b> will save all changes and make them active',

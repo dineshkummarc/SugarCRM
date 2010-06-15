@@ -138,7 +138,7 @@ class ViewPopupview extends ViewListView
         $smarty->assign ( 'action', 'popupSave' ) ;
         $smarty->assign( 'module', 'ModuleBuilder');
         $smarty->assign ( 'view_module', $this->editModule ) ;
-        $helpName = (isset( $_REQUEST['view']) && $_REQUEST['view']==MB_POPUPSEARCH) ? 'searchViewEditor' : 'listViewEditor';
+        $helpName = (isset( $_REQUEST['view']) && $_REQUEST['view']==MB_POPUPSEARCH) ? 'searchViewEditor' : 'popupListViewEditor';
         $smarty->assign ( 'helpName', $helpName ) ;
         $smarty->assign ( 'helpDefault', 'modify' ) ;
 

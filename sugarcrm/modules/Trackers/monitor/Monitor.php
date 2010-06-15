@@ -51,6 +51,13 @@ class Monitor implements Trackable {
     var $table_name;
     protected $enabled = true;
 	protected $dirty = false;
+	
+	var $date_start;
+	var $date_end;
+	var $active;
+	var $round_trips;
+	var $seconds;
+	var $session_id;
     
     /**
      * Monitor constructor

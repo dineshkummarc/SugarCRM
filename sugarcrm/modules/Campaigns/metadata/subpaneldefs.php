@@ -73,7 +73,7 @@ $layout_defs['Campaigns'] = array(
 			'order' => 100,
 			'module' => 'EmailMan',
 			'get_subpanel_data'=>'function:get_queue_items',
-            'function_parameters'=>array('EMAIL_MARKETING_ID_VALUE'=>'','distinct'=>'emailman.related_id', 'group_by'=>'emailman.related_id, emailman.marketing_id'),					
+            'function_parameters'=>array('EMAIL_MARKETING_ID_VALUE'=>'','distinct'=>'emailman.id', 'group_by'=>'emailman.related_id,emailman.marketing_id'),					
             'subpanel_name' => 'default',
 			'title_key' => 'LBL_MESSAGE_QUEUE_TITLE',
 			'sort_order' => 'desc',
@@ -86,6 +86,7 @@ $layout_defs['Campaigns'] = array(
 			'subpanel_name' => 'default',
 			'title_key' => 'LBL_LOG_ENTRIES_TARGETED_TITLE',
 			'sort_order' => 'desc',
+			'sort_by' => 'campaign_log.id'
 		),
         'viewed' => array(
 			'order' => 120,
@@ -95,6 +96,7 @@ $layout_defs['Campaigns'] = array(
 			'function_parameters'=>array(0=>'viewed','EMAIL_MARKETING_ID_VALUE'=>'','group_by'=>'campaign_log.target_id','distinct'=>'campaign_log.target_id'),
 			'title_key' => 'LBL_LOG_ENTRIES_VIEWED_TITLE',
 			'sort_order' => 'desc',
+			'sort_by' => 'campaign_log.id'
 		),
         'link' => array(
 			'order' => 130,
@@ -104,6 +106,7 @@ $layout_defs['Campaigns'] = array(
 			'subpanel_name' => 'default',
 			'title_key' => 'LBL_LOG_ENTRIES_LINK_TITLE',
 			'sort_order' => 'desc',
+			'sort_by' => 'campaign_log.id'
 		),
         'lead' => array(
 			'order' => 140,
@@ -113,6 +116,7 @@ $layout_defs['Campaigns'] = array(
 			'subpanel_name' => 'default',
 			'title_key' => 'LBL_LOG_ENTRIES_LEAD_TITLE',
 			'sort_order' => 'desc',
+			'sort_by' => 'campaign_log.id'
 		),
         'contact' => array(
 			'order' => 150,
@@ -122,6 +126,7 @@ $layout_defs['Campaigns'] = array(
 			'subpanel_name' => 'default',
 			'title_key' => 'LBL_LOG_ENTRIES_CONTACT_TITLE',
 			'sort_order' => 'desc',
+			'sort_by' => 'campaign_log.id'
 		),
         'invalid email' => array(
 			'order' => 160,
@@ -131,6 +136,7 @@ $layout_defs['Campaigns'] = array(
 			'subpanel_name' => 'default',
 			'title_key' => 'LBL_LOG_ENTRIES_INVALID_EMAIL_TITLE',
 			'sort_order' => 'desc',
+			'sort_by' => 'campaign_log.id'
 		),				
         'send error' => array(
 			'order' => 170,
@@ -140,6 +146,7 @@ $layout_defs['Campaigns'] = array(
 			'subpanel_name' => 'default',
 			'title_key' => 'LBL_LOG_ENTRIES_SEND_ERROR_TITLE',
 			'sort_order' => 'desc',
+			'sort_by' => 'campaign_log.id'
 		),
         'removed' => array(
 			'order' => 180,
@@ -149,6 +156,7 @@ $layout_defs['Campaigns'] = array(
 			'subpanel_name' => 'default',
 			'title_key' => 'LBL_LOG_ENTRIES_REMOVED_TITLE',
 			'sort_order' => 'desc',
+			'sort_by' => 'campaign_log.id'
 		),
         'blocked' => array(
 			'order' => 185,
@@ -158,6 +166,7 @@ $layout_defs['Campaigns'] = array(
 			'subpanel_name' => 'default',
 			'title_key' => 'LBL_LOG_ENTRIES_BLOCKEDD_TITLE',
 			'sort_order' => 'desc',
+			'sort_by' => 'campaign_log.id'
 		),		
         'accounts' => array(
             'order' => 190,

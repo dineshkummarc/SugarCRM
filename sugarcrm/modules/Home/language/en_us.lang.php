@@ -73,6 +73,7 @@ $mod_strings = array (
   'LBL_SEARCH_RESULTS' => 'Search Results',
   'LBL_SEARCH_RESULTS_IN' => 'in',
   'LNK_NEW_SEND_EMAIL' => 'Compose Email',
+  'LBL_NO_ACCESS' => 'You do not have access to this area.  Contact your site administrator to obtain access',
   'LBL_NO_RESULTS_IN_MODULE' => '-- No Results --',
   'LBL_NO_RESULTS' => '<h2>There were no results found. Please search again.</h2><br>',
   'LBL_NO_RESULTS_TIPS' => '<h3>Search Tips:</h3><ul><li>Make sure you have the proper categories selected above.</li><li>Broaden your search criteria.</li><li>If you still cannot find any results try the advanced search option.</li></ul>',

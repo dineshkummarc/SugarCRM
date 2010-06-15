@@ -144,6 +144,74 @@ class EmailMan extends SugarBean{
 		
     } // if
     
+    function create_queue_items_query($order_by, $where,$filter=array(),$params=array(), $show_deleted = 0,$join_type='', $return_array = false,$parentbean=null, $singleSelect = false) {
+
+		if ($return_array) {
+			return parent::create_new_list_query($order_by, $where,$filter,$params, $show_deleted,$join_type, $return_array,$parentbean, $singleSelect); 
+		}   	
+
+		if ( ( $this->db->dbType == 'mysql' ) or ( $this->db->dbType == 'oci8' ) )
+		{
+
+		$query = "SELECT $this->table_name.* ,
+					campaigns.name as campaign_name,
+					email_marketing.name as message_name,
+					(CASE related_type
+						WHEN 'Contacts' THEN CONCAT(CONCAT(contacts.first_name, '&nbsp;' ), contacts.last_name)
+						WHEN 'Leads' THEN CONCAT(CONCAT(leads.first_name, '&nbsp;' ), leads.last_name)
+						WHEN 'Accounts' THEN accounts.name
+						WHEN 'Users' THEN CONCAT(CONCAT(users.first_name, ' ' ), users.last_name)
+						WHEN 'Prospects' THEN CONCAT(CONCAT(prospects.first_name, '&nbsp;' ), prospects.last_name)
+					END) recipient_name";
+		}
+	    if($this->db->dbType == 'mssql')
+		{
+				$query = "SELECT $this->table_name.* ,
+					campaigns.name as campaign_name,
+					email_marketing.name as message_name,
+					(CASE related_type
+						WHEN 'Contacts' THEN contacts.first_name + '&nbsp;' + contacts.last_name
+						WHEN 'Leads' THEN  leads.first_name + '&nbsp;' + leads.last_name
+						WHEN 'Accounts' THEN  accounts.name
+						WHEN 'Users' THEN  users.first_name + ' ' + users.last_name						
+						WHEN 'Prospects' THEN prospects.first_name + '&nbsp;' + prospects.last_name
+					END) recipient_name";
+		}
+        
+		 $query .= " FROM $this->table_name
+		            LEFT JOIN users ON users.id = $this->table_name.related_id and $this->table_name.related_type ='Users'
+					LEFT JOIN contacts ON contacts.id = $this->table_name.related_id and $this->table_name.related_type ='Contacts'
+					LEFT JOIN leads ON leads.id = $this->table_name.related_id and $this->table_name.related_type ='Leads'
+					LEFT JOIN accounts ON accounts.id = $this->table_name.related_id and $this->table_name.related_type ='Accounts'
+					LEFT JOIN prospects ON prospects.id = $this->table_name.related_id and $this->table_name.related_type ='Prospects'
+					LEFT JOIN prospect_lists ON prospect_lists.id = $this->table_name.list_id 
+                    LEFT JOIN email_addr_bean_rel ON email_addr_bean_rel.bean_id = $this->table_name.related_id and $this->table_name.related_type = email_addr_bean_rel.bean_module and email_addr_bean_rel.deleted=0
+					LEFT JOIN campaigns ON campaigns.id = $this->table_name.campaign_id
+					LEFT JOIN email_marketing ON email_marketing.id = $this->table_name.marketing_id ";
+		 
+		 //B.F. #37943 
+		if( isset($params['group_by']) )
+		{
+			$group_by = str_replace("emailman", "em", $params['group_by']);
+		    $query .= "INNER JOIN (select min(id) as id from emailman  em GROUP BY $group_by  ) secondary
+			           on {$this->table_name}.id = secondary.id	";
+		}
+		
+		$where_auto = " $this->table_name.deleted=0";
+
+        if($where != "")
+			$query .= "WHERE $where AND ".$where_auto;
+		else
+			$query .= "WHERE ".$where_auto;
+			
+		
+		if($order_by != "")
+			$query .= " ORDER BY $order_by";
+
+		return $query;
+		
+    }
+    
 	function create_list_query($order_by, $where, $show_deleted = 0){
 
 		if ( ( $this->db->dbType == 'mysql' ) or ( $this->db->dbType == 'oci8' ) )

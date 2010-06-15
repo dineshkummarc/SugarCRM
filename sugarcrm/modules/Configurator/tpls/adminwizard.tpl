@@ -83,12 +83,8 @@ function disableReturnSubmission(e) {
             </tr>
             <tr>
                 <td scope="row">
-                <table>
-                <tr>
-                <td>{$MOD.LBL_WIZARD_WELCOME}</td>
-                <td><iframe src="http://apps.sugarcrm.com/dashlet/{$SUGAR_VERSION}/sugarcrm-new-user-wizard.html" width="480" height="320" scrolling=no></iframe></td>
-                </tr>
-                </table>
+              <p>{$MOD.LBL_WIZARD_WELCOME}</p>
+				<div class="userWizWelcome"><iframe src="http://www.sugarcrm.com/crm/sites/all/includes/sugar_welcome.php" width="480" height="320" scrolling=no id="userWizFrame" name="userWizFrame"></iframe></div>
                 </td>
             </tr>
             </table>

@@ -38,7 +38,8 @@ deconcept.SWFObjectUtil.cleanupSWFs=function(){var objects=document.getElementsB
 if(deconcept.SWFObject.doPrepUnload){if(!deconcept.unloadSet){deconcept.SWFObjectUtil.prepUnload=function(){__flash_unloadHandler=function(){};__flash_savedUnloadHandler=function(){};window.attachEvent("onunload",deconcept.SWFObjectUtil.cleanupSWFs);}
 window.attachEvent("onbeforeunload",deconcept.SWFObjectUtil.prepUnload);deconcept.unloadSet=true;}}
 if(!document.getElementById&&document.all){document.getElementById=function(id){return document.all[id];}}
-var getQueryParamValue=deconcept.util.getRequestParameter;var FlashObject=deconcept.SWFObject;var SWFObject=deconcept.SWFObject;function loadChartSWF(chartName,xmlFile,width,height,stylesheet,colorscheme,langFile){if(width=='100%'){width=document.getElementById(chartName+'_div').clientWidth;}
+var getQueryParamValue=deconcept.util.getRequestParameter;var FlashObject=deconcept.SWFObject;var SWFObject=deconcept.SWFObject;function loadChartSWF(chartName,xmlFile,width,height,stylesheet,colorscheme,langFile){if(!document.getElementById(chartName+'_div')){return;}
+if(width=='100%'){width=document.getElementById(chartName+'_div').clientWidth;}
 else{width=width.replace(/px/,'');}
 height=height.replace(/px/,'');var home=new SWFObject("include/SugarCharts/swf/chart.swf",chartName,"100%","100%","7");home.addParam("wmode","transparent");home.addParam("menu","false");home.addParam("quality","high");home.addVariable("inputFile",xmlFile)
 home.addVariable("swfLocation","include/SugarCharts/swf/");home.addVariable("inputColorScheme",colorscheme);home.addVariable("inputStyleSheet",stylesheet);home.addVariable("inputLanguage",langFile);home.addVariable("myWidth",width);home.addVariable("myHeight",height);home.write(chartName+'_div');}

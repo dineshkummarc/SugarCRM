@@ -688,6 +688,8 @@ class SugarEmailAddress extends SugarBean {
         
 		$prefill = 'false';
         $prefillData = 'new Object()';
+        $passedModule = $module;
+        $module = $this->getCorrectedModule($module);
         $saveModule = $module;
         if(isset($_POST['is_converted']) && $_POST['is_converted']==true){
             $id=$_POST['return_id'];
@@ -722,7 +724,7 @@ class SugarEmailAddress extends SugarBean {
         }
         
         $required = false;
-        $vardefs = $dictionary[$beanList[$module]]['fields'];
+        $vardefs = $dictionary[$beanList[$passedModule]]['fields'];
         if (!empty($vardefs['email1']) && isset($vardefs['email1']['required']) && $vardefs['email1']['required'])
             $required = true;
         $this->smarty->assign('required', $required);
@@ -909,7 +911,7 @@ function getEmailAddressWidget($focus, $field, $value, $view) {
     $sea->setView($view);
     
         if($view == 'EditView' || $view == 'QuickCreate' || $view == 'ConvertLead') {
-            $module = $sea->getCorrectedModule($focus->module_dir);
+            $module = $focus->module_dir;
             if ($view == 'ConvertLead' && $module == "Contacts")  $module = "Leads";
             
             return $sea->getEmailAddressWidgetEditView($focus->id, $module, false);

@@ -512,18 +512,26 @@ function testOutboundSettings() {
 
 function sendTestEmail()
 {
-    var fromAddress = document.getElementById("outboundtest_from_address").value;
-    
-    if (trim(fromAddress) == "") 
+    var toAddress = document.getElementById("outboundtest_from_address").value;
+    var fromAddress = document.getElementById("notify_fromaddress").value; 
+    if (trim(toAddress) == "") 
     {
         overlay("{/literal}{$APP.ERR_MISSING_REQUIRED_FIELDS}{literal}", "{/literal}{$APP.LBL_EMAIL_SETTINGS_FROM_TO_EMAIL_ADDR}{literal}", 'alert');
         return;
     }
-    else if (!isValidEmail(fromAddress)) {
+    else if (!isValidEmail(toAddress)) {
         overlay("{/literal}{$APP.ERR_INVALID_REQUIRED_FIELDS}{literal}", "{/literal}{$APP.LBL_EMAIL_SETTINGS_FROM_TO_EMAIL_ADDR}{literal}", 'alert');
         return;
     }
-    
+    if (trim(fromAddress) == "") 
+    {
+        overlay("{/literal}{$APP.ERR_MISSING_REQUIRED_FIELDS}{literal}", "{/literal}{$APP.LBL_EMAIL_SETTINGS_FROM_ADDR}{literal}", 'alert');
+        return;
+    }
+    else if (!isValidEmail(fromAddress)) {
+        overlay("{/literal}{$APP.ERR_INVALID_REQUIRED_FIELDS}{literal}", "{/literal}{$APP.LBL_EMAIL_SETTINGS_FROM_ADDR}{literal}", 'alert');
+        return;
+    }
     //Hide the email address window and show a message notifying the user that the test email is being sent.
     EmailMan.testOutboundDialog.hide();
     overlay("{/literal}{$APP.LBL_EMAIL_PERFORMING_TASK}{literal}", "{/literal}{$APP.LBL_EMAIL_ONE_MOMENT}{literal}", 'alert');
@@ -539,7 +547,10 @@ function sendTestEmail()
     var smtpssl  = document.getElementById('mail_smtpssl').value;
     var mailsmtpauthreq = document.getElementById('mail_smtpauth_req');
     var mail_sendtype = document.getElementById('mail_sendtype').value; 
-	var postDataString = 'mail_sendtype=' + mail_sendtype + '&mail_smtpserver=' + smtpServer + "&mail_smtpport=" + smtpPort + "&mail_smtpssl=" + smtpssl + "&mail_smtpauth_req=" + mailsmtpauthreq.checked + "&mail_smtpuser=" + trim(document.getElementById('mail_smtpuser').value) + "&mail_smtppass=" + trim(document.getElementById('mail_smtppass').value) + "&outboundtest_from_address=" + fromAddress;
+	var postDataString = 'mail_sendtype=' + mail_sendtype + '&mail_smtpserver=' + smtpServer + "&mail_smtpport=" + smtpPort + "&mail_smtpssl=" + smtpssl + 
+	                      "&mail_smtpauth_req=" + mailsmtpauthreq.checked + "&mail_smtpuser=" + trim(document.getElementById('mail_smtpuser').value) + 
+	                      "&mail_smtppass=" + trim(document.getElementById('mail_smtppass').value) + "&outboundtest_to_address=" + toAddress + "&outboundtest_from_address=" + fromAddress;
+	                      
 	YAHOO.util.Connect.asyncRequest("POST", "index.php?action=testOutboundEmail&module=EmailMan&to_pdf=true&sugar_body_only=true", callbackOutboundTest, postDataString);
 }
 function testOutboundSettingsDialog() {

@@ -83,18 +83,14 @@ function disableReturnSubmission(e) {
             </tr>
             <tr>
                 <td scope="row">
-                <table>
-                <tr>
-                <td>
+                
                 {if !$HIDE_IF_CAN_USE_DEFAULT_OUTBOUND}
-                {$MOD.LBL_WIZARD_WELCOME}
+               <p> {$MOD.LBL_WIZARD_WELCOME}</p>
                 {else}
-                {$MOD.LBL_WIZARD_WELCOME_NOSMTP}
+               <p> {$MOD.LBL_WIZARD_WELCOME_NOSMTP}</p>
                 {/if}
-                </td>
-                <td><iframe src="http://apps.sugarcrm.com/dashlet/{$SUGAR_VERSION}/sugarcrm-new-user-wizard.html" width="480" height="320" scrolling=no></iframe></td>
-                </tr>
-                </table>
+              
+				<div class="userWizWelcome"><iframe src="http://www.sugarcrm.com/crm/sites/all/includes/sugar_welcome.php" width="480" height="320" scrolling=no id="userWizFrame" name="userWizFrame"></iframe></div>
                 </td>
             </tr>
             </table>

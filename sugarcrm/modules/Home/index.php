@@ -234,14 +234,19 @@ foreach($pages[$activePage]['columns'] as $colNum => $column) {
                 }
 
             	array_push($dashletIds, $id);
-                
 
             	$dashlet->process();
-            	$display[$colNum]['dashlets'][$id]['display'] = $dashlet->display();
-            	$display[$colNum]['dashlets'][$id]['displayHeader'] = $dashlet->getHeader();
-            	$display[$colNum]['dashlets'][$id]['displayFooter'] = $dashlet->getFooter();
-            	if($dashlet->hasScript) {
-                	$display[$colNum]['dashlets'][$id]['script'] = $dashlet->displayScript();
+            	try {
+	            	$display[$colNum]['dashlets'][$id]['display'] = $dashlet->display();
+	            	$display[$colNum]['dashlets'][$id]['displayHeader'] = $dashlet->getHeader();
+	            	$display[$colNum]['dashlets'][$id]['displayFooter'] = $dashlet->getFooter();
+	            	if($dashlet->hasScript) {
+	                	$display[$colNum]['dashlets'][$id]['script'] = $dashlet->displayScript();
+	            	}
+            	} catch (Exception $ex) {
+	            	$display[$colNum]['dashlets'][$id]['display'] = $ex->getMessage();
+	            	$display[$colNum]['dashlets'][$id]['displayHeader'] = $dashlet->getHeader();
+	            	$display[$colNum]['dashlets'][$id]['displayFooter'] = $dashlet->getFooter();            		
             	}
         	}
     	}

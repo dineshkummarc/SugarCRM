@@ -392,7 +392,7 @@ BSOFR
     'LBL_WIZARD_TITLE' => 'Admin Wizard',
     'LBL_WIZARD_WELCOME_TAB' => 'Welcome',
     'LBL_WIZARD_WELCOME_TITLE' => 'Welcome to Sugar!',
-    'LBL_WIZARD_WELCOME' => 'Click <b>Next</b> to brand, localize and configure Sugar now.<br/><br />If you wish to configure Sugar later, click <b>Skip</b>.',
+    'LBL_WIZARD_WELCOME' => 'Click <b>Next</b> to brand, localize and configure Sugar now. If you wish to configure Sugar later, click <b>Skip</b>.',
     'LBL_WIZARD_NEXT_BUTTON' => 'Next >',
     'LBL_WIZARD_BACK_BUTTON' => '< Back',
     'LBL_WIZARD_SKIP_BUTTON' => 'Skip',

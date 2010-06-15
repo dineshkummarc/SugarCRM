@@ -235,6 +235,11 @@ var SWFObject = deconcept.SWFObject;
 /* begin SUGARCRM customization */
 
 function loadChartSWF(chartName, xmlFile, width, height, stylesheet, colorscheme, langFile){
+	
+	if(!document.getElementById(chartName + '_div')) {
+	   return;	
+	}
+	
 	if (width == '100%'){
 		width = document.getElementById(chartName + '_div').clientWidth;
 	}
