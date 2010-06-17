@@ -59,5 +59,14 @@ class LeadsController extends SugarController{
 		return true;
 	}
 	
+	public function action_convertlead(){
+		if(file_exists('modules/Leads/ConvertLead.php') && !file_exists('custom/modules/Leads//metadata/convertdefs.php')){
+			$this->action_default();
+			$this->_processed = true;
+		}else{
+			$this->view = 'convertlead';
+		}
+	}
+	
 }
 ?>

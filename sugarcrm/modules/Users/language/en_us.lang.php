@@ -490,11 +490,18 @@ $mod_strings = array (
     'LBL_WIZARD_FINISH_BUTTON' => 'Finish',
     'LBL_WIZARD_FINISH_TAB' => 'Finish',
     'LBL_WIZARD_FINISH_TITLE' => 'You are ready to use Sugar!',
-    'LBL_WIZARD_FINISH' => 'Click <b>Finish</b> below to save your settings and to begin using Sugar.<br /><br />
-<b>For more information on using Sugar:</b><br /><br />
-&bull;&nbsp;Access <a href="http://www.sugarcrm.com/university/" target="_blank">Training Materials</a>, including tutorials and videos<br />
-&bull;&nbsp;Read the <a href="http://www.sugarcrm.com/crm/support/documentation" target="_blank">Sugar Documentation</a><br />
-&bull;&nbsp;Find answers and solutions in the <a href="http://kb.sugarcrm.com/" target="_blank">Knowledge Base</a><br />',
+    'LBL_WIZARD_FINISH' => 'Click <b>Finish</b> below to save your settings and to begin using Sugar. For more information on using Sugar:<br />
+<table cellpadding=0 cellspacing=0>
+<tr><td><img src=include/images/university.png style="margin-right: 5px;"></td><td><a href="http://www.sugarcrm.com/university" target="_blank"><b>Sugar University</b></a><br>Get a head start with training and resources for end-users, power-users and system administrators at Sugar University.</td></tr>
+<tr><td colspan=2><hr style="margin: 5px 0px;"></td></tr>
+<tr><td><img src=include/images/docs.png style="margin-right: 5px;"></td><td><a href="http://docs.sugarcrm.com/" target="_blank"><b>Documentation</b></a><br>Product documentation to get you started with all flavors of Sugar and official Sugar Plug-Ins and extensions.</td></tr>
+<tr><td colspan=2><hr style="margin: 5px 0px;"></td></tr>
+<tr><td><img src=include/images/kb.png style="margin-right: 5px;"></td><td><a href="http://kb.sugarcrm.com/" target="_blank"><b>Knowledge Base</b></a><br>A collection of articles on accomplishing common tasks and answers to frequently asked questions.</td></tr>
+<tr><td colspan=2><hr style="margin: 5px 0px;"></td></tr>
+<tr><td><img src=include/images/wiki.png style="margin-right: 5px;"></td><td><a href="http://www.sugarcrm.com/wiki" target="_blank"><b>Wiki</b></a><br>A collection of articles on accomplishing common tasks and answers to frequently asked questions.</td></tr>
+<tr><td colspan=2><hr style="margin: 5px 0px;"></td></tr>
+<tr><td><img src=include/images/forums.png style="margin-right: 5px;"></td><td><a href="http://www.sugarcrm.com/forums" target="_blank"><b>Forums</b></a><br>Community and Sugar team members hang out here dicussing all things Sugar.</td></tr>
+</table>',
     'LBL_WIZARD_PERSONALINFO' => 'Your Information',
     'LBL_WIZARD_LOCALE' => 'Your Locale',
     'LBL_WIZARD_SMTP' => 'Your Email Account',

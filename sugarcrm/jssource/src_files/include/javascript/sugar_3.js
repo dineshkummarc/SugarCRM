@@ -900,7 +900,7 @@ function validate_form(formname, startsWith){
 								}
 							break;
                             case 'less':
-                                value=parseFloat(trim(form[validate[formname][i][nameIndex]].value));
+                                value=unformatNumber(trim(form[validate[formname][i][nameIndex]].value), num_grp_sep, dec_sep);
 								maximum = parseFloat(validate[formname][i][maxIndex]);
 								if(	typeof maximum != 'undefined'){
 									if(value>maximum) {
@@ -910,7 +910,7 @@ function validate_form(formname, startsWith){
 								}
 							break;
 							case 'more':
-                                value=parseFloat(trim(form[validate[formname][i][nameIndex]].value));
+                                value=unformatNumber(trim(form[validate[formname][i][nameIndex]].value), num_grp_sep, dec_sep);
 								minimum = parseFloat(validate[formname][i][minIndex]);
 								if(	typeof minimum != 'undefined'){
 									if(value<minimum) {

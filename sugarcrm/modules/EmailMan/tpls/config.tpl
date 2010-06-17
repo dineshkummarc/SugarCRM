@@ -696,7 +696,9 @@ oButtonGroup.subscribe('checkedButtonChange', function(e)
     document.getElementById('EditView').mail_smtptype.value = e.newValue.get('value');
 });
 YAHOO.widget.Button.addHiddenFieldsToForm(document.ConfigureSettings);
-changeEmailScreenDisplay("{/literal}{$mail_smtptype}{literal}", false);
+if(!{/literal}{$mail_smtptype}{literal}){
+	changeEmailScreenDisplay("{/literal}{$mail_smtptype}{literal}", false);
+}
 -->
 </script>
 {/literal}

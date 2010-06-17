@@ -84,7 +84,7 @@ function disableReturnSubmission(e) {
             <tr>
                 <td scope="row">
               <p>{$MOD.LBL_WIZARD_WELCOME}</p>
-				<div class="userWizWelcome"><iframe src="http://www.sugarcrm.com/crm/sites/all/includes/sugar_welcome.php" width="480" height="320" scrolling=no id="userWizFrame" name="userWizFrame"></iframe></div>
+				<div class="userWizWelcome"><img src='include/images/sugar_wizard_welcome.jpg' border='0' width='765px' height='325px'></div>
                 </td>
             </tr>
             </table>
@@ -359,36 +359,7 @@ function disableReturnSubmission(e) {
     <div class="nav-buttons">
         <input title="{$MOD.LBL_WIZARD_BACK_BUTTON}"
             class="button" type="button" name="next_tab1" value="  {$MOD.LBL_WIZARD_BACK_BUTTON}  "
-            onclick="SugarWizard.changeScreen('locale',true);" />&nbsp;  
-        <input title="{$MOD.LBL_WIZARD_NEXT_BUTTON}"
-            class="button primary" type="button" name="next_tab1" value="  {$MOD.LBL_WIZARD_NEXT_BUTTON}  "
-            onclick="SugarWizard.changeScreen('finish',false);" />
-    </div>
-</div>
-
-<div id="finish" class="screen">
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td>
-                <div class="edit view">
-                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                    <th align="left" scope="row" colspan="4">
-                        <h2>{$MOD.LBL_WIZARD_FINISH_TITLE}</h2>
-                    </th>
-                </tr>
-                <tr>
-                    <td scope="row">{$MOD.LBL_WIZARD_FINISH}</td>
-                </tr>
-                </table>
-                </div>
-            </td>
-        </tr>
-    </table>
-    <div class="nav-buttons">
-        <input title="{$MOD.LBL_WIZARD_BACK_BUTTON}"
-            class="button" type="button" name="next_tab1" value="{$MOD.LBL_WIZARD_BACK_BUTTON}"
-            onclick="SugarWizard.changeScreen('smtp',true);" />&nbsp;
+            onclick="SugarWizard.changeScreen('locale',true);" />&nbsp;
         <input title="{$MOD.LBL_WIZARD_CONTINUE_BUTTON}" class="button primary"
             type="submit" name="continue" value="{$MOD.LBL_WIZARD_CONTINUE_BUTTON}" />&nbsp;
     </div>

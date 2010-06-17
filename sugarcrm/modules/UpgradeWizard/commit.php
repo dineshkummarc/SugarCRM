@@ -46,6 +46,7 @@ $trackerManager = TrackerManager::getInstance();
 $trackerManager->pause();
 $trackerManager->unsetMonitors();
 
+
 $_SESSION['upgrade_complete'] = '';
 $_REQUEST['upgradeWizard'] = true;
 

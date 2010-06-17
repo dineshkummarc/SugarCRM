@@ -90,7 +90,7 @@ function disableReturnSubmission(e) {
                <p> {$MOD.LBL_WIZARD_WELCOME_NOSMTP}</p>
                 {/if}
               
-				<div class="userWizWelcome"><iframe src="http://www.sugarcrm.com/crm/sites/all/includes/sugar_welcome.php" width="480" height="320" scrolling=no id="userWizFrame" name="userWizFrame"></iframe></div>
+				<div class="userWizWelcome"><img src='include/images/sugar_wizard_welcome.jpg' border='0' width='765px' height='325px'></div>
                 </td>
             </tr>
             </table>

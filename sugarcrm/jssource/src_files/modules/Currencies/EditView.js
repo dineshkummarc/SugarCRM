@@ -40,12 +40,15 @@ function isoUpdate( formElem ) {
     var thisForm = formElem.form;
     var thisCurr = js_iso4217[formElem.value];
     
-    thisForm.name.value = thisCurr.name;
-    thisForm.symbol.value = '';
-    for ( var i = 0 ; i < thisCurr.unicode.length ; i++ ) {
-        thisForm.symbol.value = thisForm.symbol.value + String.fromCharCode(thisCurr.unicode[i]);
+    if ( thisForm.name.value == '' ) {
+        thisForm.name.value = thisCurr.name;
     }
-    thisForm.conversion_rate.value = '';
+    if ( thisForm.symbol.value == '' ) {
+        thisForm.symbol.value = '';
+        for ( var i = 0 ; i < thisCurr.unicode.length ; i++ ) {
+            thisForm.symbol.value = thisForm.symbol.value + String.fromCharCode(thisCurr.unicode[i]);
+        }
+    }
     
     return true;
 }
