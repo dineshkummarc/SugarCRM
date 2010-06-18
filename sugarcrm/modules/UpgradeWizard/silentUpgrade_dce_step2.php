@@ -141,15 +141,6 @@ function checkResourceSettings(){
 	}
 }
 
-
-//rebuild all relationships...
-function rebuildRelations($pre_path = ''){
-	$_REQUEST['silent'] = true;
-	include($pre_path.'modules/Administration/RebuildRelationship.php');
-	 $_REQUEST['upgradeWizard'] = true;
-	 include($pre_path.'modules/ACL/install_actions.php');
-}
-
 function createMissingRels(){
 	$relForObjects = array('leads'=>'Leads','campaigns'=>'Campaigns','prospects'=>'Prospects');
 	foreach($relForObjects as $relObjName=>$relModName){
@@ -489,41 +480,28 @@ if($upgradeType == constant('DCE_INSTANCE')){
 	
 	require("{$argv[4]}/sugar_version.php");
 	global $sugar_version;
-	$pre_550 = false;
-	if($sugar_version < '5.5.0'){
-		//set variable to use later in script
-		$pre_550 = true;
-		//require classes if they do not exist, as these were not in pre 550 entrypoint.php and need to be loaded first
-        if(!class_exists('VardefManager')){
-                require_once("{$argv[4]}/include/SugarObjects/VardefManager.php");
-        }
-        if (!class_exists('Sugar_Smarty')){
-                require_once("{$argv[4]}/include/Sugar_Smarty.php");
-        }
-        if (!class_exists('LanguageManager')){
-			require_once("{$argv[4]}/include/SugarObjects/LanguageManager.php");
-		}
-        
-	}
 
+	/*
+	//require classes if they do not exist, as these were not in pre 550 entrypoint.php and need to be loaded first
+    if(!class_exists('VardefManager')){
+        require_once("{$newtemplate_path}/include/SugarObjects/VardefManager.php");
+    }
+    if (!class_exists('Sugar_Smarty')){
+        require_once("{$newtemplate_path}/include/Sugar_Smarty.php");
+    }
+    if (!class_exists('LanguageManager')){
+		require_once("{$newtemplate_path}/include/SugarObjects/LanguageManager.php");
+	}
+    */
+	
 	//load up entrypoint from original template
    	require_once("{$argv[4]}/include/entryPoint.php");
+   	
+	require_once("{$newtemplate_path}/include/utils/zip_utils.php");
+	require_once("{$newtemplate_path}/modules/Administration/UpgradeHistory.php");
 
-   	//load up missing values from pre 550 entrypoint.
-	if($sugar_version < '5.5.0'){
-		//require classes if they do not exist, as these were not in pre-550 entrypoint.php and need to be loaded after
-	    if (! class_exists('UserPreference')){
-	            require_once("{$newtemplate_path}/modules/UserPreferences/UserPreference.php");
-	    }
-	    if (! function_exists('unformat_number')){
-	            require_once("{$newtemplate_path}/modules/Currencies/Currency.php");
-	    }
-	}   	
-
-	require_once("{$argv[4]}/include/utils/zip_utils.php");
-	require_once("{$argv[4]}/modules/Administration/UpgradeHistory.php");
-
-	// We need to run the silent upgrade as the admin user, 
+	// We need to run the silent upgrade as the admin user
+	require_once("{$newtemplate_path}/modules/Users/User.php");
 	global $current_user;
 	$current_user = new User();
 	$current_user->retrieve('1');
@@ -566,7 +544,7 @@ if($upgradeType == constant('DCE_INSTANCE')){
 	if(file_exists("{$instanceUpgradePath}/modules/UpgradeWizard/uw_utils.php")){
 		require_once("{$instanceUpgradePath}/modules/UpgradeWizard/uw_utils.php");
 	} else{
-		require_once("{$argv[4]}/modules/UpgradeWizard/uw_utils.php");
+		require_once("{$newtemplate_path}/modules/UpgradeWizard/uw_utils.php");
 	}
 
     $ce_to_pro_ent = isset($manifest['name']) && ($manifest['name'] == 'SugarCE to SugarPro' || $manifest['name'] == 'SugarCE to SugarEnt');
@@ -588,26 +566,15 @@ if($upgradeType == constant('DCE_INSTANCE')){
 
     if($skipDBUpgrade == 'no'){
     	//upgrade the db
-	    	///////////////////////////////////////////////////////////////////////////////
+	    ///////////////////////////////////////////////////////////////////////////////
 		////	HANDLE PREINSTALL SCRIPTS
-		//if(empty($errors)) {
-			$file = "{$argv[1]}/".constant('SUGARCRM_PRE_INSTALL_FILE');
-			if(is_file($file)) {
-				include($file);
-				logThis('Running pre_install()...', $path);
-				pre_install();
-
-				//if this is a pre 550 install, and not a flavor conversion from ce, then run
-				//extra cleanup on aclroles table for tracker related records
-				if($pre_550 && !$ce_to_pro_ent){
-			        _logThis("Begin remove ACL query for Trackers", $path);
-					$query = " update  acl_actions set deleted = 1 where category = 'Trackers' and deleted = 0 ";
-			        $result = $GLOBALS['db']->query($query);
-			        _logThis("executed query:  $query", $path);
-				}
-				logThis('pre_install() done.', $path);
-			}
-		//}
+		$file = "{$argv[1]}/".constant('SUGARCRM_PRE_INSTALL_FILE');
+		if(is_file($file)) {
+			include($file);
+			logThis('Running pre_install()...', $path);
+			pre_install();
+			logThis('pre_install() done.', $path);
+		}
 
 
         //run the 3-way merge
@@ -618,11 +585,17 @@ if($upgradeType == constant('DCE_INSTANCE')){
             $merger->mergeAll();
             logThis('Finished 3 way merge()...', $path);
         }        
-    		///////////////////////////////////////////////////////////////////////////////
-	////	HANDLE POSTINSTALL SCRIPTS
-		//if(empty($errors)) {
-
-			//clean vardefs
+        
+		logThis('Starting post_install()...', $path);
+		$file = "{$argv[1]}/".constant('SUGARCRM_POST_INSTALL_FILE');
+		if(is_file($file)) {
+		    include($file);
+			post_install();
+		}  
+		logThis('post_install() done.', $path);        
+        
+    	///////////////////////////////////////////////////////////////////////////////
+		//clean vardefs
 		logThis('Performing UWrebuild()...', $path);
 			UWrebuild();
 		logThis('UWrebuild() done.', $path);
@@ -647,22 +620,27 @@ if($upgradeType == constant('DCE_INSTANCE')){
         
 		///    RELOAD NEW DEFINITIONS
 		global $ACLActions, $beanList, $beanFiles;
-		include($argv[4].'/modules/ACLActions/actiondefs.php');
+		include($newtemplate_path.'/modules/ACLActions/actiondefs.php');
 
 		//First repair the databse to ensure it is up to date with the new vardefs/tabledefs
 		logThis('About to repair the database.', $path);
 		//Use Repair and rebuild to update the database.
 		global $dictionary; 
-		require_once($argv[4].'/modules/Administration/QuickRepairAndRebuild.php');
+		require_once($newtemplate_path.'/modules/Administration/QuickRepairAndRebuild.php');
 		$rac = new RepairAndClear();
 		$rac->clearVardefs();
 		$rac->rebuildExtensions();
 		
 		$repairedTables = array();
+		
+		//Force vardefs to be reloaded
+		$GLOBALS['reload_vardefs'] = true;
+		
 		foreach ($beanFiles as $bean => $file) {
-			if(file_exists($file)){
+			if(file_exists($newtemplate_path . '/' . $file) && $bean != 'UpgradeHistory'){
 				unset($GLOBALS['dictionary'][$bean]);
-				require_once($file);
+				require_once($newtemplate_path . '/' . $file);
+				
 				$focus = new $bean ();
 				if(empty($focus->table_name) || isset($repairedTables[$focus->table_name])) {
 				   continue;
@@ -679,7 +657,7 @@ if($upgradeType == constant('DCE_INSTANCE')){
 		}
 		
 		unset ($dictionary);
-		include ($argv[4].'/modules/TableDictionary.php');
+		include ($newtemplate_path.'/modules/TableDictionary.php');
 		foreach ($dictionary as $meta) {
 			$tablename = $meta['table'];
 		
@@ -773,13 +751,6 @@ if($upgradeType == constant('DCE_INSTANCE')){
 		    
 	    }
 	    
-
-	    //if we are coming from a version prior to 550, then install password seed data
-        if($pre_550)
-        {
-	    	include($newtemplate_path.'/install/seed_data/Advanced_Password_SeedData.php'); 
-    	}
-	    
 		require("sugar_version.php");
 		require('config.php');
 		global $sugar_config;
@@ -790,42 +761,30 @@ if($upgradeType == constant('DCE_INSTANCE')){
 			$errors[] = 'Could not write config.php!';
 		}
 		checkConfigForPermissions();
-		 //}
+
+    	// clear out the theme cache
+		if(!class_exists('SugarThemeRegistry')){
+		    require_once($newtemplate_path . '/include/SugarTheme/SugarTheme.php');
+		}
+		SugarThemeRegistry::buildRegistry();
+		SugarThemeRegistry::clearAllCaches();    
+		    
+		// re-minify the JS source files
+		$_REQUEST['root_directory'] = getcwd();
+		$_REQUEST['js_rebuild_concat'] = 'rebuild';
+		require_once($newtemplate_path . '/jssource/minify.php');  
+	    
+		//as last step, rebuild the language files and rebuild relationships
+		/*
+		if(file_exists($newtemplate_path.'/modules/Administration/RebuildJSLang.php')) {
+			logThis("begin rebuilding js language files. via ".$newtemplate_path.'/modules/Administration/RebuildJSLang.php', $path);
+			include($newtemplate_path.'/modules/Administration/RebuildJSLang.php');
+			rebuildRelations($newtemplate_path.'/');
+		}
+		*/	
+		
     }
     
-	// clear out the theme cache
-	if(!class_exists('SugarThemeRegistry')){
-	    require_once('include/SugarTheme/SugarTheme.php');
-	}
-	SugarThemeRegistry::buildRegistry();
-	SugarThemeRegistry::clearAllCaches();    
-	    
-	// re-minify the JS source files
-	$_REQUEST['root_directory'] = getcwd();
-	$_REQUEST['js_rebuild_concat'] = 'rebuild';
-	require_once('jssource/minify.php');  
-    
-	logThis('Starting post_install()...', $path);
-	$file = "{$argv[1]}/".constant('SUGARCRM_POST_INSTALL_FILE');
-	if(is_file($file)) {
-	    include($file);
-		post_install();
-	}  
-    
-	//as last step, rebuild the language files and rebuild relationships
-	if(file_exists($newtemplate_path.'/modules/Administration/RebuildJSLang.php')) {
-		logThis("begin rebuilding js language files.", $path);
-		include($newtemplate_path.'/modules/Administration/RebuildJSLang.php');
-		@rebuildRelations($newtemplate_path.'/');
-	}
-		
-	logThis('post_install() done.', $path);    
-    logThis("***** SilentUpgrade completed successfully.", $path);
-    logThis("***** SUCCESS.", $path);
-
-	echo "********************************************************************\n";
-	echo "*************************** SUCCESS*********************************\n";
-	echo "********************************************************************\n";
 } //END OF BIG if block
 
 
@@ -834,31 +793,7 @@ if(isset($_SESSION['current_db_version']) && isset($_SESSION['target_db_version'
 	if($_SESSION['current_db_version'] == $_SESSION['target_db_version']){
 	    $_REQUEST['upgradeWizard'] = true;
 	    ob_start();
-			include('include/Smarty/internals/core.write_file.php');
-		ob_end_clean();
-	 	$db =& DBManagerFactory::getInstance();
-		if($ce_to_pro_ent){
-	        //Also set license information
-	        $admin = new Administration();
-			$category = 'license';
-			$value = 0;
-			$admin->saveSetting($category, 'users', $value);
-			$key = array('num_lic_oc','key','expire_date');
-			$value = '';
-			foreach($key as $k){
-				$admin->saveSetting($category, $k, $value);
-			}
-		}
-	}
-}
-
-
-//Also set the tracker settings if  flavor conversion ce->pro or ce->ent
-if(isset($_SESSION['current_db_version']) && isset($_SESSION['target_db_version'])){
-	if($_SESSION['current_db_version'] == $_SESSION['target_db_version']){
-	    $_REQUEST['upgradeWizard'] = true;
-	    ob_start();
-			include('include/Smarty/internals/core.write_file.php');
+		include('include/Smarty/internals/core.write_file.php');
 		ob_end_clean();
 	 	$db =& DBManagerFactory::getInstance();
 		if($ce_to_pro_ent){
@@ -878,11 +813,11 @@ if(isset($_SESSION['current_db_version']) && isset($_SESSION['target_db_version'
 
 set_upgrade_progress('end','done','end','done');
 
-if(file_exists('modules/Configurator/Configurator.php')){
+if(file_exists($newtemplate_path . '/modules/Configurator/Configurator.php')){
 	set_upgrade_progress('configurator','in_progress');
-	require_once('include/utils/array_utils.php');
+	require_once($newtemplate_path . '/include/utils/array_utils.php');
 	if(!class_exists('Configurator')){
-		require_once('modules/Configurator/Configurator.php');
+		require_once($newtemplate_path . '/modules/Configurator/Configurator.php');
 	}
 	$Configurator = new Configurator();
 	if(class_exists('Configurator')){
@@ -892,7 +827,7 @@ if(file_exists('modules/Configurator/Configurator.php')){
 }
 
 //unset the logger previously instantiated
-if(file_exists('include/SugarLogger/LoggerManager.php')){
+if(file_exists($newtemplate_path . '/include/SugarLogger/LoggerManager.php')){
 	set_upgrade_progress('logger','in_progress');
 	if(!class_exists('LoggerManager')){
 		

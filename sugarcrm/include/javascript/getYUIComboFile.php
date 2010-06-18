@@ -75,12 +75,14 @@ foreach ($_REQUEST as $param => $val)
     }
 	//Put together the final filepath
 	$path = substr($path, 0, strrpos($path, "_")) . "." . $extension;
+	$contents = '';
 	if (is_file($path)) {
 	   $out .= "/*" . $path . "*/\n";
 	   $contents =  file_get_contents($path);
 	   $out .= $contents . "\n";
 	}
-	$allpath .= md5_file($path);
+	$path = empty($contents) ? $path : $contents;
+	$allpath .= md5($path);
 }
 
 $etag = '"'.md5($allpath).'"';

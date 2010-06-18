@@ -225,7 +225,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
         define('JSMIN_AS_LIB', true);
     }
     //assumes jsmin.php is in same directory
-    if(isset($_REQUEST['root_directory'])){
+    if(isset($_REQUEST['root_directory']) || defined('INSTANCE_PATH')){
         require_once('jssource/jsmin.php');
     }else{
         require_once('jsmin.php');

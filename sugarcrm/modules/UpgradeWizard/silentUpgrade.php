@@ -52,17 +52,15 @@ function build_argument_string($arguments=array()) {
 
 $php_path = '';
 $run_dce_upgrade = false;
-if(isset($argv[3]) && is_dir($argv[3])) {
-        if(file_exists($arg[3]."/ini_setup.php")) {
+if(isset($argv[3]) && is_dir($argv[3]) && file_exists($argv[3]."/ini_setup.php")) {
                 //this is a dce call, set the dce flag
+                chdir($argv[3]);
                 $run_dce_upgrade = true;
                 //set the php path if found
                 if(is_file($argv[7].'dce_config.php')){
                    include($argv[7].'dce_config.php');
                    $php_path = $dce_config['client_php_path'].'/';
                 }
-
-        }
 }
 
 $php_file = $argv[0];

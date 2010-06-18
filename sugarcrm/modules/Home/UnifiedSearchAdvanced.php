@@ -278,6 +278,10 @@ class UnifiedSearchAdvanced {
 
 					if (strpos($field,'email') !== false)
 						$field = 'email' ;
+						
+					//bug: 38139 - allow phone to be searched through Global Search
+					if (strpos($field,'phone') !== false)
+						$field = 'phone' ;
 
 					if ( isset($def['unified_search']) && $def['unified_search'] && isset ( $searchFields [ $moduleName ] [ $field ]  ))
 					{

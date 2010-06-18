@@ -46,39 +46,5 @@ class Basic extends SugarBean{
 	
 	function create_export_query($order_by, $where){
 		return $this->create_new_list_query($order_by, $where, array(), array(), 0, '', false, $this, true);
-	}
-	
-	/*
-	 * FIXME for bug 20718,
-	 * Because subpanels are not rendered using smarty and do not repsect the "currency_format" list def flag,
-	 * we must convert currency values to the display format before dislplay only on subpanels.
-	 * This code should be removed once all subpanels render properly using smarty rather than XTemplate.
-	 */
-	function get_list_view_data(){
-		global $action;
-		if (isset($this->currency_id) && ($action == 'DetailView' || $action == "SubPanelViewer"))
-		{
-			global $locale, $current_language, $current_user, $mod_strings, $app_list_strings, $sugar_config;
-			$app_strings = return_application_language($current_language);
-       		$params = array();
-			
-			$temp_array = $this->get_list_view_array();
-			$params = array('currency_id' => $this->currency_id, 'convert' => true);
-			foreach($temp_array as $field => $value)
-			{
-				$fieldLow = strToLower($field);
-				if (!empty($this->field_defs[$fieldLow]) &&  $this->field_defs[$fieldLow]['type'] == 'currency')
-				{
-					$temp_array[$field] = currency_format_number($this->$fieldLow, $params);
-				}
-			}
-			return $temp_array;
-		}
-		else 
-		{
-			return parent::get_list_view_data();
-		}
-		
-	}
-	
+	}	
 }
