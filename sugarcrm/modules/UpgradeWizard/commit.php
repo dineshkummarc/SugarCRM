@@ -646,6 +646,11 @@ $stepRecheck = $_REQUEST['step'];
 $_SESSION['step'][$steps['files'][$_REQUEST['step']]] =($stop) ? 'failed' : 'success';
 
 // clear out the theme cache
+// clear out the theme cache
+if(!class_exists('SugarThemeRegistry')){
+    require_once('include/SugarTheme/SugarTheme.php');
+}
+SugarThemeRegistry::buildRegistry();
 SugarThemeRegistry::clearAllCaches();
 
 // re-minify the JS source files

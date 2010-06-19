@@ -65,7 +65,7 @@ if(isset($argv[3]) && is_dir($argv[3]) && file_exists($argv[3]."/ini_setup.php")
 
 $php_file = $argv[0];
 $p_info = pathinfo($php_file);
-$php_dir = (isset($p_info['dirname']) && $p_info['dir_name'] != '.') ?  $p_info['dirname'] . '/' : '';
+$php_dir = (isset($p_info['dirname']) && $p_info['dirname'] != '.') ?  $p_info['dirname'] . '/' : '';
 
 $step1 = $php_path."php -f {$php_dir}silentUpgrade_step1.php " . build_argument_string($argv);
 exec($step1, $output);

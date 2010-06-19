@@ -337,6 +337,9 @@ class SugarEmailAddress extends SugarBean {
      */
     function populateAddresses($id, $module, $new_addrs=array(), $primary='', $replyTo='', $invalid='', $optOut='') {
         $module = $this->getCorrectedModule($module);
+        //One last check for the ConvertLead action in which case we need to change $module to 'Leads'
+        $module = (isset($_REQUEST) && isset($_REQUEST['action']) && $_REQUEST['action'] == 'ConvertLead') ? 'Leads' : $module;
+    	
         $post_from_email_address_widget = (isset($_REQUEST) && isset($_REQUEST['emailAddressWidget'])) ? true : false;
         $primaryValue = $primary;
         $widgetCount = 0;
