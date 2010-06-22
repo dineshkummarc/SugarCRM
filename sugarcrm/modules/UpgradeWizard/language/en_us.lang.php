@@ -272,7 +272,6 @@ $mod_strings = array(
 	'LBL_HOME_PAGE_4_NAME' => 'Tracker',
 	'LBL_CURRENT_PHP_VERSION' => '(Your current php version is ',
 	'LBL_RECOMMENDED_PHP_VERSION' => '. Recommended php version is 5.2.1 or above)',
-	'LBL_IE6COMPAT_CHECK'              => 'Sugar detects that you are using Internet Explorer 6, which is not supported by all Sugar Themes. The "Sugar IE6" theme, which will work with Internet Explorer 6, has been selected for you.',
 	'LBL_MODULE_NAME' => 'UpgradeWizard',
  );
 ?>

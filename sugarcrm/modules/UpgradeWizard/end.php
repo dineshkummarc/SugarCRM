@@ -295,19 +295,6 @@ $uwMain =<<<eoq
 	YAHOO.util.Connect.asyncRequest('POST', 'index.php', callback, postData);
 }
 </script>
-
-<!--[if IE 6]>
-<script>
-if ( !SUGAR.themes.theme_ie6compat || !Get_Cookie('ie6compatcheck') ) {
-    alert('{$mod_strings['LBL_IE6COMPAT_CHECK']}');
-    Set_Cookie('ie6compatcheck','true',365,'/','','');
-    if ( location.href.indexOf('?') == -1 )
-        location.href = location.href+'?ck_login_theme_20=SugarIE6&usertheme=SugarIE6&login_theme=SugarIE6';
-    else
-        location.href = location.href+'&ck_login_theme_20=SugarIE6&usertheme=SugarIE6&login_theme=SugarIE6';
-}
-</script>
-<![endif]-->
 eoq;
 
 $showBack		= false;

@@ -1,5 +1,5 @@
 <?php
- if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 /*********************************************************************************
  * SugarCRM is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2010 SugarCRM Inc.
@@ -34,13 +34,25 @@
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
  ********************************************************************************/
+/*********************************************************************************
+
+ * Description:  Defines the English language pack for the base application.
+ * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
+ * All Rights Reserved.
+ * Contributor(s): ______________________________________..
+ ********************************************************************************/
 
 
-
-$sugar_version      = '6.0.0RC3';
-$sugar_db_version   = '6.0.0RC3';
-$sugar_flavor       = 'CE';
-$sugar_build		= '3842';
-$sugar_timestamp    = '2010-06-22 12:14pm';
-
-?>
+interface LoggerTemplate
+{
+    /**
+     * Main method for handling logging a message to the logger
+     *
+     * @param string $level logging level for the message
+     * @param string $message
+     */
+    public function log(
+        $method,
+        $message
+        );
+}

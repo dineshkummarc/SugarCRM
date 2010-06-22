@@ -223,9 +223,7 @@ $mod_strings = array (
     'LBL_LOGIN_LOGIN_TIME_MINUTES'      => 'min.',
    	'LBL_LOGIN_LOGIN_TIME_SECONDS'      => 'sec.',
     'LBL_LOGIN_ADMIN_CALL'              => 'Please contact the system administrator.',
-	'LBL_IE6COMPAT_CHECK'              => 'Sugar detects that you are using Internet Explorer 6, which is not supported by all Sugar Themes. The "Sugar IE6" theme, which will work with Internet Explorer 6, has been selected for you.',
-	'LBL_THEME_PICKER_IE6COMPAT_CHECK' => 'Warning: Internet Explorer 6 is not supported for the selected theme. The "Sugar IE6" theme, which will work with Internet Explorer 6, has been selected for you.',
-    // END LOGIN PAGE STRINGS
+	// END LOGIN PAGE STRINGS
 	'LBL_MAIL_FROMADDRESS'				=> 'Reply-to address',
 	'LBL_MAIL_FROMNAME'					=> 'Reply-to name',
 	'LBL_MAIL_OPTIONS_TITLE'			=> 'Email Settings',
@@ -490,7 +488,7 @@ $mod_strings = array (
     'LBL_WIZARD_FINISH_BUTTON' => 'Finish',
     'LBL_WIZARD_FINISH_TAB' => 'Finish',
     'LBL_WIZARD_FINISH_TITLE' => 'You are ready to use Sugar!',
-    'LBL_WIZARD_FINISH' => 'Click <b>Finish</b> below to save your settings and to begin using Sugar. For more information on using Sugar:<br />
+    'LBL_WIZARD_FINISH' => 'Click <b>Finish</b> below to save your settings and to begin using Sugar. For more information on using Sugar:<br /><br />
 <table cellpadding=0 cellspacing=0>
 <tr><td><img src=include/images/university.png style="margin-right: 5px;"></td><td><a href="http://www.sugarcrm.com/university" target="_blank"><b>Sugar University</b></a><br>Get a head start with training and resources for end-users, power-users and system administrators at Sugar University.</td></tr>
 <tr><td colspan=2><hr style="margin: 5px 0px;"></td></tr>

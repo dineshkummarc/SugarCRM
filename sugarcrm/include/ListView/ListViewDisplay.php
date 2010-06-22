@@ -417,7 +417,7 @@ EOHTML;
 	{
 		global $app_strings;
 
-		return "<a href='#' style='width: 150px' class='menuItem' onmouseover='hiliteItem(this,\"yes\");' onmouseout='unhiliteItem(this);' name='Add to Favorites' onclick='this.form.massupdate.value = false; this.form.action.value = this.form.return_action.value; this.form.removefromfavorites.value = true;'>{$app_strings['LBL_REMOVE_FROM_FAVORITES']}</a>";
+		return "<a href='#' style='width: 150px' class='menuItem' onmouseover='hiliteItem(this,\"yes\");' onmouseout='unhiliteItem(this);' name='Add to Favorites' onclick='document.MassUpdate.massupdate.value = false; document.MassUpdate.action.value = document.MassUpdate.return_action.value; document.MassUpdate.removefromfavorites.value = true; document.MassUpdate.submit();'>{$app_strings['LBL_REMOVE_FROM_FAVORITES']}</a>";
 	}
 	/**
 	 * Builds the delete link

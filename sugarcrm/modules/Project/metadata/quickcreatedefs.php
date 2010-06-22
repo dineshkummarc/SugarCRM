@@ -1,5 +1,5 @@
 <?php
- if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 /*********************************************************************************
  * SugarCRM is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2010 SugarCRM Inc.
@@ -35,12 +35,37 @@
  * "Powered by SugarCRM".
  ********************************************************************************/
 
+$viewdefs['Project']['QuickCreate'] = array(
+					'templateMeta' => array('maxColumns' => '2', 
+                        'widths' => array(
+                                        array('label' => '10', 'field' => '30'), 
+                                        array('label' => '10', 'field' => '30')
+                                        ),
+                       ),
+'panels' =>
 
+array (
+  
+  array (
+    'name',
+    'status'
+  ),
+  
+  array (
+    'estimated_start_date',
+    'estimated_end_date'
+  ),
+  
+  array('priority',),
+  array('assigned_user_name',
+  ),
+  array (
+    array (
+      'name' => 'description',
+    ),
+  ),
 
-$sugar_version      = '6.0.0RC3';
-$sugar_db_version   = '6.0.0RC3';
-$sugar_flavor       = 'CE';
-$sugar_build		= '3842';
-$sugar_timestamp    = '2010-06-22 12:14pm';
+),
 
+);
 ?>

@@ -42,6 +42,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 require_once('include/SugarLogger/LoggerManager.php');
+require_once('include/SugarLogger/LoggerTemplate.php');
  
 class SugarLogger implements LoggerTemplate
 {
