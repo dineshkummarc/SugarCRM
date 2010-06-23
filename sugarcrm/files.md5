@@ -1,5 +1,5 @@
 <?php
-// created: 2010-06-22 12:18:28
+// created: 2010-06-22 17:03:29
 $md5_string = array (
   './LICENSE.txt' => 'd3f150e4a5bed444763ebe8a81742a95',
   './.htaccess' => 'd41d8cd98f00b204e9800998ecf8427e',
@@ -12,7 +12,7 @@ $md5_string = array (
   './examples/FormValidationTest.php' => '61dcc214288dd7833e37238e0efa5ccf',
   './examples/ProgressBarTest.php' => '1221c9c0372e16e0ef4f58008b37c6ea',
   './emailmandelivery.php' => '03589de9409e1abb4f0ad9ee4dce8e07',
-  './sugar_version.php' => '52a4f7d143ce1eac2fc29c72fb554a7a',
+  './sugar_version.php' => '50541a094e59f80e43c515f6378b450c',
   './custom/index.html' => 'b0070a296647b6026d1800db14510e3c',
   './acceptDecline.php' => 'a8699214ad82527bb0ae1d3f0c9b64b6',
   './export.php' => '50f3b3c23ecb4d0a8b0a898f4f982a66',
@@ -1310,7 +1310,7 @@ $md5_string = array (
   './include/utils/activity_utils.php' => 'a6847172f02933f9d2141b6da4b40350',
   './include/utils/encryption_utils.php' => '34c58803c3939aff389f0c8ce0084309',
   './include/utils/progress_bar_utils.php' => 'ad34d73c2b9198c1d959d274d241dcf0',
-  './include/utils/mvc_utils.php' => 'dee3d719eae806225be0a51fa9c64281',
+  './include/utils/mvc_utils.php' => '3259e79804d79c22c55882f455ef9e43',
   './include/utils/external_cache.php' => '593d179731e0ae903d2687fdbf8b7807',
   './include/utils/db_utils.php' => '0b253cc086f0259fb794ce2487f8fc56',
   './include/utils/sugar_file_utils.php' => '2c403ff36994b48b603d893af3fd7518',
