@@ -51,7 +51,9 @@ function prepSystemForUpgradeSilent() {
 
 	// make sure dirs exist
 	foreach($subdirs as $subdir) {
-	    mkdir_recursive(clean_path("{$cwd}/{$sugar_config['upload_dir']}upgrades/{$subdir}"));
+		if(!is_dir(clean_path("{$cwd}/{$sugar_config['upload_dir']}upgrades/{$subdir}"))) {
+	    	mkdir_recursive(clean_path("{$cwd}/{$sugar_config['upload_dir']}upgrades/{$subdir}"));
+		}
 	}
 }
 
@@ -505,9 +507,8 @@ if($upgradeType == constant('DCE_INSTANCE')){
 //    require_once("{$cwd}/sugar_version.php"); //provides instance version, flavor etc..
      //provides instance version, flavor etc..
     $isDCEInstance = true;
-	if(!is_dir(clean_path("{$sugar_config['upload_dir']}/upgrades"))) {
-		prepSystemForUpgradeSilent();
-	}
+	prepSystemForUpgradeSilent();
+
 	/////retrieve admin user
 	$configOptions = $sugar_config['dbconfig'];
 

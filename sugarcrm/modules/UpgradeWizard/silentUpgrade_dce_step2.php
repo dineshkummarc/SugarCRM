@@ -44,17 +44,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 ////	UTILITIES THAT MUST BE LOCAL :(
-function prepSystemForUpgradeSilent() {
-	global $subdirs;
-	global $cwd;
-	global $sugar_config;
-
-	// make sure dirs exist
-	foreach($subdirs as $subdir) {
-	    mkdir_recursive(clean_path("{$cwd}/{$sugar_config['upload_dir']}upgrades/{$subdir}"));
-	}
-}
-
 //local function for clearing cache
 function clearCacheSU($thedir, $extension) {
 	if ($current = @opendir($thedir)) {

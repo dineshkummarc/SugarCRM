@@ -51,7 +51,9 @@ function prepSystemForUpgradeSilent() {
 
 	// make sure dirs exist
 	foreach($subdirs as $subdir) {
-	    mkdir_recursive(clean_path("{$sugar_config['upload_dir']}upgrades/{$subdir}"));
+		if(!is_dir(clean_path("{$cwd}/{$sugar_config['upload_dir']}upgrades/{$subdir}"))) {
+	    	mkdir_recursive(clean_path("{$cwd}/{$sugar_config['upload_dir']}upgrades/{$subdir}"));
+		}
 	}
 }
 
@@ -603,9 +605,8 @@ if($upgradeType != constant('DCE_INSTANCE')) {
 
 ///////////////////////////////////////////////////////////////////////////////
 ////	UPGRADE PREP
-if(!is_dir(clean_path("{$cwd}/{$sugar_config['upload_dir']}upgrades"))) {
-	prepSystemForUpgradeSilent();
-}
+prepSystemForUpgradeSilent();
+
 
 $unzip_dir = clean_path("{$cwd}/{$sugar_config['upload_dir']}upgrades/temp");
 $install_file = clean_path("{$cwd}/{$sugar_config['upload_dir']}upgrades/patch/".basename($argv[1]));
