@@ -67,11 +67,14 @@ class ViewQuickcreate extends ViewAjax
 	                	   if(isset($this->bean->$rel_name)) {
 	                	   	  $_REQUEST[$fields['name']] = $this->bean->$rel_name;
 	                	   }
+	                	 	if(!empty($_REQUEST['record']) && !empty($fields['id_name'])) {
+	                	 		$_REQUEST[$fields['id_name']] = $_REQUEST['record'];
+	                	   }
 	                	}
 	                }
                 }               
             }
-            $this->_isDCForm = false;
+            $this->_isDCForm = true;
     	}
     }    
     

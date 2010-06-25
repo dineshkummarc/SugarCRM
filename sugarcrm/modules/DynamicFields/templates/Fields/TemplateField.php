@@ -74,6 +74,7 @@ class TemplateField{
 		// bug 15801 - need to ALWAYS keep default and default_value consistent as some methods/classes use one, some use another...
 		'default_value'=>'default',
 		'default'=>'default_value',
+		'display_default'=>'default_value',
 //		'default_value'=>'default_value',
 //		'default'=>'default_value',
 		'len'=>'len',

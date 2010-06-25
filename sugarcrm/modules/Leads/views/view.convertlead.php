@@ -463,7 +463,7 @@ class ViewConvertLead extends SugarView
 		//Copy data from the contact to new bean
 		foreach($bean->field_defs as $field => $def)
 		{
-			if(!isset($_REQUEST[$module . $field]) && isset($lead->$field))
+			if(!isset($_REQUEST[$module . $field]) && isset($lead->$field) && $field != 'id')
 			{
 				$bean->$field = $lead->$field;
 			}

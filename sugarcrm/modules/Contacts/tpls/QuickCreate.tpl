@@ -51,7 +51,7 @@
 <input type="hidden" name="return_id" value="{$smarty.request.return_id}">
 <input type="hidden" name="contact_role">
 {if !empty($smarty.request.return_module)}
-<input type="hidden" name="relate_to" value="{if $smarty.request.return_relationship}{$smarty.request.return_relationship}{else}{$smarty.request.return_module}{/if}">
+<input type="hidden" name="relate_to" value="{if $smarty.request.return_relationship}{$smarty.request.return_relationship}{elseif empty($isDCForm)}{$smarty.request.return_module}{/if}">
 <input type="hidden" name="relate_id" value="{$smarty.request.return_id}">
 {/if}
 <input type="hidden" name="offset" value="{$offset}">

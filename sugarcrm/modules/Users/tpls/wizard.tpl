@@ -169,7 +169,7 @@ function disableReturnSubmission(e) {
     <div class="nav-buttons">
         {if $SKIP_WELCOME}
         <input title="{$MOD.LBL_BACK}"  
-            onclick="document.location.href='index.php?module=Configurator&action=AdminWizard&page=finish';" class="button"  
+            onclick="document.location.href='index.php?module=Configurator&action=AdminWizard&page=smtp';" class="button"  
             type="button" name="cancel" value="  {$MOD.LBL_WIZARD_BACK_BUTTON}  " />&nbsp;
         {else}
         <input title="{$MOD.LBL_WIZARD_BACK_BUTTON}"
