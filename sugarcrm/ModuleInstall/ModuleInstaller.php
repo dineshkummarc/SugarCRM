@@ -1973,7 +1973,7 @@ private function dir_file_count($path){
 				//remove the vardefs
 				if (empty($relName))
 					$path = 'custom/Extension/modules/' . $relationship['module']. '/Ext/Vardefs';
-				if($relationship['module'] == 'application'){
+				if(!empty($relationship['module']) && $relationship['module'] == 'application'){
 					$path ='custom/Extension/' . $relationship['module']. '/Ext/Vardefs';
 				}
 				if(!empty($relationship['module_vardefs']) && file_exists($path . '/'. $this->id_name . '.php')){
@@ -1981,11 +1981,13 @@ private function dir_file_count($path){
 					rename( $path . '/'. $this->id_name . '.php', $path . '/'.DISABLED_PATH.'/'. $this->id_name . '.php');
 				}
 				//remove the layoutdefs
-				$path = 'custom/Extension/modules/' . $relationship['module']. '/Ext/Layoutdefs';
-				if($relationship['module'] == 'application'){
-					$path ='custom/Extension/' . $relationship['module']. '/Ext/Layoutdefs';
+				if ( !empty($relationship['module']) ) {
+                    $path = 'custom/Extension/modules/' . $relationship['module']. '/Ext/Layoutdefs';
+                    if($relationship['module'] == 'application'){
+                        $path ='custom/Extension/' . $relationship['module']. '/Ext/Layoutdefs';
+                    }
 				}
-
+                
 				if(!empty($relationship['module_layoutdefs']) && file_exists($path . '/'. $this->id_name . '.php')){
 					mkdir_recursive($path . '/'.DISABLED_PATH, true);
 					rename( $path . '/'. $this->id_name . '.php', $path . '/'.DISABLED_PATH.'/'. $this->id_name . '.php');

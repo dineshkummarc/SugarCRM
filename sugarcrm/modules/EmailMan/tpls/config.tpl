@@ -675,7 +675,10 @@ function changeEmailScreenDisplay(smtptype, clear)
         document.getElementById("mail_smtpuser_label").innerHTML = '{/literal}{$MOD.LBL_GMAIL_SMTPUSER}{literal}';
         break;
     case "exchange":
-        document.getElementById("mail_smtpserver").value = '';
+        if ( document.getElementById("mail_smtpserver").value == 'plus.smtp.mail.yahoo.com' 
+                || document.getElementById("mail_smtpserver").value == 'smtp.gmail.com' ) {
+            document.getElementById("mail_smtpserver").value = '';
+        }
         document.getElementById("mail_smtpport").value = '25';
         document.getElementById("mail_smtpauth_req").checked = true;
         document.getElementById("mailsettings1").style.display = '';

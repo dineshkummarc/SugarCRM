@@ -486,7 +486,10 @@ SE.accounts = {
             document.getElementById("mail_smtpuser_label").innerHTML = mod_strings.LBL_GMAIL_SMTPUSER;
             break;
         case "exchange":
-            document.getElementById("mail_smtpserver").value = '';
+            if ( document.getElementById("mail_smtpserver").value == 'plus.smtp.mail.yahoo.com' 
+                    || document.getElementById("mail_smtpserver").value == 'smtp.gmail.com' ) {
+                document.getElementById("mail_smtpserver").value = '';
+            }
             document.getElementById("mail_smtpport").value = '25';
             document.getElementById("mail_smtpauth_req").checked = true;
             document.getElementById("mailsettings1").style.display = '';

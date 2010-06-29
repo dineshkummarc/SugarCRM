@@ -2068,6 +2068,9 @@ function save_relationship_changes($is_update, $exclude=array())
                 case 'decimal':
                 case 'currency':
                 case 'float':
+                    if ( $this->$field === '' ) {
+                        continue;
+                    }
                     if ( is_string($this->$field) ) {
                         $this->$field = (float)unformat_number($this->$field);
                         $reformatted = true;
@@ -2079,6 +2082,9 @@ function save_relationship_changes($is_update, $exclude=array())
                case 'short':
                case 'tinyint':
                case 'int':
+                    if ( $this->$field === '' ) {
+                        continue;
+                    }
                     if ( is_string($this->$field) ) {
                         $this->$field = (int)unformat_number($this->$field);
                         $reformatted = true;

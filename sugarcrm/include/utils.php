@@ -3368,8 +3368,8 @@ function getTrackerSubstring($name) {
 	static $max_tracker_item_length;
 	
 	//Trim the name
-	$name = trim($name);
-	
+	$name = str_replace('&#039;', '\'', $name);
+	$name = trim(html_entity_decode($name));
 	$strlen = function_exists('mb_strlen') ? mb_strlen($name) : strlen($name);
 
 	global $sugar_config;

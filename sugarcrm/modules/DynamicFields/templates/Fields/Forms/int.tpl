@@ -104,7 +104,7 @@ formsWithFieldLogic=null;
     <td class='mbLBL'>{$MOD.COLUMN_TITLE_AUTOINC_NEXT}:</td>
     <td>
         <input type='hidden' name='auto_increment' id='auto_increment' value='true'>
-		<input type='text' name='autoinc_next' id='autoinc_next' value='{$vardef.autoinc_next|default:1}'>
+		<input type='text' name='autoinc_next' id='autoinc_next' value='{$vardef.autoinc_next|default:1}' {if $MB}disabled=1{/if}>
         <script>addToValidateMoreThan('popup_form', 'autoinc_next', 'int', false,'{$MOD.COLUMN_TITLE_AUTOINC_NEXT}', {$vardef.autoinc_next|default:1});</script>
         <input type='hidden' name='autoinc_val_changed' id='autoinc_val_changed' value='false'>
     </td>

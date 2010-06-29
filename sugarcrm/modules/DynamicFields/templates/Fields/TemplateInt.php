@@ -69,7 +69,7 @@ class TemplateInt extends TemplateText{
 		if(!empty($this->auto_increment))
 		{
 			$vardef['auto_increment'] = $this->auto_increment;
-			if ((empty($this->autoinc_next)) && isset($this->module))
+			if ((empty($this->autoinc_next)) && isset($this->module) && isset($this->module->table_name))
 			{
 				global $db;
                 $helper = $db->gethelper();
@@ -96,13 +96,15 @@ class TemplateInt extends TemplateText{
 			{
 				$this->autoinc_next = $this->autoinc_start;
 			}
-			global $db;
-            $helper = $db->gethelper();
-            //Check that the new value is greater than the old value
-            $oldNext = $helper->getAutoIncrement($this->module->table_name, $this->name);
-            if ($this->autoinc_next > $oldNext)
-            {
-                $helper->setAutoIncrementStart($this->module->table_name, $this->name, $this->autoinc_next);
+			if(isset($this->module->table_name)){
+				global $db;
+	            $helper = $db->gethelper();
+	            //Check that the new value is greater than the old value
+	            $oldNext = $helper->getAutoIncrement($this->module->table_name, $this->name);
+	            if ($this->autoinc_next > $oldNext)
+	            {
+	                $helper->setAutoIncrementStart($this->module->table_name, $this->name, $this->autoinc_next);
+				}
 			}
 			$next = $this->autoinc_next;
 			$this->autoinc_next = false;

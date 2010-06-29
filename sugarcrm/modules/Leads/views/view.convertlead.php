@@ -503,7 +503,7 @@ class ViewConvertLead extends SugarView
 					$contact->$contactRel->add($bean->id);
 				}
 				//Set the parent of activites to the new Contact
-				if (isset($bean->field_defs['parent_id']))
+				if (isset($bean->field_defs['parent_id']) && isset($bean->field_defs['parent_type']))
 				{
 					$bean->parent_id = $contact->id;
 					$bean->parent_type = "Contacts";

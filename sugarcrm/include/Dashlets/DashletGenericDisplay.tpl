@@ -176,11 +176,6 @@
 								{if !empty($item)}{sugar_translate label=$params.options select=$item}{if $oCount !=  count($vals)}, {/if}{/if}
 							{/foreach}	
 						{/if}
-					{elseif $params.type == 'image'}
-						{if !empty($rowData.$col)}
-							<a href="javascript:SUGAR.image.lightbox('index.php?entryPoint=download&id={$rowData.$col}&type=SugarFieldImage&isTempFile=1')">
-							<img src='index.php?entryPoint=download&id={$rowData.$col}&type=SugarFieldImage&isTempFile=1' style='height: 64px;'>
-						{/if}
 					{else}	
 						{$rowData.$col}
 					{/if}

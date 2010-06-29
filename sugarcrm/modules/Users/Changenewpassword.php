@@ -202,8 +202,8 @@ if ($redirect!='0')
 		var handleSuccess = function(o){
 			if(o.responseText!==undefined && o.responseText =='Success'){
 				
-				document.form.user_password.value=document.form.new_password.value;
-				document.form.submit();
+				document.getElementById('user_password').value=document.getElementById('new_password').value;
+				document.getElementById('ChangePasswordForm').submit();
 			}
 			else{
 				alert(o.responseText);
@@ -240,7 +240,7 @@ if ($redirect!='0')
 		        </tr>";
 
 	}else{
-		echo"<script>function validateCaptchaAndSubmit(){document.form.user_password.value=document.form.new_password.value;document.form.submit();}</script>";
+		echo"<script>function validateCaptchaAndSubmit(){document.getElementById('user_password').value=document.getElementById('new_password').value;document.getElementById('ChangePasswordForm').submit();}</script>";
 	}	
 $pwd_settings=$GLOBALS['sugar_config']['passwordsetting'];
 

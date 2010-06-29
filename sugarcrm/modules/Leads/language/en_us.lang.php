@@ -89,8 +89,8 @@ $mod_strings = array (
     'LBL_CONVERTLEAD_BUTTON_KEY' => 'V',
     'LBL_CONVERTLEAD_TITLE' => 'Convert Lead [Alt+V]',
     'LBL_CONVERTLEAD' => 'Convert Lead',
-    'LBL_CONVERTLEAD_WARNING' => 'Warning: This Lead may have already been converted',
-    'LBL_CONVERTLEAD_WARNING_INTO_RECORD' => ' into Contact ',
+    'LBL_CONVERTLEAD_WARNING' => 'Warning: This status of the Lead you are about to convert is "Converted". Contact and/or Account records may already have been created from the Lead. If you wish to continue with converting the Lead, click Save. To go back to the Lead without converting it, click Cancel.',
+    'LBL_CONVERTLEAD_WARNING_INTO_RECORD' => ' Possible Contact: ',
     'LBL_COUNTRY' => 'Country:',
     'LBL_CREATED_NEW' => 'Created a new ',
 	'LBL_CREATED_ACCOUNT' => 'Created a new account',
@@ -239,7 +239,7 @@ $mod_strings = array (
     'LBL_SELECT' => ' <b>OR</b> Select',
 	'LBL_WEBSITE' => 'Website',
 	'LNK_IMPORT_LEADS' => 'Import Leads',
-	
+	'LBL_NOTICE_OLD_LEAD_CONVERT_OVERRIDE' => 'Notice: If you modify the Lead Convert screens in Studio, you will override the previously used Lead Convert screens.',
 //Convert lead tooltips
 	'LBL_MODULE_TIP' 	=> 'The module to create a new record in.',
 	'LBL_REQUIRED_TIP' 	=> 'Required modules must be created or selected before the lead can be converted.',
