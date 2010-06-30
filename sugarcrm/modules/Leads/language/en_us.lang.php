@@ -239,7 +239,7 @@ $mod_strings = array (
     'LBL_SELECT' => ' <b>OR</b> Select',
 	'LBL_WEBSITE' => 'Website',
 	'LNK_IMPORT_LEADS' => 'Import Leads',
-	'LBL_NOTICE_OLD_LEAD_CONVERT_OVERRIDE' => 'Notice: If you modify the Lead Convert screens in Studio, you will override the previously used Lead Convert screens.',
+	'LBL_NOTICE_OLD_LEAD_CONVERT_OVERRIDE' => 'Notice: The current Convert Lead screen contains custom fields. When you customize the Convert Lead screen in Studio for the first time, you will need to add custom fields to the layout, as necessary. The custom fields will not automatically appear in the layout, as they did previously.',
 //Convert lead tooltips
 	'LBL_MODULE_TIP' 	=> 'The module to create a new record in.',
 	'LBL_REQUIRED_TIP' 	=> 'Required modules must be created or selected before the lead can be converted.',

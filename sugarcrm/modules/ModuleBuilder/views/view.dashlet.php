@@ -137,7 +137,7 @@ class ViewDashlet extends ViewListView
         $smarty = new Sugar_Smarty ( ) ;
         $smarty->assign ( 'translate', true ) ;
         $smarty->assign ( 'language', $parser->getLanguage () ) ;
-
+		
         $smarty->assign ( 'view', $this->editLayout ) ;
         $smarty->assign ( 'action', 'dashletSave' ) ;
         $smarty->assign( 'module', 'ModuleBuilder');
@@ -145,7 +145,11 @@ class ViewDashlet extends ViewListView
         $helpName = (isset( $_REQUEST['view']) && $_REQUEST['view']=='dashletsearch') ? 'searchViewEditor' : 'listViewEditor';
         $smarty->assign ( 'helpName', $helpName ) ;
         $smarty->assign ( 'helpDefault', 'modify' ) ;
-
+    	if ($this->fromModuleBuilder) {
+			$mb = new ModuleBuilder ( ) ;
+            $module = & $mb->getPackageModule ( $this->editPackage, $this->editModule ) ;
+		    $smarty->assign('current_mod_strings', $module->getModStrings());
+		}
         $smarty->assign ( 'title', $this->_constructTitle () ) ;
         $groups = array ( ) ;
         foreach ( $parser->columns as $column => $function )

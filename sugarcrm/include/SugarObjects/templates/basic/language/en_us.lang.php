@@ -48,7 +48,7 @@ $mod_strings = array(
 'LBL_NAME'=>'Name',
 'LBL_CREATED_USER'=>'Created by User',
 'LBL_MODIFIED_USER'=>'Modified by User',
-
+'LBL_LIST_NAME'=>'Name',
 
 
 );

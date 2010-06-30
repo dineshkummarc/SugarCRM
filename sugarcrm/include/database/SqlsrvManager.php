@@ -419,7 +419,7 @@ class SqlsrvManager extends MssqlManager
         )
     {
         if ( $type == 'datetime')
-            return "CONVERT(varchar(20)," . $string . ",120)";	
+            return "CONVERT(varchar(25)," . $string . ",120)";	
         else
             return parent::convert($string, $type, $additional_parameters, $additional_parameters_oracle_only);
     }

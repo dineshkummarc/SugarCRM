@@ -103,6 +103,7 @@ SUGAR.quickCompose = function() {
     		
     		panel_modal = dce_mode ? false : true;
     		panel_width = '880px';
+			panel_constrain = dce_mode ? false : true;
     		panel_height = dce_mode ? '450px' : '400px';
     		panel_shadow = dce_mode ? false : true;
     		panel_draggable = dce_mode ? false : true;
@@ -112,7 +113,7 @@ SUGAR.quickCompose = function() {
         	SQ.parentPanel = new YAHOO.widget.Panel("container1", {
                 modal: panel_modal,
 				visible: true,
-            	constraintoviewport: true,
+            	constraintoviewport: panel_constrain,
                 width	: panel_width,
                 height : panel_height,
                 shadow	: panel_shadow,

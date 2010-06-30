@@ -1907,8 +1907,8 @@ eoq;
 		$ret['name'] = $email->name;
 		$ret['description'] = $description;
 		$ret['from'] = (isset($_REQUEST['composeType']) && $_REQUEST['composeType'] == 'forward') ? "" : $email->from_addr;
-		$ret['to'] = $toAddresses;
-		$ret['cc'] = $ccAddresses;
+		$ret['to'] = from_html($toAddresses);
+		$ret['cc'] = from_html($ccAddresses);
 		$ret['bcc'] = $bccAddresses;
 		$ret['uid'] = $email->id;
 		$ret['parent_name'] = $email->parent_name;
@@ -1925,7 +1925,7 @@ eoq;
 			$userEmails[] = from_html(strtolower(trim($email->from_addr)));
 
 			$ret['cc'] = from_html($email->cc_addrs);
-
+			$toAddresses = from_html($toAddresses);
 			$to = str_replace($this->addressSeparators, "::", $toAddresses);
 			$exTo = explode("::", $to);
 

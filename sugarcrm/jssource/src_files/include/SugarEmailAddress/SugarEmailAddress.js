@@ -119,11 +119,11 @@
 		        var savePressed = false;
 		        if(event) {
 		           var elm = document.activeElement || event.explicitOriginalTarget;
-		           if(typeof elm.type != 'undefined' && elm.type.toLowerCase() == 'submit') {
+		           if(typeof elm.type != 'undefined' && /submit|button/.test(elm.type.toLowerCase())) {
 		              savePressed = true;
 		           }
 		        }
-		        
+		       
 		        if(savePressed || this.enterPressed) {
 		        	setTimeout("SUGAR.EmailAddressWidget.instances." + this.id + ".forceSubmit()", 2100);
 		        } else if(this.tabPressed) {
