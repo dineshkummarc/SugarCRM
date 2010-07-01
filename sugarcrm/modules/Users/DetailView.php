@@ -438,13 +438,6 @@ if(!empty($GLOBALS['sugar_config']['lock_subpanels'])){
 }
 $GLOBALS['sugar_config']['lock_subpanels'] = true;
 
-// User Holidays subpanels should not be displayed for group and portal users
-if(!($focus->is_group=='1' || $focus->portal_only=='1')){
-    require_once('include/SubPanel/SubPanelTiles.php');
-    $subpanel = new SubPanelTiles($focus, 'Users');
-
-    $sugar_smarty->assign('USER_HOLIDAYS_SUBPANEL',$subpanel->display(true,true));
-}
 $GLOBALS['sugar_config']['lock_subpanels'] = $locked;
 
 $sugar_smarty->display('modules/Users/DetailView.tpl');

@@ -37,10 +37,10 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 require_once('modules/DynamicFields/templates/Fields/TemplateDatetimecombo.php');
 
 function get_body(&$ss, $vardef){
-	$defaultTime = '12:00pm';
-	$hours = "12";
-	$minitues = "00";
-	$meridiem = "pm";
+	$defaultTime = '';
+	$hours = "";
+	$minitues = "";
+	$meridiem = "";
 	$td = new TemplateDatetimecombo();
 	$ss->assign('default_values', array_flip($td->dateStrings));
 	$ss->assign('default_hours_values', array_flip($td->hoursStrings));

@@ -39,6 +39,7 @@ class TemplateDatetimecombo extends TemplateText{
 	var $type = 'datetimecombo';
 	var $len = '';
 	var $dateStrings = array(
+		'-none-' => '',
         'today'=>'now',
         'yesterday'=> '-1 day',
         'tomorrow'=>'+1 day',
@@ -54,6 +55,7 @@ class TemplateDatetimecombo extends TemplateText{
     );
     
     var $hoursStrings = array(
+    	'' => '',
     	'01' => '01',	
     	'02' => '02',
     	'03' => '03',
@@ -69,6 +71,7 @@ class TemplateDatetimecombo extends TemplateText{
     );
     
     var $minutesStrings = array(
+    	'' => '',
     	'00' => '00',	
     	'15' => '15',
     	'30' => '30',
@@ -76,6 +79,7 @@ class TemplateDatetimecombo extends TemplateText{
     );
     
     var $meridiemStrings = array(
+    	'' => '',
     	'am' => 'am',
     	'pm' => 'pm',
     );

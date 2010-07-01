@@ -595,7 +595,15 @@ if($upgradeType == constant('DCE_INSTANCE')){
 
         logThis('begin check logger settings .', $path);
             checkLoggerSettings();
-        logThis('begin check logger settings .', $path);
+        logThis('end check logger settings .', $path);
+        
+        logThis('Set default_max_tabs to 7', $path);
+        $sugar_config['default_max_tabs'] = '7';
+		
+        if( !write_array_to_file( "sugar_config", $sugar_config, "config.php" ) ) {
+            logThis('*** ERROR: could not write config.php! - upgrade will fail!', $path);
+            $errors[] = 'Could not write config.php!';
+        }
 	
         //check to see if there are any new files that need to be added to systems tab
         //retrieve old modules list
