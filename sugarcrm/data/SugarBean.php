@@ -2053,7 +2053,7 @@ function save_relationship_changes($is_update, $exclude=array())
                 case 'date':
                     if ( ! preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/',$this->$field) ) {
                         // This date appears to be formatted in the user's format
-                        $this->$field = $timedate->to_db_date($this->$field, false);
+                        $this->$field = $timedate->to_db_date($this->$field);
                         $reformatted = true;
                     }
                     break;

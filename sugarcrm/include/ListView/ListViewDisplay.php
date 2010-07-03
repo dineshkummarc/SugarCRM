@@ -197,6 +197,11 @@ class ListViewDisplay {
                 // Merge the two arrays together, making sure the seedDef doesn't override anything explicitly set in the displayColumns array.
                 $this->displayColumns[$columnName] = $this->displayColumns[$columnName] + $seedDef;
             }
+            
+            //C.L. Bug 38388 - ensure that ['id'] is set for related fields
+            if(!isset($this->displayColumns[$columnName]['id']) && isset($this->displayColumns[$columnName]['id_name'])) {
+               $this->displayColumns[$columnName]['id'] = strtoupper($this->displayColumns[$columnName]['id_name']);
+            }
 		}
 
 		$this->process($file, $data, $seed->object_name);

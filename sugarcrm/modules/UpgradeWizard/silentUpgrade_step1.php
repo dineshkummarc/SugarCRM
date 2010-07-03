@@ -585,7 +585,7 @@ if($upgradeType != constant('DCE_INSTANCE')) {
 	    $current_user->retrieve($logged_user['id']);
 	   }
 	   else{
-	   	echo "Not an admin user in users table. Please provide an admin user\n";
+		echo "FAILURE: Not an admin user in users table. Please provide an admin user\n";
 		die();
 	   }
 	}
