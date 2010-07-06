@@ -1,5 +1,5 @@
 <?php
-// created: 2010-07-05 18:47:17
+// created: 2010-07-06 14:29:26
 $md5_string = array (
   './LICENSE.txt' => 'd3f150e4a5bed444763ebe8a81742a95',
   './.htaccess' => 'd41d8cd98f00b204e9800998ecf8427e',
@@ -12,7 +12,7 @@ $md5_string = array (
   './examples/FormValidationTest.php' => '61dcc214288dd7833e37238e0efa5ccf',
   './examples/ProgressBarTest.php' => '1221c9c0372e16e0ef4f58008b37c6ea',
   './emailmandelivery.php' => '03589de9409e1abb4f0ad9ee4dce8e07',
-  './sugar_version.php' => '82d23ad8fba7116fdf13e3200b753e7c',
+  './sugar_version.php' => 'e83ae4ad3259a5fa8e55b9868abb67ce',
   './custom/index.html' => 'b0070a296647b6026d1800db14510e3c',
   './acceptDecline.php' => 'a8699214ad82527bb0ae1d3f0c9b64b6',
   './export.php' => '50f3b3c23ecb4d0a8b0a898f4f982a66',
@@ -1310,7 +1310,7 @@ $md5_string = array (
   './include/utils/activity_utils.php' => 'a6847172f02933f9d2141b6da4b40350',
   './include/utils/encryption_utils.php' => '34c58803c3939aff389f0c8ce0084309',
   './include/utils/progress_bar_utils.php' => 'ad34d73c2b9198c1d959d274d241dcf0',
-  './include/utils/mvc_utils.php' => 'e1af74ad5133decf9dcb6f4d993ed25f',
+  './include/utils/mvc_utils.php' => '302f39742d73cd30a6889e5616042e3a',
   './include/utils/external_cache.php' => '593d179731e0ae903d2687fdbf8b7807',
   './include/utils/db_utils.php' => '0b253cc086f0259fb794ce2487f8fc56',
   './include/utils/sugar_file_utils.php' => '2c403ff36994b48b603d893af3fd7518',
@@ -4271,7 +4271,7 @@ $md5_string = array (
   './modules/EmailMan/EmailMan.php' => 'c1df5d1ed1d45e9794578ba60162aaac',
   './modules/EmailMan/Save.php' => '536e60a4ad4c1cfbab6603fd38779e76',
   './modules/EmailMan/language/en_us.lang.php' => '7a907f61aab374e5649c4ef83a3099bb',
-  './modules/EmailMan/tpls/config.tpl' => '21b61cfb92aacc5f461ec765ea57dc49',
+  './modules/EmailMan/tpls/config.tpl' => '300afe808afb43af21b86651a7b196ac',
   './modules/EmailMan/tpls/campaignconfig.tpl' => '6d34c849af1019b40653bfce15725081',
   './modules/EmailMan/vardefs.php' => 'be7f3fa7695bbfde69b962e1bca68ae7',
   './modules/EmailMan/metadata/listviewdefs.php' => '87fbd6915fb7d4872f6d18583e916120',
