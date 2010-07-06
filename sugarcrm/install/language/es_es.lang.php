@@ -119,7 +119,7 @@ $mod_strings = array(
 	'ERR_PERFORM_HTACCESS_1'			=> 'No ha podido escribirse en el archivo ',
 	'ERR_PERFORM_HTACCESS_2'			=> ' .',
 	'ERR_PERFORM_HTACCESS_3'			=> 'Si quiere securizar su archivo de trazas, para evitar que sea accesible mediante el navegador web, cree un archivo .htaccess en su directorio de trazas con la línea:',
-	'ERR_PERFORM_NO_TCPIP'				=> '<b>No se ha podido detectar una conexión a internet.</b>Por favor, cuando disponga de una, visite <a href="http://www.sugarcrm.com/home/index.php?option=com_extended_registration&task=register">http://www.sugarcrm.com/home/index.php?option=com_extended_registration&task=register</a> para registrarse con SugarCRM. Permitiéndonos saber un poco sobre los planes de su compañía para utilizar SugarCRM, podemos asegurarnos de que siempre estamos suministrando el producto adecuado para las necesidades de su negocio.',
+	'ERR_PERFORM_NO_TCPIP'				=> '<b>No se ha podido detectar una conexión a internet.</b>Por favor, cuando disponga de una, visite <a href="http://www.sugarcrm.com/crm/products/offline-product-registration.html">http://www.sugarcrm.com/crm/products/offline-product-registration.html</a> para registrarse con SugarCRM. Permitiéndonos saber un poco sobre los planes de su compañía para utilizar SugarCRM, podemos asegurarnos de que siempre estamos suministrando el producto adecuado para las necesidades de su negocio.',
 	'ERR_SESSION_DIRECTORY_NOT_EXISTS'	=> 'El directorio de sesión indicado no es un directorio válido.',
 	'ERR_SESSION_DIRECTORY'				=> 'El directorio de sesión indicado no es un directorio escribible.',
 	'ERR_SESSION_PATH'					=> 'Se requiere un directorio de sesión si desea indicar uno personalizado.',

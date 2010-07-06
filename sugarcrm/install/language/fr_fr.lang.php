@@ -125,7 +125,7 @@ $mod_strings = array (
     'ERR_PERFORM_HTACCESS_1' => 'Impossible d&#39;écrire dans le fichier ',
     'ERR_PERFORM_HTACCESS_2' => ' .',
     'ERR_PERFORM_HTACCESS_3' => 'Si vous voulez sécuriser votre fichier de Logs d&#39;un accès par un navigateur, créez un fichier .htaccess dans le répertoire de Logs avec cette ligne:',
-    'ERR_PERFORM_NO_TCPIP' => '<b>Nous n&#39;avons pas détecter de connexion internet.</b> Dès que vous en avez une, veuillez vous rendre sur  <a href="http://www.sugarcrm.com/home/index.php?option=com_extended_registration&task=register">http://www.sugarcrm.com/home/index.php?option=com_extended_registration&task=register</a> pour vous enregistrer auprès de SugarCRM.En nous laissant savoir comment votre société compte utiliser SugarCRM, nous pouvons vous garantir de vous fournir toujours la bonne application pour vos besoins de business.',
+    'ERR_PERFORM_NO_TCPIP' => '<b>Nous n&#39;avons pas détecter de connexion internet.</b> Dès que vous en avez une, veuillez vous rendre sur  <a href="http://www.sugarcrm.com/crm/products/offline-product-registration.html">http://www.sugarcrm.com/crm/products/offline-product-registration.html</a> pour vous enregistrer auprès de SugarCRM.En nous laissant savoir comment votre société compte utiliser SugarCRM, nous pouvons vous garantir de vous fournir toujours la bonne application pour vos besoins de business.',
     'ERR_SESSION_DIRECTORY_NOT_EXISTS' => '>Le répertoire de session défini n&#39;est pas un répertoire valide.',
     'ERR_SESSION_DIRECTORY' => 'Impossible d&#39;écrire dans le répertoire de session défini.',
     'ERR_SESSION_PATH' => 'Un répertoire de session est nécessaire si vous voulez définir votre propre répertoire.',

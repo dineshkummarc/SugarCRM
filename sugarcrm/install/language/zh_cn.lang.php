@@ -121,7 +121,7 @@ $mod_strings = array(
 	'ERR_PERFORM_HTACCESS_1'			=> '不能写入到',
 	'ERR_PERFORM_HTACCESS_2'			=> '文件。',
 	'ERR_PERFORM_HTACCESS_3'			=> '如果您想保护可以通过浏览器访问的日志文件，请在您的根目录下创建一个.htaccess文件，并加上这些行:',
-	'ERR_PERFORM_NO_TCPIP'				=> '<b>我们不能检测到互联网连接。</b>当您可以连接的时候，请访问<a href=\"http://www.sugarcrm.com/home/index.php?option=com_extended_registration&task=register\">http://www.sugarcrm.com/home/index.php?option=com_extended_registration&task=register</a>来注册SugarCRM。通过了解贵公司对SugarCRM的使用，我们可以确保发布合适的应用程序来满足您的商业需求。',
+	'ERR_PERFORM_NO_TCPIP'				=> '<b>我们不能检测到互联网连接。</b>当您可以连接的时候，请访问<a href=\"http://www.sugarcrm.com/crm/products/offline-product-registration.html\">http://www.sugarcrm.com/crm/products/offline-product-registration.html</a>来注册SugarCRM。通过了解贵公司对SugarCRM的使用，我们可以确保发布合适的应用程序来满足您的商业需求。',
 	'ERR_SESSION_DIRECTORY_NOT_EXISTS'	=> '无效的会话目录。',
 	'ERR_SESSION_DIRECTORY'				=> '不可写的会话目录。',
 	'ERR_SESSION_PATH'					=> '如果您要指定您自己的会话路径，那么会话路径是必须的。',

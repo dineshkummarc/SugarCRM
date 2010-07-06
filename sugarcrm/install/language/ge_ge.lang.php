@@ -94,7 +94,7 @@ $mod_strings = array(
 	'ERR_PERFORM_HTACCESS_1'			=> 'Es konnte nicht geschrieben werden auf ',
 	'ERR_PERFORM_HTACCESS_2'			=> ' Datei.',
 	'ERR_PERFORM_HTACCESS_3'			=> 'Wenn Sie den Zugriff auf Ihre Logfiles sichern möchten, erstellen Sie eine .htaccess Datei in Ihrem Log-Verzeichnis mit der Zeile:',
-	'ERR_PERFORM_NO_TCPIP'				=> '<b>Wir konnten keine Internet-Verbindung feststellen.</b> Zur Fehlersuche informieren Sie sich ggf. unter <a href="http://www.sugarcrm.com/home/index.php?option=com_extended_registration&task=register">http://www.sugarcrm.com/home/index.php?option=com_extended_registration&task=register</a> to register with SugarCRM. By letting us know a little bit about how your company plans to use SugarCRM, we can ensure we are always delivering the right application for your business needs.',
+	'ERR_PERFORM_NO_TCPIP'				=> '<b>Wir konnten keine Internet-Verbindung feststellen.</b> Zur Fehlersuche informieren Sie sich ggf. unter <a href="http://www.sugarcrm.com/crm/products/offline-product-registration.html">http://www.sugarcrm.com/crm/products/offline-product-registration.html</a> to register with SugarCRM. By letting us know a little bit about how your company plans to use SugarCRM, we can ensure we are always delivering the right application for your business needs.',
 	'ERR_SESSION_DIRECTORY_NOT_EXISTS'	=> 'Session-Verzeichnis ist kein gültiges Verzeichnis.',
 	'ERR_SESSION_DIRECTORY'				=> 'Session-Verzeichnis ist kein beschreibbares Verzeichnis.',
 	'ERR_SESSION_PATH'					=> 'Session-Verzeichnisangabe ist erforderlich, falls Sie ein ein individuelles Verzeichnis anlegen wollen.',
