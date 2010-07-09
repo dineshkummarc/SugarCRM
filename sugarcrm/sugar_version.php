@@ -40,7 +40,7 @@
 $sugar_version      = '6.0.0';
 $sugar_db_version   = '6.0.0';
 $sugar_flavor       = 'CE';
-$sugar_build		= '3901';
-$sugar_timestamp    = '2010-07-06 05:04pm';
+$sugar_build		= '3902';
+$sugar_timestamp    = '2010-07-08 06:00pm';
 
 ?>
