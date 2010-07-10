@@ -1,5 +1,5 @@
 <?php
-// created: 2010-07-08 18:04:20
+// created: 2010-07-09 17:17:18
 $md5_string = array (
   './LICENSE.txt' => 'd3f150e4a5bed444763ebe8a81742a95',
   './.htaccess' => 'd41d8cd98f00b204e9800998ecf8427e',
@@ -12,7 +12,7 @@ $md5_string = array (
   './examples/FormValidationTest.php' => '61dcc214288dd7833e37238e0efa5ccf',
   './examples/ProgressBarTest.php' => '1221c9c0372e16e0ef4f58008b37c6ea',
   './emailmandelivery.php' => '03589de9409e1abb4f0ad9ee4dce8e07',
-  './sugar_version.php' => '0e17480665207844fcc3965e95b8942a',
+  './sugar_version.php' => 'dce27fbb01a4f1c1976833c2d9650b5e',
   './custom/index.html' => 'b0070a296647b6026d1800db14510e3c',
   './acceptDecline.php' => 'a8699214ad82527bb0ae1d3f0c9b64b6',
   './export.php' => '50f3b3c23ecb4d0a8b0a898f4f982a66',
@@ -1310,7 +1310,7 @@ $md5_string = array (
   './include/utils/activity_utils.php' => 'a6847172f02933f9d2141b6da4b40350',
   './include/utils/encryption_utils.php' => '34c58803c3939aff389f0c8ce0084309',
   './include/utils/progress_bar_utils.php' => 'ad34d73c2b9198c1d959d274d241dcf0',
-  './include/utils/mvc_utils.php' => '63cb3549479ec2868ba3b4b590595cd8',
+  './include/utils/mvc_utils.php' => 'dcbc1693db0bcc94a16b516f30c60db7',
   './include/utils/external_cache.php' => '593d179731e0ae903d2687fdbf8b7807',
   './include/utils/db_utils.php' => '0b253cc086f0259fb794ce2487f8fc56',
   './include/utils/sugar_file_utils.php' => '2c403ff36994b48b603d893af3fd7518',
@@ -3733,7 +3733,7 @@ $md5_string = array (
   './modules/Calls/metadata/subpanels/ForHistory.php' => 'ee86e8f23e99b14a1e8ab29f676ec697',
   './modules/Calls/metadata/subpanels/default.php' => '71e511de80918a4e3c1dc3c277305283',
   './modules/Calls/metadata/subpanels/ForActivities.php' => '1203a06e85270236d37a1d13b7075d10',
-  './modules/Calls/metadata/quickcreatedefs.php' => '1c4ba208be4825ab46ee61e33fb5d38f',
+  './modules/Calls/metadata/quickcreatedefs.php' => '94385d875ceff9dd382e36ffbc927dd1',
   './modules/Calls/metadata/editviewdefs.php' => '61413f07a158f3c83f84e8ada16bd933',
   './modules/Calls/metadata/detailviewdefs.php' => '5d6acfc9edf6edbc10eb2fefeccfda45',
   './modules/Calls/metadata/additionalDetails.php' => 'ed7c9f9ee590197cd905eba79a2a50e3',
@@ -4018,7 +4018,7 @@ $md5_string = array (
   './modules/Meetings/metadata/subpanels/ForHistory.php' => '5afedbcd490cfc97c5ed48f806bdf7f0',
   './modules/Meetings/metadata/subpanels/default.php' => 'cc533f0f612254c3956b68020cb54662',
   './modules/Meetings/metadata/subpanels/ForActivities.php' => '285a1bd2404a07d47635cc447dcf89d1',
-  './modules/Meetings/metadata/quickcreatedefs.php' => 'ff5b6504765b4c25070c856d24dd1e4a',
+  './modules/Meetings/metadata/quickcreatedefs.php' => '265e208fab7adcdfb7c367ea61d76699',
   './modules/Meetings/metadata/editviewdefs.php' => '1d9cdb0c475c503eb75ae8eb54d9f440',
   './modules/Meetings/metadata/detailviewdefs.php' => 'dcbb0205853dd050c1fa6ac8970f3195',
   './modules/Meetings/metadata/additionalDetails.php' => 'd7331358366a5d10047ae5ec79c55316',
