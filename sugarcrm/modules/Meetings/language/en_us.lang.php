@@ -97,6 +97,7 @@ $mod_strings = array (
 	'LBL_PHONE' => 'Phone Office:',
 	'LBL_REMINDER_TIME'=>'Reminder Time',
 	'LBL_REMINDER' => 'Reminder:',
+    'LBL_REMOVE' => 'rem',
 	'LBL_SCHEDULING_FORM_TITLE' => 'Scheduling',
 	'LBL_SEARCH_BUTTON'=> 'Search',
 	'LBL_SEARCH_FORM_TITLE' => 'Meeting Search',

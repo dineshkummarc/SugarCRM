@@ -198,6 +198,11 @@ foreach ($temp_field_array as $field_array) {
         else
             $field_check = $field_array['type'];
 
+            
+        if(preg_match('/.*?_address_street$/', $field_array['name'])) {
+           $field_check = 'text';
+        }    
+            
         $xtpl->assign("EDIT_FIELD_NAME", $field_array['name']);
         $xtpl->assign("TAB_INDEX", $field_count);
 

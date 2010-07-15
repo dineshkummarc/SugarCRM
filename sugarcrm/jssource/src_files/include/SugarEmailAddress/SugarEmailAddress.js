@@ -69,6 +69,7 @@
 		tabPressed : false,
         emailView:"",
 		emailIsRequired: false,
+		tabIndex: -1,
 		
 		prefillEmailAddresses: function(tableId, o){
 			for (i = 0; i < o.length; i++) {
@@ -120,10 +121,10 @@
 		        if(event) {
 		           var elm = document.activeElement || event.explicitOriginalTarget;
 		           if(typeof elm.type != 'undefined' && /submit|button/.test(elm.type.toLowerCase())) {
-		              savePressed = true;
+			          savePressed = true;
 		           }
 		        }
-		       
+		        
 		        if(savePressed || this.enterPressed) {
 		        	setTimeout("SUGAR.EmailAddressWidget.instances." + this.id + ".forceSubmit()", 2100);
 		        } else if(this.tabPressed) {
@@ -150,7 +151,7 @@
 		        this.verifying = true;
 		        var cObj = YAHOO.util.Connect.asyncRequest(
 				    'GET', 
-					'index.php?&module=Contacts&action=RetrieveEmail&target=' + targetEl.id + '&email=' + targetEl.value, 
+					'index.php?module=Contacts&action=RetrieveEmail&target=' + targetEl.id + '&email=' + targetEl.value, 
 					{success: callbackFunction, failure: callbackFunction, scope: this}
 				);
 		    }             
@@ -224,6 +225,7 @@
 		    newContent.setAttribute("type", "text");
 		    newContent.setAttribute("name", this.id + "emailAddress" + this.numberEmailAddresses);
 		    newContent.setAttribute("id", this.id + "emailAddress" + this.numberEmailAddresses);
+		    newContent.setAttribute("tabindex", this.tabIndex);
 		    newContent.setAttribute("size", "30");
 		
 		    if(address != '') {

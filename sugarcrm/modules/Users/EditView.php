@@ -72,7 +72,7 @@ if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 }else if(!isset($_REQUEST['record'])){
     define('SUGARPDF_USE_DEFAULT_SETTINGS', true);
 }
-				
+
 
 
 
@@ -118,11 +118,11 @@ if(isset($_REQUEST['error_string'])) $sugar_smarty->assign('ERROR_STRING', '<spa
 if(isset($_REQUEST['error_password'])) $sugar_smarty->assign('ERROR_PASSWORD', '<span id="error_pwd" class="error">Error: '.$_REQUEST['error_password'].'</span>');
 
 if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
-	
+
 	$sugar_smarty->assign('RETURN_MODULE', $_REQUEST['return_module']);
 	$sugar_smarty->assign('RETURN_ACTION', $_REQUEST['return_action']);
 	$sugar_smarty->assign('RETURN_ID', $_REQUEST['record']);
-	
+
 } else {
 	if(isset($_REQUEST['return_module'])) $sugar_smarty->assign('RETURN_MODULE', $_REQUEST['return_module']);
 	else { $sugar_smarty->assign('RETURN_MODULE', $focus->module_dir);}
@@ -179,15 +179,15 @@ if ($is_super_admin)
     $sugar_smarty->assign('IS_SUPER_ADMIN','1');
 else
     $sugar_smarty->assign('IS_SUPER_ADMIN', '0');
-	
+
 
 //jc:12293 - modifying to use the accessor method which will translate the
 //available character sets using the translation files
 $sugar_smarty->assign('EXPORT_CHARSET', get_select_options_with_id($locale->getCharsetSelect(), $locale->getExportCharset('', $focus)));
 //end:12293
 
-if( $focus->getPreference('use_real_names') == 'on' || ( empty($focus->id) && isset($GLOBALS['sugar_config']['use_real_names']) 
-       && $GLOBALS['sugar_config']['use_real_names'] && $focus->getPreference('use_real_names') != 'off') ) 
+if( $focus->getPreference('use_real_names') == 'on' || ( empty($focus->id) && isset($GLOBALS['sugar_config']['use_real_names'])
+       && $GLOBALS['sugar_config']['use_real_names'] && $focus->getPreference('use_real_names') != 'off') )
 {
 
 	$sugar_smarty->assign('USE_REAL_NAMES', 'CHECKED');
@@ -209,7 +209,7 @@ if(empty($focus->id)) {
 	$sugar_smarty->assign('NEW_USER','0');
 	$sugar_smarty->assign('NEW_USER_TYPE','DISABLED');
 }
-	
+
 ////	END NEW USER CREATION ONLY
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -225,8 +225,8 @@ if(isset($_REQUEST['type']) && (isset($_REQUEST['return_module']) && $_REQUEST['
 ///////////////////////////////////////////////////////////////////////////////
 ////	LOCALE SETTINGS
 ////	Date/time format
-$dformat = $locale->getPrecedentPreference('datef', $focus);
-$tformat = $locale->getPrecedentPreference('timef', $focus);
+$dformat = $locale->getPrecedentPreference($focus->id?'datef':'default_date_format', $focus);
+$tformat = $locale->getPrecedentPreference($focus->id?'timef':'default_time_format', $focus);
 $timeOptions = get_select_options_with_id($sugar_config['time_formats'], $tformat);
 $dateOptions = get_select_options_with_id($sugar_config['date_formats'], $dformat);
 $sugar_smarty->assign('TIMEOPTIONS', $timeOptions);
@@ -424,7 +424,7 @@ if((!empty($focus->is_group) && $focus->is_group)  || (isset($_REQUEST['usertype
 	$usertype='GROUP';
 } else
 	$sugar_smarty->assign('IS_GROUP', '0');
-	
+
 $sugar_smarty->assign("USER_TYPE_DESC", $mod_strings['LBL_'.$usertype.'_DESC']);
 $sugar_smarty->assign("USER_TYPE_LABEL", $mod_strings['LBL_'.$usertype.'_USER']);
 $sugar_smarty->assign('USER_TYPE',$usertype);
@@ -438,8 +438,8 @@ if(isset($sugar_config['passwordsetting']) && isset($sugar_config['passwordsetti
 if(((isset($enable_syst_generate_pwd) && !$enable_syst_generate_pwd && $usertype!='GROUP') || $usertype =='PORTAL_ONLY') && empty($focus->id))
 	$sugar_smarty->assign('REQUIRED_PASSWORD','1');
 else
-    $sugar_smarty->assign('REQUIRED_PASSWORD','0');	
-    
+    $sugar_smarty->assign('REQUIRED_PASSWORD','0');
+
 // If my account page or portal only user or regular user without system generated password or a duplicate user
 if((($current_user->id == $focus->id) || $usertype=='PORTAL_ONLY' || (($usertype=='REGULAR' || (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true' && $usertype!='GROUP')) && !$enable_syst_generate_pwd)) && !$focus->external_auth_only )
    $sugar_smarty->assign('CHANGE_PWD', '1');
@@ -453,7 +453,7 @@ if ( $usertype == 'GROUP' ) {
 
 $configurator = new Configurator();
 if ( ($configurator->config['passwordsetting']['SystemGeneratedPasswordON'] || $configurator->config['passwordsetting']['forgotpasswordON'])
-        && $usertype != 'GROUP' && $usertype != 'PORTAL_ONLY' ) 
+        && $usertype != 'GROUP' && $usertype != 'PORTAL_ONLY' )
 	$sugar_smarty->assign('REQUIRED_EMAIL_ADDRESS','1');
 else
 	$sugar_smarty->assign('REQUIRED_EMAIL_ADDRESS','0');
@@ -467,9 +467,12 @@ else{
 	else
 		$sugar_smarty->assign('HIDE_STATIC_USERTYPE','none');
 	}
-	
+
 $sugar_smarty->assign('IS_FOCUS_ADMIN', is_admin($focus));
-if($edit_self) {
+
+$disable_download_tab = (!isset($sugar_config['disable_download_tab']) || $admin_edit_self) ? false : $sugar_config['disable_download_tab'];
+
+if($edit_self && !$disable_download_tab) {
 	$sugar_smarty->assign('EDIT_SELF','1');
 }
 if($admin_edit_self) {
@@ -501,7 +504,7 @@ if( !($usertype=='GROUP' || $usertype=='PORTAL_ONLY') )
             $mail_smtpuser = $userOverrideOE->mail_smtpuser;
             $mail_smtppass = $userOverrideOE->mail_smtppass;
         }
-        
+
         $hide_if_can_use_default = empty($systemOutboundEmail->mail_smtpserver) ? true : false;
     }
     $sugar_smarty->assign("mail_smtpdisplay", $mail_smtpdisplay);
@@ -509,7 +512,7 @@ if( !($usertype=='GROUP' || $usertype=='PORTAL_ONLY') )
     $sugar_smarty->assign("mail_smtpuser", $mail_smtpuser);
     $sugar_smarty->assign("mail_smtppass", $mail_smtppass);
     $sugar_smarty->assign('MAIL_SMTPPORT',$mail_smtpport);
-    $sugar_smarty->assign('MAIL_SMTPSSL',$mail_smtpssl);  
+    $sugar_smarty->assign('MAIL_SMTPSSL',$mail_smtpssl);
 }
 $sugar_smarty->assign('HIDE_IF_CAN_USE_DEFAULT_OUTBOUND',$hide_if_can_use_default);
 
@@ -555,7 +558,6 @@ require_once('modules/MySettings/TabController.php');
 $chooser = new TemplateGroupChooser();
 $controller = new TabController();
 
-echo "<script>SUGAR.tabChooser.freezeOptions('display_tabs', 'hide_tabs', 'Home');</script>";
 
 if($is_current_admin || $controller->get_users_can_edit()) {
 	$chooser->display_hide_tabs = true;

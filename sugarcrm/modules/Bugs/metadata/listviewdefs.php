@@ -82,6 +82,8 @@ $listViewDefs['Bugs'] = array(
 	'ASSIGNED_USER_NAME' => array(
 		'width' => '9', 
 		'label' => 'LBL_LIST_ASSIGNED_USER',
+		'module' => 'Employees',
+        'id' => 'ASSIGNED_USER_ID',
         'default' => true)
 );
 ?>

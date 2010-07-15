@@ -41,7 +41,7 @@
 {include file="modules/DynamicFields/templates/Fields/Forms/coreTop.tpl"}
 <input type=hidden id='ext3' name='ext3' value='{$vardef.gen}'>
 <tr>
-	<td class='mbLBL'>{$MOD.LBL_GENERATE_URL}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="LBL_GENERATE_URL"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type='checkbox' id='gencheck' {if $vardef.gen}checked=true{/if} name='genCheck' value="0" onclick="
@@ -65,7 +65,7 @@
 		"></td> 
 </tr>
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_DEFAULT_VALUE}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DEFAULT_VALUE"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type='text' name='default' id='default' value='{$vardef.default}' maxlength='{$vardef.len|default:50}'>
@@ -75,7 +75,7 @@
 	</td>
 </tr>
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_MAX_SIZE}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_MAX_SIZE"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type='text' name='len' value='{$vardef.len|default:255}' onchange="forceRange(this,1,255);changeMaxLength(document.getElementById('default'),this.value);">
@@ -99,7 +99,7 @@
 	</td>
 </tr>
 <tr>
-	<td class='mbLBL'>{$MOD.LBL_LINK_TARGET}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="LBL_LINK_TARGET"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<select name='ext4' id='ext4'>

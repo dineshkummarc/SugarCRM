@@ -575,11 +575,8 @@ if (typeof(ModuleBuilder) == 'undefined') {
 			}
 		},
 		checkForErrors: function(o){
-			var loginPageStart = "<!DOCTYPE";
-			if (o.responseText.substr(0, loginPageStart.length) == loginPageStart) {
-				window.location.href = window.location.protocol + window.location.pathname;
+			if (SUGAR.util.isLoginPage(o.responseText))
 				return true;
-			}
 			if (o.responseText.substr(0, 1) == "<") {
                 YAHOO.SUGAR.MessageBox.show({
 					title: SUGAR.language.get('ModuleBuilder', 'ERROR_GENERIC_TITLE'),

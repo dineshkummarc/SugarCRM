@@ -77,6 +77,8 @@ $listViewDefs['ProjectTask'] = array(
 	'ASSIGNED_USER_NAME' => array(
 		'width' => '10', 
 		'label' => 'LBL_LIST_ASSIGNED_USER_ID',
+		'module' => 'Employees',
+        'id' => 'ASSIGNED_USER_ID',
         'default' => true),
 );
 

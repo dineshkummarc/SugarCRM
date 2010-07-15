@@ -34,11 +34,11 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
  ********************************************************************************/
- 
 
 
-$layout_defs['Leads'] = array( 
-	// sets up which panels to show, in which order, and with what linked_fields 
+
+$layout_defs['Leads'] = array(
+	// sets up which panels to show, in which order, and with what linked_fields
 	'subpanel_setup' => array(
        'activities' => array(
 			'order' => 20,
@@ -48,7 +48,7 @@ $layout_defs['Leads'] = array(
 			'type' => 'collection',
 			'subpanel_name' => 'activities',   //this values is not associated with a physical file.
 			'module'=>'Activities',
-			
+
 			'top_buttons' => array(
 				array('widget_class' => 'SubPanelTopCreateTaskButton'),
 				array('widget_class' => 'SubPanelTopScheduleMeetingButton'),
@@ -56,7 +56,7 @@ $layout_defs['Leads'] = array(
 				array('widget_class' => 'SubPanelTopComposeEmailButton'),
 			),
 
-			'collection_list' => array(	
+			'collection_list' => array(
 				'meetings' => array(
 					'module' => 'Meetings',
 					'subpanel_name' => 'ForActivities',
@@ -91,7 +91,7 @@ $layout_defs['Leads'] = array(
         'history' => array(
 			'order' => 30,
 			'sort_order' => 'desc',
-			'sort_by' => 'date_modified',
+			'sort_by' => 'date_entered',
 			'title_key' => 'LBL_HISTORY_SUBPANEL_TITLE',
 			'type' => 'collection',
 			'subpanel_name' => 'history',   //this values is not associated with a physical file.
@@ -103,7 +103,7 @@ $layout_defs['Leads'] = array(
             array('widget_class' => 'SubPanelTopSummaryButton'),
 			),
 
-			'collection_list' => array(	
+			'collection_list' => array(
 				'meetings' => array(
 					'module' => 'Meetings',
 					'subpanel_name' => 'ForHistory',
@@ -137,7 +137,7 @@ $layout_defs['Leads'] = array(
 					'module' => 'Notes',
 					'subpanel_name' => 'ForHistory',
 					'get_subpanel_data' => 'notes',
-				),	
+				),
 				'emails' => array(
 					'module' => 'Emails',
 					'subpanel_name' => 'ForHistory',
@@ -149,8 +149,8 @@ $layout_defs['Leads'] = array(
 	                'get_subpanel_data' => 'function:get_unlinked_email_query',
 	                'generate_select'=>true,
 	                'function_parameters' => array('return_as_array'=>'true'),
-	    		),          				
-			)			
+	    		),
+			)
 		),
         'campaigns' => array(
 			'order' => 40,
@@ -160,10 +160,6 @@ $layout_defs['Leads'] = array(
 			'get_subpanel_data'=>'campaigns',
 			'subpanel_name' => 'ForTargets',
 			'title_key' => 'LBL_CAMPAIGN_LIST_SUBPANEL_TITLE',
-            'top_buttons' => array(
-                array('widget_class' => 'SubPanelTopCreateCampaignLogEntryButton'),
-            ),          
-
 		),
     ),
 );

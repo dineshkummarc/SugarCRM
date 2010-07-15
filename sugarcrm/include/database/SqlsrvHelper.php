@@ -124,5 +124,33 @@ class SqlsrvHelper extends MssqlHelper
         
         return $val;
 	}
+	
+	/**
+	 * Detect if no clustered index has been created for a table; if none created then just pick the first index and make it that
+	 *
+	 * @see MssqlHelper::indexSQL()
+     */
+    public function indexSQL( 
+        $tableName, 
+        $fieldDefs, 
+        $indices
+        ) 
+    {
+        foreach ( $indices as $index ) {
+            if ( $index['type'] == 'primary' ) {
+                return parent::indexSQL($tableName, $fieldDefs, $indices); 
+            }
+        }
+        
+        // Change the first index listed to be a clustered one instead ( so we have at least one for the table )
+        if ( isset($indices[0]) ) {
+            $indices[0]['type'] = 'clustered';
+        }
+        else {
+            $GLOBALS['log']->warning("Table '$tablename' has no indices defined; this could be a problem on SQL Server.");
+        }
+        
+        return parent::indexSQL($tableName, $fieldDefs, $indices); 
+    }
 }
 ?>

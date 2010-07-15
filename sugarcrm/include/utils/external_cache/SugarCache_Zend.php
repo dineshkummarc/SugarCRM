@@ -83,4 +83,12 @@ class SugarCache_Zend extends SugarCache_ExternalAbstract
         parent::__unset($key);
         output_cache_remove_key($this->_realKey($key));
     }
+
+    /**
+     * Clean opcode cache
+     */
+    function clean_opcodes()
+    {
+		accelerator_reset();
+    }
 }

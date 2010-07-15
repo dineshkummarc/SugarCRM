@@ -41,7 +41,7 @@
  */
 require_once('include/MVC/Controller/ControllerFactory.php');
 require_once('include/MVC/View/ViewFactory.php');
-
+ 
 class SugarApplication
 { 	
  	var $controller = null;
@@ -441,11 +441,12 @@ class SugarApplication
 EOQ;
 			sugar_cleanup(true);
 			}
-		
 		}
 	}	
-	function startSession(){
-		if(isset($_REQUEST['MSID'])) {
+	function startSession()
+	{	
+	    $sessionIdCookie = isset($_COOKIE['PHPSESSID']) ? $_COOKIE['PHPSESSID'] : null;
+	    if(isset($_REQUEST['MSID'])) {
 			session_id($_REQUEST['MSID']);
 			session_start();
 			if(isset($_SESSION['user_id']) && isset($_SESSION['seamless_login'])){
@@ -463,6 +464,11 @@ EOQ;
 				session_start();
 			}
 		}
+		
+		if ( !is_null($sessionIdCookie) && empty($_SESSION) ) {
+		    self::setCookie('loginErrorMessage', 'LBL_SESSION_EXPIRED', time()+30, '/');
+		}
+		
 	}
 	
 	function endSession(){

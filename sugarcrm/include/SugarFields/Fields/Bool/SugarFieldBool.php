@@ -47,7 +47,7 @@ class SugarFieldBool extends SugarFieldBase {
 	 **/
 	function getSearchViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex) {
 		$this->setup($parentFieldArray, $vardef, $displayParams, $tabindex);
-		if( preg_match("/current_user_only.*/", $vardef['name']) )
+		if( preg_match("/current_user_only.*/", $vardef['name']) || preg_match("/favorites_only.*/", $vardef['name']) )
 			return $this->fetch('include/SugarFields/Fields/Bool/EditView.tpl');
 		else
 			return $this->fetch('include/SugarFields/Fields/Bool/SearchView.tpl');

@@ -93,8 +93,8 @@ class ViewModulelabels extends SugarView
 		$ajax = new AjaxCompose();
 		$ajax->addCrumb($bak_mod_strings['LBL_MODULEBUILDER'], 'ModuleBuilder.main("mb")');
 		$ajax->addCrumb($package_name, 'ModuleBuilder.getContent("module=ModuleBuilder&action=package&package='.$package->name. '")');
-        $ajax->addCrumb($module_name, 'ModuleBuilder.getContent("module=ModuleBuilder&action=module&package='.$package->name.'&module='. $module_name . '")');
-		$ajax->addCrumb($bak_mod_strings['LBL_LABELS'], '');
+        $ajax->addCrumb($module_name, 'ModuleBuilder.getContent("module=ModuleBuilder&action=module&view_package='.$package->name.'&view_module='. $module_name . '")');
+        $ajax->addCrumb($bak_mod_strings['LBL_LABELS'], '');
 		$ajax->addSection('center', $bak_mod_strings['LBL_LABELS'],$smarty->fetch('modules/ModuleBuilder/tpls/labels.tpl'));
 		echo $ajax->getJavascript();
 	}

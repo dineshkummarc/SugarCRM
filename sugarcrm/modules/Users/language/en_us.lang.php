@@ -43,7 +43,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  ********************************************************************************/
 
 $mod_strings = array (
-	
+	'LBL_DELETE_USER_CONFIRM'           => 'Deleting the User record will also delete the Employee record. Do you want to proceed with deleting this record?',
 	'LNK_IMPORT_USERS'                 => 'Import Users',
 	'ERR_DELETE_RECORD'					=> 'A record number must be specified to delete the account.',
 	'ERR_EMAIL_INCORRECT'				=> 'Provide a valid email address in order to create and send the password.',
@@ -372,6 +372,7 @@ $mod_strings = array (
     'LBL_AFFECTED'                      => 'affected',
 
     'LBL_USER_NAME_FOR_ROLE'            =>'Users/Teams/Roles',
+    'LBL_SESSION_EXPIRED'               => 'Your session expired. Please login again.',
 
 // INBOUND EMAIL STRINGS
 	'LBL_APPLY_OPTIMUMS'				=> 'Apply Optimums',

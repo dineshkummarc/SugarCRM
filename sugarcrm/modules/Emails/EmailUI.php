@@ -1745,7 +1745,7 @@ function distDirect($user, $mailIds) {
 function getAssignedEmailsCountForUsers($userIds) {
 	$counts = array();
 	foreach($userIds as $id) {
-		$r = $this->db->query("SELECT count(*) AS c FROM emails WHERE assigned_user_id = '.$id.' AND status = 'unread'");
+		$r = $this->db->query("SELECT count(*) AS c FROM emails WHERE assigned_user_id = '$id' AND status = 'unread'");
 		$a = $this->db->fetchByAssoc($r);
 		$counts[$id] = $a['c'];
 	} // foreach
@@ -2410,9 +2410,17 @@ eoq;
 		
         foreach($ieAccountsFull as $k => $v) 
         {
-            $selected = ((!empty($showFolders) && in_array($v->id, $showFolders)) || in_array($v->groupfolder_id, $groupSubs) ) ? TRUE : FALSE;
+            $personalSelected = (!empty($showFolders) && in_array($v->id, $showFolders));
+            
+            $allowOutboundGroupUsage = $v->get_stored_options('allow_outbound_group_usage',FALSE);
+            $groupSelected = ( in_array($v->groupfolder_id, $groupSubs)  && $allowOutboundGroupUsage); 
+            $selected = ( $personalSelected || $groupSelected );
+            
             if(!$selected)
+            {
+                $GLOBALS['log']->debug("Inbound Email {$v->name}, not selected and will not be available for selection within compose UI.");
                 continue;
+            }
                 
         	$name = $v->get_stored_options('from_name');
         	$addr = $v->get_stored_options('from_addr');

@@ -1228,17 +1228,16 @@ function handle_set_relationship($set_relationship_value)
 	}
 	else{
     	$key = array_search(strtolower($module2),$mod->relationship_fields);
-    	if (!$key) {
-    		
-    		$key = Relationship::retrieve_by_modules($module1, $module2, $GLOBALS['db']);
+    	if(!$key) {
+    	    $key = Relationship::retrieve_by_modules($module1, $module2, $GLOBALS['db']);
     		if (!empty($key)) {
     			$mod->load_relationship($key);
     			$mod->$key->add($module2_id);
     			return $error->get_soap_array();
     		} // if
-    	} // if
+        }
     }
-
+    
     if(!$key)
     {
         $error->set_error('no_module');

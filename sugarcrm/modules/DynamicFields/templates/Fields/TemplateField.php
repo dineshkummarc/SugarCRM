@@ -67,6 +67,7 @@ class TemplateField{
 	var $reportable = true;
 	var $label_value = '';
 	var $help = '';
+	var $formula = '';
 
 	var $vardef_map = array(
 		'name'=>'name',

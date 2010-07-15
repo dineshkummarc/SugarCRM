@@ -88,6 +88,7 @@ if($focus->template_id) {
 	$emailTemplate = $mod_strings['LBL_NONE'];
 }
 $ssl = $app_list_strings['dom_email_bool']['bool_false'];
+$allow_outbound_group_usage = $app_list_strings['dom_email_bool']['bool_false'];
 $tls = $app_list_strings['dom_email_bool']['bool_false'];
 $ca = $app_list_strings['dom_email_bool']['bool_false'];
 if(!empty($focus->service)) {
@@ -173,7 +174,10 @@ if(!empty($focus->stored_options)) {
 	$distrib_method = (isset($storedOptions['distrib_method'])) ? $storedOptions['distrib_method'] : "";
 	$create_case_email_template = (isset($storedOptions['create_case_email_template'])) ? $storedOptions['create_case_email_template'] : "";
 	$email_num_autoreplies_24_hours = (isset($storedOptions['email_num_autoreplies_24_hours'])) ? $storedOptions['email_num_autoreplies_24_hours'] : $focus->defaultEmailNumAutoreplies24Hours;
-
+    
+	if( isset($storedOptions['allow_outbound_group_usage']) && $storedOptions['allow_outbound_group_usage'] == 1) 
+	   $allow_outbound_group_usage = $app_list_strings['dom_email_bool']['bool_true'];
+	
 }
 
 if(!empty($create_case_email_template)) {
@@ -218,6 +222,8 @@ $xtpl->assign('SSL', $ssl);
 $xtpl->assign('TLS', $tls);
 $xtpl->assign('CERT', $ca);
 $xtpl->assign('MARK_READ', $delete_seen);
+$xtpl->assign('ALLOW_OUTBOUND_GROUP_USAGE', $allow_outbound_group_usage);
+
 // deferred
 //$xtpl->assign('QUEUE', $queue);
 $createCaseRowStyle = "display:none";

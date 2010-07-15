@@ -226,6 +226,9 @@ if (!$current_user->is_group){
     }
 	$buttons .="<input type='button' class='button' onclick='if(confirm(\"{$reset_pref_warning}\"))window.location=\"".$_SERVER['PHP_SELF'] .'?'.$the_query_string."&reset_preferences=true\";' value='".$mod_strings['LBL_RESET_PREFERENCES']."' />";
 	$buttons .="&nbsp;<input type='button' class='button' onclick='if(confirm(\"{$reset_home_warning}\"))window.location=\"".$_SERVER['PHP_SELF'] .'?'.$the_query_string."&reset_homepage=true\";' value='".$mod_strings['LBL_RESET_HOMEPAGE']."' />";
+    if($focus->id != $current_user->id && (is_admin($current_user)||is_admin_for_module($GLOBALS['current_user'],'Users')) )
+        $buttons .="&nbsp;<input type='button' class='button' onclick='if(confirm(\"{$mod_strings['LBL_DELETE_USER_CONFIRM']}\"))window.location=\"".$_SERVER['PHP_SELF'] ."?module=Users&action=delete&record={$focus->id}\";' value='".$app_strings['LBL_DELETE_BUTTON_LABEL']."' />";
+
 }
 if (isset($buttons)) $sugar_smarty->assign("BUTTONS", $buttons);
 

@@ -48,8 +48,8 @@ function __construct() {
             $app_strings['LBL_TODAY']=>'now',
             $app_strings['LBL_TOMORROW']=>'+1 day',
             $app_strings['LBL_NEXT_WEEK']=> '+1 week',
-            $app_strings['LBL_NEXT_MONDAY']=>'next monday + 1 day',
-            $app_strings['LBL_NEXT_FRIDAY']=>'next friday + 1 day',
+            $app_strings['LBL_NEXT_MONDAY']=>'next monday',
+            $app_strings['LBL_NEXT_FRIDAY']=>'next friday',
             $app_strings['LBL_TWO_WEEKS']=> '+2 weeks',
             $app_strings['LBL_NEXT_MONTH']=> '+1 month',
             $app_strings['LBL_FIRST_DAY_OF_NEXT_MONTH']=> 'first of next month', // must handle this non-GNU date string in SugarBean->populateDefaultValues; if we don't this will evaluate to 1969...

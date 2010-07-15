@@ -229,7 +229,6 @@ function disableReturnSubmission(e) {
                             <i>{$MOD.LBL_LOCALE_EXAMPLE_NAME_FORMAT}:</i>
                         </slot></td>
                         <td ><slot>
-                            <input type='hidden' name='num_grp_sep' id='default_number_grouping_seperator' value='{$NUM_GRP_SEP}'>
                             <input type="text" disabled id="sigDigitsExample" name="sigDigitsExample">
                         </slot></td>
                     </tr>
@@ -240,8 +239,10 @@ function disableReturnSubmission(e) {
                                 type='text' maxlength='1' size='1' value='{$DEC_SEP}'
                                 onkeydown='setSigDigits();' onkeyup='setSigDigits();'>
                         </slot></td>
-                        <td width="17%" scope="row" nowrap="nowrap"></td>
-                        <td></td>
+                        <td width="17%" scope="row" nowrap="nowrap"><slot>{$MOD.LBL_NUMBER_GROUPING_SEP}:</slot>&nbsp;{sugar_help text=$MOD.LBL_NUMBER_GROUPING_SEP_TEXT }</td>
+                        <td><input tabindex='14' name='num_grp_sep' id='default_number_grouping_seperator'
+                                    type='text' maxlength='1' size='1' value='{$NUM_GRP_SEP}' 
+                                    onkeydown='setSigDigits();' onkeyup='setSigDigits();'></td>
                     </tr>
                     <tr>
                         <td colspan="4"><hr /></td>
@@ -370,6 +371,25 @@ var SugarWizard = new function()
 {
     this.currentScreen = 'welcome';
     
+    this.handleKeyStroke = function(e)
+    {
+        // get the key pressed
+        var key;
+        if (window.event) {
+            key = window.event.keyCode;
+        }
+        else if(e.which) {
+            key = e.which
+        }
+        
+        switch(key) {
+        case 13:
+            primaryButton = YAHOO.util.Selector.query('input.primary',SugarWizard.currentScreen,true);
+            primaryButton.click();
+            break;
+        }
+    }
+    
     this.changeScreen = function(screen,skipCheck)
     {
         if ( !skipCheck ) {
@@ -414,6 +434,7 @@ SugarWizard.changeScreen('personalinfo');
 SugarWizard.changeScreen('welcome');
 {/if}
 {literal}
+document.onkeypress = SugarWizard.handleKeyStroke;
 
 var mail_smtpport = '{/literal}{$MAIL_SMTPPORT}{literal}';
 var mail_smtpssl = '{/literal}{$MAIL_SMTPSSL}{literal}';

@@ -43,6 +43,9 @@ class EmployeesViewList extends ViewList
  	{
  		$this->lv = new ListViewSmarty();
  		$this->lv->delete = false;
+ 		if (!is_admin($GLOBALS['current_user'])&& !is_admin_for_module($GLOBALS['current_user'],'Users')){
+            $this->lv->multiSelect = false;
+        }
  	}
  	
 	function listViewProcess(){

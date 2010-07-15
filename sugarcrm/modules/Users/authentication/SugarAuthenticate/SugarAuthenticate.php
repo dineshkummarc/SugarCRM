@@ -247,7 +247,7 @@ class SugarAuthenticate{
 		}
 		if (!$this->userAuthenticate->loadUserOnSession($_SESSION['authenticated_user_id'])) {
 			session_destroy();
-			header("Location: index.php?action=Login&module=Users");
+			header("Location: index.php?action=Login&module=Users&loginErrorMessage=LBL_SESSION_EXPIRED");
 			$GLOBALS['log']->debug('Current user session does not exist redirecting to login');
 			sugar_cleanup(true);
 		}

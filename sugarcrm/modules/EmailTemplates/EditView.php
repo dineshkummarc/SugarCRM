@@ -146,9 +146,31 @@ if ($has_campaign || $inboundEmail ) {
     }
 }
 
+//Setup assigned user name
+$popup_request_data = array(
+	'call_back_function' => 'set_return',
+	'form_name' => 'EditView',
+	'field_to_name_array' => array(
+		'id' => 'assigned_user_id',
+		'user_name' => 'assigned_user_name',
+		),
+	);
+$json = getJSONobj();
+$xtpl->assign('encoded_assigned_users_popup_request_data', $json->encode($popup_request_data));
+if(!empty($focus->assigned_user_name))
+    $xtpl->assign("ASSIGNED_USER_NAME", $focus->assigned_user_name);
+
+$xtpl->assign("assign_user_select", SugarThemeRegistry::current()->getImage('id-ff-select'));
+$xtpl->assign("assign_user_clear", SugarThemeRegistry::current()->getImage('id-ff-clear'));
+//Assign qsd script
+require_once('include/QuickSearchDefaults.php');
+$qsd = new QuickSearchDefaults();
+$sqs_objects = array( 'EditView_assigned_user_name' => $qsd->getQSUser());
+$quicksearch_js = '<script type="text/javascript" language="javascript">sqs_objects = ' . $json->encode($sqs_objects) . '; enableQS();</script>';
+
 $xtpl->assign("CANCEL_SCRIPT", $cancel_script);
 $xtpl->assign("PRINT_URL", "index.php?".$GLOBALS['request_string']);
-$xtpl->assign("JAVASCRIPT", get_set_focus_js());
+$xtpl->assign("JAVASCRIPT", get_set_focus_js() . $quicksearch_js);
 
 if(!is_file($GLOBALS['sugar_config']['cache_dir'] . 'jsLanguage/' . $GLOBALS['current_language'] . '.js')) {
     require_once('include/language/jsLanguage.php');

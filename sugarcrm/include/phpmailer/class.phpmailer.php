@@ -280,8 +280,10 @@ class PHPMailer {
   public function IsHTML($bool) {
     if($bool == true) {
       $this->ContentType = 'text/html';
+      $this->Encoding = 'base64';
     } else {
       $this->ContentType = 'text/plain';
+      $this->Encoding = 'quoted-printable';
     }
   }
 

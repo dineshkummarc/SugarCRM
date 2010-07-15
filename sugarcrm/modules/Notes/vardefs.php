@@ -442,6 +442,6 @@ $dictionary['Note'] = array('table' => 'notes',
 	,'optimistic_locking'=>true,
                             );
 
-VardefManager::createVardef('Notes','Note', array(
+VardefManager::createVardef('Notes','Note', array('assignable',
 ));
 ?>

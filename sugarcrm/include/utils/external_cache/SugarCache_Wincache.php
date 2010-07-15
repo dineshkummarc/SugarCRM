@@ -92,4 +92,11 @@ class SugarCache_Wincache extends SugarCache_ExternalAbstract
         parent::__unset($key);
         wincache_ucache_delete($this->_realKey($key));
     }
+    /**
+     * Clean opcode cache
+     */
+    function clean_opcodes()
+    {
+		wincache_refresh_if_changed();
+    }
 }

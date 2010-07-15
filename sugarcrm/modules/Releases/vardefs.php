@@ -115,7 +115,7 @@ $dictionary['Release'] = array('table' => 'releases'
     'vname' => 'LBL_STATUS',
     'type' => 'enum',
     'options' => 'release_status_dom',
-    'len'=>25,
+    'len' => 100,
     'importable' => 'required',
   ),
 )

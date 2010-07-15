@@ -76,7 +76,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 * required  This field dictates whether it is a required value.
 *           The default value is �FALSE�.
 * isPrimary This field identifies the primary key of the table.
-*           If none of the fields have this flag set to �TRUE�, 
+*           If none of the fields have this flag set to �TRUE�,
 *           the first field definition is assume to be the primary key.
 *           Default value for this field is �FALSE�.
 * default   This field sets the default value for the field definition.
@@ -98,7 +98,7 @@ class MysqliManager extends MysqlManager
      * @see DBManager::$dbType
      */
     public $dbType = 'mysql';
-    
+
     /**
      * @see DBManager::$backendFunctions
      */
@@ -108,26 +108,28 @@ class MysqliManager extends MysqlManager
         'row_count'          => 'mysqli_num_rows',
         'affected_row_count' => 'mysqli_affected_rows',
         );
-    
+
     /**
      * @see DBManager::checkError()
      */
     public function checkError(
-        $msg = '', 
+        $msg = '',
         $dieOnError = false
         )
     {
         if (DBManager::checkError($msg, $dieOnError))
             return true;
-        
+
+        $userMsg = inDeveloperMode()?"$msg: ":"";
+
         if (mysqli_errno($this->getDatabase())){
             if($this->dieOnError || $dieOnError){
-                $GLOBALS['log']->fatal("MySQL error ".mysqli_errno($this->database).": ".mysqli_error($this->database));
-                sugar_die ($msg."MySQL error ".mysqli_errno($this->database).": ".mysqli_error($this->database));
+                $GLOBALS['log']->fatal("$msg: MySQL error ".mysqli_errno($this->database).": ".mysqli_error($this->database));
+                sugar_die ($userMsg."MySQL error ".mysqli_errno($this->database).": ".mysqli_error($this->database));
             }
             else{
-                $this->last_error = $msg."MySQL error ".mysqli_errno($this->database).": ".mysqli_error($this->database);
-                $GLOBALS['log']->error("MySQL error ".mysqli_errno($this->database).": ".mysqli_error($this->database));
+                $this->last_error = $userMsg."MySQL error ".mysqli_errno($this->database).": ".mysqli_error($this->database);
+                $GLOBALS['log']->error("$msg: MySQL error ".mysqli_errno($this->database).": ".mysqli_error($this->database));
 
             }
             return true;
@@ -139,10 +141,10 @@ class MysqliManager extends MysqlManager
      * @see MysqlManager::query()
      */
     public function query(
-        $sql, 
-        $dieOnError = false, 
-        $msg = '', 
-        $suppress = false, 
+        $sql,
+        $dieOnError = false,
+        $msg = '',
+        $suppress = false,
         $autofree = false
         )
     {
@@ -154,24 +156,24 @@ class MysqliManager extends MysqlManager
         $this->query_time = microtime(true);
         $this->lastsql = $sql;
         if ($suppress==true){
-        } 
+        }
         else {
             $result = mysqli_query($this->database,$sql);
         }
         $md5 = md5($sql);
-        
+
         if (empty($queryMD5[$md5]))
         	$queryMD5[$md5] = true;
-        
+
         $this->lastmysqlrow = -1;
         $this->query_time = microtime(true) - $this->query_time;
         $GLOBALS['log']->info('Query Execution Time:'.$this->query_time);
-		
-		
-		$this->checkError($msg.' Query Failed:' . $sql . '::', $dieOnError);
+
+
+		$this->checkError($msg.' Query Failed: ' . $sql, $dieOnError);
         if($autofree)
             $this->lastResult[] =& $result;
-        
+
         return $result;
     }
 
@@ -179,7 +181,7 @@ class MysqliManager extends MysqlManager
      * @see DBManager::getFieldsArray()
      */
     public function getFieldsArray(
-        &$result, 
+        &$result,
         $make_lower_case = false
         )
     {
@@ -187,7 +189,7 @@ class MysqliManager extends MysqlManager
 
         if (!isset($result) || empty($result))
             return 0;
-        
+
         $i = 0;
         while ($i < mysqli_num_fields($result)) {
             $meta = mysqli_fetch_field_direct($result, $i);
@@ -196,7 +198,7 @@ class MysqliManager extends MysqlManager
 
             if($make_lower_case == true)
                 $meta->name = strtolower($meta->name);
-            
+
             $field_array[] = $meta->name;
 
             $i++;
@@ -209,14 +211,14 @@ class MysqliManager extends MysqlManager
      * @see DBManager::fetchByAssoc()
      */
     public function fetchByAssoc(
-        &$result, 
-        $rowNum = -1, 
+        &$result,
+        $rowNum = -1,
         $encode = true
         )
     {
         if (!$result)
             return false;
-        
+
         if ($result && $rowNum > -1) {
             if ($this->getRowCount($result) > $rowNum)
                 mysqli_data_seek($result, $rowNum);
@@ -227,7 +229,7 @@ class MysqliManager extends MysqlManager
 
         if ($encode && $this->encode && is_array($row))
             return array_map('to_html', $row);
-        
+
         return $row;
     }
 
@@ -252,12 +254,12 @@ class MysqliManager extends MysqlManager
     {
         return mysqli_escape_string($this->getDatabase(),$string);
     }
-    
+
     /**
      * @see DBManager::connect()
      */
     public function connect(
-        array $configOptions = null, 
+        array $configOptions = null,
         $dieOnError = false
         )
     {
@@ -265,7 +267,7 @@ class MysqliManager extends MysqlManager
 
         if (is_null($configOptions))
             $configOptions = $sugar_config['dbconfig'];
-        
+
         if(!isset($this->database)) {
 
    	        //mysqli connector has a separate parameter for port.. We need to separate it out from the host name
@@ -276,18 +278,18 @@ class MysqliManager extends MysqlManager
 	        	$dbhost=substr($configOptions['db_host_name'],0,$pos);
 	        	$dbport=substr($configOptions['db_host_name'],$pos+1);
 	        }
-        	
-        	$this->database = mysqli_connect($dbhost,$configOptions['db_user_name'],$configOptions['db_password'],$configOptions['db_name'],$dbport) 
+
+        	$this->database = mysqli_connect($dbhost,$configOptions['db_user_name'],$configOptions['db_password'],$configOptions['db_name'],$dbport)
                 or sugar_die("Could not connect to server ".$dbhost." as ".$configOptions['db_user_name'].". port " .$dbport . ". " . mysqli_connect_error());
         }
-        @mysqli_select_db($this->database,$configOptions['db_name']) 
+        @mysqli_select_db($this->database,$configOptions['db_name'])
             or sugar_die( "Unable to select database: " . mysqli_connect_error());
-        
+
         // cn: using direct calls to prevent this from spamming the Logs
         mysqli_query($this->database,"SET CHARACTER SET utf8"); // no quotes around "[charset]"
         mysqli_query($this->database,"SET NAMES 'utf8'");
 
-        if($this->checkError('Could Not Connect:', $dieOnError))
+        if($this->checkError('Could Not Connect', $dieOnError))
             $GLOBALS['log']->info("connected to db");
     }
 }

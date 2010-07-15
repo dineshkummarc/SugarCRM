@@ -233,6 +233,11 @@ if (!empty($focus->parent_type) && $focus->parent_type !='test') {
     $xtpl->assign('PARENT_TYPE', $app_list_strings['record_type_display'][$focus->parent_type] . ':');
 }
 
+$to_addr = !empty($focus->to_addrs_names) ? htmlentities($focus->to_addrs_names) : nl2br($focus->to_addrs);
+$from_addr = !empty($focus->from_addr_name) ? htmlentities($focus->from_addr_name) : nl2br($focus->from_addr);
+$cc_addr = !empty($focus->cc_addrs_names) ? htmlentities($focus->cc_addrs_names) : nl2br($focus->cc_addrs);
+$bcc_addr = !empty($focus->bcc_addrs_names) ? htmlentities($focus->bcc_addrs_names) : nl2br($focus->bcc_addrs);
+
 $xtpl->assign('MOD', $mod_strings);
 $xtpl->assign('APP', $app_strings);
 $xtpl->assign('GRIDLINE', $gridline);
@@ -247,10 +252,10 @@ $xtpl->assign('DATE_MODIFIED', $focus->date_modified);
 $xtpl->assign('DATE_ENTERED', $focus->date_entered);
 $xtpl->assign('DATE_START', $focus->date_start);
 $xtpl->assign('TIME_START', $focus->time_start);
-$xtpl->assign('FROM', $focus->from_addr);
-$xtpl->assign('TO', nl2br($focus->to_addrs));
-$xtpl->assign('CC', nl2br($focus->cc_addrs));
-$xtpl->assign('BCC', nl2br($focus->bcc_addrs));
+$xtpl->assign('FROM', $from_addr);
+$xtpl->assign('TO', $to_addr);
+$xtpl->assign('CC', $cc_addr);
+$xtpl->assign('BCC', $bcc_addr);
 $xtpl->assign('CREATED_BY', $focus->created_by_name);
 $xtpl->assign('MODIFIED_BY', $focus->modified_by_name);
 $xtpl->assign('DESCRIPTION', nl2br($focus->description));

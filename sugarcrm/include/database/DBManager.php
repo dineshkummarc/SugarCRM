@@ -76,7 +76,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 * required  This field dictates whether it is a required value.
 *           The default value is �FALSE�.
 * isPrimary This field identifies the primary key of the table.
-*           If none of the fields have this flag set to �TRUE�, 
+*           If none of the fields have this flag set to �TRUE�,
 *           the first field definition is assume to be the primary key.
 *           Default value for this field is �FALSE�.
 * default   This field sets the default value for the field definition.
@@ -96,37 +96,37 @@ abstract class DBManager
      * DBHelper object instance for this class
      */
     public $helper;
-    
+
     /**
      * Name of database table we are dealing with
      */
     protected $tableName;
-    
-    /** 
+
+    /**
      * Name of database
      */
     public $database = null;
-    
+
     /**
      * Indicates whether we should die when we get an error from the DB
      */
     protected $dieOnError = false;
-    
+
     /**
      * Indicates whether we should html encode the results from a query by default
      */
     protected $encode = true;
-    
+
     /**
      * Records the execution time of the last query
      */
     protected $query_time = 0;
-    
+
     /**
      * Number of the last row fetched from the query result set
      */
     protected $lastmysqlrow = -1;
-    
+
     /**
      * Last error message from the DB backend
      */
@@ -136,27 +136,27 @@ abstract class DBManager
      * Registry of available result sets
      */
     protected $lastResult = array();
-    
+
     /**
      * Current query count
      */
     private static $queryCount = 0;
-    
+
     /**
      * Query threshold limit
      */
     private static $queryLimit = 0;
-    
+
     /**
      * Array of common backend functions and what the PHP they map to is
      */
     protected $backendFunctions = array();
-    
+
     /**
      * Array of prepared statements and their correspoding parsed tokens
      */
     protected $preparedTokens = array();
-    
+
     /**
      * Wrapper for those trying to access the private and protected class members directly
      */
@@ -165,11 +165,11 @@ abstract class DBManager
         $GLOBALS['log']->info('call to DBManagerFactory::$'.$p.' is deprecated');
         return $this->$p;
     }
-    
+
     public function __construct()
     {
     }
-    
+
     /**
      * Returns the current tablename
      *
@@ -179,7 +179,7 @@ abstract class DBManager
     {
         return $this->tableName;
     }
-    
+
     /**
      * Returns the current database handle
      *
@@ -190,7 +190,7 @@ abstract class DBManager
         $this->checkConnection();
         return $this->database;
     }
-    
+
     /**
      * Returns this instance's DBHelper
      *
@@ -200,17 +200,17 @@ abstract class DBManager
     {
         if ( !($this->helper instanceof DBHelper) ) {
             global $sugar_config;
-    
+
             switch ( $sugar_config['dbconfig']['db_type'] ) {
             case "mysql":
                 $my_db_helper = 'MysqlHelper';
-                if ( (!isset($sugar_config['mysqli_disabled']) 
+                if ( (!isset($sugar_config['mysqli_disabled'])
                             || $sugar_config['mysqli_disabled'] == false)
                         && function_exists('mysqli_connect') )
                     $my_db_helper = 'MysqliHelper';
                 break;
             case "mssql":
-                if (is_freetds() 
+                if (is_freetds()
                         && (empty($config['db_mssql_force_driver']) || $config['db_mssql_force_driver'] == 'freetds' ))
                     $my_db_helper = 'FreeTDSHelper';
                 elseif (function_exists('mssql_connect')
@@ -227,7 +227,7 @@ abstract class DBManager
             $this->helper = new $my_db_helper();
             $this->helper->db = $this;
         }
-        
+
         return $this->helper;
     }
 
@@ -239,15 +239,17 @@ abstract class DBManager
      * @return bool
      */
     public function checkError(
-        $msg = '', 
+        $msg = '',
         $dieOnError = false)
     {
+    	$userMsg = inDeveloperMode()?"$msg: ":"";
+
         if (!isset($this->database)) {
             $GLOBALS['log']->error("Database Is Not Connected");
             if($this->dieOnError || $dieOnError)
-                sugar_die ($msg."Database Is Not Connected");
+                sugar_die ($userMsg."Database Is Not Connected");
             else
-                $this->last_error = $msg."Database Is Not Connected";
+                $this->last_error = $userMsg."Database Is Not Connected";
             return true;
         }
         return false;
@@ -268,13 +270,13 @@ abstract class DBManager
     {
         global $sugar_config;
 
-        $do_the_dump = isset($sugar_config['dump_slow_queries']) 
+        $do_the_dump = isset($sugar_config['dump_slow_queries'])
             ? $sugar_config['dump_slow_queries'] : false;
-        $slow_query_time_msec = isset($sugar_config['slow_query_time_msec']) 
+        $slow_query_time_msec = isset($sugar_config['slow_query_time_msec'])
             ? $sugar_config['slow_query_time_msec'] : 5000;
-        
+
         if($do_the_dump) {
-            if($slow_query_time_msec < ($this->query_time * 1000)) {   
+            if($slow_query_time_msec < ($this->query_time * 1000)) {
                 // Then log both the query and the query time
                 $GLOBALS['log']->fatal('Slow Query (time:'.$this->query_time."\n".$query);
                 return true;
@@ -283,9 +285,8 @@ abstract class DBManager
         return false;
     }
 
-
    /**
-    * Scans order by to ensure that any field being ordered by is. 
+    * Scans order by to ensure that any field being ordered by is.
     *
     * It will throw a warning error to the log file - fatal if slow query logging is enabled
     *
@@ -294,7 +295,7 @@ abstract class DBManager
     * @return bool   true if an index is found false otherwise
     */
    protected function checkQuery(
-       $sql, 
+       $sql,
        $object_name = false
        )
    {
@@ -344,16 +345,16 @@ abstract class DBManager
                    $GLOBALS['log']->fatal('CHECK QUERY:' .$warning);
                else
                    $GLOBALS['log']->warn('CHECK QUERY:' .$warning);
-                   
+
            }
        }
        return false;
     }
 
-    /** 
+    /**
      * Returns the time the last query took to execute
      *
-     * @return int 
+     * @return int
      */
     public function getQueryTime()
     {
@@ -366,7 +367,7 @@ abstract class DBManager
     public function checkConnection()
     {
         $this->last_error = '';
-        if (!isset($this->database)) 
+        if (!isset($this->database))
             $this->connect();
     }
 
@@ -406,7 +407,7 @@ abstract class DBManager
      * If where is not passed, it defaults to id of table
      */
     public function update(
-        SugarBean $bean, 
+        SugarBean $bean,
         array $where = array()
         )
     {
@@ -425,7 +426,7 @@ abstract class DBManager
 	 * If where is not passed, it defaults to id of table
 	 */
     public function delete(
-        SugarBean $bean, 
+        SugarBean $bean,
         array $where = array()
         )
     {
@@ -446,7 +447,7 @@ abstract class DBManager
      * @return resource result from the query
      */
     public function retrieve(
-        SugarBean $bean, 
+        SugarBean $bean,
         array $where = array()
         )
     {
@@ -473,8 +474,8 @@ abstract class DBManager
      * @return resource
      */
     public function retrieveView(
-        array $beans, 
-        array $cols = array(), 
+        array $beans,
+        array $cols = array(),
         array $where = array()
         )
     {
@@ -509,8 +510,8 @@ abstract class DBManager
      * @param string $engine    MySQL engine to use
      */
     public function createTableParams(
-        $tablename, 
-        $fieldDefs, 
+        $tablename,
+        $fieldDefs,
         $indices,
         $engine = null
         )
@@ -548,12 +549,12 @@ abstract class DBManager
 		//ForecastOpportunities
         if($tablename == 'does_not_exist' || $tablename == '')
         	return '';
-        
+
         global $dictionary;
         $engine=null;
         if (isset($dictionary[$bean->getObjectName()]['engine']) && !empty($dictionary[$bean->getObjectName()]['engine']) )
             $engine = $dictionary[$bean->getObjectName()]['engine'];
-        
+
         return $this->repairTableParams($tablename, $fielddefs,$new_Indecies,$execute,$engine);
     }
 
@@ -567,9 +568,9 @@ abstract class DBManager
      * @param  string $engine    optional, MySQL engine
      */
     public function repairTableParams(
-        $tablename,  
+        $tablename,
         $fielddefs,
-        $indices, 
+        $indices,
         $execute = true,
         $engine = null
         )
@@ -578,11 +579,11 @@ abstract class DBManager
 
 		//jc: had a bug when running the repair if the tablename is blank the repair will
 		//fail when it tries to create a repair table
-        if ($tablename == '') 
+        if ($tablename == '')
             return '';
         if (empty($fielddefs))
             return '';
-        
+
         //if the table does not exist create it and we are done
         $sql = "/* Table : $tablename */\n";
         if (!$this->tableExists($tablename)){
@@ -592,7 +593,7 @@ abstract class DBManager
             if($execute && $createtablesql){
                 $this->createTableParams($tablename,$fielddefs,$indices,$engine);
             }
-            
+
             $sql .= "/* MISSING TABLE: {$tablename} */\n";
             $sql .= $createtablesql . "\n";
             return $sql;
@@ -600,36 +601,36 @@ abstract class DBManager
 
         $compareFieldDefs = $this->getHelper()->get_columns($tablename);
         $compareIndices = $this->getHelper()->get_indices($tablename);
-        
+
         $take_action = false;
-        
+
         // do column comparisions
         $sql .=	"/*COLUMNS*/\n";
         foreach ($fielddefs as $value) {
             if (isset($value['source']) && $value['source'] != 'db')
                 continue;
-            
+
             $name = $value['name'];
             // add or fix the field defs per what the DB is expected to give us back
             $this->getHelper()->massageFieldDef($value,$tablename);
-                
+
             $ignorerequired=false;
-		
+
 			//Do not track requiredness in the DB, auto_increment, ID, and deleted fields are always required in the DB, so don't force those
-            if (empty($value['auto_increment']) && (empty($value['type']) || $value['type'] != 'id') 
-                    && (empty($value['dbType']) || $value['dbType'] != 'id') 
+            if (empty($value['auto_increment']) && (empty($value['type']) || $value['type'] != 'id')
+                    && (empty($value['dbType']) || $value['dbType'] != 'id')
 					&& (empty($value['name']) || ($value['name'] != 'id' && $value['name'] != 'deleted'))
 			){
 			    $value['required'] = false;
-			} 
+			}
 			//Should match the conditions in DBHelper::oneColumnSQLRep for DB required fields, type='id' fields will sometimes
 			//come into this function as 'type' = 'char', 'dbType' = 'id' without required set in $value. Assume they are correct and leave them alone.
-			else if (($name == 'id' || $value['type'] == 'id' || (isset($value['dbType']) && $value['dbType'] == 'id')) 
+			else if (($name == 'id' || $value['type'] == 'id' || (isset($value['dbType']) && $value['dbType'] == 'id'))
                 && (!isset($value['required']) && isset($compareFieldDefs[$name]['required'])))
 			{
 				$value['required'] = $compareFieldDefs[$name]['required'];
 			}
-				
+
             if ( !isset($compareFieldDefs[$name]) ) {
                 // ok we need this field lets create it
                 $sql .=	"/*MISSING IN DATABASE - $name -  ROW*/\n";
@@ -659,7 +660,7 @@ abstract class DBManager
                 }
 
                 //dwheeler: Once a column has been defined as null, we cannot try to force it back to !null
-                if ((isset($value['required']) && ($value['required'] === true || $value['required'] == 'true' || $value['required'] === 1)) 
+                if ((isset($value['required']) && ($value['required'] === true || $value['required'] == 'true' || $value['required'] === 1))
 				    && (empty($compareFieldDefs[$name]['required']) || $compareFieldDefs[$name]['required'] != 'true'))
 			    {
 				    $ignorerequired = true;
@@ -678,22 +679,22 @@ abstract class DBManager
         $correctedIndexs = array();
         foreach ($indices as $value) {
             $name = $value['name'];
-            
+
 			//Don't attempt to fix the same index twice in one pass;
-			if (isset($correctedIndexs[$name])) 
-				continue; 
-            
+			if (isset($correctedIndexs[$name]))
+				continue;
+
             //don't bother checking primary nothing we can do about them
             if (isset($value['type']) && $value['type'] == 'primary')
                 continue;
-            
+
             //database helpers do not know how to handle full text indices
             if ($value['type']=='fulltext')
                 continue;
-            
+
             if ( in_array($value['type'],array('alternate_key','foreign')) )
                 $value['type'] = 'index';
-            
+
             if ( !isset($compareIndices[$name]) ) {
                 // ok we need this field lets create it
                 $sql .=	 "/*MISSING INDEX IN DATABASE - $name -{$value['type']}  ROW */\n";
@@ -709,7 +710,7 @@ abstract class DBManager
                     if ( $n1 == 'fields' )
                         foreach($t1 as $rKey => $rValue)
                             $sql .= "[$rKey] => '$rValue'  ";
-                    else 
+                    else
                         $sql .= " $t1 ";
                 }
                 $sql .=	"*/\n";
@@ -719,7 +720,7 @@ abstract class DBManager
                     if ( $n1 == 'fields' )
                         foreach ($t1 as $rKey => $rValue)
                             $sql .=	"[$rKey] => '$rValue'  ";
-                    else 
+                    else
                         $sql .= " $t1 ";
                 }
                 $sql .=	"*/\n";
@@ -731,7 +732,7 @@ abstract class DBManager
 
         return ($take_action === true) ? $sql : "";
     }
-    
+
     /**
      * Compares two vardefs
      *
@@ -751,21 +752,21 @@ abstract class DBManager
                 continue;
             return false;
         }
-        
+
         return true;
     }
 
     /**
      * Compare a field in two tables
-     * 
+     *
      * @param  string $name   field name
      * @param  string $table1
      * @param  string $table2
      * @return array  array with keys 'msg','table1','table2'
      */
     public function compareFieldInTables(
-        $name, 
-        $table1, 
+        $name,
+        $table1,
         $table2
         )
     {
@@ -776,7 +777,7 @@ abstract class DBManager
             'table2' => $row2,
             'msg'    => 'error',
             );
-        
+
         $ignore_filter = array('Key'=>1);
         if ($row1) {
             if (!$row2) {
@@ -814,8 +815,8 @@ abstract class DBManager
      * @return array  array with keys 'msg','table1','table2'
      */
     public function compareIndexInTables(
-        $name, 
-        $table1, 
+        $name,
+        $table1,
         $table2
         )
     {
@@ -870,9 +871,9 @@ abstract class DBManager
      * @param bool   $unique    optional, true if we want to create an unique index
 	 */
     public function createIndex(
-        SugarBean $bean, 
-        $fieldDefs, 
-        $name, 
+        SugarBean $bean,
+        $fieldDefs,
+        $name,
         $unique = true
         )
     {
@@ -891,14 +892,14 @@ abstract class DBManager
      * @return string SQL statement
      */
     public function addIndexes(
-        $tablename, 
-        $indexes, 
+        $tablename,
+        $indexes,
         $execute = true
         )
     {
         $alters = $this->getHelper()->keysSQL($indexes,true,'ADD');
         $sql = "ALTER TABLE $tablename $alters";
-        if ($execute) 
+        if ($execute)
             $this->query($sql);
         return $sql;
     }
@@ -912,15 +913,15 @@ abstract class DBManager
      * @return string SQL statement
      */
     public function dropIndexes(
-        $tablename, 
-        $indexes, 
+        $tablename,
+        $indexes,
         $execute = true
         )
     {
         $sql = '';
         foreach ($indexes as $index) {
             $name =$index['name'];
-            if($execute) 
+            if($execute)
                 unset($GLOBALS['table_descriptions'][$tablename]['indexes'][$name]);
             if ($index['type'] == 'primary')
                 $name = 'PRIMARY KEY';
@@ -933,12 +934,12 @@ abstract class DBManager
         }
         if (!empty($sql)) {
             $sql = "ALTER TABLE $tablename $sql";
-            if($execute) 
+            if($execute)
                 $this->query($sql);
         }
         return $sql;
     }
-    
+
     /**
      * Modifies indexes
      *
@@ -948,8 +949,8 @@ abstract class DBManager
      * @return string SQL statement
      */
     public function modifyIndexes(
-        $tablename, 
-        $indexes, 
+        $tablename,
+        $indexes,
         $execute = true
         )
     {
@@ -964,7 +965,7 @@ abstract class DBManager
 	 * @param array  $fieldDefs
 	 */
     public function addColumn(
-        $tablename, 
+        $tablename,
         $fieldDefs
         )
     {
@@ -973,8 +974,8 @@ abstract class DBManager
         if ($this->getHelper()->isFieldArray($fieldDefs)){
             foreach ($fieldDefs as $fieldDef) $columns[] = $fieldDef['name'];
             $columns = implode(",", $columns);
-        } 
-        else 
+        }
+        else
             $columns = $fieldDefs['name'];
 
         $msg = "Error adding column(s) ".$columns." on table: ".$this->tableName. ":";
@@ -989,7 +990,7 @@ abstract class DBManager
      * @param bool   $ignoreRequired optional, true if we are ignoring this being a required field
 	 */
     public function alterColumn(
-        $tablename, 
+        $tablename,
         $newFieldDef,
         $ignoreRequired = false
         )
@@ -1002,12 +1003,12 @@ abstract class DBManager
                 $columns[] = $fieldDef['name'];
             }
             $columns = implode(",", $columns);
-        } 
+        }
         else {
             unset($GLOBALS['table_descriptions'][$tablename][$newFieldDef['name']]);
             $columns = $newFieldDef['name'];
         }
-        
+
         $msg = "Error altering column(s) ".$columns." on table: ".$this->tableName. ":";
         $this->query($sql,true,$msg);
     }
@@ -1046,7 +1047,7 @@ abstract class DBManager
      * @param array  $fieldDefs
      */
     public function deleteColumn(
-        SugarBean $bean, 
+        SugarBean $bean,
         $fieldDefs
         )
     {
@@ -1055,7 +1056,7 @@ abstract class DBManager
         $msg = "Error deleting column(s) ".$columns." on table: ".$this->tableName. ":";
         $this->query($sql,true,$msg);
     }
-    
+
     /**
 	 * Fetches all the rows for a select query. Returns FALSE if query failed and
 	 * DB_OK for all other queries
@@ -1073,7 +1074,7 @@ abstract class DBManager
         if (PEAR::isError($result) === true) {
             $GLOBALS['log']->error($msg);
             $result = FALSE;
-        } 
+        }
         elseif ($result != DB_OK) {
             // must be a result
             $GLOBALS['log']->fatal("setResult:".print_r($result,true));
@@ -1090,9 +1091,9 @@ abstract class DBManager
         return $result;
     }
 
-    /** 
+    /**
      * Private function to handle most of the sql statements which go as queries
-     * 
+     *
      * @deprecated
      *
      * @param  string   $sql
@@ -1103,10 +1104,10 @@ abstract class DBManager
      * @return array    All rows in result set
      */
     public function executeLimitQuery(
-        $query, 
+        $query,
         $start,
-        $count, 
-        $dieOnError = false, 
+        $count,
+        $dieOnError = false,
         $msg = '')
     {
         $GLOBALS['log']->info('call to DBManager::executeLimitQuery() is deprecated');
@@ -1114,25 +1115,25 @@ abstract class DBManager
         return $this->setResult($result);
     }
 
-    /** 
+    /**
      * Private function to handle most of the sql statements which go as queries
      *
      * @deprecated
-     * 
+     *
      * @param  string $query
      * @param  string $msg
      * @param  bool   $getRows
      * @return array  All rows in result set
 	 */
     public function executeQuery(
-        $query, 
-        $msg, 
+        $query,
+        $msg,
         $getRows = false
         )
     {
         $GLOBALS['log']->info('call to DBManager::executeQuery() is deprecated');
         $result = $this->query($query,true,$msg);
-        if ($getRows) 
+        if ($getRows)
             return $this->setResult($result);
         // dd not get rows. Simply go on.
 	}
@@ -1186,18 +1187,18 @@ abstract class DBManager
      * @return string SQL insert statement
      */
 	public function generateInsertSQL(
-        SugarBean $bean, 
-        $select_query, 
-        $start, 
-        $count = -1, 
-        $table, 
-        $db_type, 
+        SugarBean $bean,
+        $select_query,
+        $start,
+        $count = -1,
+        $table,
+        $db_type,
         $is_related_query = false
         )
     {
         $GLOBALS['log']->info('call to DBManager::generateInsertSQL() is deprecated');
         global $sugar_config;
-        
+
         $count_query = $bean->create_list_count_query($select_query);
 		if(!empty($count_query))
 		{
@@ -1223,24 +1224,24 @@ abstract class DBManager
 		// get field definitions
 		$fields = $bean->getFieldDefinitions();
 		$custom_fields = array();
-		
+
 		if($bean->hasCustomFields()){
-			foreach ($fields as $fieldDef){		
+			foreach ($fields as $fieldDef){
 				if($fieldDef['source'] == 'custom_fields'){
-					$custom_fields[$fieldDef['name']] = $fieldDef['name'];	
+					$custom_fields[$fieldDef['name']] = $fieldDef['name'];
 				}
-			}	
-			if(!empty($custom_fields)){	 
-				$custom_fields['id_c'] = 'id_c';			
-				$id_field = array('name' => 'id_c', custom_type => 'id',);				
-				$fields[] = $id_field; 			
-			}		
+			}
+			if(!empty($custom_fields)){
+				$custom_fields['id_c'] = 'id_c';
+				$id_field = array('name' => 'id_c', custom_type => 'id',);
+				$fields[] = $id_field;
+			}
 		}
 
 		// get column names and values
 		$row_array = array();
 		$columns = array();
-		$cstm_row_array = array();	
+		$cstm_row_array = array();
 		$cstm_columns = array();
 		$built_columns = false;
         //configure client helper
@@ -1265,19 +1266,19 @@ abstract class DBManager
                		else
     		   		{
     		   			$type = $fieldDef['type'];
-						if(!empty($fieldDef['custom_type'])){					
-							$type = $fieldDef['custom_type'];				
+						if(!empty($fieldDef['custom_type'])){
+							$type = $fieldDef['custom_type'];
 						}
     		    		 // need to do some thing about types of values
 						 if($db_type == 'mysql' && $val == '' && ($type == 'datetime' ||  $type == 'date' || $type == 'int' || $type == 'currency' || $type == 'decimal')){
-							if(!empty($custom_fields[$fieldDef['name']]))	
-								$cstm_values[$fieldDef['name']] = 'null';								
+							if(!empty($custom_fields[$fieldDef['name']]))
+								$cstm_values[$fieldDef['name']] = 'null';
 							else
 						 		$values[$fieldDef['name']] = 'null';
 						 }else{
     		     			 if(isset($type) && $type=='int') {
                              	if(!empty($custom_fields[$fieldDef['name']]))
-                             		$cstm_values[$fieldDef['name']] = $GLOBALS['db']->quote(from_html($val));	
+                             		$cstm_values[$fieldDef['name']] = $GLOBALS['db']->quote(from_html($val));
     		     			 	else
                              		$values[$fieldDef['name']] = $GLOBALS['db']->quote(from_html($val));
                              } else {
@@ -1324,14 +1325,14 @@ abstract class DBManager
 		for($i = 0; $i < count($row_array); $i++){
 			$sql .= " (".implode(",", $row_array[$i]).")";
 			if($i < (count($row_array) - 1)){
-				$sql .= ", ";	
+				$sql .= ", ";
 			}
 		}
 		//custom
 		// get the entire sql
 		$custom_sql .= "(".implode(",", $cstm_columns).") ";
 		$custom_sql .= "VALUES";
-		
+
 		for($i = 0; $i < count($cstm_row_array); $i++){
 			$custom_sql .= " (".implode(",", $cstm_row_array[$i]).")";
 			if($i < (count($cstm_row_array) - 1)){
@@ -1344,10 +1345,10 @@ abstract class DBManager
     /**
      * Disconnects all instances
      */
-    public function disconnectAll() 
+    public function disconnectAll()
     {
         global $dbinstances;
-        
+
         if (!empty($dbinstances)) {
             $cur = current($dbinstances);
             while ($cur) {
@@ -1360,35 +1361,35 @@ abstract class DBManager
 
     /**
      * This function sets the query threshold limit
-     * 
+     *
      * @param int $limit value of query threshold limit
      */
-    public static function setQueryLimit($limit){		
+    public static function setQueryLimit($limit){
 		//reset the queryCount
 		self::$queryCount = 0;
-		
+
 		self::$queryLimit = $limit;
     }
-    
+
     /**
      * Returns the static queryCount value
-     * 
+     *
      * @return int value of the queryCount static variable
      */
-    public static function getQueryCount() 
+    public static function getQueryCount()
     {
-        return self::$queryCount;	
+        return self::$queryCount;
     }
-    
-    
+
+
     /**
      * Resets the queryCount value to 0
-     * 
+     *
      */
     public static function resetQueryCount() {
     	self::$queryCount = 0;
     }
-    
+
     /**
      * This function increments the global $sql_queries variable
      *
@@ -1396,7 +1397,7 @@ abstract class DBManager
      */
     public function countQuery(
         $sql
-        ) 
+        )
     {
 		if (++self::$queryCount > self::$queryLimit
             &&(empty($GLOBALS['current_user']) || !is_admin($GLOBALS['current_user']))) {
@@ -1405,7 +1406,7 @@ abstract class DBManager
 		   $resourceManager->notifyObservers('ERR_QUERY_LIMIT');
 		}
     }
-    
+
     /**
      * Returns a string properly quoted for this database
      *
@@ -1419,7 +1420,7 @@ abstract class DBManager
     {
         return from_html($string);
     }
-    
+
     /**
      * Returns a string properly quoted for this database that is an email
      *
@@ -1430,19 +1431,19 @@ abstract class DBManager
         $string,
         $isLike = true
         );
-    
+
     /**
      * Quote the strings of the passed in array
-     * 
+     *
      * The array must only contain strings
      *
      * @param array $array
      * @param bool  $isLike
      */
     public function arrayQuote(
-        array &$array, 
+        array &$array,
         $isLike = true
-        ) 
+        )
     {
         for($i = 0; $i < count($array); $i++){
             $array[$i] = $this->quote($array[$i], $isLike);
@@ -1458,15 +1459,15 @@ abstract class DBManager
      * @return resource result set
      */
     abstract public function query(
-        $sql, 
-        $dieOnError = false, 
-        $msg = '', 
+        $sql,
+        $dieOnError = false,
+        $msg = '',
         $suppress = false
         );
-    
+
     /**
      * Runs a limit query: one where we specify where to start getting records and how many to get
-     * 
+     *
      * @param  string   $sql
      * @param  int      $start
      * @param  int      $count
@@ -1480,7 +1481,7 @@ abstract class DBManager
         $count,
         $dieOnError = false,
         $msg = '');
-    
+
     /**
      * Frees out previous results
      *
@@ -1514,28 +1515,28 @@ abstract class DBManager
      * @return array    single row from the query
      */
     public function getOne(
-        $sql, 
-        $dieOnError = false, 
-        $msg = '', 
+        $sql,
+        $dieOnError = false,
+        $msg = '',
         $suppress = false
         )
     {
         $GLOBALS['log']->info("Get One: . |$sql|");
         $this->checkConnection();
         $queryresult = $this->limitQuery($sql, 0, 1, $dieOnError, $msg);
-        if (!$queryresult) 
+        if (!$queryresult)
             return false;
-        
+
         $row = $this->fetchByAssoc($queryresult);
         if ( !$row )
             return false;
-        
-        $this->checkError($msg.' Get One Failed:' . $sql . '::', $dieOnError);
-        
+
+        $this->checkError($msg.' Get One Failed:' . $sql, $dieOnError);
+
         $this->freeResult($queryresult);
         return array_shift($row);
     }
-    
+
  /**
      * will return the associative array of the row for a query or false if more than one row was returned
      *
@@ -1548,9 +1549,9 @@ abstract class DBManager
      * @return array  associative array of the row or false
      */
     public function requireSingleRow(
-        $sql, 
+        $sql,
         $dieOnError = false,
-        $msg = '', 
+        $msg = '',
         $encode = true
         )
     {
@@ -1565,10 +1566,10 @@ abstract class DBManager
 
         if ($count > 1)
             return false;
-            
+
         return $firstRow;
     }
-    
+
     /**
      * Returns the description of fields based on the result
      *
@@ -1577,9 +1578,9 @@ abstract class DBManager
      * @return array field array
      */
     abstract public function getFieldsArray(
-        &$result, 
+        &$result,
         $make_lower_case = false);
-    
+
     /**
      * Returns the number of rows returned by the result
      *
@@ -1596,7 +1597,7 @@ abstract class DBManager
 		}
 		return 0;
 	}
-    
+
     /**
      * Returns the number of rows affected by the last query
      *
@@ -1607,7 +1608,7 @@ abstract class DBManager
         $affected_row_count = $this->backendFunctions['affected_row_count'];
         return $affected_row_count($this->getDatabase());
     }
-    
+
     /**
      * Fetches the next row in the query result into an associative array
      *
@@ -1618,18 +1619,18 @@ abstract class DBManager
      */
     abstract public function fetchByAssoc(
         &$result,
-        $rowNum = -1, 
+        $rowNum = -1,
         $encode = true);
-    
+
     /**
      * Connects to the database backend
      *
      * Takes in the database settings and opens a database connection based on those
      * will open either a persistent or non-persistent connection.
      * If a persistent connection is desired but not available it will defualt to non-persistent
-     * 
+     *
      * configOptions must include
-     * db_host_name - server ip 
+     * db_host_name - server ip
      * db_user_name - database user name
      * db_password - database password
      *
@@ -1640,7 +1641,7 @@ abstract class DBManager
          array $configOptions = null,
          $dieOnError = false
          );
-     
+
     /**
      * Disconnects from the database
      *
@@ -1657,7 +1658,7 @@ abstract class DBManager
             unset($this->database);
         }
     }
-    
+
     /**
      * Returns the field description for a given field in table
      *
@@ -1671,19 +1672,19 @@ abstract class DBManager
         )
     {
         global $table_descriptions;
-        if(isset($table_descriptions[$tablename]) 
+        if(isset($table_descriptions[$tablename])
                 && isset($table_descriptions[$tablename][$name]))
             return 	$table_descriptions[$tablename][$name];
-        
+
         $table_descriptions[$tablename] = array();
         $table_descriptions[$tablename][$name] = $this->helper->get_columns($tablename);
-        
+
         if(isset($table_descriptions[$tablename][$name]))
             return 	$table_descriptions[$tablename][$name];
-        
+
         return array();
     }
-    
+
     /**
      * Returns the index description for a given index in table
      *
@@ -1715,10 +1716,10 @@ abstract class DBManager
         if(isset($table_descriptions[$tablename]['indexes'][$name])){
             return 	$table_descriptions[$tablename]['indexes'][$name];
         }
-        
+
         return array();
     }
-    
+
     /**
      * Returns an array of table for this database
      *
@@ -1726,23 +1727,23 @@ abstract class DBManager
      * @return	false		if no tables found
      */
     abstract public function getTablesArray();
-    
+
     /**
      * Return's the version of the database
      *
      * @return string
      */
     abstract public function version();
-    
+
     /**
-     * Checks if a table with the name $tableName exists 
+     * Checks if a table with the name $tableName exists
      * and returns true if it does or false otherwise
      *
      * @param  string $tableName
      * @return bool
      */
     abstract public function tableExists($tableName);
-    
+
     /**
      * Truncates a string to a given length
      *
@@ -1751,18 +1752,18 @@ abstract class DBManager
      * @param string
      */
     public function truncate(
-        $string, 
+        $string,
         $len
-        ) 
+        )
     {
     	if ( is_numeric($len) && $len > 0)
-        {	
+        {
             $string = mb_substr($string,0,(int) $len, "UTF-8");
         }
         return $string;
     }
-    
-    
+
+
 	/**
      * Given a sql stmt attempt to parse it into the sql and the tokens. Then return the index of this prepared statement
      * Tokens can come in the following forms:
@@ -1776,20 +1777,20 @@ abstract class DBManager
     public function prepareQuery($sql){
     	//parse out the tokens
     	$tokens = preg_split('/((?<!\\\)[&?!])/', $sql, -1, PREG_SPLIT_DELIM_CAPTURE);
-		
+
     	//maintain a count of the actual tokens for quick reference in execute
     	$count = 0;
-    	
+
     	$sqlStr = '';
 	    foreach ($tokens as $key => $val) {
 	        switch ($val) {
 	            case '?' :
 	            case '!' :
-	            case '&' :	
+	            case '&' :
 	            	$count++;
 	            	$sqlStr .= '?';
 	            	break;
-	            	
+
 	            default :
 	            	//escape any special characters
 	                $tokens[$key] = preg_replace('/\\\([&?!])/', "\\1", $val);
@@ -1800,9 +1801,9 @@ abstract class DBManager
 
 	    $this->preparedTokens[] = array('tokens' => $tokens, 'tokenCount' => $count, 'sqlString' => $sqlStr);
 	    end($this->preparedTokens);
-	    return key($this->preparedTokens);	
+	    return key($this->preparedTokens);
     }
-    
+
     /**
      * Takes a prepared stmt index and the data to replace and creates the query and runs it.
      *
@@ -1815,16 +1816,16 @@ abstract class DBManager
     		if(!is_array($data)){
 				$data = array($data);
 			}
-			
+
     		$pTokens = $this->preparedTokens[$stmt];
-    		
+
     		//ensure that the number of data elements matches the number of replacement tokens
     		//we found in prepare().
     		if(count($data) != $pTokens['tokenCount']){
     			//error the data count did not match the token count
     			return false;
     		}
-    		
+
     		$query = '';
     		$dataIndex = 0;
     		$tokens = $pTokens['tokens'];
@@ -1852,7 +1853,7 @@ abstract class DBManager
     		return false;
     	}
     }
-    
+
     /**
      * Run both prepare and execute without the client having to run both individually.
      *
@@ -1876,15 +1877,15 @@ abstract class DBManager
      * @return string
      */
     public function convert(
-        $string, 
-        $type, 
+        $string,
+        $type,
         array $additional_parameters = array(),
         array $additional_parameters_oracle_only = array()
         )
     {
         return "$string";
     }
-    
+
     /**
      * Returns the database string needed for concatinating multiple database strings together
      *
@@ -1893,10 +1894,10 @@ abstract class DBManager
      * @return string
      */
     abstract public function concat(
-        $table, 
+        $table,
         array $fields
         );
-    
+
     /**
      * Undoes database conversion
      *
@@ -1905,7 +1906,7 @@ abstract class DBManager
      * @return string
      */
     public function fromConvert(
-        $string, 
+        $string,
         $type)
     {
         return $string;

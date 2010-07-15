@@ -242,6 +242,20 @@
 				<input tabindex="340" name="reply_to_addr" value="{REPLY_TO_ADDR}" {IE_DISABLED}>&nbsp;
 			</td>
 		</tr>
+		<tr style="MAILBOX_TYPE_STYLE">
+			<td valign="top" scope="row">
+				<slot>&nbsp;</slot></td>
+			<td valign="top"  width="35%"><slot>
+				&nbsp;</slot></td>
+			<td valign="top" scope="row" width="15%" >
+			 <slot style="{MAILBOX_TYPE_STYLE}">{MOD.LBL_ALLOW_OUTBOUND_GROUP_USAGE}:&nbsp;
+				<span valign="bottom" onmouseout="return nd();" onmouseover="return overlib('{MOD.LBL_ALLOW_OUTBOUND_GROUP_USAGE_DESC}', FGCLASS, 'olFgClass', CGCLASS, 'olCgClass', BGCLASS, 'olBgClass', TEXTFONTCLASS, 'olFontClass', CAPTIONFONTCLASS, 'olCapFontClass', CLOSEFONTCLASS, 'olCloseFontClass' );">&nbsp;<img src="index.php?entryPoint=getImage&themeName={THEME}&imageName=helpInline.gif"></span>
+			</slot>
+		  </td>
+			<td valign="top"  width="35%">
+			 <slot style="{MAILBOX_TYPE_STYLE}"><input name='allow_outbound_group_usage' id='allow_outbound_group_usage' tabindex='45' value='1' type='checkbox' {ALLOW_OUTBOUND_USAGE} ></slot>
+			</td>
+		</tr>
 		<tr>
 			<td valign="top" scope="row" width="15%" NOWRAP>
 				<slot style="{CREATE_GROUP_FOLDER_STYLE}">{MOD.LBL_AUTOREPLY}:&nbsp;<span valign="bottom" onmouseout="return nd();" onmouseover="return overlib('{MOD.LBL_AUTOREPLY_HELP}', FGCLASS, 'olFgClass', CGCLASS, 'olCgClass', BGCLASS, 'olBgClass', TEXTFONTCLASS, 'olFontClass', CAPTIONFONTCLASS, 'olCapFontClass', CLOSEFONTCLASS, 'olCloseFontClass' );">&nbsp;<img src="index.php?entryPoint=getImage&themeName={THEME}&imageName=helpInline.gif"></span></slot></td>

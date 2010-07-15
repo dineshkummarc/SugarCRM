@@ -63,29 +63,9 @@ class ViewList extends SugarView{
 
  	function listViewPrepare(){
         $module = $GLOBALS['module'];
-        $metadataFile = null;
-        $foundViewDefs = false;
-        if(file_exists('custom/modules/' . $module. '/metadata/listviewdefs.php')){
-            $metadataFile = 'custom/modules/' . $module . '/metadata/listviewdefs.php';
-            $foundViewDefs = true;
-        }else{
-            if(file_exists('custom/modules/'.$module.'/metadata/metafiles.php')){
-                require_once('custom/modules/'.$module.'/metadata/metafiles.php');
-                if(!empty($metafiles[$module]['listviewdefs'])){
-                    $metadataFile = $metafiles[$module]['listviewdefs'];
-                    $foundViewDefs = true;
-                }
-            }elseif(file_exists('modules/'.$module.'/metadata/metafiles.php')){
-                require_once('modules/'.$module.'/metadata/metafiles.php');
-                if(!empty($metafiles[$module]['listviewdefs'])){
-                    $metadataFile = $metafiles[$module]['listviewdefs'];
-                    $foundViewDefs = true;
-                }
-            }
-        }
-        if(!$foundViewDefs && file_exists('modules/'.$module.'/metadata/listviewdefs.php')){
-                $metadataFile = 'modules/'.$module.'/metadata/listviewdefs.php';
-        }
+        
+        $metadataFile = $this->getMetaDataFile();
+        
         if( !file_exists($metadataFile) )
             sugar_die($GLOBALS['app_strings']['LBL_NO_ACTION'] );
             

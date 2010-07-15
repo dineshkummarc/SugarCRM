@@ -91,3 +91,6 @@ function {{sugarvar key='name'}}changeQS() {literal}{
 {literal}
 {{$displayParams.disabled_parent_types}}
 {/literal}
+{literal}
+{{$quickSearchCode}}
+{/literal}

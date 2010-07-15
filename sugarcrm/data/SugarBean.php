@@ -176,7 +176,7 @@ class SugarBean
      */
     //TODO This should be replaced by altering the current user before the call to save.
     var $set_created_by = true;
-    
+
     var $team_set_id;
 
     /**
@@ -231,12 +231,12 @@ class SugarBean
      * Set to true in the child beans if the module supports importing
      */
 	var $importable = false;
-	
+
 	/**
 	 * Set to true in the child beans if the module use the special notification template
 	 */
 	var $special_notification = false;
-    
+
     /**
      * Set to true if the bean is being dealt with in a workflow
      */
@@ -255,10 +255,12 @@ class SugarBean
      * 3. Setup row-level security preference
      * All implementing classes  must call this constructor using the parent::SugarBean() class.
      *
-     * @param array $arr row of data fetched from the database.
+     * @param bool $populateDefaults true if we should populate the default values into the bean
      * @return  nothing
      */
-    function SugarBean()
+    function SugarBean(
+        $populateDefaults = true
+        )
     {
     	global  $dictionary, $current_user;
     	static $loaded_defs = array();
@@ -330,11 +332,13 @@ class SugarBean
 		if($this->bean_implements('ACL') && !empty($GLOBALS['current_user'])){
     		$this->acl_fields = (isset($dictionary[$this->object_name]['acl_fields']) && $dictionary[$this->object_name]['acl_fields'] === false)?false:true;
     	}
-    	$this->populateDefaultValues();  	
-    	
+
+    	if ( $populateDefaults ) {
+    	    $this->populateDefaultValues();  	
+    	}
     }
-   
-    
+
+
     /**
      * Returns the object name. If object_name is not set, table_name is returned.
      *
@@ -411,7 +415,7 @@ class SugarBean
     		return false;
     	}
     }
-	
+
 
 
     /**
@@ -445,6 +449,7 @@ class SugarBean
     	$indices = $dictionary['audit']['indices'];
     	// '0' stands for the first index for all the audit tables
     	$indices[0]['name'] = 'idx_' . strtolower($this->getTableName()) . '_' . $indices[0]['name'];
+    	$indices[1]['name'] = 'idx_' . strtolower($this->getTableName()) . '_' . $indices[1]['name'];
 
     	$sql=$this->dbManager->helper->createTableSQLParams($table_name, $fieldDefs, $indices);
 
@@ -758,7 +763,7 @@ class SugarBean
 						continue;
     				}
 
-    						
+
     				//check whether relationship exists or not first.
     				if (Relationship::exists($rel_name,$db))
     				{
@@ -840,9 +845,9 @@ class SugarBean
     				//initialize a variable of type Link
     				require_once('data/Link.php');
 					$class = load_link_class($fieldDefs[$rel_name]);
-    				
+
 					$this->$rel_name=new $class($fieldDefs[$rel_name]['relationship'], $this, $fieldDefs[$rel_name]);
-    				
+
     				if (empty($this->$rel_name->_relationship->id)) {
     					unset($this->$rel_name);
     					return false;
@@ -880,7 +885,7 @@ class SugarBean
     	foreach($linked_fields as $name=>$properties)
     	{
     		$class = load_link_class($properties);
-    		
+
     		$this->$name=new $class($properties['relationship'], $this, $properties);
     	}
     }
@@ -920,14 +925,14 @@ class SugarBean
     		}
     		else
     		{
-    			
+
     		}
     		$bean_file=$beanFiles[$bean_name];
     		include_once($bean_file);
     	}
 
     	$this->load_relationship($field_name);
-    	
+
     	return $this->$field_name->getBeans(new $bean_name(), $sort_array, $begin_index, $end_index, $deleted, $optional_where);
     }
 
@@ -978,8 +983,8 @@ class SugarBean
 
         if (!empty($fieldDefs)) {
             foreach ($fieldDefs as $key=>$value_array) {
-                if ( (isset($value_array['importable']) 
-                        && (is_string($value_array['importable']) && $value_array['importable'] == 'false' 
+                if ( (isset($value_array['importable'])
+                        && (is_string($value_array['importable']) && $value_array['importable'] == 'false'
                             || is_bool($value_array['importable']) && $value_array['importable'] == false))
                     || (isset($value_array['type']) && $value_array['type'] == 'link')
                     || (isset($value_array['auto_increment'])
@@ -1218,7 +1223,7 @@ class SugarBean
 		}
 
 		$this->_checkOptimisticLocking($action, $isUpdate);
-		
+
         if(!empty($this->modified_by_name)) $this->old_modified_by_name = $this->modified_by_name;
 		if($this->update_modified_by)
 		{
@@ -1259,54 +1264,15 @@ class SugarBean
 		}
 		// call the custom business logic
 		$custom_logic_arguments['check_notify'] = $check_notify;
-				////////////////////////
-		/////nsingh: bug fix 13334. Following code makes a copy of the date with the format found in user preferences. It then converts the date format to
-		//SQL date format. After the custom logic is called, it restores the date to the original date format.
-		$field_name = null;
-		$before_save_date_values = array();
-		$before_save_datetime_values = array();
-		 foreach($this->field_defs as $field_def){
-		 	$type=$field_def['type'];
-		 	$field_name = $field_def['name'];
-		 	if($type == 'date' && isset($this->$field_name) && !empty($this->$field_name)){
-		 		$format_swapped = false;
-		 		if(!$timedate->check_matching_format($this->$field_name, $GLOBALS['timedate']->dbDayFormat)) {
-		 			$this->$field_name = $timedate->swap_formats($this->$field_name, $timedate->get_date_format(), $GLOBALS['timedate']->dbDayFormat );
-		 			$format_swapped = true;
-		 		}
-		 		$before_save_date_values[$field_name] = $format_swapped;
-		 	} else if ($type == 'datetimecombo' && !empty($this->$field_name)){
-                $format_swapped = false;
-				$newDate = $timedate->to_db($this->$field_name);
-                if($newDate != $this->$field_name) {
-                    $this->$field_name = $newDate;
-                    $format_swapped = true;
-                }
-                $before_save_datetime_values[$field_name] = $format_swapped;
-            }
-		 }
+		
 		$this->call_custom_logic("before_save", $custom_logic_arguments);
 		unset($custom_logic_arguments);
-	
-	
+		
 		if(isset($this->custom_fields))
 		{
 			$this->custom_fields->bean =& $this;
 			$this->custom_fields->save($isUpdate);
 		}
-		
-		foreach($before_save_date_values as $field_name=>$format_swapped){
-			//rrs bug: 23856. Any changes to date fields in logic hooks were being overwritten.
-            //bug 25523. Sometimes, the $this->$field_name may not be in format $GLOBALS['timedate']->dbDayFormat, it may already be changed to $timedate->get_date_format(), so we should check it first. 
-            //rrs 23856: this reveals a deeper problem from above where we are trying to convert a date from user format that is already in db_format, so it will
-            //convert to a bad date.
-			if($format_swapped && $timedate->check_matching_format($this->$field_name, $GLOBALS['timedate']->dbDayFormat)) {
-                $this->$field_name = $timedate->swap_formats($this->$field_name, $GLOBALS['timedate']->dbDayFormat, $timedate->get_date_format());
-            }
-		}
-		unset($before_save_date_values);
-		//////////////////////////
-		//end bug fix 13334.
 
 		// use the db independent query generator
 		$this->preprocess_fields_on_save();
@@ -1352,12 +1318,12 @@ class SugarBean
 					// Only assign variables that have been set.
 					if(isset($this->$field))
 					{
-						//bug: 37908 - this is to handle the issue where the bool value is false, but strlen(false) <= so it will 
+						//bug: 37908 - this is to handle the issue where the bool value is false, but strlen(false) <= so it will
 						//set the default value. TODO change this code to esend all fields through getFieldValue() like DbHelper->insertSql
 						if(!empty($value['type']) && $value['type'] == 'bool'){
 							$this->$field = $this->getFieldValue($field);
 						}
-					
+
 						if(strlen($this->$field) <= 0)
 						{
 							if(!$isUpdate && isset($value['default']) && (strlen($value['default']) > 0))
@@ -1437,12 +1403,12 @@ class SugarBean
 						// Only assign variables that have been set.
 						if(isset($this->$field))
 						{
-							//bug: 37908 - this is to handle the issue where the bool value is false, but strlen(false) <= so it will 
+							//bug: 37908 - this is to handle the issue where the bool value is false, but strlen(false) <= so it will
 							//set the default value. TODO change this code to esend all fields through getFieldValue() like DbHelper->insertSql
 							if(!empty($value['type']) && $value['type'] == 'bool'){
 								$this->$field = $this->getFieldValue($field);
 							}
-							
+
 							if(strlen($this->$field) <= 0)
 							{
 								if(!$isUpdate && isset($value['default']) && (strlen($value['default']) > 0))
@@ -1506,7 +1472,7 @@ class SugarBean
 							{
 								continue;
 							}
-							//bug: 37908 - this is to handle the issue where the bool value is false, but strlen(false) <= so it will 
+							//bug: 37908 - this is to handle the issue where the bool value is false, but strlen(false) <= so it will
 							//set the default value. TODO change this code to esend all fields through getFieldValue() like DbHelper->insertSql
 							if(!empty($value['type']) && $value['type'] == 'bool'){
 								$this->$field = $this->getFieldValue($field);
@@ -1571,7 +1537,7 @@ class SugarBean
                 $date_modified_string = 'CONVERT(varchar(20), date_modified, 120)';
             else
                 $date_modified_string = 'date_modified';
-            
+
             $query = "SELECT date_modified FROM $this->table_name WHERE id='$this->id' AND modified_user_id != '$current_user->id' AND (modified_user_id != '$modified_user_id' OR $date_modified_string > " . db_convert("'".$date."'", 'datetime') . ')';
             $result = $this->db->query($query);
 
@@ -1592,7 +1558,7 @@ class SugarBean
 		$this->new_assigned_user_name = $notify_user->full_name;
 
 		$GLOBALS['log']->info("Notifications: recipient is $this->new_assigned_user_name");
-		
+
 		$user_list = array($notify_user);
 		return $user_list;
 		/*
@@ -1611,15 +1577,15 @@ class SugarBean
 	{
 		global $current_user;
 
-		if(($this->object_name == 'Meeting' || $this->object_name == 'Call') || $notify_user->receive_notifications) 
+		if(($this->object_name == 'Meeting' || $this->object_name == 'Call') || $notify_user->receive_notifications)
 		{
 			$sendToEmail = $notify_user->emailAddress->getPrimaryAddress($notify_user);
             $sendEmail = TRUE;
 			if(empty($sendToEmail)) {
 				$GLOBALS['log']->warn("Notifications: no e-mail address set for user {$notify_user->user_name}, cancelling send");
 				$sendEmail = FALSE;
-			} 
-				
+			}
+
 			$notify_mail = $this->create_notification_email($notify_user);
 			$notify_mail->setMailerForSystem();
 
@@ -1631,12 +1597,9 @@ class SugarBean
 			    $fromAddress = $current_user->emailAddress->getReplyToAddress($current_user);
 			    $fromAddress = !empty($fromAddress) ? $fromAddress : $admin->settings['notify_fromaddress'];
 			    $notify_mail->From = $fromAddress;
-
+                //Use the users full name is available otherwise default to system name
 			    $from_name = !empty($admin->settings['notify_fromname']) ? $admin->settings['notify_fromname'] : "";
-
-			    if($current_user->getPreference('mail_fromname') != '') {
-			        $from_name = $current_user->getPreference('mail_fromname');
-			    }
+                $from_name = !empty($current_user->full_name) ? $current_user->full_name : $from_name;
 			    $notify_mail->FromName = $from_name;
 			}
 
@@ -1645,7 +1608,7 @@ class SugarBean
 			} else {
 			    $GLOBALS['log']->fatal("Notifications: e-mail successfully sent");
 			}
-			
+
 		}
 	}
 
@@ -1662,7 +1625,7 @@ class SugarBean
         global $beanList;
         $OBCharset = $locale->getPrecedentPreference('default_email_charset');
 
-        
+
 		require_once("include/SugarPHPMailer.php");
 
 		$notify_address = $notify_user->emailAddress->getPrimaryAddress($notify_user);
@@ -1677,11 +1640,7 @@ class SugarBean
 		} else {
 			$current_language = $_SESSION['authenticated_user_language'];
 		}
-		if(file_exists('include/language/'.$current_language.'.notify_template.html')) {
-            $xtpl = new XTemplate("include/language/{$current_language}.notify_template.html");
-        } else {
-            $xtpl = new XTemplate("include/language/en_us.notify_template.html");
-        }		
+        $xtpl = new XTemplate(get_notify_template_file($current_language));
         if($this->module_dir == "Cases") {
             $template_name = "Case"; //we should use Case, you can refer to the en_us.notify_template.html.
         }
@@ -1710,11 +1669,11 @@ class SugarBean
 		if(isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != 80 && $_SERVER['SERVER_PORT'] != 443) {
 			$port = $_SERVER['SERVER_PORT'];
 		}
-		
+
 		if (!isset($_SERVER['HTTP_HOST'])) {
 			$_SERVER['HTTP_HOST'] = '';
 		}
-		
+
 		$httpHost = $_SERVER['HTTP_HOST'];
 
 		if($colon = strpos($httpHost, ':')) {
@@ -1766,7 +1725,7 @@ function save_relationship_changes($is_update, $exclude=array())
 			$new_rel_link = $new_rel_relname;
 			//Try to find the link in this bean based on the relationship
 			foreach ( $this->field_defs as $key => $def ) {
-				if (isset($def['type']) && $def['type'] == 'link' 
+				if (isset($def['type']) && $def['type'] == 'link'
 				&& isset($def['relationship']) && $def['relationship'] == $new_rel_relname) {
 					$new_rel_link = $key;
 				}
@@ -2053,7 +2012,7 @@ function save_relationship_changes($is_update, $exclude=array())
                 case 'date':
                     if ( ! preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/',$this->$field) ) {
                         // This date appears to be formatted in the user's format
-                        $this->$field = $timedate->to_db_date($this->$field);
+                        $this->$field = $timedate->to_db_date($this->$field, false);
                         $reformatted = true;
                     }
                     break;
@@ -2068,7 +2027,7 @@ function save_relationship_changes($is_update, $exclude=array())
                 case 'decimal':
                 case 'currency':
                 case 'float':
-                    if ( $this->$field === '' ) {
+                	if ( $this->$field === '' || $this->$field == NULL || $this->$field == 'NULL') {
                         continue;
                     }
                     if ( is_string($this->$field) ) {
@@ -2219,7 +2178,7 @@ function save_relationship_changes($is_update, $exclude=array())
 					$this->rel_fields_before_value[$rel_id]=null;
 			}
 		}
-	    
+
 		// call the custom business logic
 		$custom_logic_arguments['id'] = $id;
 		$custom_logic_arguments['encode'] = $encode;
@@ -2371,7 +2330,7 @@ function save_relationship_changes($is_update, $exclude=array())
 		{
 			global $current_user;
 			$owner_where = $this->getOwnerWhere($current_user->id);
-			
+
 			//rrs - because $this->getOwnerWhere() can return '' we need to be sure to check for it and
 			//handle it properly else you could get into a situation where you are create a where stmt like
 			//WHERE .. AND ''
@@ -2553,8 +2512,8 @@ function save_relationship_changes($is_update, $exclude=array())
     	$subqueries = array();
     	foreach($subpanel_list as $this_subpanel)
 		{
-			if(!$this_subpanel->isDatasourceFunction() || ($this_subpanel->isDatasourceFunction() 
-				&& isset($this_subpanel->_instance_properties['generate_select']) 
+			if(!$this_subpanel->isDatasourceFunction() || ($this_subpanel->isDatasourceFunction()
+				&& isset($this_subpanel->_instance_properties['generate_select'])
 				&& $this_subpanel->_instance_properties['generate_select']==true))
 			{
 				//the custom query function must return an array with
@@ -2639,13 +2598,13 @@ function save_relationship_changes($is_update, $exclude=array())
 				$subquery['from'] = $subquery['from'].$query_array['join'];
 				$subquery['query_array'] = $query_array;
 				$subquery['params'] = $params;
-				
+
 				$subqueries[] = $subquery;
 			}
 		}
 		return $subqueries;
     }
-    
+
 	/**
 	 * Constructs a query to fetch data for supanels and list views
      *
@@ -2739,9 +2698,9 @@ function save_relationship_changes($is_update, $exclude=array())
 					{
 						$subquery['select'] .= " ' ' $field,";
 					}
-					else 
+					else
 					{
-						$subquery['select'] .= " {$subquery['query_fields'][$field]},"; 
+						$subquery['select'] .= " {$subquery['query_fields'][$field]},";
 					}
 				}
 				$subquery['select'] = substr($subquery['select'], 0 , strlen($subquery['select']) - 1);
@@ -2788,7 +2747,7 @@ function save_relationship_changes($is_update, $exclude=array())
 				$final_query_rows .= $query_rows;
 			}
 		}
-		
+
 		if(!empty($order_by))
 		{
 			$submodule = false;
@@ -2875,7 +2834,7 @@ function save_relationship_changes($is_update, $exclude=array())
      */
     function create_new_list_query($order_by, $where,$filter=array(),$params=array(), $show_deleted = 0,$join_type='', $return_array = false,$parentbean=null, $singleSelect = false)
     {
-    	global $beanFiles, $beanList;
+        global $beanFiles, $beanList;
     	$selectedFields = array();
     	$secondarySelectedFields = array();
     	$ret_array = array();
@@ -3024,7 +2983,7 @@ function save_relationship_changes($is_update, $exclude=array())
     			$ret_array['select'] .= ", $this->table_name.$field $alias";
 				$selectedFields["$this->table_name.$field"] = true;
     		}
-    		
+
 
 
     		if($data['type'] != 'relate' && isset($data['db_concat_fields']))
@@ -3070,7 +3029,7 @@ function save_relationship_changes($is_update, $exclude=array())
 				    	}
 			    	}
     				$ret_array['select'] .= ", $nameField {$data['name']} ";
-			    	$ret_array['from'] .= " LEFT JOIN $joinTable $joinTableAlias 
+			    	$ret_array['from'] .= " LEFT JOIN $joinTable $joinTableAlias
     					ON $localTable.{$data['id_name']} = $joinTableAlias.id";
     				//Replace any references to the relationship in the where clause with the new alias
 					$where = preg_replace('/(^|[\s(])parent_' . $joinModule . '_' . $joinTable . '\.name/', '${1}' . $nameField, $where);
@@ -3262,10 +3221,10 @@ function save_relationship_changes($is_update, $exclude=array())
     		if(isset($this->field_defs['system_id']) && empty($selectedFields[$this->table_name.'.system_id']))
     		{
     			$ret_array['select'] .= ", $this->table_name.system_id ";
-    		}    		
-    		
+    		}
+
     	}
-    	$where_auto = '1=1';
+        $where_auto = '1=1';
     	if($show_deleted == 0)
     	{
     		$where_auto = "$this->table_name.deleted=0";
@@ -3288,12 +3247,12 @@ function save_relationship_changes($is_update, $exclude=array())
     		unset($ret_array['secondary_from']);
     		unset($ret_array['secondary_select']);
     	}
-		
+
     	if($return_array)
     	{
     		return $ret_array;
     	}
-		
+
     	return  $ret_array['select'] . $ret_array['from'] . $ret_array['where']. $ret_array['order_by'];
 
 
@@ -4027,6 +3986,7 @@ function save_relationship_changes($is_update, $exclude=array())
 	        $monitor->setValue('action', $current_view);
 	        $monitor->setValue('item_id', $this->id);
 	        $monitor->setValue('item_summary', $this->get_summary_text());
+	        $monitor->setValue('visible',true);
 	        $trackerManager->saveMonitor($monitor);
 		}
 	}
@@ -4083,7 +4043,7 @@ function save_relationship_changes($is_update, $exclude=array())
 	 * will fill in any parent_name fields.
 	 */
 	function fill_in_additional_parent_fields() {
-		
+
 		if(!empty($this->parent_id) && !empty($this->last_parent_id) && $this->last_parent_id == $this->parent_id){
 			return false;
 		}else{
@@ -4114,7 +4074,7 @@ function save_relationship_changes($is_update, $exclude=array())
                 $this->$linkFieldName = $list[0];
         }
     }
-	
+
 	/**
 	 * Fill in fields where type = relate
 	 */
@@ -4122,7 +4082,7 @@ function save_relationship_changes($is_update, $exclude=array())
 		if(!empty($this->relDepth)) {
 			if($this->relDepth > 1)return;
 		}else $this->relDepth = 0;
-    	
+
         foreach($this->field_defs as $field)
         {
             if(0 == strcmp($field['type'],'relate') && !empty($field['module']))
@@ -4200,7 +4160,7 @@ function save_relationship_changes($is_update, $exclude=array())
 			// call the custom business logic
 			$custom_logic_arguments['id'] = $id;
 			$this->call_custom_logic("before_delete", $custom_logic_arguments);
-			
+
 			if ( isset($this->field_defs['modified_user_id']) ) {
                 if (!empty($current_user)) {
                     $this->modified_user_id = $current_user->id;
@@ -4472,13 +4432,13 @@ function save_relationship_changes($is_update, $exclude=array())
 		foreach($this->field_defs as $field=>$value){
 
 			if(isset($this->$field)){
-                                
+
 				// cn: bug 12270 - sensitive fields being passed arbitrarily in listViews
 				if(isset($sensitiveFields[$field]))
 					continue;
                 if(!isset($cache[$field]))
                 	$cache[$field] = strtoupper($field);
-                
+
                 //Fields hidden by Dependent Fields
                 if (isset($value['hidden']) && $value['hidden'] === true) {
                 	$return_array[$cache[$field]] = "";
@@ -4623,23 +4583,23 @@ function save_relationship_changes($is_update, $exclude=array())
     function build_generic_where_clause($value)
     {
     }
-	
+
 	function getRelatedFields($module, $id, $fields, $return_array = false){
 		if(empty($GLOBALS['beanList'][$module]))return '';
 		$object = $GLOBALS['beanList'][$module];
 		if ($object == 'aCase') {
 			$object = 'Case';
 		}
-			
+
 		VardefManager::loadVardef($module, $object);
 		if(empty($GLOBALS['dictionary'][$object]['table']))return '';
 		$table = $GLOBALS['dictionary'][$object]['table'];
 		$query  = 'SELECT id';
 		foreach($fields as $field=>$alias){
-			if(!empty($GLOBALS['dictionary'][$object]['fields'][$field]['db_concat_fields'])){ 
+			if(!empty($GLOBALS['dictionary'][$object]['fields'][$field]['db_concat_fields'])){
 				$query .= ' ,' .db_concat($table, $GLOBALS['dictionary'][$object]['fields'][$field]['db_concat_fields']) .  ' as ' . $alias ;
 			}else if(!empty($GLOBALS['dictionary'][$object]['fields'][$field]) &&
-				(empty($GLOBALS['dictionary'][$object]['fields'][$field]['source']) || 
+				(empty($GLOBALS['dictionary'][$object]['fields'][$field]['source']) ||
 				$GLOBALS['dictionary'][$object]['fields'][$field]['source'] != "non-db"))
 			{
 				$query .= ' ,' .$table . '.' . $field . ' as ' . $alias;
@@ -4649,8 +4609,8 @@ function save_relationship_changes($is_update, $exclude=array())
 		if($query == 'SELECT id' || empty($id)){
 			return '';
 		}
-	
-		
+
+
 		if(isset($GLOBALS['dictionary'][$object]['fields']['assigned_user_id']))
     	{
     		$query .= " , ".	$table  . ".assigned_user_id owner";
@@ -4662,9 +4622,9 @@ function save_relationship_changes($is_update, $exclude=array())
 
     	}
 		$query .=  ' FROM ' . $table . ' WHERE deleted=0 AND id=';
-    	$result = $GLOBALS['db']->query($query . "'$id'" );			
+    	$result = $GLOBALS['db']->query($query . "'$id'" );
 		$row = $GLOBALS['db']->fetchByAssoc($result);
-		if($return_array){ 
+		if($return_array){
 			return $row;
 		}
 		$owner = (empty($row['owner']))?'':$row['owner'];
@@ -4675,8 +4635,8 @@ function save_relationship_changes($is_update, $exclude=array())
 			$a_mod = $alias  .'_mod';
 			$this->$a_mod = $module;
 		}
-		
-		
+
+
 	}
 
 
@@ -4862,7 +4822,7 @@ function save_relationship_changes($is_update, $exclude=array())
 			$this->logicHookDepth[$event]++;
 
 			//method defined in 'include/utils/LogicHook.php'
-			
+
 			$logicHook = new LogicHook();
 			$logicHook->setBean($this);
 			$logicHook->call_custom_logic($this->module_dir, $event, $arguments);
@@ -5082,9 +5042,9 @@ function save_relationship_changes($is_update, $exclude=array())
     	$this->populateFromRow($arr);
     	$this->processed_dates_times = array();
     	$this->check_date_relationships_load();
-    	
+
     	$this->fill_in_additional_list_fields();
-    	
+
     	if($this->hasCustomFields())$this->custom_fields->fill_relationships();
     	$this->call_custom_logic("process_record");
     }
@@ -5171,7 +5131,7 @@ function save_relationship_changes($is_update, $exclude=array())
 		require_once("include/utils/encryption_utils.php");
 		return blowfishDecode(blowfishGetKey('encrypt_field'), $value);
 	}
-	
+
 	/**
 	 * Moved from save() method, functionality is the same, but this is intended to handle
 	 * Optimistic locking functionality.
@@ -5212,13 +5172,13 @@ function save_relationship_changes($is_update, $exclude=array())
 			if(isset($_SESSION['o_lock_save']))		{ unset ($_SESSION['o_lock_save']); }
 		}
 	}
-	
+
 	/**
 	 * Send assignment notifications and invites for meetings and calls
 	 */
 	private function _sendNotifications($check_notify){
 		if($check_notify || (isset($this->notify_inworkflow) && $this->notify_inworkflow == true)){ // cn: bug 5795 - no invites sent to Contacts, and also bug 25995, in workflow, it will set the notify_on_save=true.
-			
+
 			$admin = new Administration();
 			$admin->retrieveSettings();
 			$sendNotifications = false;
@@ -5250,7 +5210,7 @@ function save_relationship_changes($is_update, $exclude=array())
 		}
 	}
 
-	
+
     /**
      * Called from ImportFieldSanitize::relate(), when creating a new bean in a related module. Will
      * copies fields over from the current bean into the related. Designed to be overriden in child classes.
@@ -5262,7 +5222,7 @@ function save_relationship_changes($is_update, $exclude=array())
         )
     {
     }
-    
+
     /**
      * Called during the import process before a bean save, to handle any needed pre-save logic when
      * importing a record
@@ -5270,7 +5230,7 @@ function save_relationship_changes($is_update, $exclude=array())
     public function beforeImportSave()
     {
     }
-    
+
     /**
      * Called during the import process after a bean save, to handle any needed post-save logic when
      * importing a record
@@ -5278,9 +5238,9 @@ function save_relationship_changes($is_update, $exclude=array())
     public function afterImportSave()
     {
     }
-    
+
     /**
-     * This function is designed to cache references to field arrays that were previously stored in the 
+     * This function is designed to cache references to field arrays that were previously stored in the
      * bean files and have since been moved to seperate files. Was previously in include/CacheHandler.php
      *
      * @deprecated
@@ -5289,15 +5249,15 @@ function save_relationship_changes($is_update, $exclude=array())
      * @param $key string the type of field array we are referencing, i.e. list_fields, column_fields, required_fields
      **/
 	private function _loadCachedArray(
-	    $module_dir, 
-	    $module, 
+	    $module_dir,
+	    $module,
 	    $key
 	    )
 	{
         static $moduleDefs = array();
-        
+
         $fileName = 'field_arrays.php';
-        
+
         $cache_key = "load_cached_array.$module_dir.$module.$key";
         $result = sugar_cache_retrieve($cache_key);
         if(!empty($result))
@@ -5307,10 +5267,10 @@ function save_relationship_changes($is_update, $exclude=array())
         	{
         		return null;
         	}
-        	
+
         	return $result;
         }
-        
+
         if(file_exists('modules/'.$module_dir.'/'.$fileName))
         {
             // If the data was not loaded, try loading again....
@@ -5326,12 +5286,12 @@ function save_relationship_changes($is_update, $exclude=array())
 				sugar_cache_put($cache_key, EXTERNAL_CACHE_NULL_VALUE);
                 return  null;
             }
-            
+
             // It has been loaded, cache the result.
             sugar_cache_put($cache_key, $moduleDefs[$module][$module][$key]);
             return $moduleDefs[$module][$module][$key];
         }
-        
+
         // It was not loaded....  Fail.  Cache null to prevent future repeats of this calculation
         sugar_cache_put($cache_key, EXTERNAL_CACHE_NULL_VALUE);
 		return null;

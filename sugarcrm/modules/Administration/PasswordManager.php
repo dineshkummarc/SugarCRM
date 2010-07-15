@@ -44,7 +44,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 
 if(!is_admin($current_user)){
-    sugar_die('Admin Only');
+    sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']); 
 }
 function clearPasswordSettings() {
 	    $_POST['passwordsetting_SystemGeneratedPasswordON'] = '';

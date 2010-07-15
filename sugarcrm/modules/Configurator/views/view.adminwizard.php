@@ -65,7 +65,7 @@ class ViewAdminwizard extends SugarView
 	    global $current_user, $mod_strings, $app_list_strings, $sugar_config, $locale, $sugar_version;
 	    
 	    if(!is_admin($current_user)){
-            sugar_die('Admin Only');
+            sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']); 
         }
 		
 		$themeObject = SugarThemeRegistry::current();
@@ -77,7 +77,7 @@ class ViewAdminwizard extends SugarView
         
         $ut = $GLOBALS['current_user']->getPreference('ut');
         if(empty($ut))
-            $this->ss->assign('SKIP_URL','index.php?module=Users&action=Wizard');
+            $this->ss->assign('SKIP_URL','index.php?module=Users&action=Wizard&skipwelcome=1');
         else
             $this->ss->assign('SKIP_URL','index.php?module=Home&action=index');
         

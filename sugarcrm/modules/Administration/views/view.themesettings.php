@@ -92,7 +92,7 @@ class AdministrationViewThemesettings extends SugarView
         global $mod_strings, $app_strings, $current_user;
         
         if ( !is_admin($current_user) )
-            sugar_die('Admin Only');
+            sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']); 
             
         $enabled = array();
         foreach(SugarThemeRegistry::availableThemes() as $dir => $theme)

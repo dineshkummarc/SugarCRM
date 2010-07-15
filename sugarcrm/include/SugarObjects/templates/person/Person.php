@@ -43,7 +43,7 @@ class Person extends Basic
     var $picture;
     
 	function Person(){
-		parent::SugarBean();
+		parent::Basic();
 		$this->emailAddress = new SugarEmailAddress();
 	}
 	

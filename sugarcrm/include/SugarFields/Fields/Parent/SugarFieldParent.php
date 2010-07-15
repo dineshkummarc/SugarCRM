@@ -77,6 +77,7 @@ class SugarFieldParent extends SugarFieldBase {
 		$json = getJSONobj();
 		$displayParams['popupData'] = '{literal}'.$json->encode($popup_request_data).'{/literal}';
     	$displayParams['disabled_parent_types'] = '<script>var disabledModules='. $json->encode($disabled_parent_types).';</script>';
+    	$this->ss->assign('quickSearchCode', $this->createQuickSearchCode($form_name, $vardef));
     	$this->setup($parentFieldArray, $vardef, $displayParams, $tabindex);        
         return $this->fetch('include/SugarFields/Fields/Parent/EditView.tpl');
     }
@@ -114,6 +115,28 @@ class SugarFieldParent extends SugarFieldBase {
     	$displayParams['disabled_parent_types'] = '<script>var disabledModules='. $json->encode($disabled_parent_types).';</script>';
     	$this->setup($parentFieldArray, $vardef, $displayParams, $tabindex);        
         return $this->fetch('include/SugarFields/Fields/Parent/SearchView.tpl');
+    }
+    
+    function createQuickSearchCode($formName = 'EditView', $vardef){
+        
+        require_once('include/QuickSearchDefaults.php');
+        $json = getJSONobj();
+        
+        $dynamicParentTypePlaceHolder = "**@**"; //Placeholder for dynamic parent so smarty tags are not escaped in json encoding.
+        $dynamicParentType = '{/literal}{if !empty($fields.parent_type.value)}{$fields.parent_type.value}{else}Accounts{/if}{literal}';
+        
+        //Get the parent sqs definition
+        $qsd = new QuickSearchDefaults();
+        $qsd->setFormName($formName);
+        $sqsFieldArray = $qsd->getQSParent($dynamicParentTypePlaceHolder);
+        $qsFieldName = $formName . "_" . $vardef['name'];
+        
+        //Build the javascript
+        $quicksearch_js = '<script language="javascript">';
+        $quicksearch_js.= "if(typeof sqs_objects == 'undefined'){var sqs_objects = new Array;}";
+        $quicksearch_js .= "sqs_objects['$qsFieldName']=" . str_replace($dynamicParentTypePlaceHolder, $dynamicParentType,$json->encode($sqsFieldArray)) .';';
+
+        return $quicksearch_js .= '</script>';
     }
 }
 ?>

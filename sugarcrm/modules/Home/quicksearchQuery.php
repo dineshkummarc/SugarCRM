@@ -69,12 +69,13 @@ class quicksearchQuery {
 	           if(!empty($condition['end'])) $like .= $GLOBALS['db']->quote($condition['end']);
 	               
 	           if ($focus instanceof Person){
-	           		if ($condition['name'] == 'name') {
-	            		array_push($cond_arr,db_concat(rtrim($table,'.'),array('first_name')) . " like '$like'");
-	                    array_push($cond_arr,db_concat(rtrim($table,'.'),array('last_name')) . " like '$like'");
-	                } else {
-	                 	array_push($cond_arr,db_concat(rtrim($table,'.'),array($condition['name'])) . " like '$like'");
-	                }
+	           		$nameFormat = $GLOBALS['locale']->getLocaleFormatMacro($GLOBALS['current_user']);
+                    if ( strpos($nameFormat,'l') > strpos($nameFormat,'f') ) {
+                        array_push($cond_arr,db_concat(rtrim($table,'.'),array('first_name','last_name')) . " like '$like'");
+                    }
+                    else {
+                        array_push($cond_arr,db_concat(rtrim($table,'.'),array('last_name','first_name')) . " like '$like'");
+                    }
 	           }
 	           else {
 	           	array_push($cond_arr,$GLOBALS['db']->quote($table.$condition['name'])." like '$like'");

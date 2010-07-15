@@ -78,7 +78,7 @@ function send_back(module, id)
 			}
 			
 			if (typeof(the_value) == 'string') {
-				the_value = the_value.replace(/\r\n/g, '\\n');
+				the_value = the_value.replace(/\r\n|\n|\r/g, '\\n');
 			}
 			
 			array_contents.push('"' + the_name + '":"' + the_value + '"');
@@ -193,7 +193,7 @@ function send_back_selected(module, form, field, error_message, request_data)
 	var field_to_name_array = request_data.field_to_name_array;
 	
 	var call_back_function = eval("window.opener." + request_data.call_back_function);
-	var result_data={"form_name":form_name,"selection_list":selection_list_array ,"passthru_data":passthru_data};
+	var result_data={"form_name":form_name,"selection_list":selection_list_array ,"passthru_data":passthru_data,"select_entire_list":form.select_entire_list.value,"current_query_by_page":form.current_query_by_page.value};
 	var close_popup = window.opener.get_close_popup();
 	call_back_function(result_data);
 

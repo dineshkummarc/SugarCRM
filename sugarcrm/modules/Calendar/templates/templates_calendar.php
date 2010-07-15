@@ -41,14 +41,14 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 /////////////////////////////////
 global $timedate;
 function template_cal_tabs(& $args) {
-	global $mod_strings, $sugar_version, $sugar_config;	
+	global $mod_strings, $sugar_version, $sugar_config;
 	$tabs = array('day', 'week', 'month', 'year', 'shared');
 
 	if($args['view'] != 'day') {
-		echo '<script type="text/javascript" src="' . getJSPath('include/javascript/sugar_grp_overlib.js') . '"></script> 
+		echo '<script type="text/javascript" src="' . getJSPath('include/javascript/sugar_grp_overlib.js') . '"></script>
 			<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>';
 	}
-	
+
 ?>
 <table id="cal_tabs" width="100%" border="0" cellpadding="0" cellspacing="0">
 <tr>
@@ -57,7 +57,7 @@ function template_cal_tabs(& $args) {
 
 	$time_arr = array();
 
-	foreach($tabs as $tab) { 
+	foreach($tabs as $tab) {
 ?>
 <input type="button" <?php if($args['view'] == $tab) {?>selected="selected" <?php } ?> value=" <?php echo $mod_strings["LBL_".$args['calendar']->get_view_name($tab)]; ?> " title="<?php echo $mod_strings["LBL_".$args['calendar']->get_view_name($tab)]; ?>" onclick="window.location.href='index.php?module=Calendar&action=index&view=<?php echo $tab; ?><?php echo $args['calendar']->date_time->get_date_str(); ?>'">&nbsp;
 <?php } ?>
@@ -104,7 +104,7 @@ function template_cal_tabs(& $args) {
 		}
 		foreach($args['slice']->acts_arr[$current_user->id] as $act) {
 			$fields = array();
-			foreach($act->sugar_bean->field_name_map as $field) {	
+			foreach($act->sugar_bean->field_name_map as $field) {
 					if(!empty($act->sugar_bean->$field['name']))
 						$fields[strtoupper($field['name'])] = $act->sugar_bean->$field['name'];
 			}
@@ -113,25 +113,25 @@ function template_cal_tabs(& $args) {
 				$ad_function = 'additionalDetails' . $act->sugar_bean->object_name;
 				$results = $ad_function($fields);
 				$results['string'] = str_replace(array("&#039", "'"), '\&#039', $results['string']); // no xss!
-		
+
 				if(trim($results['string']) == '') $results['string'] = $app_strings['LBL_NONE'];
 			}
-			
-			$extra = "onmouseover=\"return overlib('" . 
+
+			$extra = "onmouseover=\"return overlib('" .
 					str_replace(array("\rn", "\r", "\n"), array('','','<br />'), $results['string'])
 					. "', CAPTION, '{$app_strings['LBL_ADDITIONAL_DETAILS']}"
-					. "', DELAY, 200, STICKY, MOUSEOFF, 1000, WIDTH, " 
-					.(empty($results['width']) ? '300' : $results['width']) 
+					. "', DELAY, 200, STICKY, MOUSEOFF, 1000, WIDTH, "
+					.(empty($results['width']) ? '300' : $results['width'])
 					. ", CLOSETEXT, '<img border=0  style=\'margin-left:2px; margin-right: 2px;\' src=".SugarThemeRegistry::current()->getImageURL('close.gif').">', "
 					. "CLOSETITLE, '{$app_strings['LBL_ADDITIONAL_DETAILS_CLOSE_TITLE']}', CLOSECLICK, FGCLASS, 'olFgClass', "
 					. "CGCLASS, 'olCgClass', BGCLASS, 'olBgClass', TEXTFONTCLASS, 'olFontClass', CAPTIONFONTCLASS, 'olCapFontClass', CLOSEFONTCLASS, 'olCloseFontClass');\" "
 					. "onmouseout=\"return nd(1000);\" ";
-			
-					
+
+
 			$count ++;
-			echo '<div style="margin-top: 1px;"><table cellpadding="0" cellspacing="0" 
+			echo '<div style="margin-top: 1px;"><table cellpadding="0" cellspacing="0"
 					border="0" width="100%"><tr>';
-			if($act->sugar_bean->object_name == 'Call') { 
+			if($act->sugar_bean->object_name == 'Call') {
 			    if ( isset($app_list_strings['call_status_dom'][$act->sugar_bean->status]) ) {
 			        $callStatus = $app_list_strings['call_status_dom'][$act->sugar_bean->status];
 			    }
@@ -139,9 +139,9 @@ function template_cal_tabs(& $args) {
 			        $callStatus = '';
 			    }
 				echo '<td>' . SugarThemeRegistry::current()->getImage('Calls','alt="'.$app_list_strings['call_status_dom'][$act->sugar_bean->status].': '.$act->sugar_bean->name.'"') . '</td>
-						<td width="100%"><a ' . $extra . ' href="index.php?module=Calls&action=DetailView&record=' . 
+						<td width="100%"><a ' . $extra . ' href="index.php?module=Calls&action=DetailView&record=' .
 						$act->sugar_bean->id . '">' . $callStatus . ': ' . $act->sugar_bean->name . '</a></td>';
-			} else if($act->sugar_bean->object_name == 'Meeting') { 
+			} else if($act->sugar_bean->object_name == 'Meeting') {
 				if ( isset($app_list_strings['meeting_status_dom'][$act->sugar_bean->status]) ) {
 			        $meetingStatus = $app_list_strings['meeting_status_dom'][$act->sugar_bean->status];
 			    }
@@ -149,9 +149,9 @@ function template_cal_tabs(& $args) {
 			        $meetingStatus = '';
 			    }
 				$out = '<td>' . SugarThemeRegistry::current()->getImage('Meetings','alt="'.$app_list_strings['meeting_status_dom'][$act->sugar_bean->status].': '.$act->sugar_bean->name.'"') . '</td>
-						<td width="100%"><a ' . $extra . ' href="index.php?module=Meetings&action=DetailView&record=' . 
+						<td width="100%"><a ' . $extra . ' href="index.php?module=Meetings&action=DetailView&record=' .
 						$act->sugar_bean->id . '">' . $meetingStatus . ': ' . $act->sugar_bean->name .'</a>';
-				
+
 				///////////////////////////////////////////////////////////////
 				////	MEETING INTEGRATION
 				if(method_exists($act->sugar_bean, 'hasIntegratedMeeting')) {
@@ -163,9 +163,9 @@ function template_cal_tabs(& $args) {
 				///////////////////////////////////////////////////////////////
 				$out .= "</td>";
 				echo $out;
-				
+
 			} else if($act->sugar_bean->object_name == 'Task') {
-				echo '<td>' .  SugarThemeRegistry::current()->getImage('Tasks','alt="'.$act->sugar_bean->status.': '.$act->sugar_bean->name.'"') . '</td>
+				echo '<td>' .  SugarThemeRegistry::current()->getImage('Tasks','alt="'.$app_list_strings['task_status_dom'][$act->sugar_bean->status].': '.$act->sugar_bean->name.'"') . '</td>
 						<td width="100%"><a ' . $extra . ' href="index.php?module=Tasks&action=DetailView&record=' . $act->sugar_bean->id . '">'.$app_list_strings['task_status_dom'][$fields['STATUS']].': ' . $act->sugar_bean->name . '</a></td>';
 			}
 			echo '</tr></table><div>';
@@ -174,28 +174,26 @@ function template_cal_tabs(& $args) {
 
 	function template_echo_slice_activities_shared(& $args) {
 		global $app_list_strings;
-		
+
 		global $shared_user, $timedate;
 		$count = 0;
 		if(empty($args['slice']->acts_arr[$shared_user->id])) {
 			return;
 		}
-		
+
 		$out = '';
-		
+
 		foreach($args['slice']->acts_arr[$shared_user->id] as $act) {
 			$count ++;
 			echo "<div style=\"margin-top: 1px;\">
 			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">";
-			
-			if($act->sugar_bean->object_name == 'Call') { 
-				echo "<tr><td>";
-				SugarThemeRegistry::current()->getImage('Calls','alt=\"'.$app_list_strings['call_status_dom'][$act->sugar_bean->status].': '.$act->sugar_bean->name.'\"'); 
-				echo "</td>";
-	
+
+			if($act->sugar_bean->object_name == 'Call') {
+				echo "<tr><td>" . SugarThemeRegistry::current()->getImage('Calls','alt=\"'.$app_list_strings['call_status_dom'][$act->sugar_bean->status].': '.$act->sugar_bean->name.'\"') . "</td>";
+
 				if(empty($act->sugar_bean->name)) {
 					echo "<td width=\"100%\">";
-					echo $timedate->to_display_time($act->sugar_bean->time_start, true, false); 
+					echo $timedate->to_display_time($act->sugar_bean->time_start, true, false);
 					echo "</td></tr>";
 				} else {
 					echo "<td width=\"100%\">
@@ -206,14 +204,14 @@ function template_cal_tabs(& $args) {
 						$timedate->to_display_time($act->sugar_bean->time_start, true, false)."
 						)</a></td></tr>";
 				}
-			} else if($act->sugar_bean->object_name == 'Meeting') { 
+			} else if($act->sugar_bean->object_name == 'Meeting') {
 				echo "<td>".
-					SugarThemeRegistry::current()->getImage('Meetings','alt=\"'.$app_list_strings['meeting_status_dom'][$act->sugar_bean->status].': '.$act->sugar_bean->name.'\"'); 
+					SugarThemeRegistry::current()->getImage('Meetings','alt=\"'.$app_list_strings['meeting_status_dom'][$act->sugar_bean->status].': '.$act->sugar_bean->name.'\"');
 				echo "</td>";
-			
+
 				if(empty($act->sugar_bean->name)) {
 					echo "<td width=\"100%\">".
-						$timedate->to_display_time($act->sugar_bean->time_start, true, false); 
+						$timedate->to_display_time($act->sugar_bean->time_start, true, false);
 					echo "</td></tr>";
 				} else {
 					echo "<td width=\"100%\">
@@ -223,7 +221,7 @@ function template_cal_tabs(& $args) {
 						$act->sugar_bean->name."<br>(".
 						$timedate->to_display_time($act->sugar_bean->time_start, true, false).")
 						</a>";
-						
+
 					// MEETING INTEGRATION
 					if($act->sugar_bean->hasIntegratedMeeting()) {
 						$out .= $act->sugar_bean->miIcon;
@@ -233,14 +231,14 @@ function template_cal_tabs(& $args) {
 					$out .= "</td></tr>";
 					echo $out;
 				}
-			} else if($act->sugar_bean->object_name == 'Task') { 
+			} else if($act->sugar_bean->object_name == 'Task') {
 				echo "<td>".
-					SugarThemeRegistry::current()->getImage('Tasks','alt="'.$act->sugar_bean->status.': '.$act->sugar_bean->name.'"'); 
+					SugarThemeRegistry::current()->getImage('Tasks','alt="'.$act->sugar_bean->status.': '.$act->sugar_bean->name.'"');
 				echo "</td>";
-			
+
 				if(empty($act->sugar_bean->name)) {
 					echo "<td width=\"100%\">".
-						$timedate->to_display_time($act->sugar_bean->time_due, true, false); 
+						$timedate->to_display_time($act->sugar_bean->time_due, true, false);
 					echo "</td></tr>";
 				} else {
 					echo "<td width=\"100%\">
@@ -311,7 +309,7 @@ function template_cal_tabs(& $args) {
 				//$ids = get_user_array(false);
 				//$ids = array_keys($ids);
 				$ids = array($current_user->id);
-				
+
 			}
 
 
@@ -332,7 +330,7 @@ function template_cal_tabs(& $args) {
 				if(obj.tagName.toLowerCase() != \"select\" && obj.length < 2)
 					return false;
 				var sel = new Array();
-			
+
 				for(i=0; i<obj.length; i++) {
 					if(obj[i].selected == true) {
 						sel[sel.length] = i;
@@ -350,7 +348,7 @@ function template_cal_tabs(& $args) {
 					}
 				}
 			}
-			
+
 			function down(name) {
 				var td = document.getElementById(name+'_td');
 				var obj = td.getElementsByTagName('select')[0];
@@ -375,7 +373,7 @@ function template_cal_tabs(& $args) {
 				}
 			}
 			</script>
-			
+
 			<div id='shared_cal_edit' style='display: none;'>
 			<form name='shared_cal' action=\"index.php\" method=\"post\" >
 			<input type=\"hidden\" name=\"module\" value=\"".$currentModule."\">
@@ -439,7 +437,7 @@ function template_cal_tabs(& $args) {
 		if(isset( $args['size']) && $args['size'] = 'small')
 		{
 		?>
-		<a style="text-decoration: none;" 
+		<a style="text-decoration: none;"
 			href="index.php?module=Calendar&action=index&view=month&<?php echo $args['calendar']->date_time->get_date_str();?>">
 <?php
 
@@ -478,7 +476,7 @@ function template_cal_tabs(& $args) {
 			template_calendar_year($args);
 		} else
 			if($args['calendar']->view == 'shared') {
-				
+
 				global $current_user, $shared_user;
 				$shared_args = array();
 				foreach($args as $key => $val) {
@@ -720,16 +718,16 @@ function template_calendar_month(& $args) {
 function get_current_day(& $args) {
 	global $timedate;
 	static $user_today_timestamp = null;
-	
+
 	// adjust for user's TZ
-	if(!isset($user_today_timestamp)) { 
+	if(!isset($user_today_timestamp)) {
 	    $gmt_today = $timedate->get_gmt_db_datetime();
 	    $user_today = $timedate->handle_offset($gmt_today, $GLOBALS['timedate']->get_db_date_time_format());
 		preg_match_all('/\d*/', $user_today, $matches);
 		$matches = $matches[0];
 		$user_today_timestamp = mktime($matches[6], $matches[8], '0', $matches[2], $matches[4], $matches[0]);
 	}
-    
+
 	$slice = $args['slice'];
 	if($slice->start_time->get_mysql_date() == date($GLOBALS['timedate']->get_db_date_time_format(), $user_today_timestamp)) {
 		return true;
@@ -812,7 +810,7 @@ function template_echo_slice_date_nolink(& $args) {
 function template_echo_date_info($view, $date_time) {
 	global $current_user;
 	$dateFormat = $current_user->getUserDateTimePreferences();
-	
+
 	if($view == 'month') {
 		for($i=0; $i<strlen($dateFormat['date']); $i++) {
 			switch($dateFormat['date']{$i}) {
@@ -882,7 +880,7 @@ function template_echo_date_info($view, $date_time) {
 }
 
 function template_get_next_calendar(& $args) {
-	
+
 	global $mod_strings;
 ?>
 <a href="index.php?action=index&module=Calendar&view=<?php echo $args['calendar']->view; ?>&<?php echo $args['calendar']->get_next_date_str(); ?>"><?php echo $mod_strings["LBL_NEXT_".$args['calendar']->get_view_name($args['calendar']->view)]; ?>&nbsp;<?php echo SugarThemeRegistry::current()->getImage('calendar_next','alt="'. $mod_strings["LBL_NEXT_".$args['calendar']->get_view_name($args['calendar']->view)].'" align="absmiddle" border="0"'); ?></a>
@@ -892,7 +890,7 @@ function template_get_next_calendar(& $args) {
 
 function template_get_previous_calendar(& $args) {
 	global $mod_strings;
-	
+
 ?>
 <a href="index.php?action=index&module=Calendar&view=<?php echo $args['calendar']->view; ?>&<?php echo $args['calendar']->get_previous_date_str(); ?>"><?php echo SugarThemeRegistry::current()->getImage('calendar_previous','alt="'. $mod_strings["LBL_PREVIOUS_".$args['calendar']->get_view_name($args['calendar']->view)].'" align="absmiddle" border="0"'); ?>&nbsp;&nbsp;<?php echo $mod_strings["LBL_PREVIOUS_".$args['calendar']->get_view_name($args['calendar']->view)]; ?></a>
 <?php

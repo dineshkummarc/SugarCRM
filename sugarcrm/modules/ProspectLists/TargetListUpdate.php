@@ -44,7 +44,6 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
  */
 
-
 require_once 'include/formbase.php';
 
 global $beanFiles,$beanList;
@@ -52,7 +51,26 @@ $bean_name = $beanList[$_REQUEST['module']];
 require_once($beanFiles[$bean_name]);
 $focus = new $bean_name();
 
-$uids = explode ( ',', $_POST['uids'] );
+$uids = array();
+if($_REQUEST['select_entire_list'] == '1'){
+	$order_by = '';
+	
+	require_once('include/MassUpdate.php');
+	$mass = new MassUpdate();
+	$mass->generateSearchWhere($_REQUEST['module'], $_REQUEST['current_query_by_page']);
+	$ret_array = create_export_query_relate_link_patch($_REQUEST['module'], $mass->searchFields, $mass->where_clauses);
+	$query = $focus->create_export_query($order_by, $ret_array['where'], $ret_array['join']);
+	$result = $GLOBALS['db']->query($query,true);
+	$uids = array();
+	while($val = $GLOBALS['db']->fetchByAssoc($result,-1,false))
+	{
+		array_push($uids, $val['id']);
+	}
+}
+else{
+	$uids = explode ( ',', $_POST['uids'] );
+}
+
 foreach ( $uids as $id)
 {
 	$focus->retrieve($id);

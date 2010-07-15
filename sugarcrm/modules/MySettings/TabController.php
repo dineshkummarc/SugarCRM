@@ -78,7 +78,6 @@ function get_system_tabs(){
 				}
 				ACLController :: filterModuleList($tabs); 
 				$tabs = $this->get_key_array($tabs);
-				$tabs['Home'] = 'Home';
 				$system_tabs_result = $tabs;
 			}else{
 				$system_tabs_result = $this->get_key_array($moduleList);

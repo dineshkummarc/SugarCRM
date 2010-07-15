@@ -56,12 +56,17 @@ $layout_defs['Contacts'] = array(
 				array('widget_class' => 'SubPanelTopScheduleCallButton'),
 				array('widget_class' => 'SubPanelTopComposeEmailButton'),
 			),
-			'collection_list' => array(	
+			'collection_list' => array(
 				'tasks' => array(
 					'module' => 'Tasks',
 					'subpanel_name' => 'ForActivities',
 					'get_subpanel_data' => 'tasks',
 				),
+                'tasks_parent' => array(
+                    'module' => 'Tasks',
+                    'subpanel_name' => 'ForActivities',
+                    'get_subpanel_data' => 'tasks_parent',
+                ),
                 'meetings' => array(
                     'module' => 'Meetings',
                     'subpanel_name' => 'ForActivities',
@@ -71,14 +76,14 @@ $layout_defs['Contacts'] = array(
 					'module' => 'Calls',
 					'subpanel_name' => 'ForActivities',
 					'get_subpanel_data' => 'calls',
-				),	
-			)			
+				),
+			)
 		),
 
 		'history' => array(
 			'order' => 20,
 			'sort_order' => 'desc',
-			'sort_by' => 'date_modified',
+			'sort_by' => 'date_entered',
 			'title_key' => 'LBL_HISTORY_SUBPANEL_TITLE',
 			'type' => 'collection',
 			'subpanel_name' => 'history',   //this values is not associated with a physical file.
@@ -90,11 +95,16 @@ $layout_defs['Contacts'] = array(
             array('widget_class' => 'SubPanelTopSummaryButton'),
 			),
 
-			'collection_list' => array(	
+			'collection_list' => array(
                 'tasks' => array(
                     'module' => 'Tasks',
                     'subpanel_name' => 'ForHistory',
                     'get_subpanel_data' => 'tasks',
+                ),
+                'tasks_parent' => array(
+                    'module' => 'Tasks',
+                    'subpanel_name' => 'ForHistory',
+                    'get_subpanel_data' => 'tasks_parent',
                 ),
 				'meetings' => array(
 					'module' => 'Meetings',
@@ -105,25 +115,25 @@ $layout_defs['Contacts'] = array(
 					'module' => 'Calls',
 					'subpanel_name' => 'ForHistory',
 					'get_subpanel_data' => 'calls',
-				),	
+				),
 				'notes' => array(
 					'module' => 'Notes',
 					'subpanel_name' => 'ForHistory',
 					'get_subpanel_data' => 'notes',
-				),	
+				),
 				'emails' => array(
 					'module' => 'Emails',
 					'subpanel_name' => 'ForHistory',
 					'get_subpanel_data' => 'emails',
-				),	
+				),
 				'linkedemails' => array(
 	                'module' => 'Emails',
 	                'subpanel_name' => 'ForUnlinkedEmailHistory',
 	                'get_subpanel_data' => 'function:get_unlinked_email_query',
 	                'generate_select'=>true,
 	                'function_parameters' => array('return_as_array'=>'true'),
-	    		),          
-			)			
+	    		),
+			)
 		),
 		'leads' => array(
 			'order' => 60,
@@ -138,7 +148,7 @@ $layout_defs['Contacts'] = array(
 				array('widget_class' => 'SubPanelTopCreateLeadNameButton'),
 				array('widget_class' => 'SubPanelTopSelectButton',
 					'popup_module' => 'Opportunities',
-					'mode' => 'MultiSelect', 
+					'mode' => 'MultiSelect',
 				),
 			),
 		),
@@ -208,7 +218,8 @@ $layout_defs['Contacts'] = array(
 			'title_key' => 'LBL_PROJECTS_SUBPANEL_TITLE',
 			'top_buttons' => array(
 				array('widget_class' => 'SubPanelTopButtonQuickCreate'),
-			),			
+				array('widget_class' => 'SubPanelTopSelectButton'),
+			),
 		),
         'campaigns' => array(
 			'order' => 70,

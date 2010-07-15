@@ -294,7 +294,7 @@ class FontManager{
     public function deleteFont(){
         global $current_user;
         if(!is_admin($current_user)){
-            sugar_die('Admin Only');    
+            sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']); 
         }
         $this->loadFontFile();
         if($this->font_type == "core" || $this->fontPath == K_PATH_FONTS){
@@ -335,7 +335,7 @@ class FontManager{
     public function addFont($font_file, $metric_file, $embedded=true, $encoding_table='cp1252', $patch=array(), $cid_info="", $style="regular"){
         global $current_user;
         if(!is_admin($current_user)){
-            sugar_die('Admin Only');    
+            sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']);     
         }
         $error=false;
         
@@ -409,7 +409,7 @@ class FontManager{
     public function clearCachedFile(){
         global $current_user;
         if(!is_admin($current_user)){
-            sugar_die('Admin Only');    
+            sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']);     
         }
         if(file_exists($GLOBALS['sugar_config']['cache_dir']."/Sugarpdf/cachedFontList.php")){
             return(unlink($GLOBALS['sugar_config']['cache_dir']."/Sugarpdf/cachedFontList.php"));

@@ -57,7 +57,7 @@ $dictionary['ProspectList'] = array (
 		  	'vname' => 'LBL_TYPE',
 			'type' => 'enum',
 			'options' => 'prospect_list_type_dom',
-			'len'=>25,
+			'len' => 100,
 			'importable' => 'required',
 		),
 		'date_entered' => array (

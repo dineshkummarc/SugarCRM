@@ -131,6 +131,7 @@ $mod_strings = array (
 	'LBL_ASSIGNED_TO_ID' => 'Assigned User',
     'NOTICE_DURATION_TIME' => 'Duration time must be greater than 0',
     'LBL_CALL_INFORMATION' => 'Call Overview',
+    'LBL_REMOVE' => 'rem',
    );
 
 

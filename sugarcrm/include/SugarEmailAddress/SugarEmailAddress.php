@@ -690,7 +690,7 @@ class SugarEmailAddress extends SugarBean {
      * @param bool asMetadata Default false
      * @return string HTML/JS for widget
      */
-    function getEmailAddressWidgetEditView($id, $module, $asMetadata=false, $tpl='') 
+    function getEmailAddressWidgetEditView($id, $module, $asMetadata=false, $tpl='',$tabindex='') 
     {
         if ( !($this->smarty instanceOf Sugar_Smarty ) )
             $this->smarty = new Sugar_Smarty();
@@ -745,6 +745,7 @@ class SugarEmailAddress extends SugarBean {
         $this->smarty->assign('app_strings', $app_strings);
         $this->smarty->assign('prefillEmailAddresses', $prefill);
         $this->smarty->assign('prefillData', $prefillData);
+        $this->smarty->assign('tabindex', $tabindex);
         //Set addDefaultAddress flag (do not add if it's from the Email module)
         $this->smarty->assign('addDefaultAddress', (isset($_REQUEST['module']) && $_REQUEST['module'] == 'Emails') ? 'false' : 'true');
         $form = $this->view;
@@ -917,7 +918,7 @@ class SugarEmailAddress extends SugarBean {
  * @param string $view DetailView or EditView
  * @return string
  */
-function getEmailAddressWidget($focus, $field, $value, $view) {
+function getEmailAddressWidget($focus, $field, $value, $view, $tabindex='') {
     $sea = new SugarEmailAddress();
     $sea->setView($view);
     
@@ -925,7 +926,7 @@ function getEmailAddressWidget($focus, $field, $value, $view) {
             $module = $focus->module_dir;
             if ($view == 'ConvertLead' && $module == "Contacts")  $module = "Leads";
             
-            return $sea->getEmailAddressWidgetEditView($focus->id, $module, false);
+            return $sea->getEmailAddressWidgetEditView($focus->id, $module, false,'',$tabindex);
         }
 
     return $sea->getEmailAddressWidgetDetailView($focus);

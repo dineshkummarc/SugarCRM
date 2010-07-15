@@ -42,14 +42,16 @@
 						'basic_search' => array(
 						 	'name', 
 							array('name'=>'current_user_only', 'label'=>'LBL_CURRENT_USER_FILTER', 'type'=>'bool'),
-							),
+							
+		      ),
 						'advanced_search' => array(
 							'case_number', 
 							'name',
 							'account_name',
 							'status',
 							array('name' => 'assigned_user_id', 'type' => 'enum', 'label' => 'LBL_ASSIGNED_TO', 'function' => array('name' => 'get_user_array', 'params' => array(false))),
-							'priority' 
+							'priority',
+							
 						),
 					),
  			   );

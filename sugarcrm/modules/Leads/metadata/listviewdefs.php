@@ -87,6 +87,8 @@ array (
   array (
     'width' => '5%',
     'label' => 'LBL_LIST_ASSIGNED_USER',
+    'module' => 'Employees',
+    'id' => 'ASSIGNED_USER_ID',
     'default' => true,
   ),
   'TITLE' => 

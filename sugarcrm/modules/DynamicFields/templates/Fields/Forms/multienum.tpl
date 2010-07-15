@@ -42,7 +42,7 @@
 
 {include file="modules/DynamicFields/templates/Fields/Forms/coreTop.tpl"}
 <tr>
-	<td nowrap="nowrap">{$MOD.LBL_DROP_DOWN_LIST}:</td>
+	<td nowrap="nowrap">{sugar_translate module="DynamicFields" label="LBL_DROP_DOWN_LIST"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		{html_options name="ext1" id="ext1" selected=$cf.ext1 values=$dropdowns output=$dropdowns onChange="dropdownChanged(this.value);"}
@@ -52,7 +52,7 @@
 	</td>
 </tr>
 <tr>
-	<td nowrap="nowrap">{$MOD.COLUMN_TITLE_DEFAULT_VALUE}:</td>
+	<td nowrap="nowrap">{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DEFAULT_VALUE"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		{html_options name="default_value" id="default_value" selected=$cf.default_value options=$selected_dropdown }
@@ -62,18 +62,18 @@
 	</td>
 </tr>
 <tr>
-	<td nowrap="nowrap">{$MOD.COLUMN_TITLE_DISPLAYED_ITEM_COUNT}:</td>
+	<td nowrap="nowrap">{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DISPLAYED_ITEM_COUNT"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type='text' name='ext2' id='ext2' value='{$cf.ext2|default:5}'>
-		<script>addToValidate('popup_form', 'ext2', 'int', false,'{$MOD.COLUMN_TITLE_DISPLAYED_ITEM_COUNT}' );</script>
+		<script>addToValidate('popup_form', 'ext2', 'int', false,'{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DISPLAYED_ITEM_COUNT"}' );</script>
 	{else}
 		<input type='hidden' name='ext2' value='{$cf.ext2}'>{$cf.ext2}
 	{/if}
 	</td>
 </tr>
 <tr>
-	<td nowrap="nowrap">{$MOD.COLUMN_TITLE_MASS_UPDATE}:</td>
+	<td nowrap="nowrap">{sugar_translate module="DynamicFields" label="COLUMN_TITLE_MASS_UPDATE"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type="checkbox" name="mass_update" value="1" {if !empty($cf.mass_update)}checked{/if}/>

@@ -1458,7 +1458,9 @@ $app_strings = array (
     'LBL_LINK_RECORDS'=> 'Records',
     'LBL_LINK_SELECT'=> 'Select',
     'LBL_LINK_ACTIONS'=> 'Actions',
-
+    'LBL_CLOSE_ACTIVITY_HEADER' => "Confirm",
+    'LBL_CLOSE_ACTIVITY_CONFIRM' => "Do you want to close this #module#?",
+    'LBL_CLOSE_ACTIVITY_REMEMBER' => "Do not display this message in the future: &nbsp;",
 
 
     'ERR_CREATING_FIELDS' => 'Error filling in additional detail fields: ',
@@ -1614,6 +1616,7 @@ $app_strings = array (
     'LBL_ENTER_DATE' => 'Enter Date',
     'LBL_EXPORT_ALL' => 'Export All',
     'LBL_EXPORT' => 'Export',
+    'LBL_FAVORITES_FILTER' => 'My Favorites:',
     'LBL_GO_BUTTON_LABEL' => 'Go',
     'LBL_HIDE'=>'Hide',
     'LBL_ID'=>'ID',
@@ -1639,6 +1642,7 @@ $app_strings = array (
     'LBL_LIST_ASSIGNED_USER' => 'User',
     'LBL_LIST_CONTACT_NAME' => 'Contact Name',
     'LBL_LIST_CONTACT_ROLE' => 'Contact Role',
+    'LBL_LIST_DATE_ENTERED'=>'Date Created',
     'LBL_LIST_EMAIL' => 'Email',
     'LBL_LIST_NAME' => 'Name',
     'LBL_LIST_OF' => 'of',
@@ -1877,6 +1881,7 @@ $app_strings = array (
 	'WARN_LICENSE_SEATS'=>  "Warning: The number of active users is already the maximum number of licenses allowed.",
 	'WARN_LICENSE_SEATS_MAXED'=>  "Warning: The number of active users exceeds the maximum number of licenses allowed.",    
     'WARN_ONLY_ADMINS'=> "Only admins may log in.", 
+    'WARN_UNSAVED_CHANGES'=> "You are about to leave this record without saving any changes you may have made to the record. Are you sure you want to navigate away from this record?",
     'ERROR_NO_RECORD' => 'Error retrieving record.  This record may be deleted or you may not be authorized to view it.',
     'ERROR_TYPE_NOT_VALID' => 'Error. This type is not valid.',
     'LBL_DUP_MERGE'=>'Find Duplicates',

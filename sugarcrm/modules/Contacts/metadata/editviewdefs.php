@@ -68,9 +68,9 @@ $viewdefs['Contacts']['EditView'] = array(
             ),
           ),
           array (
-            'name' => 'phone_mobile',
-            'comment' => 'Mobile phone number of the contact',
-            'label' => 'LBL_MOBILE_PHONE',
+            'name' => 'phone_work',
+            'comment' => 'Work phone number of the contact',
+            'label' => 'LBL_OFFICE_PHONE',
           ),   
         ),
 
@@ -81,11 +81,10 @@ $viewdefs['Contacts']['EditView'] = array(
             'comment' => 'The title of the contact',
             'label' => 'LBL_TITLE',
           ),
-          
           array (
-            'name' => 'phone_work',
-            'comment' => 'Work phone number of the contact',
-            'label' => 'LBL_OFFICE_PHONE',
+            'name' => 'phone_mobile',
+            'comment' => 'Mobile phone number of the contact',
+            'label' => 'LBL_MOBILE_PHONE',
           ),          
                     
         ),

@@ -37,18 +37,18 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 include_once('include/database/MssqlManager.php');
 
-class FreeTDSManager extends MssqlManager 
+class FreeTDSManager extends MssqlManager
 {
 
 	public $isFreeTDS = true;
-	
+
 	/**
      * @see DBManager::query()
      */
     public function query(
-        $sql, 
-        $dieOnError = false, 
-        $msg = '', 
+        $sql,
+        $dieOnError = false,
+        $msg = '',
         $suppress = false
         )
     {
@@ -57,13 +57,13 @@ class FreeTDSManager extends MssqlManager
         $GLOBALS['log']->info('Query:' . $sql);
         $this->checkConnection();
         $this->query_time = microtime(true);
-    
+
         if ($suppress) {
         }
         else {
             $result = @mssql_query($sql,$this->database);
         }
-        
+
         if (!$result) {
 
             // awu Bug 10657: ignoring mssql error message 'Changed database context to' - an intermittent
@@ -80,17 +80,17 @@ class FreeTDSManager extends MssqlManager
                     sugar_die('SQL Error : ' . mssql_get_last_message());
             else
                 echo 'SQL Error : ' . mssql_get_last_message();
-                
+
             $GLOBALS['log']->fatal(mssql_get_last_message() . ": " . $sql );
         }
         $this->lastmysqlrow = -1;
-        
+
         $this->query_time = microtime(true) - $this->query_time;
         $GLOBALS['log']->info('Query Execution Time:'.$this->query_time);
-        
-        
-        $this->checkError($msg.' Query Failed:' . $sql . '::', $dieOnError);
-        
+
+
+        $this->checkError($msg.' Query Failed:' . $sql, $dieOnError);
+
         return $result;
     }
 
@@ -98,20 +98,20 @@ class FreeTDSManager extends MssqlManager
     /**
      * This is a utility function to prepend the "N" character in front of SQL values that are
      * surrounded by single quotes.
-     * 
+     *
      * @param  $sql string SQL statement
      * @return string SQL statement with single quote values prepended with "N" character for nvarchar columns
      */
     public function appendN(
         $sql
-        ) 
+        )
     {
-        // If there are no single quotes, don't bother, will just assume there is no character data 
+        // If there are no single quotes, don't bother, will just assume there is no character data
         if (strpos($sql, '\'') === false)
             return $sql;
-        
+
         $sql = str_replace('\\\'', '<@#@#@ESCAPED_QUOTE@#@#@>', $sql);
-                    
+
         //The only location of three subsequent ' will be at the begning or end of a value.
         $sql = preg_replace('/(?<!\')(\'{3})(?!\')/', "'<@#@#@PAIR@#@#@>", $sql);
 
@@ -119,8 +119,8 @@ class FreeTDSManager extends MssqlManager
         if ((substr_count($sql, '\'') & 1)) {
             $GLOBALS['log']->error('SQL statement[' . $sql . '] has odd number of single quotes.');
             return $sql;
-        }         
-        
+        }
+
         // Remove any remaining '' and do not parse... replace later (hopefully we don't even have any)
         $pairs        = array();
         $regexp       = '/(\'{2})/';
@@ -134,7 +134,7 @@ class FreeTDSManager extends MssqlManager
                $sql = str_replace($pairs, array_keys($pairs), $sql);
             }
         }
-    
+
         $regexp  = "/(N?\'.+?\')/is";
         $matches = array();
         preg_match_all($regexp, $sql, $matches);
@@ -148,19 +148,19 @@ class FreeTDSManager extends MssqlManager
                 }
             }
         }
-        
+
         if (!empty($replace))
             $sql = str_replace(array_keys($replace), $replace, $sql);
-        
+
         if (!empty($pairs))
             $sql = str_replace(array_keys($pairs), $pairs, $sql);
-        
+
         if(strpos($sql, '<@#@#@PAIR@#@#@>'))
             $sql = str_replace(array('<@#@#@PAIR@#@#@>'), array('\'\''), $sql);
-        
+
         if(strpos($sql, '<@#@#@ESCAPED_QUOTE@#@#@>'))
-            $sql = str_replace(array('<@#@#@ESCAPED_QUOTE@#@#@>'), array('\\\''), $sql);            
-            
+            $sql = str_replace(array('<@#@#@ESCAPED_QUOTE@#@#@>'), array('\\\''), $sql);
+
         return $sql;
     }
 }

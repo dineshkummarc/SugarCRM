@@ -45,6 +45,14 @@ if(!is_admin($current_user)&& !is_admin_for_module($GLOBALS['current_user'],'Use
 
 global $locale;
 
+$return_module = isset($_REQUEST['return_module']) ? $_REQUEST['return_module'] : '';
+$return_action = isset($_REQUEST['return_action']) ? $_REQUEST['return_action'] : '';
+$return_id = isset($_REQUEST['return_id']) ? $_REQUEST['return_id'] : '';
+if(!empty($return_module))
+    $cancel_location = "index.php?module=".$return_module."&action=".$return_action."&record=".$return_id;
+else 
+    $cancel_location = "index.php?module=Users&action=index";
+		
 echo "<h2 class='moduleTitle' style=\"margin-bottom:0px;\">{$mod_strings_users['LBL_REASS_SCRIPT_TITLE']}</h2>";
 echo "{$mod_strings_users['LBL_REASS_DESC_PART1']}<BR><br>";
 
@@ -78,7 +86,8 @@ if(!isset($_POST['fromuser']) && !isset($_GET['execute'])){
 <tr>
 <td>
 <input type=submit class="button" value="<?php echo $mod_strings_users['LBL_REASS_BUTTON_SUBMIT']; ?>" name=steponesubmit>
-&nbsp;<input type=button class="button" value="<?php echo $mod_strings_users['LBL_REASS_BUTTON_CLEAR']; ?>" onclick='document.location="index.php?module=Users&action=reassignUserRecords&clear=true"'>
+&nbsp;<input type=button class="button" value="<?php echo $mod_strings_users['LBL_REASS_BUTTON_CLEAR']; ?>" onclick='clearCurrentRecords();'>
+<input type=button class="button" value="<?php echo $app_strings['LBL_CANCEL_BUTTON_LABEL']; ?>" onclick='document.location="<?php echo $cancel_location ?>"'>
 </td>
 </tr>
 </table>
@@ -88,11 +97,16 @@ if(!isset($_POST['fromuser']) && !isset($_GET['execute'])){
 <BR>
 <?php echo $mod_strings_users['LBL_REASS_USER_FROM']; ?>
 <BR>
-<select name=fromuser>
+<select name="fromuser" id='fromuser'>
 <?php
 $active_users = get_user_array(FALSE);
 $inactive_users = get_user_array(FALSE, "Inactive");
 $all_users = array_merge($active_users, $inactive_users);
+// sb - issue with php array_merge causing array index '1' to change to '0'
+if(isset($all_users[0])){
+	$all_users[1] = 'admin';
+	unset($all_users[0]);
+}
 asort($all_users);
 echo get_select_options_with_id($all_users, isset($_SESSION['reassignRecords']['fromuser']) ? $_SESSION['reassignRecords']['fromuser'] : '');
 ?>
@@ -101,7 +115,7 @@ echo get_select_options_with_id($all_users, isset($_SESSION['reassignRecords']['
 <BR>
 <?php echo $mod_strings_users['LBL_REASS_USER_TO']; ?>
 <BR>
-<select name=touser>
+<select name="touser" id="touser">
 <?php
 echo get_select_options_with_id($all_users, isset($_SESSION['reassignRecords']['touser']) ? $_SESSION['reassignRecords']['touser'] : '');
 ?>
@@ -165,7 +179,7 @@ foreach($moduleFilters as $modFilter => $fieldArray){
 	$display = (!empty($fieldArray['display_default']) && $fieldArray['display_default'] == true ? "block" : "none");
 	//Leon bug 20739
 	$t_mod_strings=return_module_language($GLOBALS['current_language'], $modFilter);
-	echo "<div id=\"{$app_list_strings['moduleList'][$modFilter]}\" style=\"display:$display\">\n";
+	echo "<div id=\"div_{$app_list_strings['moduleList'][$modFilter]}\" style=\"display:$display\">\n";
 	echo "<h5 style=\"padding-left:0px; margin-bottom:4px;\">{$app_list_strings['moduleList'][$modFilter]} ", " {$mod_strings_users['LBL_REASS_FILTERS']}</h5>\n";
 	foreach($fieldArray['fields'] as $meta){
 		$multi = "";
@@ -207,7 +221,8 @@ foreach($moduleFilters as $modFilter => $fieldArray){
 <tr>
 <td>
 <input type=submit class="button" value="<?php echo $mod_strings_users['LBL_REASS_BUTTON_SUBMIT']; ?>" name=steponesubmit>
-&nbsp;<input type=button class="button" value="<?php echo $mod_strings_users['LBL_REASS_BUTTON_CLEAR']; ?>" onclick='document.location="index.php?module=Users&action=reassignUserRecords&clear=true"'>
+&nbsp;<input type=button class="button" value="<?php echo $mod_strings_users['LBL_REASS_BUTTON_CLEAR']; ?>" onclick='clearCurrentRecords();'>
+<input type=button class="button" value="<?php echo $app_strings['LBL_CANCEL_BUTTON_LABEL']; ?>" onclick='document.location="<?php echo $cancel_location ?>"'>
 </td>
 </tr>
 </table>
@@ -442,6 +457,21 @@ else if(isset($_GET['execute']) && $_GET['execute'] == true){
 ?>
 
 <script type="text/javascript">
+
+function clearCurrentRecords()
+{
+    var callback = {
+                success: function(){
+                    document.getElementById('fromuser').selectedIndex = 0;
+                    document.getElementById('touser').selectedIndex = 0;
+                    document.getElementById('modulemultiselect').selectedIndex = -1;
+                    updateDivDisplay(document.getElementById('modulemultiselect'));
+                }
+            };
+            
+    YAHOO.util.Connect.asyncRequest('POST', 'index.php?module=Users&action=clearreassignrecords', callback, null);
+}
+
 var allselected = [];
 function updateDivDisplay(multiSelectObj){
     for(var i = 0; i < multiSelectObj.options.length; i++){
@@ -449,13 +479,13 @@ function updateDivDisplay(multiSelectObj){
             allselected[i] = multiSelectObj.options[i].selected;
             
             if(allselected[i]){
-                theElement = document.getElementById(multiSelectObj.options[i].text);
+                theElement = document.getElementById('div_' + multiSelectObj.options[i].text);
                 if(theElement != null){
                     theElement.style.display = 'block';
                 }
             }
             else{
-                theElement = document.getElementById(multiSelectObj.options[i].text);
+                theElement = document.getElementById('div_' + multiSelectObj.options[i].text);
                 if(theElement != null){
                     theElement.style.display = 'none';
                 }

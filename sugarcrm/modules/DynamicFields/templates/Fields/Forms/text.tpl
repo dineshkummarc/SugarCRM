@@ -42,7 +42,7 @@
 
 {include file="modules/DynamicFields/templates/Fields/Forms/coreTop.tpl"}
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_LABEL_ROWS}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_LABEL_ROWS"}:</td>
 	<td>
 	{if $hideLevel < 4}
 		<input id ="rows" type="text" name="rows" value="{$vardef.rows|default:4}">
@@ -52,7 +52,7 @@
 	</td>
 </tr>
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_LABEL_COLS}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_LABEL_COLS"}:</td>
 	<td>
 	{if $hideLevel < 4}
 		<input id ="cols" type="text" name="cols" value="{$vardef.cols|default:20}">
@@ -62,7 +62,7 @@
 	</td>
 </tr>
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_DEFAULT_VALUE}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DEFAULT_VALUE"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<textarea name='default' id='default' >{$vardef.default}</textarea>

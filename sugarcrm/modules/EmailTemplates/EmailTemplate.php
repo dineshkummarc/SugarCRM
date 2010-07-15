@@ -119,16 +119,16 @@ class EmailTemplate extends SugarBean {
 	 */
 	function generateFieldDefsJS() {
 		global $current_user;
-		
-		
-		
-		
+
+
+
+
 
 		$contact = new Contact();
 		$account = new Account();
 		$lead = new Lead();
 		$prospect = new Prospect();
-		
+
 
 		$loopControl = array(
 			'Contacts' => array(
@@ -231,7 +231,6 @@ class EmailTemplate extends SugarBean {
 		$pattern = '/\{*[^\{\}]*\}/'; // cn: bug 6638, find multibyte strings
 		foreach ($template_text_array as $key=>$template_text) {
 			if (!empty($template_text)) {
-            	$template_text = urldecode($template_text);
             	if(!isset($this->parsed_urls[$key]) || $this->parsed_urls[$key]['text'] != $template_text) {
 					$matches=array();
 					$count=preg_match_all($pattern,$template_text,$matches,PREG_OFFSET_CAPTURE);
@@ -256,7 +255,7 @@ class EmailTemplate extends SugarBean {
 							$tracker_url = sprintf($url_template,$tracked_urls[$url_key_name]['id']);
 						}
 					}
-					if(!empty($tracker_url) && !empty($template_text) && !empty($matches[0][$i][0]) && !empty($tracked_urls[$matches[0][$i][0]])){					    
+					if(!empty($tracker_url) && !empty($template_text) && !empty($matches[0][$i][0]) && !empty($tracked_urls[$matches[0][$i][0]])){
                         $template_text=substr_replace($template_text,$tracker_url,$matches[0][$i][1], strlen($matches[0][$i][0]));
                         $template_text=str_replace($sugar_config['site_url'].'/'.$sugar_config['site_url'],$sugar_config['site_url'],$template_text);
                     }
@@ -269,7 +268,7 @@ class EmailTemplate extends SugarBean {
 	}
 
 	function parse_email_template($template_text_array, $focus_name, $focus, &$macro_nv) {
-		
+
 
 		global $beanFiles, $beanList, $app_list_strings;
 
@@ -388,10 +387,10 @@ class EmailTemplate extends SugarBean {
 		$repl_arr = array();
 
 		// cn: bug 9277 - create a replace array with empty strings to blank-out invalid vars
-		if(!class_exists('Account')) 
-		if(!class_exists('Contact')) 
-		if(!class_exists('Leads')) 
-		if(!class_exists('Prospects')) 
+		if(!class_exists('Account'))
+		if(!class_exists('Contact'))
+		if(!class_exists('Leads'))
+		if(!class_exists('Prospects'))
 
 		require_once('modules/Accounts/Account.php');
 		$acct = new Account();
@@ -530,11 +529,11 @@ class EmailTemplate extends SugarBean {
 		reset($repl_arr);
 		//20595 add nl2br() to respect the multi-lines formatting
 		if(isset($repl_arr['contact_primary_address_street'])){
-		    $repl_arr['contact_primary_address_street'] = nl2br($repl_arr['contact_primary_address_street']);	
-		}		
+		    $repl_arr['contact_primary_address_street'] = nl2br($repl_arr['contact_primary_address_street']);
+		}
 		if(isset($repl_arr['contact_alt_address_street'])){
 		    $repl_arr['contact_alt_address_street'] = nl2br($repl_arr['contact_alt_address_street']);	
-		}		
+		}
 
 		foreach ($repl_arr as $name=>$value) {
 			if($value != '' && is_string($value)) {
@@ -575,7 +574,7 @@ class EmailTemplate extends SugarBean {
 		}
 		return false;
 	}
-	
+
 	function is_used_by_email_marketing() {
 		$query = "select id from email_marketing where template_id='$this->id' and deleted=0";
 		$result = $this->db->query($query);

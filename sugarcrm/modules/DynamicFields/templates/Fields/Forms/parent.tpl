@@ -40,20 +40,20 @@
 *}
 
 
-<table width="100%"><tr><td class='mbLBL' width='30%' >{$MOD.COLUMN_TITLE_NAME}:</td><td >
+<table width="100%"><tr><td class='mbLBL' width='30%' >{sugar_translate module="DynamicFields" label="COLUMN_TITLE_NAME"}:</td><td >
 {if $hideLevel == 0}
 	<input id="field_name_id" type="hidden" name="name" value="parent_name"/>parent_name
 {else}
 	<input id= "field_name_id" type="hidden" name="name" value="{$vardef.name}"/>{$vardef.name}{/if}
 <script>
 
-	addToValidate('popup_form', 'name', 'DBName', true,'{$MOD.COLUMN_TITLE_NAME} [a-zA-Z_]' );
-	addToValidateIsInArray('popup_form', 'name', 'in_array', true,'{$MOD.ERR_RESERVED_FIELD_NAME}', '{$field_name_exceptions}', '==');
+	addToValidate('popup_form', 'name', 'DBName', true,'{sugar_translate module="DynamicFields" label="COLUMN_TITLE_NAME"} [a-zA-Z_]' );
+	addToValidateIsInArray('popup_form', 'name', 'in_array', true,'{sugar_translate module="DynamicFields" label="ERR_RESERVED_FIELD_NAME"}', '{$field_name_exceptions}', '==');
 
 </script>
 </td></tr>
 <tr>
-	<td class='mbLBL' >{$MOD.COLUMN_TITLE_LABEL}:</td>
+	<td class='mbLBL' >{sugar_translate module="DynamicFields" label="COLUMN_TITLE_LABEL"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input id ="label_key_id" type="text" name="label" value="{$vardef.vname}">
@@ -63,13 +63,13 @@
 	</td>
 </tr>
 <tr>
-	<td class='mbLBL' >{$MOD.COLUMN_TITLE_LABEL_VALUE}:</td>
+	<td class='mbLBL' >{sugar_translate module="DynamicFields" label="COLUMN_TITLE_LABEL_VALUE"}:</td>
 	<td>
 		<input id="label_value_id" type="text" name="labelValue" value="{$lbl_value}">
 	</td>
 </tr>
 <tr>
-	<td class='mbLBL' >{$MOD.COLUMN_TITLE_HELP_TEXT}:</td>
+	<td class='mbLBL' >{sugar_translate module="DynamicFields" label="COLUMN_TITLE_HELP_TEXT"}:</td>
 	<td>
 	{if $hideLevel < 5 }
 		<input type="text" name="help" value="{$vardef.help}">

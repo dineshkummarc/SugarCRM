@@ -198,10 +198,10 @@ class ListViewDisplay {
                 $this->displayColumns[$columnName] = $this->displayColumns[$columnName] + $seedDef;
             }
             
-            //C.L. Bug 38388 - ensure that ['id'] is set for related fields
+		    //C.L. Bug 38388 - ensure that ['id'] is set for related fields
             if(!isset($this->displayColumns[$columnName]['id']) && isset($this->displayColumns[$columnName]['id_name'])) {
                $this->displayColumns[$columnName]['id'] = strtoupper($this->displayColumns[$columnName]['id_name']);
-            }
+            }            
 		}
 
 		$this->process($file, $data, $seed->object_name);
@@ -292,13 +292,6 @@ class ListViewDisplay {
 		// add to target list
 		if ( isset($_REQUEST['module']) && in_array($_REQUEST['module'],array('Contacts','Prospects','Leads','Accounts')))
 		    $menuItems .= $this->buildTargetList();
-		// favorites ( for reports )
-		if ( isset($_REQUEST['module']) 
-		        && ($_REQUEST['module'] == 'Reports') 
-		        && (isset($_REQUEST['favorite']) && $_REQUEST['favorite'] == 1) )
-			$menuItems .= $this->buildRemoveFavoritesLink();
-		elseif ( isset($_REQUEST['module']) && ($_REQUEST['module'] == 'Reports') )
-			$menuItems .= $this->buildFavoritesLink();
 		// export
 		if ( ACLController::checkAccess($this->seed->module_dir,'export',true) && $this->export )
 			$menuItems .= $this->buildExportLink();
@@ -402,29 +395,6 @@ EOHTML;
 		return $script;
 	} // fn
 	/**
-	 * Builds the favorites link ( for reports )
-	 *
-	 * @return string HTML
-	 */
-	protected function buildFavoritesLink()
-	{
-		global $app_strings;
-
-		return "<a href='#' style='width: 150px' class='menuItem' onmouseover='hiliteItem(this,\"yes\");' onmouseout='unhiliteItem(this);' name='Mark as Favorites' onclick='document.MassUpdate.massupdate.value = false; document.MassUpdate.action.value = document.MassUpdate.return_action.value; document.MassUpdate.addtofavorites.value = true; document.MassUpdate.submit();'>{$app_strings['LBL_MARK_AS_FAVORITES']}</a>";
-	}
-	
-	/**
-	 * Builds the remote favorites link ( for reports )
-	 *
-	 * @return string HTML
-	 */
-	protected function buildRemoveFavoritesLink()  
-	{
-		global $app_strings;
-
-		return "<a href='#' style='width: 150px' class='menuItem' onmouseover='hiliteItem(this,\"yes\");' onmouseout='unhiliteItem(this);' name='Add to Favorites' onclick='document.MassUpdate.massupdate.value = false; document.MassUpdate.action.value = document.MassUpdate.return_action.value; document.MassUpdate.removefromfavorites.value = true; document.MassUpdate.submit();'>{$app_strings['LBL_REMOVE_FROM_FAVORITES']}</a>";
-	}
-	/**
 	 * Builds the delete link
 	 *
 	 * @return string HTML
@@ -507,6 +477,7 @@ EOHTML;
 	protected function buildTargetList() 
 	{
         global $app_strings;
+        $current_query_by_page = base64_encode(serialize($_REQUEST));
         
 		$js = <<<EOF
             if(sugarListView.get_checks_count() < 1) {
@@ -555,6 +526,20 @@ EOHTML;
 			if ( !form.return_action ) {
 			    var input = document.createElement('input');
 			    input.setAttribute ( 'name' , 'return_action' );
+			    input.setAttribute ( 'type' , 'hidden' );
+			    form.appendChild ( input ) ;
+			}
+			if ( !form.select_entire_list ) {
+			    var input = document.createElement('input');
+			    input.setAttribute ( 'name' , 'select_entire_list' );
+			    input.setAttribute ( 'value', document.MassUpdate.select_entire_list.value);
+			    input.setAttribute ( 'type' , 'hidden' );
+			    form.appendChild ( input ) ;
+			}
+			if ( !form.current_query_by_page ) {
+			    var input = document.createElement('input');
+			    input.setAttribute ( 'name' , 'current_query_by_page' );
+			    input.setAttribute ( 'value', '{$current_query_by_page}' );
 			    input.setAttribute ( 'type' , 'hidden' );
 			    form.appendChild ( input ) ;
 			}

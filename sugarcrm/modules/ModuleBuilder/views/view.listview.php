@@ -149,7 +149,7 @@ class ViewListView extends ViewEdit
 
             if ($this->subpanel)
             {
-                $ajax->addCrumb ( translate ( 'LBL_SUBPANELS', 'ModuleBuilder' ), 'ModuleBuilder.getContent("module=ModuleBuilder&action=wizard&subpanels=1&view_module=' . $this->editModule . '")' ) ;
+                $ajax->addCrumb ( translate ( 'LBL_SUBPANELS', 'ModuleBuilder' ), 'ModuleBuilder.getContent("module=ModuleBuilder&action=wizard&view=subpanels&view_module=' . $this->editModule . '")' ) ;
                 if ($this->subpanelLabel)
                 {
                     $ajax->addCrumb ( $this->subpanelLabel, '' ) ;

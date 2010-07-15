@@ -921,6 +921,45 @@ EOHTML;
     	return $theTitle;
     }
     
+    
+    /**
+     * Return the metadata file that will be used by this view.
+     *
+     * @return string File location of the metadata file.
+     */
+    public function getMetaDataFile(){
+        
+        $metadataFile = null;
+ 		$foundViewDefs = false;
+ 		$viewDef = strtolower($this->type) . 'viewdefs.php';
+ 		$coreMetaPath = 'modules/'.$this->module.'/metadata/' . $viewDef;
+ 		if(file_exists('custom/' .$coreMetaPath )){
+ 			$metadataFile = 'custom/' . $coreMetaPath;
+ 			$foundViewDefs = true;
+ 		}else{
+	 		if(file_exists('custom/modules/'.$this->module.'/metadata/metafiles.php')){
+				require_once('custom/modules/'.$this->module.'/metadata/metafiles.php');
+				if(!empty($metafiles[$this->module][$viewDef])){
+					$metadataFile = $metafiles[$this->module][$viewDef];
+					$foundViewDefs = true;
+				}
+			}elseif(file_exists('modules/'.$this->module.'/metadata/metafiles.php')){
+				require_once('modules/'.$this->module.'/metadata/metafiles.php');
+				if(!empty($metafiles[$this->module][$viewDef])){
+					$metadataFile = $metafiles[$this->module][$viewDef];
+					$foundViewDefs = true;
+				}
+			}
+ 		}
+ 		
+		if(!$foundViewDefs && file_exists($coreMetaPath)){
+				$metadataFile = $coreMetaPath;
+ 		}
+ 		$GLOBALS['log']->debug("metadatafile=". $metadataFile);
+ 		
+ 		return $metadataFile;
+    }
+    
     /**
      * Returns an array composing of the breadcrumbs to use for the module title
      *

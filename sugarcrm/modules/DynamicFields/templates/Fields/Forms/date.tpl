@@ -40,7 +40,7 @@
 *}
 {include file="modules/DynamicFields/templates/Fields/Forms/coreTop.tpl"}
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_DEFAULT_VALUE}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DEFAULT_VALUE"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		{html_options name='default' options=$default_values selected=$vardef.display_default}
@@ -50,7 +50,7 @@
 	</td>
 </tr>
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_MASS_UPDATE}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_MASS_UPDATE"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type="checkbox" name="massupdate" value="1" {if !empty($vardef.massupdate)}checked{/if}/>

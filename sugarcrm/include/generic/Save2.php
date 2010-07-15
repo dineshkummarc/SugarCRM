@@ -55,7 +55,6 @@ ARGS:
 */
 
 
-
 require_once('include/formbase.php');
 
 function add_prospects_to_prospect_list($query,$parent_module,$parent_type,$parent_id,$child_id,$link_attribute,$link_type) {
@@ -188,7 +187,58 @@ else {
  	$focus = new $bean_name();
 
  	$focus->retrieve($_REQUEST['record']);
-
+	
+ 	// If the user selected "All records" from the selection menu, we pull up the list
+ 	// based on the query they used on that popup to relate them to the parent record
+ 	if(!empty($_REQUEST['select_entire_list']) &&  $_REQUEST['select_entire_list'] != 'undefined' && isset($_REQUEST['current_query_by_page'])){
+		$order_by = '';
+		$current_query_by_page = $_REQUEST['current_query_by_page'];
+ 		$current_query_by_page_array = unserialize(base64_decode($current_query_by_page));
+ 		
+        $module = $current_query_by_page_array['module'];
+ 		$seed = loadBean($module);
+ 		$where_clauses = '';
+ 		require_once('include/SearchForm/SearchForm2.php');
+        if (file_exists('custom/modules/'.$module.'/metadata/searchdefs.php'))
+        {
+        	require_once('custom/modules/'.$module.'/metadata/searchdefs.php');
+        }
+        elseif (!empty($metafiles[$module]['searchdefs']))
+        {
+        	require_once($metafiles[$module]['searchdefs']);
+        }
+        elseif (file_exists('modules/'.$module.'/metadata/searchdefs.php'))
+        {
+        	require_once('modules/'.$module.'/metadata/searchdefs.php');
+        }
+        
+        if(!empty($metafiles[$module]['searchfields'])){
+        	require_once($metafiles[$module]['searchfields']);
+        }
+        elseif(file_exists('modules/'.$module.'/metadata/SearchFields.php')){
+        	require_once('modules/'.$module.'/metadata/SearchFields.php');
+        }
+        if(!empty($searchdefs) && !empty($searchFields)) {
+        	$searchForm = new SearchForm($seed, $module);
+	        $searchForm->setup($searchdefs, $searchFields, 'include/SearchForm/tpls/SearchFormGeneric.tpl');
+	        $searchForm->populateFromArray($current_query_by_page_array, 'advanced');
+	        $where_clauses_arr = $searchForm->generateSearchWhere(true, $module);
+	        if (count($where_clauses_arr) > 0 ) {
+	            $where_clauses = '('. implode(' ) AND ( ', $where_clauses_arr) . ')';
+	        }
+        }
+        
+		$ret_array = create_export_query_relate_link_patch($module, $searchFields, $where_clauses);
+		$query = $seed->create_export_query($order_by, $ret_array['where'], $ret_array['join']);
+		$result = $GLOBALS['db']->query($query,true);
+		$uids = array();
+		while($val = $GLOBALS['db']->fetchByAssoc($result,-1,false))
+		{
+			array_push($uids, $val['id']);
+		}
+		$_REQUEST['subpanel_id'] = $uids;
+ 	}
+ 	
  	if($bean_name == 'Team'){
  		$subpanel_id = $_REQUEST['subpanel_id'];
  		if(is_array($subpanel_id)){

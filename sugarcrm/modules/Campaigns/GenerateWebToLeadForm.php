@@ -153,7 +153,6 @@ for($i= 0; $i<$columns;$i++){
         //_pp($_REQUEST['colsSecond']);
      }
 
-     //_pp($lead->field_defs);
     if(isset($lead->field_defs[$colsFirstField]) && $lead->field_defs[$colsFirstField] != null)
     {
          $field_vname = preg_replace('/:$/','',translate($lead->field_defs[$colsFirstField]['vname'],'Leads'));
@@ -278,8 +277,8 @@ Calendar.setup ({
 </script></span sugar='slot'></td>";
           //$Web_To_Lead_Form_html .= "<td width='35%' style='font-size: 12px; font-weight: normal;'><span sugar='slot'><input type='checkbox' id=$field_name name=$field_name></span sugar='slot'></td>";
          } // if
-         if( $field_type=='text' ||  $field_type=='varchar' ||  $field_type=='name'
-          ||  $field_type=='phone' || $field_type=='currency'){
+         if( $field_type=='varchar' ||  $field_type=='name'
+          ||  $field_type=='phone' || $field_type=='currency' || $field_type=='url' || $field_type=='int'){
            if($field_name=='last_name' ||   $field_required){
                 $Web_To_Lead_Form_html .= "<td width='15%' style='text-align: left; font-size: 12px; font-weight: normal;'><span sugar='slot'>$field_label</span sugar='slot'><span class='required' style='color: rgb(255, 0, 0);'>$web_required_symbol</span></td>";
               }
@@ -288,7 +287,11 @@ Calendar.setup ({
              }
            $Web_To_Lead_Form_html .= "<td width='35%' style='font-size: 12px; font-weight: normal;'><span sugar='slot'><input id=$field_name name=$field_name type='text'></span sugar='slot'></td>";
             }
-          if($field_type=='relate' &&  $field_name=='account_name'){
+          if ( $field_type == 'text' ) {
+               $Web_To_Lead_Form_html .= "<td width='15%' style='text-align: left; font-size: 12px; font-weight: normal;'><span sugar='slot'>$field_label</span sugar='slot'></td>";
+               $Web_To_Lead_Form_html .= "<td width='35%' style='font-size: 12px; font-weight: normal;'><span sugar='slot'><textarea id=$field_name name=$field_name></textarea></span sugar='slot'></td>";
+           }
+           if($field_type=='relate' &&  $field_name=='account_name'){
 	            $Web_To_Lead_Form_html .= "<td width='15%' style='text-align: left; font-size: 12px; font-weight: normal;'><span sugar='slot'>$field_label</span sugar='slot'></td>";
 	            $Web_To_Lead_Form_html .= "<td width='35%' style='font-size: 12px; font-weight: normal;'><span sugar='slot'><input id=$field_name name=$field_name type='text'></span sugar='slot'></td>";
            }
@@ -355,9 +358,7 @@ Calendar.setup ({
          }
          if($field1_type=='date') {
 	        global $timedate;
-			
-
-	        $cal_dateformat = $timedate->get_cal_date_format();
+			$cal_dateformat = $timedate->get_cal_date_format();
 	        $LBL_ENTER_DATE = translate('LBL_ENTER_DATE', 'Charts');
           if($field1_required){
                 $Web_To_Lead_Form_html .= "<td width='15%' style='text-align: left; font-size: 12px; font-weight: normal;'><span sugar='slot'>$field1_label</span sugar='slot'><span class='required' style='color: rgb(255, 0, 0);'>$web_required_symbol</span></td>";
@@ -365,17 +366,43 @@ Calendar.setup ({
           else{
                 $Web_To_Lead_Form_html .= "<td width='15%' style='text-align: left; font-size: 12px; font-weight: normal;'><span sugar='slot'>$field1_label</span sugar='slot'></td>";
           }
-				$Web_To_Lead_Form_html .= "<td width='35%' style='font-size: 12px; font-weight: normal;'><span sugar='slot'><input onblur=\"parseDate(this, '{$cal_dateformat}');\" class=\"text\" name=\"{$field1_name}\" size='12' maxlength='10' id='{$field1_name}' value=''>
-<img src=\"".SugarThemeRegistry::current()->getImageURL('jscalendar.gif')."\" alt=\"{$LBL_ENTER_DATE}\" id=\"{$field1_name}_trigger\" align=\"absmiddle\">
-<script type='text/javascript'>
-Calendar.setup ({
-    inputField : \"{$field1_name}\", ifFormat : \"{$cal_dateformat}\", showsTime : false, button : \"{$field1_name}_trigger\", singleClick : true, step : 1, weekNumbers:false
-});
-</script></span sugar='slot'></td>";
-          //$Web_To_Lead_Form_html .= "<td width='35%' style='font-size: 12px; font-weight: normal;'><span sugar='slot'><input type='checkbox' id=$field_name name=$field_name></span sugar='slot'></td>";
+			$Web_To_Lead_Form_html .= " 
+				<td width='35%' style='font-size: 12px; font-weight: normal;'>
+				<script type='text/javascript'>
+					update{$field1_name}Value = function() {
+						var format = '{$cal_dateformat}';
+						var month = document.getElementById('{$field1_name}_month').value;
+						var day = document.getElementById('{$field1_name}_day').value;
+						var year = document.getElementById('{$field1_name}_year').value;
+						var val = format.replace('%m', month).replace('%d', day).replace('%Y', year);
+						if (!parseInt(month) > 0 || !parseInt(year) > 0 || !parseInt(year) > 0)
+							val = '';
+						document.getElementById('{$field1_name}').value = val;
+					}
+				</script>
+				<span sugar='slot'><input type='hidden' id='{$field1_name}' name='{$field1_name}'/>";
+          	$order = explode("%", $cal_dateformat);
+          	foreach($order as $part)
+          	{
+          		if (!isset($part[0]))
+          			continue;
+          		if (strToUpper($part[0]) == "M" )
+          			$Web_To_Lead_Form_html .= translate("LBL_MONTH") . ":<input class=\"text\"
+					name=\"{$field1_name}_month\" size='2' maxlength='2' id='{$field1_name}_month' value='' 
+					onblur=\"update{$field1_name}Value()\">";
+				else if (strToUpper($part[0]) == "D" ) 
+					$Web_To_Lead_Form_html .=  translate("LBL_DAY") . ":<input class=\"text\"
+					name=\"{$field1_name}_day\" size='2' maxlength='2' id='{$field1_name}_day' value='' 
+					onblur=\"update{$field1_name}Value()\">";
+				else if (strToUpper($part[0]) == "Y" ) 
+					$Web_To_Lead_Form_html .= translate("LBL_YEAR") . ":<input class=\"text\"
+					name=\"{$field1_name}_year\" size='4' maxlength='4' id='{$field1_name}_year' value='' 
+					onblur=\"update{$field1_name}Value()\">";
+          	}
+          	$Web_To_Lead_Form_html .= "</span></td>";
          } // if
-         if( $field1_type=='text' ||  $field1_type=='varchar' ||  $field1_type=='name'
-          ||  $field1_type=='phone' || $field1_type=='currency'){
+         if( $field1_type=='varchar' ||  $field1_type=='name'
+          ||  $field1_type=='phone' || $field1_type=='currency' || $field1_type=='url' || $field1_type=='int'){
             if($field1_name=='last_name' ||  $field1_required){
                 $Web_To_Lead_Form_html .= "<td width='15%' style='text-align: left; font-size: 12px; font-weight: normal;'><span sugar='slot'>$field1_label</span sugar='slot'><span class='required' style='color: rgb(255, 0, 0);'>$web_required_symbol</span></td>";
               }
@@ -383,6 +410,10 @@ Calendar.setup ({
                 $Web_To_Lead_Form_html .= "<td width='15%' style='text-align: left; font-size: 12px; font-weight: normal;'><span sugar='slot'>$field1_label</span sugar='slot'></td>";
              }
             $Web_To_Lead_Form_html .= "<td width='35%' style='font-size: 12px; font-weight: normal;'><span sugar='slot'><input id=$field1_name name=$field1_name type='text'></span sugar='slot'></td>";
+           }
+           if ( $field1_type == 'text' ) {
+               $Web_To_Lead_Form_html .= "<td width='15%' style='text-align: left; font-size: 12px; font-weight: normal;'><span sugar='slot'>$field1_label</span sugar='slot'></td>";
+               $Web_To_Lead_Form_html .= "<td width='35%' style='font-size: 12px; font-weight: normal;'><span sugar='slot'><textarea id=$field1_name name=$field1_name></textarea></span sugar='slot'></td>";
            }
            if($field1_type=='relate' &&  $field1_name=='account_name'){
 	            $Web_To_Lead_Form_html .= "<td width='15%' style='text-align: left; font-size: 12px; font-weight: normal;'><span sugar='slot'>$field1_label</span sugar='slot'></td>";

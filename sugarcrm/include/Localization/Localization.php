@@ -123,7 +123,7 @@ class Localization {
 
 		$userPref = '';
 		$coreDefaults = $this->getLocaleConfigDefaults();
-		$pref = $coreDefaults[$prefName]; // defaults, even before config.php
+		$pref = isset($coreDefaults[$prefName]) ? $coreDefaults[$prefName] : ''; // defaults, even before config.php
 
 		if($user != null) {
 			$userPref = $user->getPreference($prefName);

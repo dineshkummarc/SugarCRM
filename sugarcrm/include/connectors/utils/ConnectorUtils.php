@@ -445,9 +445,14 @@ class ConnectorUtils
     
                                      
                      $viewdefs = array();
-    
-                     require($metadata_file);
-    
+                     if( !file_exists($metadata_file) )
+                     {
+                        $GLOBALS['log']->info("Unable to update metadata file for module: {$module}");
+                         continue;
+                     }
+                     else 
+                        require($metadata_file);
+                        
                      $insertConnectorButton = true;
                      
     

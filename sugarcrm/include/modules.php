@@ -122,7 +122,6 @@ $beanList['Audit']  = 'Audit';
 $beanList['InboundEmail'] = 'InboundEmail';
 
 
-$beanList['DocumentRevisions'] = 'DocumentRevision';
 $beanList['SavedSearch']            = 'SavedSearch';
 $beanList['UserPreferences']        = 'UserPreference';
 $beanList['MergeRecords'] = 'MergeRecord';
@@ -186,7 +185,7 @@ $beanFiles['Role']          = 'modules/Roles/Role.php';
 
 $beanFiles['Document']  = 'modules/Documents/Document.php';
 $beanFiles['DocumentRevision']  = 'modules/DocumentRevisions/DocumentRevision.php';
-$beanFiles['FieldsMetaData']            = 'modules/EditCustomFields/FieldsMetaData.php';
+$beanFiles['FieldsMetaData']    = 'modules/DynamicFields/FieldsMetaData.php';
 //$beanFiles['Audit']           = 'modules/Audit/Audit.php';
 
 // deferred
@@ -221,7 +220,8 @@ $modInvisList = array('Administration', 'Currencies', 'CustomFields', 'Connector
     'Schedulers','Schedulers_jobs', /*'Queues',*/ 'EmailTemplates', 
     'CampaignTrackers', 'CampaignLog', 'EmailMan', 'Prospects', 'ProspectLists',
     'Groups','InboundEmail',
-    'ACLActions', 'ACLRoles', 'DocumentRevisions',
+    'ACLActions', 'ACLRoles',
+    'DocumentRevisions',
     'ProjectTask',
     );
 $adminOnlyList = array(

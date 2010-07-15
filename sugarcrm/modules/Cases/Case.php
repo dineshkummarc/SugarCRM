@@ -55,7 +55,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 
 // Case is used to store customer information.
-class aCase extends SugarBean {
+class aCase extends Basic {
         var $field_name_map = array();
 	// Stored fields
 	var $id;
@@ -149,43 +149,7 @@ class aCase extends SugarBean {
 
 		return $array_assign;
 	}
-
-        function create_export_query(&$order_by, &$where, $relate_link_join='')
-        {
-        	$custom_join = $this->custom_fields->getJOIN(true, true,$where);
-			if($custom_join)
-				$custom_join['join'] .= $relate_link_join;
-                $query = "SELECT
-                                cases.*,
-                                accounts.name as account_name,
-                                users.user_name as assigned_user_name";
-             					if($custom_join){
-   									$query .= $custom_join['select'];
- 								}
-                                $query .= " FROM cases ";
-		$query .= "				LEFT JOIN users
-                                ON cases.assigned_user_id=users.id";
-                                $query .= " LEFT JOIN accounts
-                                ON cases.account_id=accounts.id AND accounts.deleted=0";
-
-                 			if($custom_join){
-  								$query .= $custom_join['join'];
-							}
-                $where_auto = " cases.deleted=0
-                ";
-
-                if($where != "")
-                        $query .= " where $where AND ".$where_auto;
-                else
-                        $query .= " where ".$where_auto;
-
-                if($order_by != "")
-                        $query .= " ORDER BY $order_by";
-                else
-                        $query .= " ORDER BY cases.name";
-                return $query;
-        }
-
+	
 	function save_relationship_changes($is_update)
 	{
 		parent::save_relationship_changes($is_update);

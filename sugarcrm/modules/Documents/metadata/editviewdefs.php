@@ -97,7 +97,9 @@ $viewdefs['Documents']['EditView'] = array(
       'subcategory_id',
     ),
     
-
+    array (
+      array('name'=>'description'),
+    ),
     
     array (
       array('name'=>'related_doc_name',
@@ -109,9 +111,7 @@ $viewdefs['Documents']['EditView'] = array(
            ),
     ),
     
-    array (
-      array('name'=>'description'),
-    ),
+    
   ),
 )
 

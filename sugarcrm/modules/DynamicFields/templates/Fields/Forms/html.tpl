@@ -43,7 +43,7 @@
 {include file="modules/DynamicFields/templates/Fields/Forms/coreTop.tpl"}
 
 <tr>
-    <td class="mbLBL">{$MOD.COLUMN_TITLE_HTML_CONTENT}:</td>
+    <td class="mbLBL">{sugar_translate module="DynamicFields" label="COLUMN_TITLE_HTML_CONTENT"}:</td>
     <td>
     {if $hideLevel < 5}
         <textarea name='htmlarea' id='htmlarea' cols=50 rows=10>{$HTML_EDITOR}</textarea>

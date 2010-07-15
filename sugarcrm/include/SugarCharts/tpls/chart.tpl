@@ -48,6 +48,7 @@
 <script type="text/javascript">
 	if (typeof SUGAR == 'undefined' || typeof SUGAR.mySugar == 'undefined') {ldelim}
 		// no op
+		loadChartForReports();
 	{rdelim} else {ldelim}
 		SUGAR.mySugar.addToChartsArray('{$chartName}', '{$chartXMLFile}', '{$width}', '{$height}', '{$chartStyleCSS}', '{$chartColorsXML}', '{$chartStringsXML}');
 	{rdelim}

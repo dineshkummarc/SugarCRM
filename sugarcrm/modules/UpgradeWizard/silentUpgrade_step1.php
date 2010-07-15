@@ -585,7 +585,7 @@ if($upgradeType != constant('DCE_INSTANCE')) {
 	    $current_user->retrieve($logged_user['id']);
 	   }
 	   else{
-		echo "FAILURE: Not an admin user in users table. Please provide an admin user\n";
+	   	echo "FAILURE: Not an admin user in users table. Please provide an admin user\n";
 		die();
 	   }
 	}
@@ -1016,6 +1016,18 @@ if(!didThisStepRunBefore('commit')){
 		       	}
 		   }
 		}
+		
+		//delete cache/themes
+		if(is_dir($GLOBALS['sugar_config']['cache_dir'].'themes')){
+			$allModFiles = array();
+			$allModFiles = findAllFiles($GLOBALS['sugar_config']['cache_dir'].'themes',$allModFiles);
+		   foreach($allModFiles as $file){
+		       	//$file_md5_ref = str_replace(clean_path(getcwd()),'',$file);
+		       	if(file_exists($file)){
+					unlink($file);
+		       	}
+		   }
+		}
 	ob_start();
 	if(!isset($_REQUEST['silent'])){
 		$_REQUEST['silent'] = true;
@@ -1157,8 +1169,7 @@ if(isset($_SESSION['upgrade_from_flavor'])){
 if(!class_exists('SugarThemeRegistry')){
     require_once('include/SugarTheme/SugarTheme.php');
 }
-SugarThemeRegistry::buildRegistry();
-SugarThemeRegistry::clearAllCaches();
+
 
 // re-minify the JS source files
 $_REQUEST['root_directory'] = getcwd();

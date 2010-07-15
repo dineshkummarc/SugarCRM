@@ -2996,41 +2996,80 @@ class InboundEmail extends SugarBean {
 	}
 
 	/**
+	 * Get the message text from a single mime section, html or plain.
+	 *
+	 * @param string $msgNo
+	 * @param string $section
+	 * @param stdObject $structure
+	 * @return string
+	 */
+	function getMessageTextFromSingleMimePart($msgNo,$section,$structure)
+	{
+	    $msgPartTmp = imap_fetchbody($this->conn, $msgNo, $section);
+	    $enc = $this->getEncodingFromBreadCrumb($section, $structure->parts);
+	    $charset = $this->getCharsetFromBreadCrumb($section, $structure->parts);
+	    $msgPartTmp = $this->handleTranserEncoding($msgPartTmp, $enc);
+	    return $this->handleCharsetTranslation($msgPartTmp, $charset);				
+	}
+	
+	/**
+	 * Givin an existing breadcrumb add a cooresponding offset
+	 *
+	 * @param string $bc
+	 * @param string $offset
+	 * @return string
+	 */
+	function addBreadCrumbOffset($bc, $offset)
+	{
+	    if( (empty($bc) || is_null($bc)) && !empty($offset) )
+	       return $offset;
+
+	    $a_bc = explode(".", $bc);
+	    $a_offset = explode(".",$offset);
+	    if(count($a_bc) < count($a_offset))
+	       $a_bc = array_merge($a_bc,array_fill( count($a_bc), count($a_offset) - count($a_bc), 0));
+	       
+	    $results = array();
+	    for($i=0;$i < count($a_bc); $i++)
+	    {
+	        if(isset($a_offset[$i]))
+	           $results[] = $a_bc[$i] + $a_offset[$i];
+	        else
+	           $results[] = $a_bc[$i];
+	    }
+	    return implode(".", $results);
+	}
+	
+	/**
 	 * returns the HTML text part of a multi-part message
 	 *
 	 * @param int msgNo the relative message number for the monitored mailbox
 	 * @param string $type the type of text processed, either 'PLAIN' or 'HTML'
 	 * @return string UTF-8 encoded version of the requested message text
 	 */
-	function getMessageText($msgNo, $type, $structure, $fullHeader,$clean_email=true) {
+	function getMessageText($msgNo, $type, $structure, $fullHeader,$clean_email=true, $bcOffset = "") {
 		global $sugar_config;
 
 		$msgPart = '';
 		$bc = $this->buildBreadCrumbs($structure->parts, $type);
+		//Add an offset if specified
+		if(!empty($bcOffset))
+            $bc = $this->addBreadCrumbOffset($bc, $bcOffset);
+             
 		if(!empty($bc)) { // multi-part
-			// HUGE difference between PLAIN and HTML
-
+			// HUGE difference between PLAIN and HTML     
 			if($type == 'PLAIN') {
-				$msgPartRaw = imap_fetchbody($this->conn, $msgNo, $bc);
-				$enc = $this->getEncodingFromBreadCrumb($bc, $structure->parts);
-				$charset = $this->getCharsetFromBreadCrumb($bc, $structure->parts);
-				$msgPart = $this->handleTranserEncoding($msgPartRaw, $enc);
-				$msgPart = $this->handleCharsetTranslation($msgPart, $charset);
+				$msgPart = $this->getMessageTextFromSingleMimePart($msgNo,$bc,$structure);
 			} else {
 				// get part of structure that will
 				$msgPartRaw = '';
-				$bcArray = $this->buildBreadCrumbsHTML($structure->parts);
+				$bcArray = $this->buildBreadCrumbsHTML($structure->parts,$bcOffset);
 				// construct inline HTML/Rich msg
 				foreach($bcArray as $bcArryKey => $bcArr) {
 					foreach($bcArr as $type => $bcTrail) {
-						if($type == 'html') {
-							$msgPartTmp = imap_fetchbody($this->conn, $msgNo, $bcTrail);
-							$encPartTmp = $this->getEncodingFromBreadCrumb($bcTrail, $structure->parts);
-							$charsetPartTmp = $this->getCharsetFromBreadCrumb($bcTrail, $structure->parts);
-							$msgPartTmp = $this->handleTranserEncoding($msgPartTmp, $encPartTmp);
-							$msgPartTmp = $this->handleCharsetTranslation($msgPartTmp, $charsetPartTmp);
-							$msgPartRaw .= $msgPartTmp;
-						} else {
+						if($type == 'html') 
+						    $msgPartRaw .= $this->getMessageTextFromSingleMimePart($msgNo,$bcTrail,$structure);
+						 else {
 							// deal with inline image
 							if(count($this->inlineImages > 0)) {
 								$imageName = array_shift($this->inlineImages);
@@ -3069,28 +3108,16 @@ class InboundEmail extends SugarBean {
 			}
 		} // end else clause
 
+		$msgPart = $this->customGetMessageText($msgPart);
 		/* cn: bug 9176 - htmlEntitites hide XSS attacks.
 		 * decode to pass refreshed HTML to HTML_Safe */
-		if ($type == 'PLAIN') {
-			$msgPart = from_html($msgPart);
-			$msgPart = $this->convertHTTPToLink($msgPart);
+		if ($type == 'PLAIN') 
+		    return $this->cleanXssContent(to_html($msgPart));
+		else
+		{
+            $safedMsgPart = $this->cleanContent($msgPart);
+	   	    return str_replace("<img />", '', $safedMsgPart);
 		}
-		$msgPart = $this->customGetMessageText($msgPart);
-		$safedMsgPart = $this->cleanContent($msgPart);
-		// cn: bug 10563 - cleanContent() will strip <img cid:xxx>
-		return str_replace("<img />", '', $safedMsgPart);
-	}
-	
-	/***
-	 * Convert string start with <http://xxx> to <a href="http://xxx>http://xxx</a>
-	 */
-	function convertHTTPToLink($msg) {
-		$pattern = "@<(https?://([-\w\.]+)+(:\d+)?(/([\w/_\.]*(\?\S+)?)?)?)>@";
-		preg_match_all($pattern, $msg, $matches);
-		foreach($matches[1] as $match) {
-			$msg = str_replace($match, "<a href=\"$match\" target=\"_blank\">$match</a>", $msg);
-		}
-		return $msg;
 	}
 
 	/**
@@ -3331,14 +3358,14 @@ class InboundEmail extends SugarBean {
 			}
 			// check if we need to recurse into the object
 			//if($part->type == 1 && !empty($part->parts)) {
-			if(isset($part->parts) && !empty($part->parts)) {
+			if(isset($part->parts) && !empty($part->parts) && !( isset($part->subtype) && strtolower($part->subtype) == 'rfc822')  ) {
 				$this->saveAttachments($msgNo, $part->parts, $emailId, $thisBc, $forDisplay);
 			} elseif($part->type == 5 && !$part->ifdisposition) {
 				// Outlook inline attachments are type 5 (image) without a disposition
 				if($part->ifparameters) {
-					$attach = new Note();
-					$attach->parent_id = $emailId;
-					$attach->parent_type = 'Emails';
+				    
+				    $attach = $this->getNoteBeanForAttachment($emailId);
+					
 					$fname = $this->handleEncodedFilename($part->parameters[0]->value);
 					$attach->name = empty($fname) ? "no_name" : $fname;
 					$attach->file_mime_type = 'image/'.$part->subtype;
@@ -3355,9 +3382,7 @@ class InboundEmail extends SugarBean {
 			} elseif($part->ifdisposition) {
 				// we will take either 'attachments' or 'inline'
 				if(strtolower($part->disposition) == 'attachment' || ((strtolower($part->disposition) == 'inline') && $part->type != 0)) {
-					$attach = new Note();
-					$attach->parent_id = $emailId;
-					$attach->parent_type = 'Emails';
+					$attach = $this->getNoteBeanForAttachment($emailId);
 					$fname = $this->handleEncodedFilename($this->retrieveAttachmentNameFromStructure($part->dparameters));
 
 					if(!empty($fname)) {//assign name to attachment
@@ -3409,9 +3434,41 @@ class InboundEmail extends SugarBean {
 					$this->saveAttachmentBinaries($attach, $msgNo, $thisBc, $part, $forDisplay);
 				} // end if disposition type 'attachment'
 			}// end ifdisposition
+			//Retrieve contents of subtype rfc8822
+			elseif ($part->type == 2 && isset($part->subtype) && strtolower($part->subtype) == 'rfc822' )
+			{
+			    $tmp_eml =  imap_fetchbody($this->conn, $msgNo, $thisBc); 
+			    $attach = $this->getNoteBeanForAttachment($emailId);
+			    $attach->file_mime_type = 'messsage/rfc822';
+			    $attach->description = $tmp_eml;
+			    $attach->filename = 'bounce.eml';
+			    $attach->safeAttachmentName();
+			    if($forDisplay) {
+			        $attach->id = $this->getTempFilename();
+			    } else {
+			        // only save if doing a full import, else we want only the binaries
+			        $attach->save();
+			    }
+			    $this->saveAttachmentBinaries($attach, $msgNo, $thisBc, $part, $forDisplay);
+			}
 		} // end foreach
 	}
+    
+	/**
+	 * Return a new note object for attachments.
+	 *
+	 * @param string $emailId
+	 * @return Note
+	 */
+	function getNoteBeanForAttachment($emailId)
+	{
+	    $attach = new Note();
+	    $attach->parent_id = $emailId;
+	    $attach->parent_type = 'Emails';
 
+	    return $attach;
+	}
+	
 	/**
 	 * Return the filename of the attachment by examining the dparameters returned from imap_fetch_structure which
 	 * represet the content-disposition of the MIME header.
@@ -3618,10 +3675,17 @@ class InboundEmail extends SugarBean {
 		// Safe_HTML
 		$this->safe->clear();
 		$str = $this->safe->parse($str);
+		return $this->cleanXssContent($str);
+	}
+    
+	/**
+	 * Cleans content for XSS 
+	 * @param string str String to clean
+	 * @return string
+	 */
+	function cleanXssContent($str) {
 
-		// Julian's XSS cleaner
 		$potentials = clean_xss($str, false);
-
 		if(is_array($potentials) && !empty($potentials)) {
 			foreach($potentials as $bad) {
 				$str = str_replace($bad, "", $str);
@@ -3629,7 +3693,6 @@ class InboundEmail extends SugarBean {
 		}
 		return $str;
 	}
-
 	/**
 	 * Calculates the appropriate display date/time sent for an email.
 	 * @param string headerDate The date sent of email in MIME header format

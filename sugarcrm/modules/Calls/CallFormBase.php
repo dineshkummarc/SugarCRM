@@ -192,20 +192,20 @@ return $the_form;
 
 
 function handleSave($prefix,$redirect=true,$useRequired=false) {
-	
-	
+
+
 	require_once('include/formbase.php');
 
 	global $current_user;
 	global $timedate;
-	
+
 	//BUG 17418 MFH
 	if (isset($_POST[$prefix.'duration_hours'])){
 		$_POST[$prefix.'duration_hours'] = trim($_POST[$prefix.'duration_hours']);
 	}
-	
+
 	$focus = new Call();
-	
+
 	if($useRequired && !checkRequired($prefix, array_keys($focus->required_fields))) {
 		return null;
 	}
@@ -218,17 +218,17 @@ function handleSave($prefix,$redirect=true,$useRequired=false) {
         $GLOBALS['log']->debug(__FILE__.'('.__LINE__.'): Getting the users default reminder time');
 		$_POST[$prefix.'reminder_time'] = $current_user->getPreference('reminder_time');
 	}
-	
+
 	$time_format = $timedate->get_user_time_format();
     $time_separator = ":";
     if(preg_match('/\d+([^\d])\d+([^\d]*)/s', $time_format, $match)) {
        $time_separator = $match[1];
     }
-	
-	if(!empty($_POST[$prefix.'time_hour_start']) && empty($_POST['time_start'])) {
+
+	if(!empty($_POST[$prefix.'time_hour_start']) && empty($_POST[$prefix.'time_start'])) {
 		$_POST[$prefix.'time_start'] = $_POST[$prefix.'time_hour_start']. $time_separator .$_POST[$prefix.'time_minute_start'];
 	}
-	
+
 	if(isset($_POST[$prefix.'meridiem']) && !empty($_POST[$prefix.'meridiem'])) {
 		$_POST[$prefix.'time_start'] = $timedate->merge_time_meridiem($_POST[$prefix.'time_start'],$timedate->get_time_format(true), $_POST[$prefix.'meridiem']);
 	}
@@ -236,7 +236,7 @@ function handleSave($prefix,$redirect=true,$useRequired=false) {
 	if(isset($_POST[$prefix.'time_start']) && strlen($_POST[$prefix.'date_start']) == 10) {
 	   $_POST[$prefix.'date_start'] = $_POST[$prefix.'date_start'] . ' ' . $_POST[$prefix.'time_start'];
 	}
-		
+
 	// retrieve happens here
 	$focus = populateFromPost($prefix, $focus);
 	if(!$focus->ACLAccess('Save')) {
@@ -252,9 +252,9 @@ function handleSave($prefix,$redirect=true,$useRequired=false) {
     	if(!empty($_POST['user_invitees'])) {
     	   $userInvitees = explode(',', trim($_POST['user_invitees'], ','));
     	} else {
-    	   $userInvitees = array();	
+    	   $userInvitees = array();
     	}
-    
+
         // Calculate which users to flag as deleted and which to add
         $deleteUsers = array();
     	$focus->load_relationship('users');
@@ -266,30 +266,29 @@ function handleSave($prefix,$redirect=true,$useRequired=false) {
     		  if(!in_array($a['user_id'], $userInvitees)) {
     		  	 $deleteUsers[$a['user_id']] = $a['user_id'];
     		  } else {
-    		     $acceptStatusUsers[$a['user_id']] = $a['accept_status'];  
+    		     $acceptStatusUsers[$a['user_id']] = $a['accept_status'];
     		  }
     	}
-    		
+
     	if(count($deleteUsers) > 0) {
     		$sql = '';
-    		foreach($deleteUsers as $u) {
-                // make sure we don't delete the assigned user
-                if ( $u != $focus->assigned_user_id )
-    		        $sql .= ",'" . $u . "'";
+	    	foreach($deleteUsers as $u) {
+                $sql .= ",'" . $u . "'";
     		}
+
     		$sql = substr($sql, 1);
     		// We could run a delete SQL statement here, but will just mark as deleted instead
     		$sql = "UPDATE calls_users set deleted = 1 where user_id in ($sql) AND call_id = '". $focus->id . "'";
     		$focus->db->query($sql);
-    	}	  
-    
+    	}
+
         // Get all contacts for the call
     	if(!empty($_POST['contact_invitees'])) {
     	   $contactInvitees = explode(',', trim($_POST['contact_invitees'], ','));
     	} else {
-    	   $contactInvitees = array();	
+    	   $contactInvitees = array();
     	}
-    
+
         $deleteContacts = array();
     	$focus->load_relationship('contacts');
     	$q = 'SELECT mu.contact_id, mu.accept_status FROM calls_contacts mu WHERE mu.call_id = \''.$focus->id.'\'';
@@ -302,7 +301,7 @@ function handleSave($prefix,$redirect=true,$useRequired=false) {
     		  	 $acceptStatusContacts[$a['contact_id']] = $a['accept_status'];
     		  }
     	}
-    	
+
     	if(count($deleteContacts) > 0) {
     		$sql = '';
     		foreach($deleteContacts as $u) {
@@ -316,9 +315,9 @@ function handleSave($prefix,$redirect=true,$useRequired=false) {
         if(!empty($_POST['lead_invitees'])) {
     	   $leadInvitees = explode(',', trim($_POST['lead_invitees'], ','));
     	} else {
-    	   $leadInvitees = array();	
+    	   $leadInvitees = array();
     	}
-    
+
         // Calculate which leads to flag as deleted and which to add
         $deleteLeads = array();
     	$focus->load_relationship('leads');
@@ -330,10 +329,10 @@ function handleSave($prefix,$redirect=true,$useRequired=false) {
     		  if(!in_array($a['lead_id'], $leadInvitees)) {
     		  	 $deleteLeads[$a['lead_id']] = $a['lead_id'];
     		  } else {
-    		     $acceptStatusLeads[$a['user_id']] = $a['accept_status'];  
+    		     $acceptStatusLeads[$a['user_id']] = $a['accept_status'];
     		  }
     	}
-    		
+
     	if(count($deleteLeads) > 0) {
     		$sql = '';
     		foreach($deleteLeads as $u) {
@@ -348,8 +347,8 @@ function handleSave($prefix,$redirect=true,$useRequired=false) {
     	}
     	////	END REMOVE
     	///////////////////////////////////////////////////////////////////////////
-        
-    
+
+
     	///////////////////////////////////////////////////////////////////////////
     	////	REBUILD INVITEE RELATIONSHIPS
     	$focus->users_arr = array();
@@ -363,24 +362,25 @@ function handleSave($prefix,$redirect=true,$useRequired=false) {
     	}
         if(!empty($_POST['parent_id']) && $_POST['parent_type'] == 'Leads') {
     		$focus->leads_arr[] = $_POST['parent_id'];
-    	}	
+    	}
     	// Call the Call module's save function to handle saving other fields besides
     	// the users and contacts relationships
     	$focus->save(true);
     	$return_id = $focus->id;
-    
+
     	// Process users
     	$existing_users = array();
     	if(!empty($_POST['existing_invitees'])) {
     	   $existing_users =  explode(",", trim($_POST['existing_invitees'], ','));
     	}
-    
+
     	foreach($focus->users_arr as $user_id) {
     	    if(empty($user_id) || isset($existing_users[$user_id]) || isset($deleteUsers[$user_id])) {
     			continue;
     		}
-    		
+
     		if(!isset($acceptStatusUsers[$user_id])) {
+    			$focus->load_relationship('users');
     			$focus->users->add($user_id);
     		} else {
     			// update query to preserve accept_status
@@ -388,21 +388,22 @@ function handleSave($prefix,$redirect=true,$useRequired=false) {
     			$qU .= 'WHERE call_id = \''.$focus->id.'\' ';
     			$qU .= 'AND user_id = \''.$user_id.'\'';
     			$focus->db->query($qU);
-    		} 
+    		}
     	}
-    	
+
         // Process contacts
     	$existing_contacts =  array();
     	if(!empty($_POST['existing_contact_invitees'])) {
     	   $existing_contacts =  explode(",", trim($_POST['existing_contact_invitees'], ','));
     	}
-    	    
+
     	foreach($focus->contacts_arr as $contact_id) {
     		if(empty($contact_id) || isset($exiting_contacts[$contact_id]) || isset($deleteContacts[$contact_id])) {
     			continue;
     		}
-    		
+
     		if(!isset($acceptStatusContacts[$contact_id])) {
+    			$focus->load_relationship('contacts');
     		    $focus->contacts->add($contact_id);
     		} else {
     			// update query to preserve accept_status
@@ -415,15 +416,16 @@ function handleSave($prefix,$redirect=true,$useRequired=false) {
         // Process leads
     	$existing_leads =  array();
     	if(!empty($_POST['existing_lead_invitees'])) {
-    	   $existing_contacts =  explode(",", trim($_POST['existing_lead_invitees'], ','));
+    	   $existing_leads =  explode(",", trim($_POST['existing_lead_invitees'], ','));
     	}
-    	    
+
     	foreach($focus->leads_arr as $lead_id) {
     		if(empty($lead_id) || isset($existing_leads[$lead_id]) || isset($deleteLeads[$lead_id])) {
     			continue;
     		}
-    		
+
     		if(!isset($acceptStatusLeads[$lead_id])) {
+    			$focus->load_relationship('leads');
     		    $focus->leads->add($lead_id);
     		} else {
     			// update query to preserve accept_status
@@ -433,12 +435,15 @@ function handleSave($prefix,$redirect=true,$useRequired=false) {
     			$focus->db->query($qU);
     		}
     	}
-    	// set organizer to auto-accept
-    	$focus->set_accept_status($current_user, 'accept');
+
+    	// CCL - Comment out call to set $current_user as invitee
+    	//set organizer to auto-accept
+    	//$focus->set_accept_status($current_user, 'accept');
+    	
     	////	END REBUILD INVITEE RELATIONSHIPS
     	///////////////////////////////////////////////////////////////////////////
     }
-	
+
 	if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] == 'Home'){
 		header("Location: index.php?module=Home&action=index");
 	}

@@ -96,7 +96,7 @@ $dictionary['DocumentRevision'] = array('table' => 'document_revisions'
     'name' => 'file_ext',
     'vname' => 'LBL_FILE_EXTENSION',
     'type' => 'varchar',
-    'len' => '25',
+    'len' => 100,
   ),
   'file_mime_type' =>
   array (
@@ -111,7 +111,7 @@ $dictionary['DocumentRevision'] = array('table' => 'document_revisions'
     'name' => 'revision',
     'vname' => 'LBL_REVISION',
     'type' => 'varchar',
-    'len' => '25',
+    'len' => 100,
     'importable' => 'required',
   ),
 

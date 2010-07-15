@@ -83,7 +83,7 @@ $dashletData['MyAccountsDashlet']['columns'] =  array('name' => array('width'   
                                                                                           'label' => 'LBL_SHIPPING_ADDRESS_COUNTRY'),
                                                       'email1' => array('width' => '8',
                                                                         'label' => 'LBL_EMAIL_ADDRESS_PRIMARY'),
-                                                      'account_name' => array('width'    => '15',
+                                                      'parent_name' => array('width'    => '15',
                                                                               'label'    => 'LBL_MEMBER_OF',
                                                                               'sortable' => false),
                                                       'date_entered' => array('width'   => '15', 

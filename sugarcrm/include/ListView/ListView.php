@@ -79,6 +79,7 @@ class ListView
 	var $sort_order = '';
 	var $force_mass_update=false;
 	var $keep_mass_update_form_open=false;
+	var $ignorePopulateOnly = false;
 
 function setDataArray($value) {
 	$this->data_array = $value;
@@ -99,12 +100,13 @@ function processListViewMulti($seed, $xTemplateSection, $html_varName) {
 function processListView($seed, $xTemplateSection, $html_varName)
 {
 	global $sugar_config;
-	if(isset($seed->module_dir) && !empty($sugar_config['save_query']) && $sugar_config['save_query'] == 'populate_only') {
+
+	$populateOnly = $this->ignorePopulateOnly ? FALSE : (!empty($sugar_config['save_query']) && $sugar_config['save_query'] == 'populate_only');
+	if(isset($seed->module_dir) && $populateOnly) {
 	    if(empty($GLOBALS['displayListView']) && strcmp(strtolower($_REQUEST['action']), 'popup') != 0 && (!empty($_REQUEST['clear_query']) || $_REQUEST['module'] == $seed->module_dir && ((empty($_REQUEST['query']) || $_REQUEST['query'] == 'MSI')&& (empty($_SESSION['last_search_mod']) || $_SESSION['last_search_mod'] != $seed->module_dir)))) {
 			$_SESSION['last_search_mod'] = $_REQUEST['module'] ;
 			return;
 		}
-
 	}
 	if(strcmp(strtolower($_REQUEST['action']), 'popup') != 0){
 	    $_SESSION['last_search_mod'] = $_REQUEST['module'] ;
@@ -181,8 +183,10 @@ function process_dynamic_listview($source_module, $sugarbean,$subpanel_def)
 		if(!isset($this->xTemplate))
 			$this->createXTemplate();
 
-		$list_data = $this->processUnionBeans($sugarbean,$subpanel_def);
-
+		$html_var = $this->subpanel_module . "_CELL";
+		
+		$list_data = $this->processUnionBeans($sugarbean,$subpanel_def, $html_var);
+		
 		$list = $list_data['list'];
 		$parent_data = $list_data['parent_data'];
 
@@ -191,9 +195,11 @@ function process_dynamic_listview($source_module, $sugarbean,$subpanel_def)
 		} else {
 			$thepanel=$subpanel_def;
 		}
+		
+		
 
-		$this->process_dynamic_listview_header($thepanel->get_module_name(), $thepanel);
-		$this->process_dynamic_listview_rows($list,$parent_data, 'dyn_list_view', 'CELL',$subpanel_def);
+		$this->process_dynamic_listview_header($thepanel->get_module_name(), $thepanel, $html_var);
+		$this->process_dynamic_listview_rows($list,$parent_data, 'dyn_list_view', $html_var,$subpanel_def);
 
 		if($this->display_header_and_footer)
 		{
@@ -269,13 +275,13 @@ function process_dynamic_listview($source_module, $sugarbean,$subpanel_def)
 	    $this->xTemplate->assign("COL_COUNT", count($thepanel->get_list_fields()));
 	    $this->xTemplate->parse($xtemplateSection.".nodata");
 	}
-	
+
 	while(list($aVal, $aItem) = each($data))
 	{
 		$aItem->check_date_relationships_load();
 		// TODO: expensive and needs to be removed and done better elsewhere
 
-		if(!empty($fill_additional_fields[$aItem->object_name]) 
+		if(!empty($fill_additional_fields[$aItem->object_name])
 		   || ($aItem->object_name == 'Case' && !empty($fill_additional_fields['aCase']))
 		   )
 		{
@@ -398,7 +404,7 @@ function process_dynamic_listview($source_module, $sugarbean,$subpanel_def)
                     } else {
                         $tmpField = NULL;
                     }
-                    
+
                     if ( $tmpField != NULL ) {
                         $widget_contents = SugarFieldHandler::displaySmarty($list_field['fields'],$vardef,'ListView',$list_field);
                     } else {
@@ -406,7 +412,7 @@ function process_dynamic_listview($source_module, $sugarbean,$subpanel_def)
                         // Use the old, icky, SugarWidget for now
                         $widget_contents = $layout_manager->widgetDisplay($list_field);
                     }
-                	
+
                     if ( isset($list_field['widget_class']) && $list_field['widget_class'] == 'SubPanelDetailViewLink' ) {
                         // We need to call into the old SugarWidgets for the time being, so it can generate a proper link with all the various corner-cases handled
                         // So we'll populate the field data with the pre-rendered display for the field
@@ -732,13 +738,7 @@ function displayArrow() {
  * Contributor(s): ______________________________________.
 */
  function setSessionVariable($localVarName,$varName, $value) {
-
-		if(!($this->is_dynamic || $localVarName == 'CELL')) {
-			$_SESSION[$this->local_current_module."_".$localVarName."_".$varName] = $value;
-		} else {
-			global $stateless_session;
-			$stateless_session[$this->local_current_module."_".$localVarName."_".$varName] = $value;
-		}
+	$_SESSION[$this->local_current_module."_".$localVarName."_".$varName] = $value;		
 }
 
 function setUserVariable($localVarName,$varName, $value) {
@@ -753,21 +753,15 @@ function setUserVariable($localVarName,$varName, $value) {
  * Contributor(s): ______________________________________.
 */
  function getSessionVariable($localVarName,$varName) {
-
-		if(isset($_REQUEST[$this->getSessionVariableName($localVarName, $varName)])) {
-			$this->setSessionVariable($localVarName,$varName,$_REQUEST[$this->getSessionVariableName($localVarName, $varName)]);
-		}
-		if($this->is_dynamic ||  $localVarName == 'CELL') {
-			global $stateless_session;
-			if(isset($stateless_session[$this->getSessionVariableName($localVarName, $varName)])) {
-				return $stateless_session[$this->getSessionVariableName($localVarName, $varName)];
-			}
-			return '';
-		}
-		 if(isset($_SESSION[$this->getSessionVariableName($localVarName, $varName)])) {
-		 	return $_SESSION[$this->getSessionVariableName($localVarName, $varName)];
-		 }
-		 return "";
+	//Set any variables pass in through request first
+	if(isset($_REQUEST[$this->getSessionVariableName($localVarName, $varName)])) {
+		$this->setSessionVariable($localVarName,$varName,$_REQUEST[$this->getSessionVariableName($localVarName, $varName)]);
+	}
+		
+	if(isset($_SESSION[$this->getSessionVariableName($localVarName, $varName)])) {
+	 	return $_SESSION[$this->getSessionVariableName($localVarName, $varName)];
+	 }
+	 return "";
 }
 
 function getUserVariable($localVarName, $varName) {
@@ -856,9 +850,9 @@ function getUserVariable($localVarName, $varName) {
 		return $list;
 	}
 
-	function processUnionBeans($sugarbean, $subpanel_def) {
+	function processUnionBeans($sugarbean, $subpanel_def, $html_var = 'CELL') {
 
-		$current_offset = $this->getOffset('CELL');
+		$current_offset = $this->getOffset($html_var);
 		$module = isset($_REQUEST['module']) ? $_REQUEST['module'] : '';
 		$response = array();
 
@@ -869,34 +863,35 @@ function getUserVariable($localVarName, $varName) {
 			if(isset($subpanel_def->_instance_properties['sort_order'])) {
 			    $sort_order = $subpanel_def->_instance_properties['sort_order'];
 			}
-
-			if(isset($_SESSION['last_sub' .$this->subpanel_module. '_url']) && $_SESSION['last_sub' .$this->subpanel_module. '_url'] == $this->getBaseURL('CELL')) {
-
-				if(isset($_SESSION['last_sub' .$this->subpanel_module. '_order'])) {
-					// We swap the order when the request contains an offset (indicating a column sort issued);
-					// otherwise we do not sort.  If we don't make this check, then the subpanel listview will
-					// swap ordering each time a new record is entered via quick create forms
-					if(isset($_REQUEST[$module. '_CELL_offset'])) {
-					  $this->sort_order = $_SESSION['last_sub' .$this->subpanel_module. '_order'] == 'asc' ? 'desc' : 'asc';
-					} else {
-					  $this->sort_order = $_SESSION['last_sub' .$this->subpanel_module. '_order'];
-					}
+			
+			if(isset($_SESSION['last_sub' .$this->subpanel_module. '_order'])) {
+				// We swap the order when the request contains an offset (indicating a column sort issued);
+				// otherwise we do not sort.  If we don't make this check, then the subpanel listview will
+				// swap ordering each time a new record is entered via quick create forms
+				
+				if(isset($_REQUEST[$module. '_' . $html_var . '_offset'])) {
+				  	$this->sort_order = $_SESSION['last_sub' .$this->subpanel_module. '_order'] == 'asc' ? 'desc' : 'asc';
+				} else {
+				  $this->sort_order = $_SESSION['last_sub' .$this->subpanel_module. '_order'];
 				}
-
-			} elseif(isset($sort_order)) {
+			}
+			elseif(isset($sort_order)) {
 				$this->sort_order = $sort_order;
 			}
 		}
 
 
-		if(isset($subpanel_def->_instance_properties['sort_by'])) $this->query_orderby = $subpanel_def->_instance_properties['sort_by'];
-        else $this->query_orderby = 'id';
-
-		$this->getOrderBy('CELL',$this->query_orderby, $this->sort_order);
+		if(isset($subpanel_def->_instance_properties['sort_by'])) 
+			$this->query_orderby = $subpanel_def->_instance_properties['sort_by'];
+        else 
+        	$this->query_orderby = 'id';
+        	
+        $this->getOrderBy($html_var,$this->query_orderby, $this->sort_order);
 
 		$_SESSION['last_sub' .$this->subpanel_module. '_order'] = $this->sort_order;
-		$_SESSION['last_sub' .$this->subpanel_module. '_url'] = $this->getBaseURL('CELL');
+		$_SESSION['last_sub' .$this->subpanel_module. '_url'] = $this->getBaseURL($html_var);
 
+		
 		if(!empty($this->response)){
 			$response =& $this->response;
 			echo 'cached';
@@ -911,7 +906,7 @@ function getUserVariable($localVarName, $varName) {
 		if(!empty($response['current_offset']))$current_offset = $response['current_offset'];
 		global $list_view_row_count;
 		$list_view_row_count = $row_count;
-		$this->processListNavigation('dyn_list_view', 'CELL', $current_offset, $next_offset, $previous_offset, $row_count, $sugarbean,$subpanel_def);
+		$this->processListNavigation('dyn_list_view', $html_var, $current_offset, $next_offset, $previous_offset, $row_count, $sugarbean,$subpanel_def);
 
 		return array('list'=>$list, 'parent_data'=>$response['parent_data'], 'query'=>$response['query']);
 	}
@@ -932,8 +927,11 @@ function getUserVariable($localVarName, $varName) {
 
 			/*fixes an issue with deletes when doing a search*/
 			foreach(array_merge($_GET, $_POST) as $name=>$value) {
-				if(!empty($value)) {
-				if($name != 'sort_order'&& $name != ListView::getSessionVariableName($html_varName,"ORDER_BY") && $name != ListView::getSessionVariableName($html_varName,"offset") && substr_count($name, "ORDER_BY")==0 && !in_array($name, $blockVariables)) {
+				//echo ("$name = $value <br/>");
+				if(!empty($value) && $name != 'sort_order' //&& $name != ListView::getSessionVariableName($html_varName,"ORDER_BY") 
+						&& $name != ListView::getSessionVariableName($html_varName,"offset") 
+						/*&& substr_count($name, "ORDER_BY")==0*/ && !in_array($name, $blockVariables)) 
+				{
 					if(is_array($value)) {
 						foreach($value as $valuename=>$valuevalue) {
 							if(substr_count($baseurl, '?') > 0)
@@ -949,7 +947,6 @@ function getUserVariable($localVarName, $varName) {
 							$baseurl	.= "?$name=$value";
 						}
 					}
-				}
 				}
 			}
 
@@ -1011,7 +1008,7 @@ function getUserVariable($localVarName, $varName) {
 			$dynamic_url = '';
 
 			if($this->is_dynamic) {
-				$dynamic_url .='&'. $this->getSessionVariableName('CELL','ORDER_BY') . '='. $this->getSessionVariable('CELL','ORDER_BY').'&sort_order='.$this->sort_order.'&to_pdf=true&action=SubPanelViewer&subpanel=' . $this->subpanel_module;
+				$dynamic_url .='&'. $this->getSessionVariableName($html_varName,'ORDER_BY') . '='. $this->getSessionVariable($html_varName,'ORDER_BY').'&sort_order='.$this->sort_order.'&to_pdf=true&action=SubPanelViewer&subpanel=' . $this->subpanel_module;
 			}
 
 			$current_URL = $this->base_URL.$current_offset.$dynamic_url;
@@ -1409,11 +1406,11 @@ function getUserVariable($localVarName, $varName) {
 					$fields[$results['fieldToAddTo']] = $fields[$results['fieldToAddTo']].'</a>';
 				}
 				//fixes bug for IE where empty list view rows causes IE to not display bottom border
-				if(isset($fields['DESCRIPTION']) && empty($fields['DESCRIPTION'])) 
+				if(isset($fields['DESCRIPTION']) && empty($fields['DESCRIPTION']))
 				$fields['DESCRIPTION'] = "&nbsp;";
-				if(isset($fields['LIST_ORDER']) && empty($fields['LIST_ORDER'])) 
+				if(isset($fields['LIST_ORDER']) && empty($fields['LIST_ORDER']))
 				$fields['LIST_ORDER'] = "&nbsp;";
-				
+
 				$this->xTemplate->assign($html_varName, $fields);
 				$aItem->setupCustomFields($aItem->module_dir);
 				$aItem->custom_fields->populateAllXTPL($this->xTemplate, 'detail', $html_varName, $fields);
@@ -1438,10 +1435,6 @@ function getUserVariable($localVarName, $varName) {
 			}
 		}
 
-		global $timedate;
-		if(empty($timedate)) $timedate = new TimeDate();
-
-		$microtime = $timedate->get_microtime_string();
 		$_SESSION['MAILMERGE_RECORDS'] = $mergeList;
 		$_SESSION['MAILMERGE_MODULE_FROM_LISTVIEW'] = $module;
 	    if(empty($_REQUEST['action']) || $_REQUEST['action'] != 'Popup') {
@@ -1478,17 +1471,17 @@ function getUserVariable($localVarName, $varName) {
 	}
 
 
-	function process_dynamic_listview_header($source_module, $subpanel_def)
+	function process_dynamic_listview_header($source_module, $subpanel_def, $html_var = 'CELL')
 	{
 
 
 		$layout_manager = $this->getLayoutManager();
-		$layout_manager->setAttribute('order_by_link',$this->processOrderBy('CELL'));
+		$layout_manager->setAttribute('order_by_link',$this->processOrderBy($html_var));
 		$layout_manager->setAttribute('context','HeaderCell');
 		$layout_manager->setAttribute('image_path',$this->local_image_path);
-		$layout_manager->setAttribute('html_varName','CELL');
+		$layout_manager->setAttribute('html_varName',$html_var);
 		$layout_manager->setAttribute('module_name', $source_module);
-		list($orderBy,$desc) = $this->getOrderByInfo('CELL');
+		list($orderBy,$desc) = $this->getOrderByInfo($html_var);
 
 		if($orderBy == 'amount*1')
 		{
@@ -1558,7 +1551,7 @@ function getUserVariable($localVarName, $varName) {
 		} else {
 			$list = $seed;
 		}
-		
+
 		if (is_object($seed) && isset($seed->object_name) && $seed->object_name == 'WorkFlow') {
 		    $tab=array();
     		$access = get_workflow_admin_modules_for_user($current_user);
@@ -1569,7 +1562,7 @@ function getUserVariable($localVarName, $varName) {
     		}
             $list = $tab;
 		}
-		
+
 		if($this->is_dynamic) {
 			$this->processHeaderDynamic($xTemplateSection,$html_varName);
 			$this->processListRows($list,$xTemplateSection, $html_varName);
@@ -1708,8 +1701,7 @@ function getUserVariable($localVarName, $varName) {
 	}
 
     function unique_id() {
-       global $timedate;
-       return $timedate->get_microtime_string();
+    	return sugar_microtime();
     }
 
      /**INTERNAL FUNCTION sets a session variable keeping it local to the listview
@@ -1730,7 +1722,7 @@ function getUserVariable($localVarName, $varName) {
      */
  function getLocalSessionVariable($localVarName,$varName) {
     if(isset($_SESSION[$localVarName."_".$varName])) {
-        return $_SESSION[$localVarName."_".$varName];
+ 		return $_SESSION[$localVarName."_".$varName];
 	}
     else{
         return "";

@@ -112,20 +112,31 @@ class LanguageManager{
 	/**
 	 * clear out the language cache. 
 	 * @param string module_dir the module_dir to clear, if not specified then clear
-	 *                      clear vardef cache for all modules.
+	 *                      clear language cache for all modules.
 	 * @param string lang the name of the object we are clearing this is for sugar_cache
 	 */
 	function clearLanguageCache($module_dir = '', $lang = ''){
-		if(empty($lang))
-			$lang = $GLOBALS['sugar_config']['default_language'];
-		//if we have a module name specified then just remove that vardef file
-		//otherwise go through each module and remove the vardefs.php
-		if(!empty($module_dir)){
-			LanguageManager::_clearCache($module_dir, $lang);
-		}else{
-			global $beanList;
-			foreach($beanList as $module_dir => $object_name){
-				LanguageManager::_clearCache($module_dir, $lang);
+		if(empty($lang)) {
+			$languages = array_keys($GLOBALS['sugar_config']['languages']);
+		} else {
+			$languages = array($lang);
+		}
+		//if we have a module name specified then just remove that language file
+		//otherwise go through each module and clean up the language
+		if(!empty($module_dir)) {
+			foreach($languages as $clean_lang) {
+				LanguageManager::_clearCache($module_dir, $clean_lang);
+			}
+		} else {
+			$cache_dir = $GLOBALS['sugar_config']['cache_dir'].'modules/';
+			if(file_exists($cache_dir) && $dir = @opendir($cache_dir)) {
+				while(($entry = readdir($dir)) !== false) {
+					if ($entry == "." || $entry == "..") continue;
+						foreach($languages as $clean_lang) {
+							LanguageManager::_clearCache($entry, $clean_lang);
+						}
+				}
+				closedir($dir);
 			}
 		}
 	}

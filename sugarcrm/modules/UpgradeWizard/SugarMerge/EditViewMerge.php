@@ -591,7 +591,6 @@ class EditViewMerge{
 		foreach($panels as $panel_id=>$panel){	
 			foreach($panel as $row_id=>$rows){
 				foreach($rows as $col_id=>$col){
-					
 					if(empty($col)) {
  					   $field_name = 'BLANK_' . $blanks;
 					   $blanks++;
@@ -604,7 +603,7 @@ class EditViewMerge{
 						}else{
 							$field_name = $col;
 						}
-					}					
+					}
 					
 					if(is_string($field_name)) {
 						$fields[$field_name] = array('data'=>$col, 'loc'=>array('panel'=>"{$panel_id}", 'row'=>"{$row_id}", 'col'=>"{$col_id}"));

@@ -34,9 +34,47 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
  ********************************************************************************/
-if(isset($_REQUEST['GetSiteMap']) && $_REQUEST['GetSiteMap']='now'){
-    echo sm_builder();
-}else{return;}
+$sm = sm_build_array();
+$sm_smarty = new Sugar_Smarty();
+
+global $sugar_config;
+if(isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '')
+{
+    $current_language = $_SESSION['authenticated_user_language'];
+}
+else
+{
+    $current_language = $sugar_config['default_language'];
+}
+
+$mod_strings = return_module_language($current_language, 'Home');
+$sm_smarty->assign('CLOSE', isset($mod_strings['LBL_CLOSE_SITEMAP']) ? $mod_strings['LBL_CLOSE_SITEMAP'] : '');
+
+// get the list_strings in order for module friendly name display.
+$app_list_strings = return_app_list_strings_language($current_language);
+
+foreach ($sm as $mod_dir_name => $links)
+{
+    $module_friendly_name = $app_list_strings['moduleList'][$mod_dir_name];
+    $temphtml = "";
+    $temphtml .= '<h4><a href="javascript:window.location=\'index.php?module='.$mod_dir_name.'&action=index\'">' . $module_friendly_name .'</a></h4><ul class=\'noBullet\'>';
+
+    foreach ($links as $name => $href)
+    {
+        $temphtml .= '<li class=\'noBullet\'><a href="javascript:window.location=\''. $href .'\'">' . $name . ' ' . '</a></li>';
+    }
+
+    $temphtml .= '</ul>';
+    $sm_smarty->assign(strtoupper($mod_dir_name), $temphtml);
+}
+
+// Specify the sitemap template to use; allow developers to override this with a custom one to add/remove modules
+// from the list
+$tpl = 'modules/Home/sitemap.tpl';
+if ( sugar_is_file('custom/modules/Home/sitemap.tpl') ) {
+    $tpl = 'custom/modules/Home/sitemap.tpl';
+}
+return $sm_smarty->fetch($tpl);
 
 function sm_build_array()
 {
@@ -110,45 +148,3 @@ function sm_build_array()
     $_SESSION['SM_ARRAY'] = $mstr_array; 
 	return $mstr_array;
 }
-
-function sm_builder($tpl='modules/Home/sitemap.tpl')
-{
-    
-    $sm = sm_build_array();
-    $sm_smarty = new Sugar_Smarty();
-
-	global $sugar_config;
-	if(isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '')
-    {
-        $current_language = $_SESSION['authenticated_user_language'];
-    }
-    else
-    {
-        $current_language = $sugar_config['default_language'];
-    }
-
-    $mod_strings = return_module_language($current_language, 'Home');
-    $sm_smarty->assign('CLOSE', isset($mod_strings['LBL_CLOSE_SITEMAP']) ? $mod_strings['LBL_CLOSE_SITEMAP'] : '');
-
-	// get the list_strings in order for module friendly name display.
-	$app_list_strings = return_app_list_strings_language($current_language);
-
-    foreach ($sm as $mod_dir_name => $links)
-    {
-		$module_friendly_name = $app_list_strings['moduleList'][$mod_dir_name];
-    	$temphtml = "";
-    	$temphtml .= '<h4><a href="javascript:window.location=\'index.php?module='.$mod_dir_name.'&action=index\'">' . $module_friendly_name .'</a></h4><ul class=\'noBullet\'>';
-
-        foreach ($links as $name => $href)
-        {
-        	$temphtml .= '<li class=\'noBullet\'><a href="javascript:window.location=\''. $href .'\'">' . $name . ' ' . '</a></li>';
-        }
-
-    	$temphtml .= '</ul>';
-    	$sm_smarty->assign(strtoupper($mod_dir_name), $temphtml);
-    }
-
-    return $sm_smarty->fetch($tpl);
-}
-
-

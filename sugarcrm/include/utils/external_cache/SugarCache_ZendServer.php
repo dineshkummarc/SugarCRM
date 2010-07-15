@@ -34,8 +34,58 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
  ********************************************************************************/
-$_REQUEST['style'] = 'popup';
-echo '<script type="text/javascript" src="include/javascript/sugar_3.js"></script>';
-include('modules/EditCustomFields/EditView.php');
 
-?>
+class SugarCache_ZendServer extends SugarCache_ExternalAbstract
+{
+    function get($key)
+    {
+        $value = parent::get($key);
+        if (!is_null($value)) {
+            return $value;
+        }
+
+        $raw_cache_value = zend_shm_cache_fetch($this->_realKey($key));
+        $cache_value = is_string($raw_cache_value) ?
+            unserialize($raw_cache_value) :
+            $raw_cache_value;
+        return $this->_processGet(
+            $key,
+            $cache_value
+        );
+    }
+
+    function set($key, $value)
+    {
+        parent::set($key, $value);
+
+        // caching is turned off
+        if(!$GLOBALS['external_cache_enabled']) {
+            return;
+        }
+
+        $external_key = $this->_realKey($key);
+		if (EXTERNAL_CACHE_DEBUG) {
+            SugarCache::log("Step 3: Converting key ($key) to external key ($external_key)");
+        }
+
+        zend_shm_cache_store($external_key, serialize($value), $this->timeout);
+
+        if (EXTERNAL_CACHE_DEBUG) {
+            SugarCache::log("Step 4: Added key to Zend cache {$external_key} with value ($value) to be stored for ".EXTERNAL_CACHE_INTERVAL_SECONDS." seconds");
+        }
+    }
+
+    function __unset($key)
+    {
+        parent::__unset($key);
+        zend_shm_cache_delete($this->_realKey($key));
+    }
+
+    /**
+     * Clean opcode cache
+     */
+    function clean_opcodes()
+    {
+		accelerator_reset();
+    }
+}

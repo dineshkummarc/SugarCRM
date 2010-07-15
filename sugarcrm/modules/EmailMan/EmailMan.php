@@ -475,9 +475,9 @@ class EmailMan extends SugarBean{
 
         global $locale;
         $email = new Email();
-        $email->to_addrs= $locale->getLocaleFormattedName($module->first_name, $module->last_name) . '&lt;'.$module->email1.'&gt;';
+        $email->to_addrs= $module->name . '&lt;'.$module->email1.'&gt;';
         $email->to_addrs_ids = $module->id .';';
-        $email->to_addrs_names = $locale->getLocaleFormattedName($module->first_name, $module->last_name) . ';';
+        $email->to_addrs_names = $module->name . ';';
         $email->to_addrs_emails = $module->email1 . ';';
         $email->type= 'archived';
         $email->deleted = '0';
@@ -776,7 +776,8 @@ class EmailMan extends SugarBean{
 			$mail->Sender	= $this->mailbox_from_addr;
 			$mail->From     = $this->mailbox_from_addr;
 			$mail->FromName = $this->current_emailmarketing->from_name;
-
+			$mail->ClearCustomHeaders();
+            $mail->AddCustomHeader('X-CampTrackID:'.$this->target_tracker_key);
             //added support for using the reply to address from reply to name from configured mailbox.
             //we removed code that was using the from name of the marketing template as the reply to name
             //and current mailbox's reply to address.
@@ -802,7 +803,7 @@ class EmailMan extends SugarBean{
 			$tracker_url_template= $this->tracking_url . 'index.php?entryPoint=campaign_trackerv2&track=%s'.'&identifier='.$this->target_tracker_key;
 			$removeme_url_template=$this->tracking_url . 'index.php?entryPoint=removeme&identifier='.$this->target_tracker_key;
 			$template_data=  $this->current_emailtemplate->parse_tracker_urls($template_data,$tracker_url_template,$this->tracker_urls,$removeme_url_template);
-			$mail->AddAddress($module->email1,$locale->translateCharsetMIME(trim($locale->getLocaleFormattedName($module->first_name, $module->last_name)), 'UTF-8', $OBCharset) );
+			$mail->AddAddress($module->email1,$locale->translateCharsetMIME(trim($module->name), 'UTF-8', $OBCharset) );
 
             //refetch strings in case they have been changed by creation of email templates or other beans.
             $mod_strings = return_module_language( $sugar_config['default_language'], 'EmailMan');

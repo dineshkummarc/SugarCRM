@@ -40,11 +40,11 @@
 *}
 
 {include file="modules/DynamicFields/templates/Fields/Forms/coreTop.tpl"}
-<tr><td class='mbLBL'>{$MOD.COLUMN_TITLE_DEFAULT_VALUE}:</td><td>
+<tr><td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DEFAULT_VALUE"}:</td><td>
 {if $hideLevel < 5}
 <input type='text' name='default' value='{sugar_currency_format var=$vardef.default}'>
 <script>
-addToValidate('popup_form', 'default', 'float', false,'{$MOD.COLUMN_TITLE_DEFAULT_VALUE}' );
+addToValidate('popup_form', 'default', 'float', false,'{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DEFAULT_VALUE"}' );
 </script>
 {else}
 <input type='hidden' name='default' value='{sugar_currency_format var=$vardef.default}'>{sugar_currency_format var=$vardef.default}

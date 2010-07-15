@@ -256,12 +256,12 @@ if(!empty($focus->port)) {
 // groups
 $groupId = "";
 $is_auto_import = "";
+$allow_outbound = '';
 if(isset($focus->id)) 
 	$groupId = $focus->group_id;
 else 
 {
 	$groupId = create_guid();
-	//When creating a new record, set auto import to on by default.
 	$is_auto_import = 'checked';
 }
 
@@ -297,7 +297,7 @@ if($focus->is_personal) {
 	$xtpl->assign('MAILBOX_TYPE_STYLE', "display:''");
 	$xtpl->assign('AUTO_IMPORT_STYLE', "display:''");
 	$ret = $folder->getFoldersForSettings($current_user);
-	
+
 	//For existing records, do not allow 
 	$is_auto_import_disabled = "";
 	if (!empty($focus->groupfolder_id)) 
@@ -305,12 +305,14 @@ if($focus->is_personal) {
 		$is_auto_import = "checked";
 	    $xtpl->assign('EDIT_GROUP_FOLDER_STYLE', "visibility:inline");
 		$leaveMessagesOnMailServerStyle = "display:''";
+		$allow_outbound = (isset($storedOptions['allow_outbound_group_usage']) && $storedOptions['allow_outbound_group_usage'] == 1) ? 'CHECKED'  : '';
 	} 
 	else 
 	{
 		$xtpl->assign('EDIT_GROUP_FOLDER_STYLE', "visibility:hidden");
 	} 
     
+	$xtpl->assign('ALLOW_OUTBOUND_USAGE', $allow_outbound);
 	$xtpl->assign('IS_AUTO_IMPORT', $is_auto_import);
 	
 	if ($focus->isMailBoxTypeCreateCase()) 

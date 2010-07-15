@@ -36,23 +36,24 @@
 *}
 <link rel="stylesheet" type="text/css" href="{sugar_getjspath file='modules/Connectors/tpls/tabs.css'}"/>
 <script type="text/javascript" src="include/javascript/sugar_grp_yui_widgets.js"></script>
+{overlib_includes}
 <style>.yui-dt-scrollable .yui-dt-bd {ldelim}overflow-x: hidden;{rdelim}</style>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr><td colspan='100'><h2>{$title}</h2></td></tr>
 <tr><td colspan='100'>
-{$description}
+{$MOD.LBL_CONFIG_TABS_DESC}
 </td></tr><tr><td><br></td></tr><tr><td colspan='100'>
 
 <form name="ConfigureTabs" method="POST"  method="POST" action="index.php">
 	<input type="hidden" name="module" value="Administration">
 	<input type="hidden" name="action" value="SaveTabs">
 	<input type="hidden" id="enabled_tabs" name="enabled_tabs" value="">
-	<input type="hidden" name="disabled_tabs" value="">
+	<input type="hidden" id="disabled_tabs" name="disabled_tabs" value="">
 	<input type="hidden" name="return_module" value="{$RETURN_MODULE}">
 	<input type="hidden" name="return_action" value="{$RETURN_ACTION}">
 
-	<table border="0" cellspacing="1" cellpadding="1">
+	<table border="0" cellspacing="1" cellpadding="1" class="actionsContainer">
 		<tr>
 			<td>
 				<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="button primary" onclick="SUGAR.saveConfigureTabs();this.form.action.value='SaveTabs'; " type="submit" name="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" > 
@@ -60,9 +61,16 @@
 			</td>
 		</tr>
 	</table>
-	<input type='checkbox' name='user_edit_tabs' value=1 class='checkbox' {if !empty($user_can_edit)}CHECKED{/if}>&nbsp;<b onclick='document.EditView.user_edit_tabs.checked= !document.EditView.user_edit_tabs.checked' style='cursor:default'>{$MOD.LBL_ALLOW_USER_TABS}</b>
+	
 	<div class='add_table' style='margin-bottom:5px'>
 		<table id="ConfigureTabs" class="themeSettings edit view" style='margin-bottom:0px;' border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td>
+				    <input type='checkbox' name='user_edit_tabs' value=1 class='checkbox' {if !empty($user_can_edit)}CHECKED{/if}>&nbsp;
+				    <b onclick='document.EditView.user_edit_tabs.checked= !document.EditView.user_edit_tabs.checked' style='cursor:default'>{$MOD.LBL_ALLOW_USER_TABS}</b>
+				    &nbsp;{sugar_help text=$MOD.LBL_CONFIG_TABS_ALLOW_USERS_HIDE_TABS_HELP}
+				</td>
+			</tr>
 			<tr>
 				<td width='1%'>
 					<div id="enabled_div" class="enabled_tab_workarea">
@@ -76,7 +84,20 @@
 		</table>
 	</div>
 	
-	<table border="0" cellspacing="1" cellpadding="1">
+	<div class='add_subpanels' style='margin-bottom:5px'>
+		<table id="ConfigureSubPanels" class="themeSettings edit view" style='margin-bottom:0px;' border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td width='1%'>
+					<div id="enabled_subpanels_div"></div>	
+				</td>
+				<td>
+					<div id="disabled_subpanels_div"></div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<table border="0" cellspacing="1" cellpadding="1" class="actionsContainer">
 		<tr>
 			<td>
 				<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="button primary" onclick="SUGAR.saveConfigureTabs();this.form.action.value='SaveTabs'; " type="submit" name="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" > 
@@ -124,6 +145,40 @@
     SUGAR.disabledTabsTable.addRow({module: "", label: ""});
 	SUGAR.enabledTabsTable.render();
 	SUGAR.disabledTabsTable.render();
+	{/literal}
+	var sub_enabled_modules = {$enabled_panels};
+	var sub_disabled_modules = {$disabled_panels};
+	var lblSubEnabled = '{sugar_translate label="LBL_VISIBLE_PANELS"}';
+	var lblSubDisabled = '{sugar_translate label="LBL_HIDDEN_PANELS"}';
+	{literal}
+	SUGAR.subEnabledTable = new YAHOO.SUGAR.DragDropTable(
+		"enabled_subpanels_div",
+		[{key:"label",  label: lblSubEnabled, width: 200, sortable: false},
+		 {key:"module", label: lblSubEnabled, hidden:true}],
+		new YAHOO.util.LocalDataSource(sub_enabled_modules, {
+			responseSchema: {
+			   fields : [{key : "module"}, {key : "label"}]
+			}
+		}),  
+		{height: "300px"}
+	);
+	SUGAR.subDisabledTable = new YAHOO.SUGAR.DragDropTable(
+		"disabled_subpanels_div",
+		[{key:"label",  label: lblSubDisabled, width: 200, sortable: false},
+		 {key:"module", label: lblSubDisabled, hidden:true}],
+		new YAHOO.util.LocalDataSource(sub_disabled_modules, {
+			responseSchema: {
+			   fields : [{key : "module"}, {key : "label"}]
+			}
+		}),
+		{height: "300px"}
+	);
+	SUGAR.subEnabledTable.disableEmptyRows = true;
+	SUGAR.subDisabledTable.disableEmptyRows = true;
+	SUGAR.subEnabledTable.addRow({module: "", label: ""});
+	SUGAR.subDisabledTable.addRow({module: "", label: ""});
+	SUGAR.subEnabledTable.render();
+	SUGAR.subDisabledTable.render();
 	
 	SUGAR.saveConfigureTabs = function()
 	{
@@ -135,6 +190,15 @@
 			    modules[i] = data.module;
 		}
 		YAHOO.util.Dom.get('enabled_tabs').value = YAHOO.lang.JSON.stringify(modules);
+		
+		var disabledTable = SUGAR.subDisabledTable;
+		var modules = [];
+		for(var i=0; i < disabledTable.getRecordSet().getLength(); i++){
+			var data = disabledTable.getRecord(i).getData();
+			if (data.module && data.module != '')
+			    modules[i] = data.module;
+		}
+		YAHOO.util.Dom.get('disabled_tabs').value = YAHOO.lang.JSON.stringify(modules);
 	}
 })();
 {/literal}

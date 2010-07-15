@@ -136,8 +136,10 @@ this.newTable=this.newIndex=null
 var clickEl=this.getEl();Dom.setStyle(clickEl,"opacity","");}});sw.AsyncPanel=function(el,params){if(params)
 sw.AsyncPanel.superclass.constructor.call(this,el,params);else
 sw.AsyncPanel.superclass.constructor.call(this,el);}
-YAHOO.extend(sw.AsyncPanel,YAHOO.widget.Panel,{loadingText:"Loading...",failureText:"Error loading content.",load:function(url,method){method=method?method:"GET";this.setBody(this.loadingText);if(Connect.url)url=Connect.url+"&"+url;Connect.asyncRequest(method,url,{success:this._updateContent,failure:this._loadFailed,scope:this});},_updateContent:function(o){var w=this.cfg.config.width.value+"px";this.setBody(o.responseText);if(!SUGAR.isIE)
-this.body.style.width=w},_loadFailed:function(o){this.setBody(this.failureText);}});sw.ClosableTab=function(el,parent,conf){this.closeEvent=new YAHOO.util.CustomEvent("close",this);if(conf)
+YAHOO.extend(sw.AsyncPanel,YAHOO.widget.Panel,{loadingText:"Loading...",failureText:"Error loading content.",load:function(url,method,callback){method=method?method:"GET";this.setBody(this.loadingText);if(Connect.url)url=Connect.url+"&"+url;this.callback=callback;Connect.asyncRequest(method,url,{success:this._updateContent,failure:this._loadFailed,scope:this});},_updateContent:function(o){var w=this.cfg.config.width.value+"px";this.setBody(o.responseText);if(!SUGAR.isIE)
+this.body.style.width=w
+if(this.callback!=null)
+this.callback(o);},_loadFailed:function(o){this.setBody(this.failureText);}});sw.ClosableTab=function(el,parent,conf){this.closeEvent=new YAHOO.util.CustomEvent("close",this);if(conf)
 sw.ClosableTab.superclass.constructor.call(this,el,conf);else
 sw.ClosableTab.superclass.constructor.call(this,el);this.setAttributeConfig("TabView",{value:parent});this.get("labelEl").parentNode.href="javascript:void(0);";}
 YAHOO.extend(sw.ClosableTab,YAHOO.widget.Tab,{close:function(){this.closeEvent.fire();var parent=this.get("TabView");parent.removeTab(this);},initAttributes:function(attr){sw.ClosableTab.superclass.initAttributes.call(this,attr);this.setAttributeConfig("closeMsg",{value:attr.closeMsg||""});this.setAttributeConfig("label",{value:attr.label||this._getLabel(),method:function(value){var labelEl=this.get("labelEl");if(!labelEl){this.set(LABEL_EL,this._createLabelEl());}

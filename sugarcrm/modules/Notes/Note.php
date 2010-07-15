@@ -57,6 +57,7 @@ class Note extends SugarBean {
 	var $date_entered;
 	var $date_modified;
 	var $modified_user_id;
+	var $assigned_user_id;
 	var $created_by;
 	var $created_by_name;
 	var $modified_by_name;

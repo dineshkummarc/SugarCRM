@@ -100,6 +100,7 @@ function init(){ldelim}
 	    var eaw = SUGAR.EmailAddressWidget.instances.{$module}{$index} = new SUGAR.EmailAddressWidget("{$module}");
 		eaw.emailView = '{$emailView}';
 	    eaw.emailIsRequired = "{$required}";
+	    eaw.tabIndex = '{$tabindex}';
 	    var addDefaultAddress = '{$addDefaultAddress}';
 	    var prefillEmailAddress = '{$prefillEmailAddresses}';
 	    var prefillData = {$prefillData};

@@ -65,8 +65,8 @@ class DetailView2 extends EditView
         $this->tpl = $tpl;  
         $this->module = $module;
         $this->metadataFile = $metadataFile;
-        if(!empty($sugar_config['disable_vcr'])) {
-           $this->showVCRControl = $sugar_config['disable_vcr'];	
+        if(isset($GLOBALS['sugar_config']['disable_vcr'])) {
+           $this->showVCRControl = !$GLOBALS['sugar_config']['disable_vcr'];	
         }
         if(!empty($this->metadataFile) && file_exists($this->metadataFile)){
         	require_once($this->metadataFile);

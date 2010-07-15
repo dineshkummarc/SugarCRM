@@ -358,7 +358,11 @@ class DetailView extends ListView {
         $post_html_text = "</tr></table>\n";
         $post_html_text .= "</td>\n";
 		$post_html_text .= "</tr>\n";
-		if ( $html_text != "" )
+		$showVCRControl = true;
+		if(isset($sugar_config['disable_vcr'])) {
+		    $showVCRControl = !$sugar_config['disable_vcr'];
+		}
+		if ( $showVCRControl && $html_text != "" )
 		    $xtpl->assign("PAGINATION",$pre_html_text.$html_text.$post_html_text);
 	}
 

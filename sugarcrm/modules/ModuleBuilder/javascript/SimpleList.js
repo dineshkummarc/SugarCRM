@@ -81,7 +81,7 @@ if(typeof(SimpleList) == 'undefined'){
     	}
     	
     	if (!check_form("dropdown_form")) return;
-    	
+
         var ul1=YAHOO.util.Dom.get("ul1");
 
         var items = ul1.getElementsByTagName("li");

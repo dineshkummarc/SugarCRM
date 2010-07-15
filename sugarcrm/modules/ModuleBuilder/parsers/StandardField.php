@@ -82,8 +82,12 @@ class StandardField extends DynamicField
         
         require_once ('modules/DynamicFields/FieldCases.php') ;
         $this->baseField = get_widget ( $field->type) ;
+        echo ("<pre>");
+        	print_r($newDef);
+        echo "</pre>";
         foreach ($field->vardef_map as $property => $fmd_col){
-            if ($property == "action" || $property == "label_value" || $property == "label"
+           
+        	if ($property == "action" || $property == "label_value" || $property == "label"
             	|| ((substr($property, 0,3) == 'ext' && strlen($property) == 4))
             ) 
             	continue;

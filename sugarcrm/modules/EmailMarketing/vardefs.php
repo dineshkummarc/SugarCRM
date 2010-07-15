@@ -153,7 +153,7 @@ $dictionary['EmailMarketing'] = array('table' => 'email_marketing'
 	    'name' => 'status',
 	    'vname' => 'LBL_STATUS',
 	    'type' => 'enum',
-	    'len' => 25,
+	    'len' => 100,
 		'required'=>true,
 		'options' => 'email_marketing_status_dom',
 		'importable' => 'required',

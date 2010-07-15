@@ -164,7 +164,10 @@ if(typeof(SUGAR.collection) == "undefined") {
                 // if there is now only one record, hide the "more..." link
                 if(radios.length == 1){
                     this.more_status = false;
-                    document.getElementById('more_'+this.field_element_name).style.display='none';
+					if (document.getElementById('more_'+this.field_element_name) && document.getElementById('more_'+this.field_element_name).style.display != 'none') {
+	                    document.getElementById('more_'+this.field_element_name).style.display='none';			
+					}
+
                     this.show_arrow_label(false);
                     this.js_more();
                 }else{
@@ -211,7 +214,7 @@ if(typeof(SUGAR.collection) == "undefined") {
             } else if(typeof document.getElementById(this.form + '_' + this.field + '_collection_0') == 'undefined'){
             	setTimeout('collection["'+this.field_element_name+'"].add_secondaries();',1000);
             } else {
-                if(!this.create_clone())return;
+                this.create_clone();
                 enableQS();
                 this.changePrimary(true);
                 for(key in this.secondaries_values){
@@ -222,6 +225,8 @@ if(typeof(SUGAR.collection) == "undefined") {
                 this.js_more();
                 this.js_more();
             }
+            // Update the "hash" of the unchanged form, because this is just adding data, not actually changing anything
+            initEditView(document.forms[this.form]);
         },
         /*
          * Create the new row from a cloned row. 
@@ -274,9 +279,12 @@ if(typeof(SUGAR.collection) == "undefined") {
             } else if (currentNode.tagName && currentNode.tagName == 'SPAN') { 
                 //If it is our div element, recursively find all input elements to process
                 currentNode.id = /_input/.test(currentNode.id) ? this.field_element_name + '_input_div_' + this.fields_count :  this.field_element_name + '_radio_div_' + this.fields_count;         	
+				if (/_input/.test(currentNode.id)) {
+					currentNode.name = 'teamset_div';
+				}
             	
             	input_els = currentNode.getElementsByTagName('input');
-                for(x in input_els) {
+            	for ( var x = 0; x < input_els.length; x++ ){
                 	if(input_els[x].tagName && input_els[x].tagName == 'INPUT') {
                 	   this.process_node(parentNode, input_els[x], values);
                 	}
@@ -341,7 +349,7 @@ if(typeof(SUGAR.collection) == "undefined") {
                         currentNode.setAttribute('defaultChecked', '');
                         break;
                     default:
-                        //alert(name);
+                        alert(toreplace + '|' + currentNode.name + '|' + name + '|' + new_name);
                         break;
                 } //switch
             } //if-else
@@ -403,8 +411,7 @@ if(typeof(SUGAR.collection) == "undefined") {
          */
         create_clone: function() {
             var oneField = document.getElementById('lineFields_'+this.field_element_name+'_0');
-            if(oneField == null || typeof(oneField) == 'undefined')return false;
-			this.cloneField[0] = oneField.cloneNode(true);
+            this.cloneField[0] = oneField.cloneNode(true);
             this.cloneField[1] = oneField.parentNode;
             this.more_status = true;
             clone_id = this.form + '_' + this.field + '_collection_0';
@@ -412,9 +419,7 @@ if(typeof(SUGAR.collection) == "undefined") {
             if (typeof sqs_objects[clone_id] != 'undefined') {
                 var clone = YAHOO.lang.JSON.stringify(sqs_objects[clone_id]);
                 eval('this.sqs_clone=' + clone);
-				return true;
             }
-			return false;
         },
         /**
          * Validates team set to check if the primary team id has been set or not
@@ -526,9 +531,9 @@ if(typeof(SUGAR.collection) == "undefined") {
         replace_first: function(values){
         	for (var i = 0; i <= this.fields_count; i++) {
         		div_el = document.getElementById(this.field_element_name + '_input_div_' + i);
-                if(div_el) {                		
-		        	var name_field = document.forms[this.form].elements[this.field+"_collection_" + i];
-		        	var id_field = document.forms[this.form].elements["id_"+this.field+"_collection_" + i];
+                if(div_el) { 
+		        	var name_field = document.getElementById(this.field+"_collection_" + i);
+					var id_field = document.getElementById("id_"+this.field+"_collection_" + i);
 		        	name_field.value = values['name'];
 		        	id_field.value = values['id'];
 		        	break;
@@ -547,7 +552,7 @@ if(typeof(SUGAR.collection) == "undefined") {
                 div_el = document.getElementById(this.field_element_name + '_input_div_' + i);
                 if(div_el) {        
 	                input_els = div_el.getElementsByTagName('input');
-	                for(x in input_els) {
+	                for ( var x = 0; x < input_els.length; x++ ){
 	                	if(input_els[x].id && input_els[x].id == (this.field + '_collection_' + i) && trim(input_els[x].value) == '') {
 	                		if(divCount == 0){
 	                			isFirstFieldEmpty = true;

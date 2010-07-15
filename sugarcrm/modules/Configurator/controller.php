@@ -51,7 +51,7 @@ class ConfiguratorController extends SugarController
     function action_deleteFont(){
         global $current_user;
         if(!is_admin($current_user)){
-            sugar_die('Admin Only');    
+            sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']); 
         }
         $urlSTR = 'index.php?module=Configurator&action=FontManager';
         if(!empty($_REQUEST['filename'])){
@@ -80,7 +80,7 @@ class ConfiguratorController extends SugarController
     function action_addFont(){
         global $current_user, $mod_strings;
         if(!is_admin($current_user)){
-            sugar_die('Admin Only');    
+            sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']); 
         }
         if(empty($_FILES['pdf_metric_file']['name'])){
             $this->errors[]=translate("ERR_MISSING_REQUIRED_FIELDS")." ".translate("LBL_PDF_METRIC_FILE", "Configurator");
@@ -131,15 +131,7 @@ class ConfiguratorController extends SugarController
 	    $configurator->parseLoggerSettings();
         $configurator->saveConfig();
         
-        if ( isset($_REQUEST['continue']) )
-            SugarApplication::redirect('index.php?module=Users&action=Wizard&skipwelcome=1');
-        else {
-            $ut = $GLOBALS['current_user']->getPreference('ut');
-            if(empty($ut))
-                SugarApplication::redirect('index.php?module=Users&action=SetTimezone');
-            else
-                SugarApplication::redirect('index.php?module=Home&action=index');
-        }
+        SugarApplication::redirect('index.php?module=Users&action=Wizard&skipwelcome=1');
     }
     
     function action_saveconfig()

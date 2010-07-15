@@ -42,7 +42,7 @@
 
 {include file="modules/DynamicFields/templates/Fields/Forms/coreTop.tpl"}
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_DEFAULT_VALUE}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DEFAULT_VALUE"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type='text' name='default' id='default' value='{$vardef.default}' maxlength='{$vardef.len|default:50}'>
@@ -52,7 +52,7 @@
 	</td>
 </tr>
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_MAX_SIZE}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_MAX_SIZE"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type='text' name='len' id='field_len' value='{$vardef.len|default:25}' onchange="forceRange(this,1,255);changeMaxLength(document.getElementById('default'),this.value);">

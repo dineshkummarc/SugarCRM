@@ -83,7 +83,7 @@ function UWrebuild() {
 		xmlhttp.open('GET', 'index.php?module=Administration&action=RebuildRelationship&to_pdf=true', true);
 		xmlhttp.send(null);
 		</script>";
-		 			
+
 	$log->info('Rebuilding everything.');
 	require_once('ModuleInstall/ModuleInstaller.php');
 	$mi = new ModuleInstaller();
@@ -91,13 +91,13 @@ function UWrebuild() {
 	$query = "DELETE FROM versions WHERE name='Rebuild Extensions'";
 	$log->info($query);
 	$db->query($query);
-	
+
 	// insert a new database row to show the rebuild extensions is done
 	$id = create_guid();
 	$gmdate = gmdate($GLOBALS['timedate']->get_db_date_time_format());
 	$date_entered = db_convert("'$gmdate'", 'datetime');
 	$query = 'INSERT INTO versions (id, deleted, date_entered, date_modified, modified_user_id, created_by, name, file_version, db_version) '
-		. "VALUES ('$id', '0', $date_entered, $date_entered, '1', '1', 'Rebuild Extensions', '4.0.0', '4.0.0')"; 
+		. "VALUES ('$id', '0', $date_entered, $date_entered, '1', '1', 'Rebuild Extensions', '4.0.0', '4.0.0')";
 	$log->info($query);
 	$db->query($query);
 }
@@ -178,12 +178,12 @@ if(isset($_REQUEST['radio_overwrite'])){
 $author = '';
 $is_uninstallable = true;
 $name = '';
-$description = '';  
+$description = '';
 
 if($install_type == 'module'){
     $is_uninstallable = $_REQUEST['is_uninstallable'];
     $name = $_REQUEST['name'];
-    $description = $_REQUEST['description'];  
+    $description = $_REQUEST['description'];
 }
 
 
@@ -296,7 +296,7 @@ switch( $install_type ){
             die($mod_strings['ERR_UW_NO_LANG_DESC']);
         }
 
-        if( $mode == "Install" || $mode=="Enable" ){        	
+        if( $mode == "Install" || $mode=="Enable" ){
             $sugar_config['languages'] = $sugar_config['languages'] + array( $_REQUEST['new_lang_name'] => $_REQUEST['new_lang_desc'] );
         }
         else if( $mode == "Uninstall" || $mode=="Disable" ){
@@ -308,20 +308,20 @@ switch( $install_type ){
                 }
             }
 			$sugar_config['languages'] = $new_langs;
-			
-	        $default_sugar_instance_lang = 'en_us';      
+
+	        $default_sugar_instance_lang = 'en_us';
 	        if($current_language == $_REQUEST['new_lang_name']){
 	        	$_SESSION['authenticated_user_language'] =$default_sugar_instance_lang;
 	        	$lang_changed_string = $mod_strings['LBL_CURRENT_LANGUAGE_CHANGE'].$sugar_config['languages'][$default_sugar_instance_lang].'<br/>';
 	        }
-	        
+
 	        if($sugar_config['default_language'] == $_REQUEST['new_lang_name']){
 	        	$cfg = new Configurator();
-             	$cfg->config['languages'] = $new_langs;	        	        
-				$cfg->config['default_language'] = $default_sugar_instance_lang;  
-				$cfg->handleOverride();  	
+             	$cfg->config['languages'] = $new_langs;
+				$cfg->config['default_language'] = $default_sugar_instance_lang;
+				$cfg->handleOverride();
 	        	$lang_changed_string .= $mod_strings['LBL_DEFAULT_LANGUAGE_CHANGE'].$sugar_config['languages'][$default_sugar_instance_lang].'<br/>';
-	        }  	
+	        }
         }
         ksort( $sugar_config );
         if( !write_array_to_file( "sugar_config", $sugar_config, "config.php" ) ){
@@ -339,7 +339,15 @@ switch( $install_type ){
             	}else{
                 	$mi->install( "$unzip_dir" );
             	}
-                break;
+
+				$file = "$unzip_dir/" . constant('SUGARCRM_POST_INSTALL_FILE');
+				if(is_file($file))
+				{
+					print("{$mod_strings['LBL_UW_INCLUDING']}: $file <br>\n");
+					include($file);
+					post_install();
+				}
+            	break;
             case "Uninstall":
                 if($remove_tables == 'false')
                 	$GLOBALS['mi_remove_tables'] = false;
@@ -364,15 +372,6 @@ switch( $install_type ){
             default:
                 break;
         }
-        
-			$file = "$unzip_dir/" . constant('SUGARCRM_POST_INSTALL_FILE');
-			if(is_file($file))
-			{
-				print("{$mod_strings['LBL_UW_INCLUDING']}: $file <br>\n");
-				include($file);
-				post_install();
-			}
-        
         break;
     case "full":
         // purposely flow into "case: patch"
@@ -387,7 +386,7 @@ switch( $install_type ){
 					include($file);
 					post_install();
 				}
-	
+
 				UWrebuild();
  				break;
  			case 'Uninstall':
@@ -397,22 +396,22 @@ switch( $install_type ){
 					include($file);
 					post_uninstall();
 				}
-				
+
 				if(is_dir($rest_dir))
 				{
 					rmdir_recursive($rest_dir);
 				}
-				
+
 				UWrebuild();
  				break;
  			default:
  				break;
  		}
- 		
+
 		require( "sugar_version.php" );
 		$sugar_config['sugar_version'] = $sugar_version;
 		ksort( $sugar_config );
-		
+
 		if( !write_array_to_file( "sugar_config", $sugar_config, "config.php" ) )
 		{
 			die($mod_strings['ERR_UW_UPDATE_CONFIG']);
@@ -448,7 +447,7 @@ switch( $mode ){
         $new_upgrade->id_name		= $id_name;
         $new_upgrade->manifest		= $s_manifest;
         $new_upgrade->save();
-        
+
         //Check if we need to show a page for the user to finalize their install with.
         if (is_file("$unzip_dir/manifest.php"))
         {
@@ -460,14 +459,14 @@ switch( $mode ){
         			$url_conf = array('url' => $url_conf);
         		if (isset($url_conf['type']) && $url_conf['type'] == 'popup')
         		{
-        			echo '<script type="text/javascript">window.open("' . $url_conf['url'] 
+        			echo '<script type="text/javascript">window.open("' . $url_conf['url']
         			   . '","' . (empty($url_conf['name']) ? 'sugar_popup' : $url_conf['name']) . '","'
         			   . 'height=' . (empty($url_conf['height']) ? '500' : $url_conf['height']) . ','
         			   . 'width=' . (empty($url_conf['width']) ? '800' : $url_conf['width']) . '");</script>';
-        		} else 
+        		} else
         		{
-        			echo '<iframe src="' . $url_conf['url'] . '" ' 
-        			   . 'width="' . (empty($url_conf['width']) ? '100%' : $url_conf['width']) . '" ' 
+        			echo '<iframe src="' . $url_conf['url'] . '" '
+        			   . 'width="' . (empty($url_conf['width']) ? '100%' : $url_conf['width']) . '" '
         			   . 'height="' . (empty($url_conf['height']) ? '500px' : $url_conf['height']) . '"></iframe>';
         		}
         	}
@@ -541,7 +540,7 @@ if ($install_type != "module" && $install_type != "langpack"){
         echo '</div>';
     }
     else if( $mode != 'Disable' && $mode !='Enable' ){
-        print( "{$mod_strings['LBL_UW_NO_FILES_SELECTED']} $file_action.<br>\n" );        
+        print( "{$mod_strings['LBL_UW_NO_FILES_SELECTED']} $file_action.<br>\n" );
     }
 
         print($mod_strings['LBL_UW_UPGRADE_SUCCESSFUL']);

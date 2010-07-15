@@ -1,5 +1,5 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point'); 
+ if(!defined('sugarEntry'))define('sugarEntry', true);
 /*********************************************************************************
  * SugarCRM is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2010 SugarCRM Inc.
@@ -34,10 +34,16 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
  ********************************************************************************/
-global $app_list_strings;
-foreach($app_list_strings[$_REQUEST['list']] as $key=>$value){
-	echo "$key => $value <BR>";	
-}
 
-
-?>
+/**
+ * This is a soap entry point for soap version 3
+ */
+chdir('../..');
+require_once('SugarWebServiceImplv3.php');
+$webservice_class = 'SugarSoapService2';
+$webservice_path = 'service/v2/SugarSoapService2.php';
+$registry_class = 'registry_v3';
+$registry_path = 'service/v3/registry.php';
+$webservice_impl_class = 'SugarWebServiceImplv3';
+$location = '/service/v3/soap.php';
+require_once('service/core/webservice.php');

@@ -36,10 +36,10 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  ********************************************************************************/
 
 /*
- * ModuleInstaller - takes an installation package from files in the custom/Extension/X directories, and moves them into custom/X to install them. 
- * If a directory has multiple files they are concatenated together. 
+ * ModuleInstaller - takes an installation package from files in the custom/Extension/X directories, and moves them into custom/X to install them.
+ * If a directory has multiple files they are concatenated together.
  * Relevant directories (X) are Layoutdefs, Vardefs, Include (bean stuff), Language, TableDictionary (relationships)
- * 
+ *
  * Installation steps that involve more than just copying files:
  * 1. installing custom fields - calls bean->custom_fields->addField
  * 2. installing relationships - calls createTableParams to build the relationship table, and createRelationshipMeta to add the relationship to the relationship table
@@ -59,21 +59,21 @@ class ModuleInstaller{
 	var $silent = false;
 	var $base_dir  = '';
 	var $modulesInPackage = array();
-	
+
 	function ModuleInstaller(){
 		$this->ms = new ModuleScanner();
 		$this->modules = get_module_dir_list();
 		$this->db = & DBManagerFactory::getInstance();
 
 	}
-	
+
    /*
     * ModuleInstaller->install includes the manifest.php from the base directory it has been given. If it has been asked to do an upgrade it checks to see if there is
     * an upgrade_manifest defined in the manifest; if not it errors. It then adds the bean into the custom/Extension/application/Ext/Include/<module>.php - sets beanList, beanFiles
-    * and moduleList - and then calls ModuleInstaller->merge_files('Ext/Include', 'modules.ext.php', '', true) to merge the individual module files into a combined file 
-    * /custom/Extension/application/Ext/Include/modules.ext.php (which now contains a list of all $beanList, $beanFiles and $moduleList for all extension modules) - 
-    * this file modules.ext.php is included at the end of modules.php. 
-    * 
+    * and moduleList - and then calls ModuleInstaller->merge_files('Ext/Include', 'modules.ext.php', '', true) to merge the individual module files into a combined file
+    * /custom/Extension/application/Ext/Include/modules.ext.php (which now contains a list of all $beanList, $beanFiles and $moduleList for all extension modules) -
+    * this file modules.ext.php is included at the end of modules.php.
+    *
     * Finally it runs over a list of defined tasks; then install_beans, then install_custom_fields, then clear the Vardefs, run a RepairAndClear, then finally call rebuild_relationships.
     */
 	function install($base_dir, $is_upgrade = false, $previous_version = ''){
@@ -85,11 +85,11 @@ class ModuleInstaller{
 				sugar_cleanup(true);
 			}
 		}
-		
+
 		global $app_strings, $mod_strings;
 		$this->base_dir = $base_dir;
 		$total_steps = 5; //minimum number of steps with no tasks
-		$current_step = 0; 
+		$current_step = 0;
 		$tasks = array(
 			'pre_execute',
 			'install_copy',
@@ -107,8 +107,9 @@ class ModuleInstaller{
 			'install_languages',
             'install_logichooks',
 			'post_execute',
+			'reset_opcodes',
 		);
-		
+
 		$total_steps += count($tasks);
 		if(file_exists($this->base_dir . '/manifest.php')){
 				if(!$this->silent){
@@ -280,7 +281,7 @@ class ModuleInstaller{
 	}
 
 	/*
-     * ModuleInstaller->install_copy gets the copy section of installdefs in the manifest and calls copy_path to copy each path (file or directory) to its final location 
+     * ModuleInstaller->install_copy gets the copy section of installdefs in the manifest and calls copy_path to copy each path (file or directory) to its final location
      * (specified as from and to in the manifest), replacing <basepath> by the base_dir value passed in to install.
      */
 	function install_copy(){
@@ -307,7 +308,7 @@ class ModuleInstaller{
 						$GLOBALS['log']->debug('Unlink ' . $cp['to']);
 				/* BEGIN - RESTORE POINT - by MR. MILK August 31, 2005 02:22:11 PM */
 						//rmdir_recursive($cp['to']);
-						
+
 						$backup_path = clean_path( remove_file_extension(urldecode($_REQUEST['install_file']))."-restore/".$cp['to'] );
 						$this->uninstall_new_files($cp, $backup_path);
 						$this->copy_path($backup_path, $cp['to'], $backup_path, true);
@@ -318,11 +319,11 @@ class ModuleInstaller{
 						rmdir_recursive($backup_path);
 				}
 	}
-	
+
 
 	/**
-	 * Removes any files that were added by the loaded module. If the files already existed prior to install 
-	 * it will be handled by copy_path with the uninstall parameter. 
+	 * Removes any files that were added by the loaded module. If the files already existed prior to install
+	 * it will be handled by copy_path with the uninstall parameter.
 	 *
 	 */
 	function uninstall_new_files($cp, $backup_path){
@@ -332,7 +333,7 @@ class ModuleInstaller{
 			//if it's not a backup then it is probably a new file but we'll check that it is not in the md5.files first
 			if(!isset($backup_files[$k])){
 				$to = $cp['to'] . $k;
-				//if it's not a sugar file then we remove it otherwise we can't restor it 
+				//if it's not a sugar file then we remove it otherwise we can't restor it
 				if(!$this->ms->sugarFileExists($to)){
 					$GLOBALS['log']->debug('ModuleInstaller[uninstall_new_file] deleting file ' . $to);
 					unlink($to);
@@ -347,7 +348,7 @@ class ModuleInstaller{
 			$GLOBALS['log']->debug('ModuleInstaller[uninstall_new_file] deleting directory ' . $cp['to']);
 			rmdir_recursive($cp['to']);
 		}
-		
+
 	}
 
 
@@ -432,7 +433,7 @@ class ModuleInstaller{
 			$this->rebuild_menus();
 		}
 	}
-	
+
 	function install_dcactions(){
 		if(isset($this->installdefs['dcaction'])){
 			$this->log(translate('LBL_MI_IN_MENUS'));
@@ -448,7 +449,7 @@ class ModuleInstaller{
 			$this->rebuild_dashletcontainers();
 		}
 	}
-	
+
 	function uninstall_dcactions(){
         if(isset($this->installdefs['dcaction'])){
 			$this->log(translate('LBL_MI_UN_MENUS'));
@@ -501,7 +502,7 @@ class ModuleInstaller{
 			$this->rebuild_administration();
 		}
 	}
-	
+
 	function install_connectors(){
         if(isset($this->installdefs['connectors'])){
         	foreach($this->installdefs['connectors'] as $cp){
@@ -514,11 +515,11 @@ class ModuleInstaller{
 					mkdir_recursive($source_path, true);
 				}
 				copy_recursive($cp['connector'] , $source_path);
-				
+
 				//Install optional formatter code if it is specified
 				if(!empty($cp['formatter'])) {
-					$cp['formatter'] = str_replace('<basepath>', $this->base_dir, $cp['formatter']);				
-					$formatter_path = 'custom/modules/Connectors/connectors/formatters/' . $dir. '/';				
+					$cp['formatter'] = str_replace('<basepath>', $this->base_dir, $cp['formatter']);
+					$formatter_path = 'custom/modules/Connectors/connectors/formatters/' . $dir. '/';
 					if(!file_exists($formatter_path)){
 						mkdir_recursive($formatter_path, true);
 					}
@@ -578,8 +579,8 @@ class ModuleInstaller{
 	}
 
     /*
-     * ModuleInstaller->install_vardefs uses the vardefs section of the installdefs and copies from the 'from' path (replacing <basepath> as usual) to either 
-     * custom/Extension/modules/<module>/Ext/Vardefs or custom/Extension/<module>/Ext/Vardefs if the 'to_module' value in the installdefs is set to 'application'. 
+     * ModuleInstaller->install_vardefs uses the vardefs section of the installdefs and copies from the 'from' path (replacing <basepath> as usual) to either
+     * custom/Extension/modules/<module>/Ext/Vardefs or custom/Extension/<module>/Ext/Vardefs if the 'to_module' value in the installdefs is set to 'application'.
      * Finally rebuild_vardefs() is used to merge /Ext/Vardefs into vardefs.ext.php
      */
 	function install_vardefs(){
@@ -609,7 +610,7 @@ class ModuleInstaller{
 						else if(file_exists($path . '/'. DISABLED_PATH . '/'. $this->id_name . '.php'))
 						{
 							rmdir_recursive($path . '/'. DISABLED_PATH . '/'. $this->id_name . '.php');
-						} 
+						}
 						else if (file_exists($path . '/'. basename($vardefs['from'] )))
 						{
 							rmdir_recursive( $path . '/'. basename($vardefs['from'] ));
@@ -633,9 +634,9 @@ class ModuleInstaller{
 			}
 			copy_recursive($from , $path.'/'. basename($from));
 	}
-	
+
 	/*
-     * ModuleInstaller->install_layoutdefs installs the $layout_defs variable (subpanel definitions) from Ext/Layoutdefs to the to_module location of 
+     * ModuleInstaller->install_layoutdefs installs the $layout_defs variable (subpanel definitions) from Ext/Layoutdefs to the to_module location of
      * custom/Extension/modules/' . $to_module. '/Ext/Layoutdefs/<$module>.php. before calling rebuild_layoutdefs which merge_files Ext/Layoutdefs/, 'layoutdefs.ext.php'. Note that this is not used for the viewdefs in the metadata directory - they are installed through the install_copy() operation that just takes the contents of the module directory and places it in the /modules area.
      */
 	function install_layoutdefs(){
@@ -661,11 +662,11 @@ class ModuleInstaller{
 						if (file_exists($path . '/'. $this->id_name . '.php'))
 						{
 							rmdir_recursive( $path . '/'. $this->id_name . '.php');
-						} 
+						}
 						else if (file_exists($path . '/'. DISABLED_PATH . '/' . $this->id_name . '.php'))
 						{
 							rmdir_recursive($path . '/'. DISABLED_PATH . '/' . $this->id_name . '.php');
-						} 
+						}
 						else if (file_exists($path . '/'. basename($layoutdefs['from'] )))
 						{
 							rmdir_recursive( $path . '/'. basename($layoutdefs['from'] ));
@@ -722,7 +723,7 @@ class ModuleInstaller{
 				if(isset($this->installdefs['language'])){
 					$this->log(translate('LBL_MI_UN_LANG') );
 					foreach($this->installdefs['language'] as $packs){
-						$modules[]=$packs['to_module'];						
+						$modules[]=$packs['to_module'];
 						$languages[$packs['language']] = $packs['language'];
 						$packs['from'] = str_replace('<basepath>', $this->base_dir, $packs['from']);
 						$GLOBALS['log']->debug("Uninstalling Language Pack ..." . $packs['from']  .  " for " .$packs['to_module']);
@@ -763,18 +764,18 @@ class ModuleInstaller{
         // Since the logic hook files get copied over with the rest of the module directory, we just need to enable them
         $this->enable_logichooks();
     }
-    
+
     function uninstall_logichooks() {
         // Since the logic hook files get removed with the rest of the module directory, we just need to disable them
         $this->disable_logichooks();
     }
-    
+
     function enable_logichooks() {
         if(empty($this->installdefs['logic_hooks']) || !is_array($this->installdefs['logic_hooks'])) {
            return;
         }
-        
-        
+
+
 
         foreach($this->installdefs['logic_hooks'] as $hook ) {
             check_logic_hook_file($hook['module'], $hook['hook'], array($hook['order'], $hook['description'],  $hook['file'], $hook['class'], $hook['function']));
@@ -785,7 +786,7 @@ class ModuleInstaller{
         if(empty($this->installdefs['logic_hooks']) || !is_array($this->installdefs['logic_hooks'])) {
             return;
         }
-        
+
 
         foreach($this->installdefs['logic_hooks'] as $hook ) {
             remove_logic_hook($hook['module'], $hook['hook'], array($hook['order'], $hook['description'],  $hook['file'], $hook['class'], $hook['function']));
@@ -877,9 +878,9 @@ class ModuleInstaller{
 	}
 
         /*
-     * ModuleInstaller->install_relationships calls install_relationship for every file included in the module package that defines a relationship, and then 
-     * writes a custom/Extension/application/Ext/TableDictionary/$module.php file containing an include_once for every relationship metadata file passed to install_relationship. 
-     * Next it calls install_vardef and install_layoutdef. Finally, it rebuilds the vardefs and layoutdefs (by calling merge_files as usual), and then calls merge_files to merge 
+     * ModuleInstaller->install_relationships calls install_relationship for every file included in the module package that defines a relationship, and then
+     * writes a custom/Extension/application/Ext/TableDictionary/$module.php file containing an include_once for every relationship metadata file passed to install_relationship.
+     * Next it calls install_vardef and install_layoutdef. Finally, it rebuilds the vardefs and layoutdefs (by calling merge_files as usual), and then calls merge_files to merge
      * everything in 'Ext/TableDictionary/' into 'tabledictionary.ext.php'
      */
     function install_relationships ()
@@ -889,49 +890,49 @@ class ModuleInstaller{
             $this->log ( translate ( 'LBL_MI_IN_RELATIONSHIPS' ) ) ;
             $str = "<?php \n //WARNING: The contents of this file are auto-generated\n" ;
             $save_table_dictionary = false ;
-            
+
             if (! file_exists ( "custom/Extension/application/Ext/TableDictionary" ))
             {
                 mkdir_recursive ( "custom/Extension/application/Ext/TableDictionary", true ) ;
             }
-            
+
             foreach ( $this->installdefs [ 'relationships' ] as $key => $relationship )
             {
                 $filename = basename ( $relationship [ 'meta_data' ] ) ;
                 $this->copy_path ( $relationship [ 'meta_data' ], 'custom/metadata/' . $filename ) ;
                 $this->install_relationship ( 'custom/metadata/' . $filename ) ;
                 $save_table_dictionary = true ;
-                
+
                 if (! empty ( $relationship [ 'module_vardefs' ] ))
                 {
                     $relationship [ 'module_vardefs' ] = str_replace ( '<basepath>', $this->base_dir, $relationship [ 'module_vardefs' ] ) ;
                     $this->install_vardef ( $relationship [ 'module_vardefs' ], $relationship [ 'module' ] ) ;
                 }
-                
+
                 if (! empty ( $relationship [ 'module_layoutdefs' ] ))
                 {
                     $relationship [ 'module_layoutdefs' ] = str_replace ( '<basepath>', $this->base_dir, $relationship [ 'module_layoutdefs' ] ) ;
                     $this->install_layoutdef ( $relationship [ 'module_layoutdefs' ], $relationship [ 'module' ] ) ;
                 }
-                
+
                 $relName = strpos($filename, "MetaData") !== false ? substr($filename, 0, strlen($filename) - 12) : $filename;
                 $out = sugar_fopen ( "custom/Extension/application/Ext/TableDictionary/$relName.php", 'w' ) ;
                 fwrite ( $out, $str . "include('custom/metadata/$filename');\n\n?>" ) ;
-                fclose ( $out ) ; 
+                fclose ( $out ) ;
             }
-            
-            
-            
+
+
+
             $this->rebuild_vardefs () ;
             $this->rebuild_layoutdefs () ;
             if ($save_table_dictionary)
             {
                 $this->rebuild_tabledictionary () ;
             }
-            
+
         }
     }
-	
+
 	/*
      * Install_relationship obtains a set of relationship definitions from the filename passed in as a parameter.
      * For each definition it calls db->createTableParams to build the relationships table if it does not exist,
@@ -971,31 +972,31 @@ class ModuleInstaller{
 	}
 
 	function install_layoutfields() {
-		 if (!empty ( $this->installdefs [ 'layoutfields' ] )) 
+		 if (!empty ( $this->installdefs [ 'layoutfields' ] ))
 		 {
 		 	foreach ( $this->installdefs [ 'layoutfields' ] as $fieldSet )
             {
-		 		if (!empty($fieldSet['additional_fields'])) 
+		 		if (!empty($fieldSet['additional_fields']))
 		 		{
 		 			$this->addFieldsToLayout($fieldSet['additional_fields']);
 		 		}
             }
 		 }
 	}
-	
+
 	function uninstall_layoutfields() {
-		 if (!empty ( $this->installdefs [ 'layoutfields' ] )) 
+		 if (!empty ( $this->installdefs [ 'layoutfields' ] ))
 		 {
 		 	foreach ( $this->installdefs [ 'layoutfields' ] as $fieldSet )
             {
-		 		if (!empty($fieldSet['additional_fields'])) 
+		 		if (!empty($fieldSet['additional_fields']))
 		 		{
 		 			$this->removeFieldsFromLayout($fieldSet['additional_fields']);
 		 		}
             }
 		 }
 	}
-	
+
 	function uninstall_relationship($file, $rel_dictionary = null){
         if ($rel_dictionary == null)
 		{
@@ -1022,32 +1023,32 @@ class ModuleInstaller{
 				$this->db->dropTableName($table);
 				if(!$this->silent) $this->log( translate('LBL_MI_UN_RELATIONSHIPS_DROP') . $table);
 			}
-			
+
 			//Delete Layout defs
 			// check to see if we have any vardef or layoutdef entries to remove - must have a relationship['module'] parameter if we do
 			if (!isset($rel_data[ 'module' ]))
 				$mods = array(
 					$rel_data['relationships'][$rel_name]['lhs_module'],
 					$rel_data['relationships'][$rel_name]['rhs_module'],
-				); 
-			else 
+				);
+			else
 				$mods = array($rel_data[ 'module' ]);
-				
+
 			$filename = "$rel_name.php";
-			
+
 			foreach($mods as $mod) {
 				if ($mod != 'application' )  {
 					$basepath = "custom/Extension/modules/$mod/Ext/";
 				} else {
 					$basepath = "custom/Extension/application/Ext/";
 				}
-	
+
 				foreach (array($filename , "custom" . $filename) as $fn) {
 					//remove any vardefs
 					$path = $basepath . "Vardefs/$fn" ;
 					if (file_exists( $path ))
 						rmdir_recursive( $path );
-		
+
 					//remove any layoutdefs
 					$path = $basepath . "Layoutdefs/$fn" ;
 					if( file_exists( $path ))
@@ -1056,13 +1057,13 @@ class ModuleInstaller{
 					}
 				}
 			}
-			
+
 			foreach (array($filename , "custom" . $filename) as $fn) {
 				// remove the table dictionary extension
 				if ( file_exists("custom/Extension/application/Ext/TableDictionary/$fn"))
 				    unlink("custom/Extension/application/Ext/TableDictionary/$fn");
-				
-				if (file_exists("custom/metadata/{$rel_name}MetaData.php")) 
+
+				if (file_exists("custom/metadata/{$rel_name}MetaData.php"))
 					unlink( "custom/metadata/{$rel_name}MetaData.php" );
 			}
 		}
@@ -1075,7 +1076,7 @@ class ModuleInstaller{
 		global $beanList, $beanFiles, $dictionary;
 		//Load up the custom relationship definitions.
 		if(file_exists('custom/application/Ext/TableDictionary/tabledictionary.ext.php')){
-			include('custom/application/Ext/TableDictionary/tabledictionary.ext.php');	
+			include('custom/application/Ext/TableDictionary/tabledictionary.ext.php');
 		}
 		//Find all the relatioships/relate fields involving this module.
 		$rels_to_remove = array();
@@ -1094,9 +1095,9 @@ class ModuleInstaller{
 						if ($def['type'] == "link" && !empty($def['relationship']) && !empty($dictionary[$def['relationship']]))
 						{
 							$rel_name = $def['relationship'];
-							
+
 							$rel_def = $dictionary[$rel_name]['relationships'][$rel_name];
-							
+
 							//Check against mods to be removed.
 							foreach($this->modulesInPackage as $removed_mod) {
 								if ($rel_def['lhs_module'] == $removed_mod || $rel_def['rhs_module'] == $removed_mod )
@@ -1131,11 +1132,11 @@ class ModuleInstaller{
 				}
 			}
 		}
-		
-		
-		
+
+
+
 		$this->uninstall_relationship(null, $relationships);
-		
+
 		if(isset($this->installdefs['relationships'])) {
 			$relationships = $this->installdefs['relationships'];
 			$this->log(translate('LBL_MI_UN_RELATIONSHIPS') );
@@ -1146,11 +1147,11 @@ class ModuleInstaller{
 				$pathname = (file_exists("custom/metadata/$filename")) ? "custom/metadata/$filename" : "metadata/$filename" ;
 				if(isset($GLOBALS['mi_remove_tables']) && $GLOBALS['mi_remove_tables'])
 				$this->uninstall_relationship( $pathname );
-				if (file_exists($pathname)) 
+				if (file_exists($pathname))
 					unlink( $pathname );
 			}
 		}
-		
+
 		if (file_exists("custom/Extension/application/Ext/TableDictionary/{$this->id_name}.php"))
 			unlink("custom/Extension/application/Ext/TableDictionary/{$this->id_name}.php");
 		Relationship::delete_cache();
@@ -1214,7 +1215,7 @@ class ModuleInstaller{
 						rmdir_recursive("custom/Extension/application/Ext/Include/$this->id_name.php");
 					else if(sugar_is_file("custom/Extension/application/Ext/Include/" . DISABLED_PATH . "/$this->id_name.php", 'w'))
 						rmdir_recursive("custom/Extension/application/Ext/Include/" . DISABLED_PATH . "/$this->id_name.php");
-						
+
 					$this->rebuild_modules();
 				}
 				if(!$this->silent){
@@ -1239,18 +1240,18 @@ class ModuleInstaller{
 					update_progress_bar('install', $current_step, $total_steps);
 					echo '</div>';
 				}
-				//since we are passing $silent = true to rebuildAll() in that method it will set $this->silent = true, so 
+				//since we are passing $silent = true to rebuildAll() in that method it will set $this->silent = true, so
 				//we need to save the setting to set it back after rebuildAll() completes.
 				$silentBak = $this->silent;
 				$this->rebuild_all(true);
 				$this->silent = $silentBak;
-				
+
 				//#27877, If the request from MB redeploy a custom module , we will not remove the ACL actions for this package.
 				if( !isset($_REQUEST['action']) || $_REQUEST['action']!='DeployPackage' ){
 					$this->remove_acl_actions();
 				}
 				//end
-				
+
 				if(!$this->silent){
 					$current_step++;
 					update_progress_bar('install', $current_step, $total_steps);
@@ -1261,7 +1262,7 @@ class ModuleInstaller{
 
 				$this->log('<br><b>' . translate('LBL_MI_COMPLETE') . '</b>');
 				if(!$this->silent){
-				update_progress_bar('install', $total_steps, $total_steps);
+					update_progress_bar('install', $total_steps, $total_steps);
 				}
 		}else{
 			die("No manifest.php Defined In $this->base_dir/manifest.php");
@@ -1279,7 +1280,7 @@ class ModuleInstaller{
 	            }
 			}
 			sugar_cache_reset();
-			
+
 	}
 
 	function rebuild_vardefs(){
@@ -1297,7 +1298,7 @@ class ModuleInstaller{
             $this->log(translate('LBL_MI_REBUILDING') . " Menus...");
 			$this->merge_files('Ext/Menus/', 'menu.ext.php');
 	}
-	
+
 	function rebuild_dashletcontainers(){
             $this->log(translate('LBL_MI_REBUILDING') . " DC Actions...");
 			$this->merge_files('Ext/DashletContainer/Containers', 'dcactions.ext.php');
@@ -1305,7 +1306,7 @@ class ModuleInstaller{
 
 	function rebuild_modules(){
             $this->log(translate('LBL_MI_REBUILDING') . " Modules...");
-			$this->merge_files('Ext/Include', 'modules.ext.php', '', true); 
+			$this->merge_files('Ext/Include', 'modules.ext.php', '', true);
 	}
 
 	function rebuild_administration(){
@@ -1328,7 +1329,7 @@ class ModuleInstaller{
 		include('include/modules.php');
 		include("modules/Administration/RebuildRelationship.php");
 	}
-	
+
 	function remove_acl_actions() {
 		global $beanFiles, $beanList, $current_user;
 		include('include/modules.php');
@@ -1357,7 +1358,7 @@ class ModuleInstaller{
 
 		//Check for new module extensions
 		$this->rebuild_modules();
-		
+
 		$this->rebuild_languages($sugar_config['languages']);
 		$this->rebuild_vardefs();
 		$this->rebuild_layoutdefs();
@@ -1368,13 +1369,14 @@ class ModuleInstaller{
 		$this->rebuild_relationships();
 		$this->rebuild_tabledictionary();
 		//$this->repair_indices();
+		$this->reset_opcodes();
 		sugar_cache_reset();
 	}
 
 	/*
-     * ModuleInstaller->merge_files runs over the list of all modules already installed in /modules. For each $module it reads the contents of every file in 
+     * ModuleInstaller->merge_files runs over the list of all modules already installed in /modules. For each $module it reads the contents of every file in
      * custom/Extension/modules/$module/<path> (_override files last) and concatenates them to custom/modules/$module/<path>/<file>.
-     * Then it does the same thing in custom/Extension/application/<path>, concatenating those files and copying the result to custom/application/<path>/<file> 
+     * Then it does the same thing in custom/Extension/application/<path>, concatenating those files and copying the result to custom/application/<path>/<file>
      */
 	function merge_files($path, $name, $filter = '', $application = false){
 		if(!$application){
@@ -1389,13 +1391,13 @@ class ModuleInstaller{
 				if(is_dir($module_install)){
 					$dir = dir($module_install);
 					$shouldSave = true;
-					$override = array(); 
+					$override = array();
 					while($entry = $dir->read()){
-						if((empty($filter) || substr_count($entry, $filter) > 0) && is_file($module_install.'/'.$entry) 
+						if((empty($filter) || substr_count($entry, $filter) > 0) && is_file($module_install.'/'.$entry)
 						  && $entry != '.' && $entry != '..' && strtolower(substr($entry, -4)) == ".php")
 						{
-						     if (substr($entry, 0, 9) == '_override') { 
-						    	$override[] = $entry;	
+						     if (substr($entry, 0, 9) == '_override') {
+						    	$override[] = $entry;
 						    } else {
 							    $fp = sugar_fopen($module_install . '/' . $entry, 'r');
 							    $file = fread($fp , filesize($module_install . '/' . $entry));
@@ -1467,7 +1469,7 @@ class ModuleInstaller{
 }
 
     /*
-     * ModuleInstaller->install_beans runs through the list of beans given, instantiates each bean, calls bean->create_tables, and then calls SugarBean::createRelationshipMeta for the 
+     * ModuleInstaller->install_beans runs through the list of beans given, instantiates each bean, calls bean->create_tables, and then calls SugarBean::createRelationshipMeta for the
      * bean/module.
      */
 	function install_beans($beans){
@@ -1479,7 +1481,7 @@ class ModuleInstaller{
 				if(file_exists($beanFiles[$class])){
 					require_once($beanFiles[$class]);
 					$mod = new $class();
-					//#30273  
+					//#30273
 					if(is_subclass_of($mod, 'SugarBean')  && $mod->disable_vardefs == false ){
 						$GLOBALS['log']->debug( "Creating Tables Bean : $bean");
 						$mod->create_tables();
@@ -1514,7 +1516,7 @@ class ModuleInstaller{
 			}
 		}
 	}
-	
+
 	/**
 	 * Remove any customizations made within Studio while the module was installed.
 	 */
@@ -1615,7 +1617,7 @@ private function dir_get_files($path, $base_path){
 	}
 	$d->close();
 	return $files;
-	
+
 }
 
 private function dir_file_count($path){
@@ -1631,8 +1633,8 @@ private function dir_file_count($path){
 	}
 	$d->close();
 	return $count;
-	
-	
+
+
 }
 /* END - RESTORE POINT - by MR. MILK August 31, 2005 02:15:34 PM */
 
@@ -1675,12 +1677,12 @@ private function dir_file_count($path){
      */
 	function addFieldsToLayout($layoutAdditions) {
 	require_once 'modules/ModuleBuilder/parsers/views/GridLayoutMetaDataParser.php' ;
-        
-        // these modules either lack editviews/detailviews or use custom mechanisms for the editview/detailview. 
+
+        // these modules either lack editviews/detailviews or use custom mechanisms for the editview/detailview.
         // In either case, we don't want to attempt to add a relate field to them
         // would be better if GridLayoutMetaDataParser could handle this gracefully, so we don't have to maintain this list here
         $invalidModules = array ( 'emails' , 'kbdocuments' ) ;
-        
+
         foreach ( $layoutAdditions as $deployedModuleName => $fieldName )
         {
             if ( ! in_array( strtolower ( $deployedModuleName ) , $invalidModules ) )
@@ -1694,17 +1696,17 @@ private function dir_file_count($path){
                 }
             }
         }
-		
+
 	}
-	
+
 	function removeFieldsFromLayout($layoutAdditions) {
 	require_once 'modules/ModuleBuilder/parsers/views/GridLayoutMetaDataParser.php' ;
-        
-        // these modules either lack editviews/detailviews or use custom mechanisms for the editview/detailview. 
+
+        // these modules either lack editviews/detailviews or use custom mechanisms for the editview/detailview.
         // In either case, we don't want to attempt to add a relate field to them
         // would be better if GridLayoutMetaDataParser could handle this gracefully, so we don't have to maintain this list here
         $invalidModules = array ( 'emails' , 'kbdocuments' ) ;
-        
+
         foreach ( $layoutAdditions as $deployedModuleName => $fieldName )
         {
             if ( ! in_array( strtolower ( $deployedModuleName ) , $invalidModules ) )
@@ -1718,9 +1720,9 @@ private function dir_file_count($path){
                 }
             }
         }
-		
+
 	}
-	
+
 	///////////////////
 	//********** DISABLE/ENABLE FUNCTIONS
 	///////////////////
@@ -1740,6 +1742,7 @@ private function dir_file_count($path){
 								'enable_relationships',
 								'enable_languages',
 								'enable_logichooks',
+								'reset_opcodes',
 		);
 		$total_steps += count($tasks);
 		if(file_exists($this->base_dir . '/manifest.php')){
@@ -1819,6 +1822,7 @@ private function dir_file_count($path){
 							'disable_relationships',
 							'disable_languages',
 							'disable_logichooks',
+							'reset_opcodes',
 							);
 		$total_steps += count($tasks); //now the real number of steps
 		if(file_exists($this->base_dir . '/manifest.php')){
@@ -1836,13 +1840,13 @@ private function dir_file_count($path){
 					foreach($this->installdefs['beans'] as $bean){
 						$installed_modules[] = $bean['module'];
 					}
-					
+
 					mkdir_recursive("custom/Extension/application/Ext/Include/".DISABLED_PATH, true);
-					
+
 					//Clear any older disabled version
 					if (file_exists("custom/Extension/application/Ext/Include/".DISABLED_PATH.'/'. $this->id_name . '.php'))
 						rmdir_recursive("custom/Extension/application/Ext/Include/".DISABLED_PATH.'/'. $this->id_name . '.php');
-					
+
 					if (file_exists("custom/Extension/application/Ext/Include/$this->id_name.php"))
 						rename("custom/Extension/application/Ext/Include/$this->id_name.php", "custom/Extension/application/Ext/Include/".DISABLED_PATH.'/'. $this->id_name . '.php');
 					$this->rebuild_modules();
@@ -1864,7 +1868,7 @@ private function dir_file_count($path){
 					echo '</div>';
 				}
 			UpdateSystemTabs('Restore',$installed_modules);
-			
+
 		}else{
 			die("No manifest.php Defined In $this->base_dir/manifest.php");
 		}
@@ -1898,10 +1902,10 @@ private function dir_file_count($path){
 				}
 				if(file_exists($path . '/'.DISABLED_PATH.'/'. $this->id_name . '.php'))
 					rename( $path . '/'.DISABLED_PATH.'/'. $this->id_name . '.php', $path . '/'. $this->id_name . '.php');
-					
+
 				if (file_exists($path . '/'.DISABLED_PATH.'/'. basename($vardefs['from'])))
 					rename($path . '/'.DISABLED_PATH.'/'. basename($vardefs['from']),  $path . '/'. basename($vardefs['from']));
-				
+
 			}
 			$this->rebuild_vardefs();
 		}
@@ -1919,7 +1923,7 @@ private function dir_file_count($path){
 				if(file_exists($path . '/'. $this->id_name . '.php')) {
 					mkdir_recursive($path . '/'.DISABLED_PATH, true);
 					rename( $path . '/'. $this->id_name . '.php', $path . '/'.DISABLED_PATH.'/'. $this->id_name . '.php');
-				} 
+				}
 				if(file_exists($path . '/'. basename($vardefs['from'])))
 				{
 					mkdir_recursive($path . '/'.DISABLED_PATH, true);
@@ -1941,7 +1945,7 @@ private function dir_file_count($path){
 				$str .= "include_once('metadata/$filename');\n";
 				if (empty($relationship['module']))
 				    continue;
-				
+
 				if(!empty($relationship['module_vardefs'])){
 					$this->enable_vardef($relationship['module']);
 				}
@@ -1969,7 +1973,7 @@ private function dir_file_count($path){
                 $relName = substr($filename, -12) == "MetaData.php" ? substr($filename,0,strlen($filename) - 12) : "";
 				if (empty($relationship['module']) && empty($relName))
                 	continue;
-				
+
 				//remove the vardefs
 				if (empty($relName))
 					$path = 'custom/Extension/modules/' . $relationship['module']. '/Ext/Vardefs';
@@ -2064,11 +2068,11 @@ private function dir_file_count($path){
 				if($menu['to_module'] == 'application'){
 					$path ='custom/Extension/' . $menu['to_module']. '/Ext/Menus';
 				}
-				
+
 				if(file_exists($path . '/'.DISABLED_PATH.'/'. $this->id_name . '.php')){
 					rename($path . '/'.DISABLED_PATH.'/'. $this->id_name . '.php',  $path . '/'. $this->id_name . '.php');
 				}
-				
+
 			}
 			$this->rebuild_menus();
 		}
@@ -2100,7 +2104,7 @@ private function dir_file_count($path){
 				$administration['from'] = str_replace('<basepath>', $this->base_dir, $administration['from']);
 				$GLOBALS['log']->debug("Installing Administration Section ..." . $administration['from'] );
 				$path = 'custom/Extension/modules/Administration/Ext/Administration';
-				
+
 				if(file_exists($path . '/'.DISABLED_PATH.'/'. $this->id_name . '.php')){
 					rename($path . '/'.DISABLED_PATH.'/'. $this->id_name . '.php',  $path . '/'. $this->id_name . '.php');
 				}
@@ -2209,7 +2213,7 @@ private function dir_file_count($path){
 						if(file_exists($path . '/'.DISABLED_PATH.'/'. $this->id_name . '.php')){
 							rename($path . '/'.DISABLED_PATH.'/'. $this->id_name . '.php',  $path . '/'. $this->id_name . '.php');
 						}
-						
+
 					}
 					$this->rebuild_userpage();
 				}
@@ -2261,11 +2265,11 @@ private function dir_file_count($path){
 		//but we should check the version in the module install against the version on the file system
 		//if they match then we can copy the file back, but otherwise we should ask the user.
 
-//		$GLOBALS['log']->debug('ModuleInstaller.php->disable_copy()');		
+//		$GLOBALS['log']->debug('ModuleInstaller.php->disable_copy()');
 		if(isset($GLOBALS['mi_overwrite_files']) && $GLOBALS['mi_overwrite_files']){
-//		$GLOBALS['log']->debug('ModuleInstaller.php->disable_copy():mi_overwrite_files=true');	
+//		$GLOBALS['log']->debug('ModuleInstaller.php->disable_copy():mi_overwrite_files=true');
 			if(!empty($this->installdefs['copy'])){
-//				$GLOBALS['log']->debug('ModuleInstaller.php->disable_copy(): installdefs not empty');	
+//				$GLOBALS['log']->debug('ModuleInstaller.php->disable_copy(): installdefs not empty');
 				foreach($this->installdefs['copy'] as $cp){
 					$cp['to'] = clean_path(str_replace('<basepath>', $this->base_dir, $cp['to']));
 					$backup_path = clean_path( remove_file_extension(urldecode($_REQUEST['install_file']))."-restore/".$cp['to'] ); // bug 16966 tyoung - replaced missing assignment to $backup_path
@@ -2288,6 +2292,12 @@ private function dir_file_count($path){
 			}//fi
 		}//fi
 	}
+
+	public function reset_opcodes()
+    {
+    	sugar_clean_opcodes();
+    }
+
 }
 
     function UpdateSystemTabs($action, $installed_modules){
@@ -2322,6 +2332,7 @@ private function dir_file_count($path){
                     break;
             }
         }
+
 }
 
 

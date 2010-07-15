@@ -414,6 +414,25 @@ var SugarWizard = new function()
 {
     this.currentScreen = 'welcome';
     
+    this.handleKeyStroke = function(e)
+    {
+        // get the key pressed
+        var key;
+        if (window.event) {
+            key = window.event.keyCode;
+        }
+        else if(e.which) {
+            key = e.which
+        }
+        
+        switch(key) {
+        case 13:
+            primaryButton = YAHOO.util.Selector.query('input.primary',SugarWizard.currentScreen,true);
+            primaryButton.click();
+            break;
+        }
+    }
+    
     this.changeScreen = function(screen,skipCheck)
     {
         if ( !skipCheck ) {
@@ -488,6 +507,7 @@ var SugarWizard = new function()
     }
 } 
 SugarWizard.changeScreen('{/literal}{$START_PAGE}{literal}');
+document.onkeypress = SugarWizard.handleKeyStroke;
 
 function clearEmailFields() { 
  	document.getElementById('AdminWizard').mail_smtpuser.value = '';

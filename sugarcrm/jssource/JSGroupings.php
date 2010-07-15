@@ -79,6 +79,7 @@
             'include/javascript/yui/build/autocomplete/autocomplete-min.js'=> 'include/javascript/sugar_grp1_yui.js',
             'include/javascript/quicksearch.js'                         => 'include/javascript/sugar_grp1_yui.js',
             'include/javascript/yui/build/menu/menu-min.js'             => 'include/javascript/sugar_grp1_yui.js',
+			'include/javascript/sugar_connection_event_listener.js'     => 'include/javascript/sugar_grp1_yui.js',
             ),
             
             $sugar_grp_yui_widgets = array( 

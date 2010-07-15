@@ -47,7 +47,7 @@ require_once('modules/UpgradeWizard/SugarMerge/DetailViewMerge.php');
 require_once('modules/UpgradeWizard/SugarMerge/SearchMerge.php');
 require_once('modules/UpgradeWizard/SugarMerge/ListViewMerge.php');
 require_once('modules/UpgradeWizard/SugarMerge/QuickCreateMerge.php');
-
+require_once('modules/ModuleBuilder/parsers/views/History.php');
 
 /**
  * SugarMerge wraps around all the merge functionality of Sugar given a module name and the path to an unzipped patch
@@ -89,9 +89,10 @@ class SugarMerge {
 	 *
 	 * @param BOOLEAN $merge - do we wish to perform the merge if false it will just return a list of files that can be merged
 	 * @param BOOLEAN $save - do we wish to save the merged files to true - $merge must be true for this to apply - otherwise it will simulate merging so you can view the log files of the merge
+	 * @param BOOLEAN $logHistory - do we wish to create history entries for any of the merges
 	 * @return ARRAY - an associative array of module names to files that were either merged or have the potential to be merged depeneding if $merge and $save  are set to true
 	 */
-	function mergeAll($merge=true, $save=true){
+	function mergeAll($merge=true, $save=true, $logHistory=true){
 		$this->merged = array();
 		$searchDirectory = $this->custom_path;
 		if(!preg_match('/[\/]modules$/si', $searchDirectory)) {
@@ -103,7 +104,7 @@ class SugarMerge {
 			while($e = $dir->read()){
 				if(substr($e , 0, 1) != '.') {
 					if(is_dir("{$searchDirectory}/{$e}/metadata")){
-						$this->merged[$e] = $this->mergeModule($e, $merge, $save );
+						$this->merged[$e] = $this->mergeModule($e, $merge, $save,$logHistory );
 					}
 				}
 			}
@@ -122,17 +123,18 @@ class SugarMerge {
 	 * @param STRING $module - the name of the module to merge files for
 	 * @param BOOLEAN $merge - do we wish to perform the merge if false it will just return a list of files that can be merged
 	 * @param BOOLEAN $save - do we wish to save the merged files to true - $merge must be true for this to apply - otherwise it will simulate merging so you can view the log files of the merge
+	 * @param BOOLEAN $logHistory - do we wish to create history entries for any of the merges
 	 * @return ARRAY - an associative array of files that were either merged or have the potential to be merged depeneding if $merge and $save  are set to true
 	 */
-	function mergeModule($module, $merge = true, $save=true){
+	function mergeModule($module, $merge = true, $save=true,$logHistory=true){
 		$merged = array();
 		$path = $this->original_path . 'modules/' . $module . '/metadata/';
 		$custom_path = $this->custom_path . 'modules/' . $module . '/metadata/';
 		$new_path = $this->new_path . 'modules/' . $module . '/metadata/';
 		foreach($this->mergeMapping as $file=>&$object){
-			if(file_exists("{$custom_path}{$file}") && file_exists("{$new_path}{$file}")){
+			if(file_exists("{$custom_path}{$file}") && file_exists("{$new_path}{$file}")){  
 				if($merge){
-					$merged[$file] = $this->mergeFile($module, $file, $save);
+					$merged[$file] = $this->mergeFile($module, $file, $save, $logHistory);
 				}else{
 					$merged[$file] = true;
 				}
@@ -151,18 +153,36 @@ class SugarMerge {
 	 * @param STRING $save - should the merged file be saved to the custom directory
 	 * @return BOOLEAN - success or failure of the merge
 	 */
-	function mergeFile($module, $file, $save=true){
+	function mergeFile($module, $file, $save=true,$logHistory=true){
 		$path = $this->original_path . 'modules/' . $module . '/metadata/';
 		$custom_path = $this->custom_path . 'modules/' . $module . '/metadata/';
 		$new_path = $this->new_path . 'modules/' . $module . '/metadata/';
 		if($this->fp) $this->mergeMapping[$file]->setLogFilePointer($this->fp);
 		if(isset($this->mergeMapping[$file]) && file_exists("{$path}{$file}") && file_exists("{$custom_path}{$file}") && file_exists("{$new_path}{$file}")){
-			return $this->mergeMapping[$file]->merge($module, "{$path}{$file}", "{$new_path}{$file}", "{$custom_path}{$file}", $save);
+		    //Create a log entry of the custom file before it is merged
+		    if($logHistory && $save)
+		          $this->createHistoryLog($module, "{$custom_path}{$file}",$file);
+		    return $this->mergeMapping[$file]->merge($module, "{$path}{$file}", "{$new_path}{$file}", "{$custom_path}{$file}", $save);
 		}
 		return false;
 
 	}
 	
+    /**
+	 * Create a history copy of the custom file that will be merged so that it can be access through
+	 * studio if admins wish to revert at a later date.
+	 *
+	 * @param STRING $module - name of the module
+	 * @param STRING $file - name of the file
+	 * @param STRING $customFile - Path to the custom file that will be merged
+	 */
+	protected function createHistoryLog($module,$customFile,$file)
+	{
+	    $historyPath = 'custom/' . MB_HISTORYMETADATALOCATION . "/modules/$module/metadata/$file";
+	    $history = new History($historyPath);
+	    $timeStamp = $history->append($customFile);	    
+	    $GLOBALS['log']->debug("Created history file after merge with new file: " . $historyPath .'_'.$timeStamp);
+	}
 	
 	/**
 	 * Return the custom modules path

@@ -271,6 +271,7 @@ $dictionary['Lead'] = array('table' => 'leads','audited'=>true, 'unified_search'
 			'source' => 'non-db',
 			'importable' => 'false',
             'duplicate_merge'=> 'disabled',
+			'studio' => array('listview' => false),
 		),
 	'm_accept_status_fields' =>
 		array (
@@ -285,6 +286,7 @@ $dictionary['Lead'] = array('table' => 'leads','audited'=>true, 'unified_search'
 			'importable' => 'false',
 			'hideacl'=>true,
             'duplicate_merge'=> 'disabled',
+			'studio' => array('listview' => false),
 		),
 	'accept_status_id' =>
 		array(
@@ -292,6 +294,7 @@ $dictionary['Lead'] = array('table' => 'leads','audited'=>true, 'unified_search'
 			'type' => 'varchar',
 			'source' => 'non-db',
 			'vname' => 'LBL_LIST_ACCEPT_STATUS',
+			'studio' => array('listview' => false),
 		),
 	'accept_status_name' =>
 		array(
@@ -383,7 +386,8 @@ $dictionary['Lead'] = array('table' => 'leads','audited'=>true, 'unified_search'
   array (
     'name' => 'website',
     'vname' => 'LBL_WEBSITE',
-    'type' => 'varchar',
+    'type' => 'url',
+    'dbType' => 'varchar',
     'len' => 255,
     'comment' => 'URL of website for the company',
   ),

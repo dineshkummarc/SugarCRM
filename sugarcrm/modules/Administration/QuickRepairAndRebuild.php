@@ -212,8 +212,9 @@ class RepairAndClear
 			}
 
 		}
-		else
-			die('Admin Only Section');
+		else {
+			sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']);
+		} 
 	}
 	
 	public function rebuildExtensions()
@@ -227,8 +228,8 @@ class RepairAndClear
 		
 		// Remove the "Rebuild Extensions" red text message on admin logins
 	
-        if($this->show_output)echo "Updating the admin warning message...<BR>";
-        
+        if($this->show_output) echo $mod_strings['LBL_REBUILD_REL_UPD_WARNING'];
+		       
         // clear the database row if it exists (just to be sure)
         $query = "DELETE FROM versions WHERE name='Rebuild Extensions'";
         $GLOBALS['log']->info($query);

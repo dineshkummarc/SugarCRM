@@ -42,7 +42,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 require_once('modules/Calendar/DateTimeUtil.php');
 
 require_once('include/utils/activity_utils.php');
-		
+
 function sort_func_by_act_date($act0,$act1)
 {
 	if ($act0->start_time->ts == $act1->start_time->ts)
@@ -82,7 +82,7 @@ class Calendar
 		{
 			$time = $sugar_config['default_time_format'];
 		}
-        	
+
 		if( substr_count($time, 'h') > 0)
 		{
 			$this->use_24 = 0;
@@ -247,7 +247,7 @@ class Calendar
     	} else {
 			$acts_arr = CalendarActivity::get_activities($user->id, $this->show_tasks, $this->date_time, $end_date_time, $this->view);
     	}
-    	
+
 	    // loop thru each activity for this user
 		for ($i = 0;$i < count($acts_arr);$i++) {
 			$act = $acts_arr[$i];
@@ -446,12 +446,12 @@ class CalendarActivity
 
     if ( is_array ( $args ))
     {
-       $this->start_time = $args[0];     
-       $this->end_time = $args[1];     
+       $this->start_time = $args[0];
+       $this->end_time = $args[1];
        $this->sugar_bean = null;
        return;
     }
- 
+
     // else do regular constructor..
 
     	$sugar_bean = $args;
@@ -516,25 +516,25 @@ class CalendarActivity
 				$end_ts = new DateTimeUtil($dtUtilArr, false);
 				break;
 		}
-		$start_mysql_date = explode('-', $start_ts->get_mysql_date());
-		$start_mysql_date_time = explode(' ',$timedate->handle_offset(date($GLOBALS['timedate']->get_db_date_time_format(), $start_ts->ts), $timedate->dbDayFormat, true));
 
-		$end_mysql_date = explode('-', $end_ts->get_mysql_date());
-		$end_mysql_date_time = explode(' ',$timedate->handle_offset(date($GLOBALS['timedate']->get_db_date_time_format(), $end_ts->ts), $timedate->dbDayFormat, true));
-			
-		$where =  "(". $GLOBALS['db']->convert($table_name.'.'.$field_name,'date_format',array("'%Y-%m-%d'"),array("'YYYY-MM-DD'")) ." >= '{$start_mysql_date_time[0]}' AND ";
-		$where .= $GLOBALS['db']->convert($table_name.'.'.$field_name,'date_format',array("'%Y-%m-%d'"),array("'YYYY-MM-DD'")) ." <= '{$end_mysql_date_time[0]}')";
-			
+		$start_day = $timedate->getDayStartEndGMT(date($timedate->get_date_format(), $start_ts->ts));
+		$end_day = $timedate->getDayStartEndGMT(date($timedate->get_date_format(), $end_ts->ts));
+
+		$field_date = $GLOBALS['db']->convert($table_name.'.'.$field_name,'datetime');
+
+		$where = "($field_date >= '{$start_day['start']}' AND $field_date < '{$end_day['start']}'";
+
 		if($rel_table != '') {
-			$where .= ' AND '.$rel_table.'.accept_status != \'decline\'';
-		} 
+			$where .= " AND $rel_table.accept_status != 'decline'";
+		}
+		$where .= ")";
 		return $where;
 	}
 
   function get_freebusy_activities(&$user_focus,&$start_date_time,&$end_date_time)
   {
- 
-      
+
+
 		  $act_list = array();
       $vcal_focus = new vCal();
       $vcal_str = $vcal_focus->get_vcal_freebusy($user_focus);
@@ -548,7 +548,7 @@ class CalendarActivity
         {
           $dates_arr[] =DateTimeUtil::parse_utc_date_time($matches[1]);
           $dates_arr[] =DateTimeUtil::parse_utc_date_time($matches[2]);
-          $act_list[] = new CalendarActivity($dates_arr); 
+          $act_list[] = new CalendarActivity($dates_arr);
         }
       }
 		  usort($act_list,'sort_func_by_act_date');
@@ -560,8 +560,8 @@ class CalendarActivity
 		global $current_user;
 		$act_list = array();
 		$seen_ids = array();
-		
-		
+
+
 		// get all upcoming meetings, tasks due, and calls for a user
 		if(ACLController::checkAccess('Meetings', 'list', $current_user->id == $user_id)) {
 			$meeting = new Meeting();
@@ -576,32 +576,32 @@ class CalendarActivity
 				if(isset($seen_ids[$meeting->id])) {
 					continue;
 				}
-				
+
 				$seen_ids[$meeting->id] = 1;
 				$act = new CalendarActivity($meeting);
-	
+
 				if(!empty($act)) {
 					$act_list[] = $act;
 				}
 			}
 		}
-		
+
 		if(ACLController::checkAccess('Calls', 'list',$current_user->id  == $user_id)) {
 			$call = new Call();
-	
+
 			if($current_user->id  == $user_id) {
 				$call->disable_row_level_security = true;
 			}
-	
+
 			$where = CalendarActivity::get_occurs_within_where_clause($call->table_name, $call->rel_users_table, $view_start_time, $view_end_time, 'date_start', $view);
 			$focus_calls_list = build_related_list_by_user_id($call,$user_id,$where);
-	
+
 			foreach($focus_calls_list as $call) {
 				if(isset($seen_ids[$call->id])) {
 					continue;
 				}
 				$seen_ids[$call->id] = 1;
-	
+
 				$act = new CalendarActivity($call);
 				if(!empty($act)) {
 					$act_list[] = $act;
@@ -613,12 +613,12 @@ class CalendarActivity
 		if($show_tasks) {
 			if(ACLController::checkAccess('Tasks', 'list',$current_user->id == $user_id)) {
 				$task = new Task();
-	
+
 				$where = CalendarActivity::get_occurs_within_where_clause('tasks', '', $view_start_time, $view_end_time, 'date_due', $view);
 				$where .= " AND tasks.assigned_user_id='$user_id' ";
-	
+
 				$focus_tasks_list = $task->get_full_list("", $where,true);
-	
+
 				if(!isset($focus_tasks_list)) {
 					$focus_tasks_list = array();
 				}

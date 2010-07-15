@@ -159,5 +159,5 @@ if (is_admin($current_user) || isset ($from_sync_client) || is_admin_for_any_mod
 	}
 
 } else {
-	die('Admin Only Section');
+	sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']); 
 }

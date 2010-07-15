@@ -51,6 +51,12 @@ global $app_language, $sugar_config;
 global $current_language;
 
 // See if any messages were passed along to display to the user.
+if(isset($_COOKIE['loginErrorMessage'])) {
+    if ( !isset($_REQUEST['loginErrorMessage']) ) {
+        $_REQUEST['loginErrorMessage'] = $_COOKIE['loginErrorMessage'];
+    }
+    SugarApplication::setCookie('loginErrorMessage', '', time()-42000, '/');
+}
 if(isset($_REQUEST['loginErrorMessage'])) {
     if (isset($mod_strings[$_REQUEST['loginErrorMessage']])) {
         echo "<p align='center' class='error' > ". $mod_strings[$_REQUEST['loginErrorMessage']]. "</p>";

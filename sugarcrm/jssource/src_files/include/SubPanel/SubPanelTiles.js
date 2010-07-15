@@ -130,6 +130,8 @@ function set_return_and_save_background(popup_reply_data)
 	var form_name = popup_reply_data.form_name;
 	var name_to_value_array = popup_reply_data.name_to_value_array;
 	var passthru_data = popup_reply_data.passthru_data;
+	var select_entire_list = typeof( popup_reply_data.select_entire_list ) == 'undefined' ? 0 : popup_reply_data.select_entire_list;
+	var current_query_by_page = popup_reply_data.current_query_by_page;
 	// construct the POST request
 	var query_array =  new Array();
 	if (name_to_value_array != 'undefined') {
@@ -165,6 +167,10 @@ function set_return_and_save_background(popup_reply_data)
 	query_array.push('isDuplicate=false');
 	query_array.push('action=Save2');
 	query_array.push('inline=1');
+	query_array.push('select_entire_list='+select_entire_list);
+	if(select_entire_list == 1){
+		query_array.push('current_query_by_page='+current_query_by_page);
+	}
 	var refresh_page = escape(passthru_data['refresh_page']);
 	for (prop in passthru_data) {
 		if (prop=='link_field_name') {

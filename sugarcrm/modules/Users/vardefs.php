@@ -247,38 +247,43 @@ $dictionary['User'] = array(
         'phone_home' => array(
             'name' => 'phone_home',
             'vname' => 'LBL_HOME_PHONE',
-            'type' => 'varchar',
+            'type' => 'phone',
+			'dbType' => 'varchar',
             'len' => '50',
         ) ,
         'phone_mobile' => array(
             'name' => 'phone_mobile',
             'vname' => 'LBL_MOBILE_PHONE',
-            'type' => 'varchar',
+            'type' => 'phone',
+			'dbType' => 'varchar',
             'len' => '50',
         ) ,
         'phone_work' => array(
             'name' => 'phone_work',
             'vname' => 'LBL_WORK_PHONE',
-            'type' => 'varchar',
+            'type' => 'phone',
+			'dbType' => 'varchar',
             'len' => '50',
         ) ,
         'phone_other' => array(
             'name' => 'phone_other',
             'vname' => 'LBL_OTHER_PHONE',
-            'type' => 'varchar',
+            'type' => 'phone',
+			'dbType' => 'varchar',
             'len' => '50',
         ) ,
         'phone_fax' => array(
             'name' => 'phone_fax',
             'vname' => 'LBL_FAX_PHONE',
-            'type' => 'varchar',
+            'type' => 'phone',
+			'dbType' => 'varchar',
             'len' => '50',
         ) ,
         'status' => array(
             'name' => 'status',
             'vname' => 'LBL_STATUS',
             'type' => 'enum',
-            'len' => '25',
+            'len' => 100,
             'options' => 'user_status_dom',
             'importable' => 'required',
         ) ,
@@ -304,7 +309,7 @@ $dictionary['User'] = array(
             'name' => 'address_country',
             'vname' => 'LBL_ADDRESS_COUNTRY',
             'type' => 'varchar',
-            'len' => '25',
+            'len' => 100,
         ) ,
         'address_postalcode' => array(
             'name' => 'address_postalcode',
@@ -335,13 +340,13 @@ $dictionary['User'] = array(
                 'returns' => 'html',
                 'include' => 'modules/Employees/EmployeeStatus.php'
             ) ,
-            'len' => '25',
+            'len' => 100,
         ) ,
         'messenger_id' => array(
             'name' => 'messenger_id',
             'vname' => 'LBL_MESSENGER_ID',
             'type' => 'varchar',
-            'len' => '25',
+            'len' => 100,
         ) ,
         'messenger_type' => array(
             'name' => 'messenger_type',
@@ -352,7 +357,7 @@ $dictionary['User'] = array(
                 'returns' => 'html',
                 'include' => 'modules/Employees/EmployeeStatus.php'
             ) ,
-            'len' => '25',
+            'len' => 100,
         ) ,
         'calls' => array(
             'name' => 'calls',
@@ -445,6 +450,7 @@ $dictionary['User'] = array(
             'link_type' => 'relationship_info',
             'source' => 'non-db',
             'importable' => 'false',
+            'studio' => array('listview' => false),
         ) ,
         'm_accept_status_fields' => array(
             'name' => 'm_accept_status_fields',
@@ -459,6 +465,7 @@ $dictionary['User'] = array(
             'link_type' => 'relationship_info',
             'source' => 'non-db',
             'importable' => 'false',
+            'studio' => array('listview' => false),
         ) ,
         'accept_status_id' => array(
             'name' => 'accept_status_id',
@@ -466,6 +473,7 @@ $dictionary['User'] = array(
             'source' => 'non-db',
             'vname' => 'LBL_LIST_ACCEPT_STATUS',
             'importable' => 'false',
+        	'studio' => array('listview' => false),
         ) ,
         'accept_status_name' => array(
             'name' => 'accept_status_name',

@@ -48,11 +48,13 @@
 						'basic_search' => array(
 						    array('name'=>'name', 'label'=>'LBL_PROSPECT_LIST_NAME',),
 						 	array('name'=>'current_user_only', 'label'=>'LBL_CURRENT_USER_FILTER', 'type'=>'bool'),
+						 	
 						),
 						'advanced_search' => array(
 						    array('name'=>'name', 'label'=>'LBL_PROSPECT_LIST_NAME',),
 						 	array('name'=>'list_type', 'label'=>'LBL_LIST_TYPE', 'type'=>'enum'),
 						 	array('name'=>'current_user_only', 'label'=>'LBL_CURRENT_USER_FILTER', 'type'=>'bool'),
+						 	
 						),
 					),
  			   );

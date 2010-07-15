@@ -87,6 +87,7 @@ EOQ;
 				WHERE meetings_users.user_id ='".$current_user->id."' 
 					AND meetings.reminder_time != -1
 					AND meetings_users.deleted != 1
+					AND meetings.status != 'Held'
 				    AND date_start >= '".$dateTimeNow."'"; 
 			
 			// if we're looking at bridging into the next day as 
@@ -105,6 +106,7 @@ EOQ;
 				WHERE meetings_users.user_id ='".$current_user->id."' 
 					AND meetings.reminder_time != -1
 					AND meetings_users.deleted != 1
+					AND meetings.status != 'Held'
 					AND date_start  >= '".$dateTimeNow."'";
 			
 			// if we're looking at bridging into the next day as 
@@ -185,6 +187,7 @@ EOQ;
 				WHERE calls_users.user_id ='".$current_user->id."' 
 					AND calls.reminder_time != -1 
 					AND calls_users.deleted != 1
+					AND calls.status != 'Held'
 				and date_start >= '".$dateTimeNow."'"; 
 	
 			if($dateMax == $todayGMT) {
@@ -201,6 +204,7 @@ EOQ;
 				WHERE calls_users.user_id ='".$current_user->id."' 
 					AND calls.reminder_time != -1 
 					AND calls_users.deleted != 1 
+					AND calls.status != 'Held'
 					AND date_start  >= '".$dateTimeNow."'"; 
 							
 			if($dateMax == $todayGMT) {

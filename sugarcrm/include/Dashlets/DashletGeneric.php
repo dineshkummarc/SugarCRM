@@ -229,7 +229,6 @@ class DashletGeneric extends Dashlet {
         // display rows
         $displayRowOptions = $GLOBALS['sugar_config']['dashlet_display_row_options'];
         $this->configureSS->assign('displayRowOptions', $displayRowOptions);
-		_pp($this->displayRows);
         $this->configureSS->assign('displayRowSelect', $this->displayRows);
     }
     /**

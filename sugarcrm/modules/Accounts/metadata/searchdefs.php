@@ -62,6 +62,7 @@
 					        'default' => true,
 					        'width' => '10%',
 					      ),
+					      
 					    ),
 					    'advanced_search' => 
 					    array (
@@ -162,6 +163,7 @@
 					        'default' => true,
 					        'width' => '10%',
 					      ),
+					      
 					    ),
 					  ),
 );

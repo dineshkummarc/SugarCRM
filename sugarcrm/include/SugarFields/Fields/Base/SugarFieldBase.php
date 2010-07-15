@@ -192,7 +192,7 @@ class SugarFieldBase {
         return $this->formatField($inputField,$vardef);
     }
 
-    function displayFromFunc( $displayType, $parentFieldArray, $vardef, $displayParams, $tabindex ) {
+    function displayFromFunc( $displayType, $parentFieldArray, $vardef, $displayParams, $tabindex = 0 ) {
 
         if ( ! is_array($vardef['function']) ) {
             $funcName = $vardef['function'];

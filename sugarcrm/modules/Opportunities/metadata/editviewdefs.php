@@ -49,35 +49,25 @@ $viewdefs['Opportunities']['EditView'] = array(
       array('name'=>'name'),
       'account_name',
     ),
-    
-    array (
-      'campaign_name',
+    array(
+    	array('name'=>'currency_id','label'=>'LBL_CURRENCY'),
+    	array('name'=>'date_closed'),
     ),
-    
-    array (
-      array('name'=>'currency_id','label'=>'LBL_CURRENCY'),
-      'opportunity_type',
-    ),
-    
     array (
       array( 'name'=>'amount'),
-      array('name'=>'date_closed'),
+      'opportunity_type',
     ),
-    
     array (
-      'next_step',
-      array (
-         'name' => 'sales_stage',
-      ),    
-    
-
-    ),
-    
-    array (      
+      'sales_stage',
       'lead_source',
-      'probability',
-    ),    
-    
+    ),
+    array (      
+		'probability',
+      	'campaign_name',
+    ),
+    array (
+      	'next_step',
+    ),
     array (
       'description',
     ),

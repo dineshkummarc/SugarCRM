@@ -40,7 +40,7 @@
 *}
 {include file="modules/DynamicFields/templates/Fields/Forms/coreTop.tpl"}
 <tr>
-	<td class='mbLBL'>{$MOD.LBL_MODULE}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="LBL_MODULE"}:</td>
 	<td>
 	{if $hideLevel == 0}
 		{html_options name="ext2" id="ext2" selected=$vardef.module options=$modules}

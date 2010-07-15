@@ -41,6 +41,18 @@
 <script type='text/javascript' src='{sugar_getjspath file='include/javascript/sugar_grp_overlib.js'}'></script>
 <script type="text/javascript">
 	{$ASSOCIATED_JAVASCRIPT_DATA}
+	
+{literal}
+function clearAll() {
+   for(i=0; i < document.popup_query_form.length; i++) {
+       if(/select/i.test(document.popup_query_form.elements[i].type)) {
+          for(x=0; x < document.popup_query_form.elements[i].options.length; x++) {
+             document.popup_query_form.elements[i].options[x].removeAttribute('selected');
+          }
+       }
+   }
+}	
+{/literal}	
 </script>
 {{if isset($formData)}}
 {$SEARCH_FORM_HEADER}
@@ -67,6 +79,10 @@
 	title="{$APP.LBL_SEARCH_BUTTON_TITLE}"
 	accessKey="{$APP.LBL_SEARCH_BUTTON_KEY}"
 	value="{$APP.LBL_SEARCH_BUTTON_LABEL}" />
+<input type="reset" onclick="SUGAR.searchForm.clear_form(this.form); return false;" class="button"
+	title="{$APP.LBL_CLEAR_BUTTON_TITLE}"
+	accessKey="{$APP.LBL_CLEAR_BUTTON_KEY}"
+	value="{$APP.LBL_CLEAR_BUTTON_LABEL}"/>
 </td>
 <td align='right'></td>
 </tr>
@@ -84,15 +100,13 @@
 </div>
 {{/if}}
 <div id='addform' style='display:none;position:relative;z-index:2;left:0px;top:0px;'>
-<form name="{$object_name}Save" onsubmit="return check_form('{$object_name}Save');" method="post" action="index.php">
+<form name="form_QuickCreate_{$module}" id="form_QuickCreate_{$module}" {*onsubmit="return check_form('form_popupQuickCreate{$module}');"*} method="post" action="index.php">
 {$ADDFORMHEADER}
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit view">
 <tr>
 <td>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr><td>
-<input type="hidden" name="module" value="{$module}" />
-<input type="hidden" name="action" value="Popup" />
 <input type="hidden" name="doAction" value="save" />
 <input type="hidden" name="query" value="true" />
 {$ADDFORM}

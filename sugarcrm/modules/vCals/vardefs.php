@@ -77,13 +77,13 @@ $dictionary['vCal'] = array('table' => 'vcals'
   array (
     'name' => 'type',
     'type' => 'varchar',
-    'len' =>25,
+    'len' => 100,
   ),
   'source' => 
   array (
     'name' => 'source',
     'type' => 'varchar',
-    'len' =>25,
+    'len' => 100,
   ),
   'content' => 
   array (

@@ -43,14 +43,14 @@
 {include file="modules/DynamicFields/templates/Fields/Forms/coreTop.tpl"}
 <input type=hidden id='ext3' name='ext3' value='{$vardef.gen}'>
 <tr>
-	<td class='mbLBL'>{$MOD.LBL_GENERATE_URL}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="LBL_GENERATE_URL"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type='checkbox' id='gencheck' {if $vardef.gen}checked=true{/if} name='genCheck' value="0" onclick="
 			if(this.checked) {ldelim}
 				 YAHOO.util.Dom.setStyle('fieldListHelper', 'display', '');
 				 YAHOO.util.Dom.get('ext3').value = 1;
-				 addToValidate('popup_form', 'default', 'alphanumeric', true,'{$MOD.COLUMN_TITLE_DEFAULT_VALUE}' );
+				 addToValidate('popup_form', 'default', 'alphanumeric', true,'{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DEFAULT_VALUE"}' );
 			{rdelim} else {ldelim}
 		        YAHOO.util.Dom.setStyle('fieldListHelper', 'display', 'none');
 		        YAHOO.util.Dom.get('ext3').value = 0;
@@ -69,7 +69,7 @@
 		"></td> 
 </tr>
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_DEFAULT_VALUE}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DEFAULT_VALUE"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type='text' name='default' id='default' value='{$vardef.default}' maxlength='{$vardef.len|default:50}'>
@@ -79,7 +79,7 @@
 	</td>
 </tr>
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_MAX_SIZE}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_MAX_SIZE"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type='text' name='len' value='{$vardef.len|default:25}' onchange="forceRange(this,1,255);changeMaxLength(document.getElementById('default'),this.value);">
@@ -103,7 +103,7 @@
 	</td>
 </tr>
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_FRAME_HEIGHT}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_FRAME_HEIGHT"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type='text' name='ext4' value='{$vardef.height|default:200}' onchange="forceRange(this,100,1024);">

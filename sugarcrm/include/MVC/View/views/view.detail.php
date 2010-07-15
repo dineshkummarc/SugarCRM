@@ -51,31 +51,8 @@ class ViewDetail extends SugarView{
  	}
 
  	function preDisplay(){
- 		$metadataFile = null;
- 		$foundViewDefs = false;
- 		if(file_exists('custom/modules/' . $this->module . '/metadata/detailviewdefs.php')){
- 			$metadataFile = 'custom/modules/' . $this->module . '/metadata/detailviewdefs.php';
- 			$foundViewDefs = true;
- 		}else{
-	 		if(file_exists('custom/modules/'.$this->module.'/metadata/metafiles.php')){
-				require_once('custom/modules/'.$this->module.'/metadata/metafiles.php');
-				if(!empty($metafiles[$this->module]['detailviewdefs'])){
-					$metadataFile = $metafiles[$this->module]['detailviewdefs'];
-					$foundViewDefs = true;
-				}
-			}elseif(file_exists('modules/'.$this->module.'/metadata/metafiles.php')){
-				require_once('modules/'.$this->module.'/metadata/metafiles.php');
-				if(!empty($metafiles[$this->module]['detailviewdefs'])){
-					$metadataFile = $metafiles[$this->module]['detailviewdefs'];
-					$foundViewDefs = true;
-				}
-			}
- 		}
- 		$GLOBALS['log']->debug("metadatafile=". $metadataFile);
-		if(!$foundViewDefs && file_exists('modules/'.$this->module.'/metadata/detailviewdefs.php')){
-				$metadataFile = 'modules/'.$this->module.'/metadata/detailviewdefs.php';
- 		}
-
+ 		
+        $metadataFile = $this->getMetaDataFile();
 		$this->dv = new DetailView2();
 		$this->dv->ss =&  $this->ss;
 		$this->dv->setup($this->module, $this->bean, $metadataFile, 'include/DetailView/DetailView.tpl'); 		

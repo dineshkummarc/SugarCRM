@@ -38,7 +38,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 global $mod_strings;
 if(!is_admin($current_user)){
-	sugar_die('Admin Only');	
+	sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']); 
 }
 $filter = '';
 if(!empty($_REQUEST['filter'])){

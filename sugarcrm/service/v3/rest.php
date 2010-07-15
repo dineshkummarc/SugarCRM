@@ -1,5 +1,5 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+ if(!defined('sugarEntry'))define('sugarEntry', true);
 /*********************************************************************************
  * SugarCRM is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2010 SugarCRM Inc.
@@ -35,50 +35,15 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * "Powered by SugarCRM".
  ********************************************************************************/
 
-
-require_once('modules/EditCustomFields/EditCustomFields.php');
-require_once('modules/DynamicFields/DynamicField.php');
-
-require_once('modules/DynamicFields/DynamicField.php');
-
-
-if(!empty($_REQUEST['record']))
-{
-$fields_meta_data = new FieldsMetaData($_REQUEST['record']);
-$fields_meta_data->retrieve($_REQUEST['record']);
-$module = $fields_meta_data->custom_module;
-$custom_fields = new DynamicField($module);
-if(!empty($module)){
-			$class_name = $beanList[$module];
-			$class_file = $class_name;
-			if($class_file == 'aCase'){
-				$class_file = 'Case';	
-			}
-			require_once("modules/$module/$class_file.php");
-			$mod = new $class_name();
-			$custom_fields->setup($mod);
-}else{
-	echo "\nNo Module Included Could Not Delete";	
-}
-
-
-
-$custom_fields->deleteField($fields_meta_data->name);
-$fields_meta_data->mark_deleted($_REQUEST['record']);
-	
-	
-}
-
-$return_module = empty($_REQUEST['return_module']) ? 'EditCustomFields'
-	: $_REQUEST['return_module'];
-
-$return_action = empty($_REQUEST['return_action']) ? 'index'
-	: $_REQUEST['return_action'];
-
-$return_module_select = empty($_REQUEST['module_name']) ? 0
-	: $_REQUEST['module_name'];
-
-header("Location: index.php?action=$return_action&module=$return_module&module_name=$return_module_select");
-
-
-?>
+/**
+ * This is a rest entry point for rest version 3.1
+ */
+chdir('../..');
+require_once('SugarWebServiceImplv3.php');
+$webservice_class = 'SugarRestService';
+$webservice_path = 'service/core/SugarRestService.php';
+$webservice_impl_class = 'SugarWebServiceImplv3';
+$registry_class = 'registry';
+$location = '/service/v3/rest.php';
+$registry_path = 'service/v3/registry.php';
+require_once('service/core/webservice.php');

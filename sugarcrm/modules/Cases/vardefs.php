@@ -90,7 +90,7 @@ $dictionary['Case'] = array('table' => 'cases','audited'=>true, 'unified_search'
     'vname' => 'LBL_STATUS',
     'type' => 'enum',
     'options' => 'case_status_dom',
-    'len'=>25,
+    'len' => 100,
     'audited'=>true,
     'comment' => 'The status of the case',
 
@@ -101,7 +101,7 @@ $dictionary['Case'] = array('table' => 'cases','audited'=>true, 'unified_search'
     'vname' => 'LBL_PRIORITY',
     'type' => 'enum',
     'options' => 'case_priority_dom',
-    'len'=>25,
+    'len' => 100,
     'audited'=>true,
     'comment' => 'The priority of the case',
 

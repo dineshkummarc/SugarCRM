@@ -48,7 +48,7 @@ $sugarpdf_default = array(
     "K_PATH_CUSTOM_IMAGES"=>"custom/themes/default/images/",
     "K_PATH_IMAGES"=>"themes/default/images/",
     "K_BLANK_IMAGE"=>"themes/default/images/_blank.png",
-    "PDF_PAGE_FORMAT"=>"A4",
+    "PDF_PAGE_FORMAT"=>"LETTER",
     "PDF_PAGE_FORMAT_LIST"=>implode(",",array("4A0", "2A0", "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", 
                                         "B0", "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", 
                                         "C0", "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10", 

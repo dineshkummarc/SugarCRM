@@ -55,28 +55,26 @@ $viewdefs['Opportunities']['DetailView'] = array(
 	        ),
 	        
 	        array(
-	            'opportunity_type'
+	        	array('name'=>'amount','label' => '{$MOD.LBL_AMOUNT} ({$CURRENCY})'),
+	        	'date_closed',
 	        ),
 	         
 	        array (
-	        	array('name'=>'amount','label' => '{$MOD.LBL_AMOUNT} ({$CURRENCY})'),
-	        	'date_closed'
+	        	'sales_stage',
+	        	'opportunity_type'
 	        ),
 	        
 	        array(
-	            'next_step',
-	            'sales_stage'
+	        	'probability',
+	        	'lead_source',
+	            
+	            
 	        ),  
 	        
 	        array (
-	            'lead_source',
-	            'probability'
-	        ),
-	        
-	        array(
+	        	'next_step',
 	            'campaign_name'
 	        ),
-	        
 	        array(
 	            array(
 	               'name'=>'description',

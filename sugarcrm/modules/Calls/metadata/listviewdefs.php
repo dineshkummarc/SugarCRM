@@ -102,6 +102,8 @@ array (
   array (
     'width' => '2%',
     'label' => 'LBL_LIST_ASSIGNED_TO_NAME',
+    'module' => 'Employees',
+    'id' => 'ASSIGNED_USER_ID',
     'default' => true,
   ),
   'STATUS' => 

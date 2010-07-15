@@ -742,6 +742,7 @@ function validate_form(formname, startsWith){
 	}
 	if ( typeof (validate[formname]) == 'undefined')
 	{
+        disableOnUnloadEditView(document.forms[formname]);
 		return true;
 	}
 
@@ -1084,11 +1085,12 @@ function validate_form(formname, startsWith){
 		}
 		
 
-		if(!inView) window.scrollTo(scrollToTop, scrollToLeft);
+		if(!inView) window.scrollTo(scrollToLeft,scrollToTop);
 
 		return false;
 	}
 
+    disableOnUnloadEditView(form);
 	return true;
 
 }
@@ -1530,6 +1532,78 @@ function saveForm(theForm, theDiv, loadingStr) {
 	}
 	else
 		return false;
+}
+
+// Builds a "snapshot" of the form, so we can use it to see if someone has changed it.
+function snapshotForm(theForm) {
+    var snapshotTxt = '';
+    var elemList = theForm.elements;
+    var elem;
+    var elemType;
+    
+    for( var i = 0; i < elemList.length ; i++ ) {
+        elem = elemList[i];
+        if ( typeof(elem.type) == 'undefined' ) {
+            continue;
+        }
+        
+        elemType = elem.type.toLowerCase();
+        
+        snapshotTxt = snapshotTxt + elem.name;
+
+        if ( elemType == 'text' || elemType == 'textarea' || elemType == 'password' ) {
+            snapshotTxt = snapshotTxt + elem.value;
+        }
+        else if ( elemType == 'select' || elemType == 'select-one' || elemType == 'select-multiple' ) {
+            var optionList = elem.options;
+            for ( var ii = 0 ; ii < optionList.length ; ii++ ) {
+                if ( optionList[ii].selected ) {
+                    snapshotTxt = snapshotTxt + optionList[ii].value;
+                }
+            }
+        }
+        else if ( elemType == 'radio' || elemType == 'checkbox' ) {
+            if ( elem.selected ) {
+                snapshotTxt = snapshotTxt + 'checked';
+            }
+        }
+        else if ( elemType == 'hidden' ) {
+            snapshotTxt = snapshotTxt + elem.value;
+        }
+    }
+    
+    return snapshotTxt;
+}
+
+function initEditView(theForm) {
+    if ( typeof editViewSnapshots == 'undefined' ) {
+        editViewSnapshots = new Object();
+    }
+
+    editViewSnapshots[theForm.id] = snapshotForm(theForm);
+}
+
+function onUnloadEditView(theForm) {
+    if ( typeof editViewSnapshots == 'undefined' || typeof editViewSnapshots[theForm.id] == 'undefined' || editViewSnapshots[theForm.id] == null ) {
+        return;
+    }
+
+    if ( editViewSnapshots[theForm.id] != snapshotForm(theForm) ) {
+        // Data has changed.
+        return SUGAR.language.get('app_strings','WARN_UNSAVED_CHANGES');
+    } else {
+        return;
+    }
+}
+
+function disableOnUnloadEditView(theForm) {
+    // If you don't pass anything in, it disables all checking
+    if ( typeof theForm == 'undefined' || typeof editViewSnapshots == 'undefined' ) {
+        window.onbeforeunload = null;
+    } else {
+        // Otherwise, it just disables it for this form
+        editViewSnapshots[theForm.id] = null;
+    }
 }
 
 /*
@@ -2110,7 +2184,7 @@ function check_used_email_templates() {
 
 sugarListView.prototype.send_mass_update = function(mode, no_record_txt, del) {
 	formValid = check_form('MassUpdate');
-	if(!formValid) return false;
+	if(!formValid && !del) return false;
 
 
 	if (document.MassUpdate.select_entire_list &&
@@ -2944,30 +3018,43 @@ SUGAR.searchForm = function() {
 					break;
 			}
 		},
-
+        // This function is here to clear the form, instead of "resubmitting it
 		clear_form: function(form) {
-			var newLoc = 'index.php?action=' + form.action.value + '&module=' + form.module.value + '&query=true&clear_query=true';
-			if(typeof(form.searchFormTab) != 'undefined'){
-				newLoc += '&searchFormTab=' + form.searchFormTab.value;
-			}
+            var elemList = form.elements;
+            var elem;
+            var elemType;
 
-			//check to see if alternate tpl has been specified, if so then pass location through url string
-			var tpl ='';
-			if(document.getElementById('search_tpl') !=null && typeof(document.getElementById('search_tpl')) != 'undefined'){
-				tpl = document.getElementById('search_tpl').value;
-				if(tpl != ''){newLoc += '&search_tpl='+tpl;}
-			}
-            
-            if(document.getElementById('saved_search_select') && document.getElementById('saved_search_select').value !='_none'){
-                newLoc = 'index.php?module=SavedSearch&search_module=' + form.module.value + '&action=index&saved_search_select=_none';
-                if(typeof(document.getElementById('searchFormTab'))!='undefined'){
-                    newLoc = newLoc + '&searchFormTab=' + document.search_form.searchFormTab.value;
+            for( var i = 0; i < elemList.length ; i++ ) {
+                elem = elemList[i];
+                if ( typeof(elem.type) == 'undefined' ) {
+                    continue;
                 }
-                if(document.getElementById('showSSDIV') && typeof(document.getElementById('showSSDIV') !='undefined')){
-                    newLoc = newLoc + '&showSSDIV='+document.getElementById('showSSDIV').value;
+                
+                elemType = elem.type.toLowerCase();
+                
+                if ( elemType == 'text' || elemType == 'textarea' || elemType == 'password' ) {
+                    elem.value = '';
+                }
+                else if ( elemType == 'select' || elemType == 'select-one' || elemType == 'select-multiple' ) {
+                    // We have, what I hope, is a select box, time to unselect all options
+                    var optionList = elem.options;
+                    for ( var ii = 0 ; ii < optionList.length ; ii++ ) {
+                        optionList[ii].selected = false;
+                    }
+                }
+                else if ( elemType == 'radio' || elemType == 'checkbox' ) {
+                    elem.checked = false;
+                    elem.selected = false;
+                }
+                else if ( elemType == 'hidden' ) {
+                    // We only want to reset the hidden values that link to the select boxes.
+                    if ( ( elem.name.length > 3 && elem.name.substring(elem.name.length-3) == '_id' )
+                         || ( elem.name.length > 11 && elem.name.substring(elem.name.length-11) == '_id_advanced' ) ) {
+                        elem.value = '';
+                    }
                 }
             }
-			document.location.href = newLoc;
+
 		}
 	};
 }();
@@ -3802,4 +3889,63 @@ SUGAR.util.isTouchScreen = function()
     }
     
     return false;
+}
+
+SUGAR.util.isLoginPage = function(content) 
+{
+	var loginPageStart = "<!DOCTYPE";
+	if (content.substr(0, loginPageStart.length) == loginPageStart && content.indexOf("<html>") != -1) {
+		window.location.href = window.location.protocol + window.location.pathname;
+		return true;
+	}
+}
+
+SUGAR.util.closeActivityPanel = {
+    show:function(module,id,new_status,viewType,parentContainerId){
+        if (SUGAR.util.closeActivityPanel.panel) 
+			SUGAR.util.closeActivityPanel.panel.destroy();
+	    var singleModule = SUGAR.language.get("app_list_strings", "moduleListSingular")[module];
+	    singleModule = typeof(singleModule != 'undefined') ? singleModule.toLowerCase() : '';
+	    var closeText =  SUGAR.language.get("app_strings", "LBL_CLOSE_ACTIVITY_CONFIRM").replace("#module#",singleModule);
+        SUGAR.util.closeActivityPanel.panel =  
+	    new YAHOO.widget.SimpleDialog("closeActivityDialog",  
+	             { width: "300px", 
+	               fixedcenter: true, 
+	               visible: false, 
+	               draggable: false, 
+	               close: true, 
+	               text: closeText, 
+	               constraintoviewport: true, 
+	               buttons: [ { text:SUGAR.language.get("app_strings", "LBL_EMAIL_OK"), handler:function(){ 
+	                   if (SUGAR.util.closeActivityPanel.panel)
+                            SUGAR.util.closeActivityPanel.panel.hide();
+                                    
+                        ajaxStatus.showStatus(SUGAR.language.get('app_strings', 'LBL_SAVING'));
+                        var args = "action=save&id=" + id + "&status=" + new_status + "&module=" + module;
+                        var callback = {
+                            success:function(o)
+                            {
+                                if(viewType == 'dashlet')
+                                {
+                                    SUGAR.mySugar.retrieveDashlet(o.argument['parentContainerId']);
+                                    ajaxStatus.hideStatus();
+                                }
+                                else if(viewType == 'subpanel')
+                                    showSubPanel(o.argument['parentContainerId'],null,true);
+                                else if(viewType == 'listview')
+                                    document.location = 'index.php?module=' + module +'&action=index';
+                            },
+                            argument:{'parentContainerId':parentContainerId}
+                        };
+                
+                        YAHOO.util.Connect.asyncRequest('POST', 'index.php', callback, args);
+	               
+	               }, isDefault:true }, 
+	                          { text:SUGAR.language.get("app_strings", "LBL_EMAIL_CANCEL"),  handler:function(){SUGAR.util.closeActivityPanel.panel.hide(); }} ] 
+	             } ); 
+	  
+	    SUGAR.util.closeActivityPanel.panel.setHeader(SUGAR.language.get("app_strings", "LBL_CLOSE_ACTIVITY_HEADER")); 
+        SUGAR.util.closeActivityPanel.panel.render(document.body);
+        SUGAR.util.closeActivityPanel.panel.show();
+    }
 }

@@ -36,7 +36,7 @@
  ********************************************************************************/
 
 require_once('service/core/SugarWebService.php');
-require('service/core/SugarWebServiceImpl.php');
+require_once('service/core/SugarWebServiceImpl.php');
 
 /**
  * This ia an abstract class for the soapservice. All the global fun

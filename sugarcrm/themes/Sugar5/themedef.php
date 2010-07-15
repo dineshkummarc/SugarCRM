@@ -39,6 +39,6 @@ $themedef = array(
     'name'  => "Classic",
     'description' => "Default theme from Sugar 5",
     'version' => array(
-        'regex_matches' => array('6\.0\.*'),
+        'regex_matches' => array('6\.1\.*'),
         ),
     );

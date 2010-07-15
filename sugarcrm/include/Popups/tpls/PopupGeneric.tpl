@@ -102,9 +102,13 @@
 	
 		<tr height='20'>
 			{if $prerow}
-				<th scope='col' nowrap="nowrap" width='1%'>
+				<th scope='col' nowrap="nowrap" width='1%' class="selectCol">
+				<div>
 					<input type='checkbox' class='checkbox' id='massall' name='massall' value='' onclick='sListView.check_all(document.MassUpdate, "mass[]", this.checked);' />
+					{$selectLink}
+				</div>
 				</th>
+				<th scope='col' nowrap="nowrap" width='1%'>&nbsp;</th>
 			{/if}
 			{counter start=0 name="colCounter" print=false assign="colCounter"}
 			{foreach from=$displayColumns key=colHeader item=params}
@@ -147,6 +151,8 @@
 				{if $prerow}
 				<td width='1%' nowrap='nowrap'>
 						<input onclick='sListView.check_item(this, document.MassUpdate)' type='checkbox' class='checkbox' name='mass[]' value='{$rowData[$params.id]|default:$rowData.ID}'>
+				</td>
+				<td width='1%' nowrap='nowrap'>
 						{$pageData.additionalDetails.$id}
 				</td>
 				{/if}

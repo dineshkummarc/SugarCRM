@@ -96,37 +96,33 @@ function ConvertItems(id)  {ldelim}
 
     array (
        array('name'=>'start_date', 'displayParams'=>array('required'=>false, 'showFormats'=>true)),
-      '',
+       array('name'=>'campaign_type',
+            'displayParams'=>array('javascript'=>'onchange="type_change();"'),
+       ),
     ),
 
     array (
       array('name'=>'end_date', 'displayParams'=>array('showFormats'=>true)),
-    ),
-
-   array (
-      array('name'=>'campaign_type',
-            'displayParams'=>array('javascript'=>'onchange="type_change();"'),
-            ),
-	  array (
+      array (
  		  'name' => 'frequency',
 	      'customCode' => '<div style=\'none\' id=\'freq_field\'>{html_options name="frequency" options=$fields.frequency.options selected=$fields.frequency.value}</div></TD>',
 	      'customLabel' => '<div style=\'none\' id=\'freq_label\'>{$MOD.LBL_CAMPAIGN_FREQUENCY}</div>',
 	  ),
     ),
 
-    array (
+   array (
       'currency_id',
       'impressions',
     ),
 
     array (
-      'budget',
-      'actual_cost',
+        'budget',
+    	'expected_cost',
     ),
 
     array (
-      'expected_revenue',
-      'expected_cost',
+    	'actual_cost',
+        'expected_revenue',
     ),
 
     array (

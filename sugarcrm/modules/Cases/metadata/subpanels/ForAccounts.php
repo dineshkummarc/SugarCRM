@@ -71,6 +71,9 @@ $subpanel_layout = array(
 		),
 		'assigned_user_name' => array (
 			'name' => 'assigned_user_name',
+			'widget_class' => 'SubPanelDetailViewLink',
+		 	'target_record_key' => 'assigned_user_id',
+			'target_module' => 'Employees',
 			'vname' => 'LBL_LIST_ASSIGNED_TO_NAME',
 		),
 		'edit_button'=>array(

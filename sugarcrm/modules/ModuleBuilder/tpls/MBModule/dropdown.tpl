@@ -122,7 +122,7 @@
 		    		<td class='mbLBLL'>{$MOD.LBL_DROPDOWN_ITEM_NAME}:</td><td class='mbLBLL'>{$MOD.LBL_DROPDOWN_ITEM_LABEL}:</td>
 		    	</tr>
 		    	<tr>
-		    		<td><input type='text' id='drop_name' name='drop_name'></td>
+		    		<td><input type='text' id='drop_name' name='drop_name' maxlength='100'></td>
 		    		<td><input type='text' id='drop_value' name='drop_value'></td>
 		    	</tr>
 		    	<tr><td><input type='button' id='dropdownaddbtn' value='{$APP.LBL_ADD_BUTTON}' class='button'></td></tr>

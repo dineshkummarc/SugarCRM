@@ -63,7 +63,7 @@ $vardefs = array(
 			'vname'=>'LBL_TYPE',
 			'type'=>'enum',
 			'options'=>strtolower($object_name).'_type_dom',
-			'len'=>25,
+			'len' => 100,
 			'comment'=>'The Sale is of this type',
 		),
 		'description'=>
@@ -166,7 +166,7 @@ $vardefs = array(
 		    'vname' => 'LBL_SALES_STAGE',
 		    'type' => 'enum',
 		    'options' => 'sales_stage_dom',
-		    'len' => '25',
+		    'len' => 100,
 		    'audited'=>true,
 		    'comment' => 'Indication of progression towards closure',
 			'required'=>true,

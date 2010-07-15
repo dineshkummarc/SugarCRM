@@ -121,7 +121,7 @@ $dictionary['Call'] = array('table' => 'calls', 'comment' => 'A Call is an activ
     'name' => 'status',
     'vname' => 'LBL_STATUS',
     'type' => 'enum',
-    'len' => '25',
+    'len' => 100,
     'options' => 'call_status_dom',
     'comment' => 'The status of the call (Held, Not Held, etc.)',
 	'required' => true,
@@ -132,7 +132,7 @@ $dictionary['Call'] = array('table' => 'calls', 'comment' => 'A Call is an activ
     'name' => 'direction',
     'vname' => 'LBL_DIRECTION',
     'type' => 'enum',
-    'len' => '25',
+    'len' => 100,
     'options' => 'call_direction_dom',
     'comment' => 'Indicates whether call is inbound or outbound'
   ),

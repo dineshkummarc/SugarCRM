@@ -146,7 +146,7 @@ class Meeting extends SugarBean {
 			$date_start_array=explode(" ",trim($date_start_in_db_fmt));
 			$date_time_start =DateTimeUtil::get_time_start($date_start_array[0],$date_start_array[1]);
 
-			$date_start_timestamp=mktime($date_time_start->hour,$date_time_start->min,$date_time_start->sec,$date_time_start->month,$date_time_start->day);
+			$date_start_timestamp=mktime($date_time_start->hour,$date_time_start->min,$date_time_start->sec,$date_time_start->month,$date_time_start->day,$date_time_start->year);
 			$date_start_timestamp+= (( $this->duration_hours * 3600 )+ ($this->duration_minutes * 60));
 
 			$this->date_end=date ($timedate->get_date_time_format(true, $current_user),$date_start_timestamp);
@@ -374,8 +374,10 @@ class Meeting extends SugarBean {
 			$meeting_fields['PARENT_MODULE'] = $this->parent_type;
 		if($this->status == "Planned") {
 			//cn: added this if() to deal with sequential Closes in Meetings.	this is a hack to a hack(formbase.php->handleRedirect)
-			if(empty($action)) { $action = "index"; }
-			$meeting_fields['SET_COMPLETE'] = "<a href='index.php?return_module=$currentModule&return_action=$action&return_id=$this->id&action=EditView&status=Held&module=Meetings&record=$this->id&status=Held'>".SugarThemeRegistry::current()->getImage("close_inline","title=".translate('LBL_LIST_CLOSE','Meetings')." border='0'")."</a>";
+			if(empty($action))  
+			     $action = "index"; 
+			$setCompleteUrl = "<a onclick='SUGAR.util.closeActivityPanel.show(\"$currentModule\",\"{$this->id}\",\"Held\",\"listview\",\"1\");'>";
+			$meeting_fields['SET_COMPLETE'] = $setCompleteUrl . SugarThemeRegistry::current()->getImage("close_inline","title=".translate('LBL_LIST_CLOSE','Meetings')." border='0'")."</a>";
 		}
 		global $timedate;
 		$today = gmdate($GLOBALS['timedate']->get_db_date_time_format(), time());
@@ -598,8 +600,8 @@ class Meeting extends SugarBean {
 
 	function save_relationship_changes($is_update) {
 		$exclude = array();
-        if(empty($this->in_workflow)) {
-            $exclude = array('contact_id', 'user_id');
+	    if(empty($this->in_workflow)) {
+            $exclude = array('contact_id', 'user_id', 'assigned_user_id');
         }
 		parent::save_relationship_changes($is_update, $exclude);
 	}

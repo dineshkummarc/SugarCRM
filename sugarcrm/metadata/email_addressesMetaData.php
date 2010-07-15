@@ -60,6 +60,7 @@ $dictionary['email_addresses'] = array(
 		    'vname'         => 'LBL_EMAIL_ADDRESS_CAPS',
 			'length'		=> 100,
 			'required'		=> true,
+                        'reportable'            => false,
 		),
 		'invalid_email' => array(
 			'name'			=> 'invalid_email',

@@ -39,8 +39,8 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 $subpanel_layout = array(
 	//Removed button because this layout def is a component of
 	//the activities sub-panel.
-	'where' => "(calls.status='Planned')",
-	
+	//'where' => "(calls.status=\'Planned\')",
+	'where' => "(calls.status != 'Held' AND calls.status != 'Not Held')",
 	
 	
 	'list_fields' => array(
@@ -94,6 +94,9 @@ $subpanel_layout = array(
 		'assigned_user_name' => array (
 			'name' => 'assigned_user_name',
 			'vname' => 'LBL_LIST_ASSIGNED_TO_NAME',
+			'widget_class' => 'SubPanelDetailViewLink',
+		 	'target_record_key' => 'assigned_user_id',
+			'target_module' => 'Employees',
 		),
 		'edit_button'=>array(
 			'vname' => 'LBL_EDIT_BUTTON',

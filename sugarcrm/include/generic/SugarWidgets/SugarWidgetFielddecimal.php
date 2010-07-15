@@ -34,6 +34,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
  ********************************************************************************/
+require_once('include/generic/SugarWidgets/SugarWidgetFieldint.php');
 
 class SugarWidgetFieldDecimal extends SugarWidgetFieldInt
 {

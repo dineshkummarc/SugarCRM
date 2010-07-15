@@ -78,7 +78,7 @@ $layout_defs['Accounts'] = array(
 		'history' => array(
 			'order' => 20,
 			'sort_order' => 'desc',
-			'sort_by' => 'date_modified',
+			'sort_by' => 'date_entered',
 			'title_key' => 'LBL_HISTORY_SUBPANEL_TITLE',
 			'type' => 'collection',
 			'subpanel_name' => 'history',   //this values is not associated with a physical file.
@@ -226,8 +226,9 @@ $layout_defs['Accounts'] = array(
 			'title_key' => 'LBL_PROJECTS_SUBPANEL_TITLE',
 			'top_buttons' => array(
 				array('widget_class' => 'SubPanelTopButtonQuickCreate'),
-			),		
-		),		
+				array('widget_class' => 'SubPanelTopSelectButton'),
+			),
+		),
 	),
 );
 ?>

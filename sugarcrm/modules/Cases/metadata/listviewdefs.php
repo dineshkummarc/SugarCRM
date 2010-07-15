@@ -68,6 +68,8 @@ $listViewDefs['Cases'] = array(
 	'ASSIGNED_USER_NAME' => array(
 		'width' => '5', 
 		'label' => 'LBL_ASSIGNED_TO_NAME',
+		'module' => 'Employees',
+        'id' => 'ASSIGNED_USER_ID',
         'default' => true)
 );
 ?>

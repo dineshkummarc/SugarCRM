@@ -566,7 +566,7 @@ function construct_where(&$query_obj, $table='',$module=null) {
 			$email1_value=strtoupper($condition['value']);
 			$email1_condition = " {$table}id in ( SELECT  er.bean_id AS id FROM email_addr_bean_rel er, " .
 		         "email_addresses ea WHERE ea.id = er.email_address_id " .
-		         "AND ea.deleted = 0 AND er.deleted = 0 AND er.bean_module = '{$module}' AND email_address_caps IN ('{$email1_value}') )";
+		         "AND ea.deleted = 0 AND er.deleted = 0 AND er.bean_module = '{$module}' AND email_address_caps LIKE '%{$email1_value}%' )";
 	             
 	         array_push($cond_arr,$email1_condition);
 		}

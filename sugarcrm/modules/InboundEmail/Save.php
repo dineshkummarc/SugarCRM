@@ -116,7 +116,7 @@ $stored_options['reply_to_addr'] = trim($_REQUEST['reply_to_addr']);
 $stored_options['only_since'] = $onlySince;
 $stored_options['filter_domain'] = $_REQUEST['filter_domain'];
 $stored_options['email_num_autoreplies_24_hours'] = $_REQUEST['email_num_autoreplies_24_hours'];
-
+$stored_options['allow_outbound_group_usage'] = isset($_REQUEST['allow_outbound_group_usage']) ? true : false; 
 
 if (!$focus->isPop3Protocol()) {
 	$stored_options['trashFolder'] = (isset($_REQUEST['trashFolder']) ? trim($_REQUEST['trashFolder']) : "");

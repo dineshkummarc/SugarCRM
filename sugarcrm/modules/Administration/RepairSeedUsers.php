@@ -81,6 +81,6 @@ if(is_admin($current_user)){
 		}
 }
 else{
-	die('Admin Only Section');	
+	sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']); 
 }
 ?>

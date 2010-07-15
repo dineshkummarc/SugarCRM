@@ -36,8 +36,9 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  ********************************************************************************/
 require_once('include/EditView/EditView2.php');
 class SubpanelQuickCreate{
+	var $defaultProcess = true;
 	
-	function SubpanelQuickCreate($module, $view='QuickCreate'){
+	function SubpanelQuickCreate($module, $view='QuickCreate', $proccessOverride = false){
 
 
 		// locate the best viewdefs to use: 1. custom/module/quickcreatedefs.php 2. module/quickcreatedefs.php 3. custom/module/editviewdefs.php 4. module/editviewdefs.php
@@ -69,21 +70,20 @@ class SubpanelQuickCreate{
 		$this->ev->defs['templateMeta']['form']['buttons'] = array('SUBPANELSAVE', 'SUBPANELCANCEL', 'SUBPANELFULLFORM');
 		
 
-		$defaultProcess = true;
 		
 		$viewEditSource = 'modules/'.$module.'/views/view.edit.php';
 		if (file_exists('custom/'. $viewEditSource)) {
 			$viewEditSource = 'custom/'. $viewEditSource;
 		}
 
-		if(file_exists($viewEditSource)) {
+		if(file_exists($viewEditSource) && !$proccessOverride) {
             include($viewEditSource); 
             $c = $module . 'ViewEdit';
             
             if(class_exists($c)) {
 	            $view = new $c;
 	            if($view->useForSubpanel) {
-	            	$defaultProcess = false;
+	            	$this->defaultProcess = false;
 	            	
 	            	//Check if we shold use the module's QuickCreate.tpl file
 	            	if($view->useModuleQuickCreateTemplate && file_exists('modules/'.$module.'/tpls/QuickCreate.tpl')) {
@@ -105,7 +105,7 @@ class SubpanelQuickCreate{
             }
 		} //if
 		
-		if($defaultProcess) {
+		if($this->defaultProcess && !$proccessOverride) {
 		   $this->process($module);
 		}
 	}

@@ -49,7 +49,7 @@ class="yui-navset"
     <ul class="yui-nav">
     {{foreach name=section from=$sectionPanels key=label item=panel}}
         {{counter name="tabCount" print=false}}
-        <li class="selected"><a href="#tab{{$tabCount}}"><em>{sugar_translate label='{{$label}}' module='{{$module}}'}</em></a></li>
+        <li class="selected"><a id="tab{{$tabCount}}" href="#tab{{$tabCount}}"><em>{sugar_translate label='{{$label}}' module='{{$module}}'}</em></a></li>
     {{/foreach}}
     </ul>
     {{/if}}
@@ -180,3 +180,7 @@ var {{$form_name}}_tabs = new YAHOO.widget.TabView("{{$form_name}}_tabs");
 {{$form_name}}_tabs.selectTab(0);
 </script> 
 {{/if}}
+<script type="text/javascript">
+window.setTimeout(function () {ldelim} initEditView(document.forms.{{$form_name}}) {rdelim}, 100);
+window.onbeforeunload = function () {ldelim} return onUnloadEditView(document.forms.{{$form_name}}); {rdelim};
+</script>

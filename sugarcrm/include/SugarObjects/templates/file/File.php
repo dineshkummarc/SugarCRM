@@ -40,7 +40,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
   require_once('include/formbase.php');
 class File extends Basic{
 	function File(){
-		parent::SugarBean();
+		parent::Basic();
 	}
 
 	//Must overwrite the save operation for uploaded file.

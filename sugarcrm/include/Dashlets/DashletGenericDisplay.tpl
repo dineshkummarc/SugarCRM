@@ -147,39 +147,24 @@
 			{/if}
 			{counter start=0 name="colCounter" print=false assign="colCounter"}
 			{foreach from=$displayColumns key=col item=params}
-				<td scope='row' align='{$params.align|default:'left'}' valign=top class='{$_rowColor}S1' bgcolor='{$_bgColor}'><span sugar="sugar{$colCounter}b">
-					{if $params.link && !$params.customCode}				
-						<{$pageData.tag.$id[$params.ACLTag]|default:$pageData.tag.$id.MAIN} href='index.php?action={$params.action|default:'DetailView'}&module={if $params.dynamic_module}{$rowData[$params.dynamic_module]}{else}{$params.module|default:$pageData.bean.moduleDir}{/if}&record={$rowData[$params.id]|default:$rowData.ID}&offset={$pageData.offsets.current+$smarty.foreach.rowIteration.iteration}&stamp={$pageData.stamp}'>{$rowData.$col}</{$pageData.tag.$id[$params.ACLTag]|default:$pageData.tag.$id.MAIN}>
-					{elseif $params.customCode}
-						{sugar_evalcolumn_old var=$params.customCode rowData=$rowData}
-					{elseif $params.currency_format} 
-						{sugar_currency_format 
-							var=$rowData.$col 
-							round=$params.currency_format.round 
-							decimals=$params.currency_format.decimals 
-							symbol=$params.currency_format.symbol
-							convert=$params.currency_format.convert
-							currency_symbol=$params.currency_format.currency_symbol
-						}
-					{elseif $params.type == 'bool'}
-							<input type='checkbox' disabled=disabled class='checkbox'
-							{if !empty($rowData[$col])}
-								checked=checked
-							{/if}
-							/>
-					{elseif $params.type == 'multienum'}
-						{if !empty($rowData.$col)} 
-							{counter name="oCount" assign="oCount" start=0}
-							{multienum_to_array string=$rowData.$col assign="vals"}
-							{foreach from=$vals item=item}
-								{counter name="oCount"}
-								{if !empty($item)}{sugar_translate label=$params.options select=$item}{if $oCount !=  count($vals)}, {/if}{/if}
-							{/foreach}	
-						{/if}
-					{else}	
-						{$rowData.$col}
+			    {strip}
+				<td scope='row' align='{$params.align|default:'left'}' valign="top" {if ($params.type == 'teamset')}class="nowrap"{/if}>
+					{if $col == 'NAME' || $params.bold}<b>{/if}
+				    {if $params.link && !$params.customCode}				
+						<{$pageData.tag.$id[$params.ACLTag]|default:$pageData.tag.$id.MAIN} href='index.php?action={$params.action|default:'DetailView'}&module={if $params.dynamic_module}{$rowData[$params.dynamic_module]}{else}{$params.module|default:$pageData.bean.moduleDir}{/if}&record={$rowData[$params.id]|default:$rowData.ID}&offset={$pageData.offsets.current+$smarty.foreach.rowIteration.iteration}&stamp={$pageData.stamp}'>
 					{/if}
-				</span sugar='sugar{$colCounter}b'></td>
+					{if $params.customCode} 
+						{sugar_evalcolumn_old var=$params.customCode rowData=$rowData}
+					{else}	
+                       {sugar_field parentFieldArray=$rowData vardef=$params displayType=ListView field=$col}
+					{/if}
+					{if empty($rowData.$col) && empty($params.customCode)}&nbsp;{/if}
+					{if $params.link && !$params.customCode}
+						</{$pageData.tag.$id[$params.ACLTag]|default:$pageData.tag.$id.MAIN}>
+                    {/if}
+                    {if $col == 'NAME' || $params.bold}</b>{/if}
+				</td>
+				{/strip}
 				{counter name="colCounter"}
 			{/foreach}
 			{if !empty($quickViewLinks)}

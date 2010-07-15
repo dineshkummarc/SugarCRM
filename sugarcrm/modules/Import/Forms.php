@@ -52,7 +52,7 @@ function loadImportBean(
     $module
     )
 {
-    $focus = loadBean($module);
+    $focus = SugarModule::get($module)->loadBean(false);
     if ( $focus ) {
         if ( !$focus->importable )
             return false;
@@ -117,6 +117,11 @@ function handleImportErrors(
         define('E_DEPRECATED','8192');
     if ( !defined('E_USER_DEPRECATED') )
         define('E_USER_DEPRECATED','16384');
+    
+    // check to see if current reporting level should be included based upon error_reporting() setting, if not
+    // then just return
+    if ( !(error_reporting() & $errno) )
+        return true;
     
     switch ($errno) {
     case E_USER_ERROR:

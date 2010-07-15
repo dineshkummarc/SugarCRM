@@ -55,7 +55,6 @@ $module_name = '<module_name>';
 								'address_city',
 								'created_by_name',
 								'do_not_call',
-								
 						),
 					),
  			   );

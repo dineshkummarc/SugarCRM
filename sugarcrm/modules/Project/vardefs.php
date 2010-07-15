@@ -55,14 +55,12 @@ $dictionary['Project'] = array(
 			'name' => 'date_entered',
 			'vname' => 'LBL_DATE_ENTERED',
 			'type' => 'datetime',
-			'required' => true,
 			'comment' => 'Date record created'
 		),
 		'date_modified' => array(
 			'name' => 'date_modified',
 			'vname' => 'LBL_DATE_MODIFIED',
 			'type' => 'datetime',
-			'required' => true,
 			'comment' => 'Date record last modified'
 		),
 		'assigned_user_id' => array(

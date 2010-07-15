@@ -123,7 +123,7 @@ $mod_strings = array (
    'ERR_PERFORM_HTACCESS_1' => '' ,
    'ERR_PERFORM_HTACCESS_2' => 'ファイルに書き込みできません。' ,
    'ERR_PERFORM_HTACCESS_3' => 'ログファイルをブラウザからのアクセスからセキュアな状態にしたい場合は、以下のコードを記述した .htaccessファイルをログディレクトリ内に作成してください:' ,
-   'ERR_PERFORM_NO_TCPIP' => '<b>インターネットの接続が検出できませんでした。</b>インターネットに接続されている場合は、<a href="http://www.sugarcrm.com/crm/products/offline-product-registration.html">http://www.sugarcrm.com/crm/products/offline-product-registration.html</a>にアクセスして登録を行ってください。SugarCRMの用途などをお知らせいただくことによって、今後ご要望に沿ったプロダクトを提供するための参考とさせていただきます。' ,
+   'ERR_PERFORM_NO_TCPIP' => '<b>インターネットの接続が検出できませんでした。</b>インターネットに接続されている場合は、<a href="http://www.sugarcrm.com/home/index.php?option=com_extended_registration&task=register\>http://www.sugarcrm.com/home/index.php?option=com_extended_registration&task=register</a>にアクセスして登録を行ってください。SugarCRMの用途などをお知らせいただくことによって、今後ご要望に沿ったプロダクトを提供するための参考とさせていただきます。' ,
    'ERR_SESSION_DIRECTORY_NOT_EXISTS' => '指定されたセッションディレクトリは正しくありません。' ,
    'ERR_SESSION_DIRECTORY' => '指定されたセッションディレクトリは書き込み不可です。' ,
    'ERR_SESSION_PATH' => 'カスタムセッションディレクトリを使用したい場合は、ディレクトリの指定が必要です。' ,

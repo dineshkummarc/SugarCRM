@@ -55,7 +55,7 @@ class ConfiguratorViewEdit extends ViewEdit
 	public function preDisplay()
     {
         if(!is_admin($GLOBALS['current_user']))
-            sugar_die('Admin Only');
+            sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']); 
     }
     
     /**

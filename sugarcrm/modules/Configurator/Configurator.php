@@ -81,7 +81,7 @@ class Configurator {
 		$overrideArray = $this->readOverride();		
 		$this->previous_sugar_override_config_array = $overrideArray;
 		$diffArray = deepArrayDiff($this->config, $sugar_config);
-		$overrideArray = sugarArrayMerge($overrideArray, $diffArray);
+		$overrideArray = sugarArrayMergeRecursive($overrideArray, $diffArray);
 		$overideString = "<?php\n/***CONFIGURATOR***/\n";
 		sugar_cache_put('sugar_config', $this->config);
 		$GLOBALS['sugar_config'] = $this->config;

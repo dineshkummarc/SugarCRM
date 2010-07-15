@@ -153,7 +153,7 @@
 
 					{/literal}
 					//display the html
-					var trgt_html = "<div id='trgt_added_"+targets_added+"'> <table width='100%' class='tabDetailViewDL2'><tr class='tabDetailViewDL2' ><td width='25%'>"+trgt_name_html+"</td><td width='25%'>"+trgt_type_html+"</td><td>"+trgt_id_html+"<a href='#' onclick=\"remove_target('trgt_added_"+targets_added+"','"+targets_added+"'); \" >  <img src='{$IMAGE_PATH}delete_inline.gif' alt='rem' align='absmiddle' border='0' height='12' width='12'>{$MOD.LBL_REMOVE}</a></td></tr></table></div>";						
+					var trgt_html = "<div id='trgt_added_"+targets_added+"'> <table width='100%' class='tabDetailViewDL2'><tr class='tabDetailViewDL2' ><td width='25%'>"+trgt_name_html+"</td><td width='25%'>"+trgt_type_html+"</td><td>"+trgt_id_html+"<a href='#' onclick=\"remove_target('trgt_added_"+targets_added+"','"+targets_added+"'); \" >  <img src='{sugar_getimagepath file='delete_inline.gif'}' alt='rem' align='absmiddle' border='0' height='12' width='12'>{$MOD.LBL_REMOVE}</a></td></tr></table></div>";						
 					document.getElementById('added_targets').innerHTML = document.getElementById('added_targets').innerHTML + trgt_html;
 
 					//add values to array in string, seperated by "@@" characters

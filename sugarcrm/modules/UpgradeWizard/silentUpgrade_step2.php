@@ -88,7 +88,7 @@ function checkLoggerSettings(){
  		}
 	 }
 }
- 
+
 function checkResourceSettings(){
 	if(file_exists(getcwd().'/config.php')){
          require(getcwd().'/config.php');
@@ -154,13 +154,13 @@ function verifyArguments($argv,$usage_regular){
         //this should be a regular sugar install
         echo "*******************************************************************************\n";
         echo "*** ERROR: Tried to execute in a non-SugarCRM root directory.\n";
-        die();      
+        die();
     }
 
     if(isset($argv[7]) && file_exists($argv[7].'SugarTemplateUtilties.php')){
         require_once($argv[7].'SugarTemplateUtilties.php');
     }
-    
+
     return $upgradeType;
 }
 
@@ -227,11 +227,6 @@ require_once('modules/UpgradeWizard/uw_utils.php');
 require_once('include/utils/zip_utils.php');
 require_once('include/utils/sugar_file_utils.php');
 require_once('include/SugarObjects/SugarConfig.php');
-require_once('include/SugarLogger/LoggerManager.php');
-if ( file_exists('include/SugarLogger/LoggerTemplate.php') ) {
-    require_once('include/SugarLogger/LoggerTemplate.php');
-}
-require_once('include/SugarLogger/SugarLogger.php');
 
 global $sugar_config;
 $isDCEInstance = false;
@@ -248,19 +243,19 @@ $errors = array();
 	require_once("{$cwd}/sugar_version.php"); // provides $sugar_version & $sugar_flavor
 
 	global $sugar_config;
-	$configOptions = $sugar_config['dbconfig'];	
-	
+	$configOptions = $sugar_config['dbconfig'];
+
     $GLOBALS['log']	= LoggerManager::getLogger('SugarCRM');
 	$patchName		= basename($argv[1]);
 	$zip_from_dir	= substr($patchName, 0, strlen($patchName) - 4); // patch folder name (minus ".zip")
 	$path			= $argv[2]; // custom log file, if blank will use ./upgradeWizard.log
-	
+
 	if($sugar_version < '5.1.0'){
 		$db				= &DBManager :: getInstance();
 	} else{
 		$db				= &DBManagerFactory::getInstance();
 	}
-	
+
 	$UWstrings		= return_module_language('en_us', 'UpgradeWizard');
 	$adminStrings	= return_module_language('en_us', 'Administration');
 	$mod_strings	= array_merge($adminStrings, $UWstrings);
@@ -347,13 +342,13 @@ set_time_limit(0);
 ///    RELOAD NEW DEFINITIONS
 global $ACLActions, $beanList, $beanFiles;
 include('modules/ACLActions/actiondefs.php');
-include('include/modules.php'); 
-	
+include('include/modules.php');
+
 
 //First repair the databse to ensure it is up to date with the new vardefs/tabledefs
 logThis('About to repair the database.', $path);
 //Use Repair and rebuild to update the database.
-global $dictionary; 
+global $dictionary;
 require_once("modules/Administration/QuickRepairAndRebuild.php");
 $rac = new RepairAndClear();
 $rac->clearVardefs();
@@ -387,7 +382,7 @@ foreach ($dictionary as $meta) {
 	if(isset($repairedTables[$tablename])) {
 	   continue;
 	}
-	
+
 	$fielddefs = $meta['fields'];
 	$indices = $meta['indices'];
 	$sql = $GLOBALS['db']->repairTableParams($tablename, $fielddefs, $indices, true);
@@ -395,16 +390,16 @@ foreach ($dictionary as $meta) {
 	    logThis($sql, $path);
 	    $repairedTables[$tablename] = true;
 	}
-	
+
 }
 
-logThis('database repaired', $path);  	
+logThis('database repaired', $path);
 
 include("{$cwd}/{$sugar_config['upload_dir']}upgrades/temp/manifest.php");
 $ce_to_pro_ent = isset($manifest['name']) && ($manifest['name'] == 'SugarCE to SugarPro' || $manifest['name'] == 'SugarCE to SugarEnt');
 $origVersion = substr(preg_replace("/[^0-9]/", "", $sugar_version),0,3);
 
-if($origVersion < '550' || $ce_to_pro_ent) {	
+if($origVersion < '550' || $ce_to_pro_ent) {
 	//add the global team if it does not exist
 	$globalteam = new Team();
 	$globalteam->retrieve('1');
@@ -415,26 +410,31 @@ if($origVersion < '550' || $ce_to_pro_ent) {
 	}else{
 		$globalteam->create_team("Global", $mod_strings['LBL_GLOBAL_TEAM_DESC'], $globalteam->global_team);
 	}
-	
+
 	logThis(" Start Building private teams", $path);
 
     upgradeModulesForTeam();
-    logThis(" Finish Building private teams", $path);  
-	
+    logThis(" Finish Building private teams", $path);
+
     logThis(" Start Building the team_set and team_sets_teams", $path);
     upgradeModulesForTeamsets();
     logThis(" Finish Building the team_set and team_sets_teams", $path);
-    	
+
 	logThis(" Start modules/Administration/upgradeTeams.php", $path);
-        include('modules/Administration/upgradeTeams.php'); 
+        include('modules/Administration/upgradeTeams.php');
         logThis(" Finish modules/Administration/upgradeTeams.php", $path);
-        
+
     if($sugar_config['dbconfig']['db_type'] == 'mssql') {
             if(check_FTS()){
                 $GLOBALS['db']->wakeupFTS();
             }
-    }  
-} 
+    }
+}
+if(!class_exists('SugarThemeRegistry')){
+    require_once('include/SugarTheme/SugarTheme.php');
+}
+SugarThemeRegistry::buildRegistry();
+SugarThemeRegistry::clearAllCaches();
 
 set_upgrade_progress('end','done','end','done');
 ///////////////////////////////////////////////////////////////////////////////

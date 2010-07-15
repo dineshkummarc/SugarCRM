@@ -68,7 +68,9 @@ class SugarWidgetFieldName extends SugarWidgetFieldVarchar
 		
 		$record = $layout_def['fields'][$key];
 		$layout_def['name'] = $name;
-		
+		global $current_user;
+		if ($module == 'Users' && !is_admin($current_user))
+        	$module = 'Employees';
 		$str = "<a target='_blank' href=\"index.php?action=DetailView&module=$module&record=$record\">";
 		$str .= $this->displayListPlain($layout_def);
 		$str .= "</a>";	
@@ -213,6 +215,25 @@ class SugarWidgetFieldName extends SugarWidgetFieldVarchar
 			.$GLOBALS['db']->quote($input_name0)."'\n";
 	}
 
+	function queryFilteris_not($layout_def)
+	{
+		require_once('include/generic/SugarWidgets/SugarWidgetFieldid.php');
+		$layout_def['name'] = 'id';
+		$layout_def['type'] = 'id';
+		$input_name0 = $layout_def['input_name0'];
+		
+		if ( is_array($layout_def['input_name0']))
+		{
+			$input_name0 = $layout_def['input_name0'][0];
+		}
+		if ($input_name0 == 'Current User') {
+			global $current_user;
+			$input_name0 = $current_user->id;
+		}
+
+		return SugarWidgetFieldid::_get_column_select($layout_def)."!='"
+			.$GLOBALS['db']->quote($input_name0)."'\n";
+	}
     // $rename_columns, if true then you're coming from reports
 	function queryFilterone_of(&$layout_def, $rename_columns = true)
 	{

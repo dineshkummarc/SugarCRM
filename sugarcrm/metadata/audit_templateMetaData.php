@@ -53,6 +53,7 @@ $dictionary['audit'] =
 				),
 				'indices' => array (
 				      //name will be re-constructed adding idx_ and table name as the prefix like 'idx_accounts_'
+				      array ('name' => 'primary', 'type' => 'index', 'fields' => array('id')),
 				      array ('name' => 'parent_id', 'type' => 'index', 'fields' => array('parent_id'))
 				)
 		)

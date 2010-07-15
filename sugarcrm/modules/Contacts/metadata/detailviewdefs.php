@@ -73,17 +73,16 @@ $viewdefs['Contacts']['DetailView'] = array(
             'label' => 'LBL_TITLE',
           ),
           array (
-            'name' => 'phone_mobile',
-            'label' => 'LBL_MOBILE_PHONE',
-          ),  
-
+            'name' => 'phone_work',
+            'label' => 'LBL_OFFICE_PHONE',
+          ),
         ),
 
         array (
           'department',
           array (
-            'name' => 'phone_work',
-            'label' => 'LBL_OFFICE_PHONE',
+            'name' => 'phone_mobile',
+            'label' => 'LBL_MOBILE_PHONE',
           ),                
         ),
         

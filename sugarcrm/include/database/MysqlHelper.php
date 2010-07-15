@@ -283,6 +283,7 @@ class MysqlHelper extends DBHelper
                break;
            case 'index':
            case 'foreign':
+           case 'clustered':
            case 'alternate_key':
                /** 
                 * @todo here it is assumed that the primary key of the foreign

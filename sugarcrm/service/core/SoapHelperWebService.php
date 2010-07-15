@@ -194,7 +194,7 @@ function validate_user($user_name, $password){
 		if(!empty($session_id)){
 			session_id($session_id);
 			session_start();
-			if(!empty($_SESSION['is_valid_session']) && $_SESSION['ip_address'] == query_client_ip() && $_SESSION['type'] == 'user'){
+			if(!empty($_SESSION['is_valid_session']) && is_valid_ip_address('ip_address') && $_SESSION['type'] == 'user'){
 
 				global $current_user;
 				require_once('modules/Users/User.php');
@@ -213,6 +213,50 @@ function validate_user($user_name, $password){
 		$GLOBALS['logic_hook']->call_custom_logic('Users', 'login_failed');
 		$GLOBALS['log']->info('End: SoapHelperWebServices->validate_authenticated - validation failed');
 		return false;
+	}
+	
+	/**
+	 * Use the same logic as in SugarAuthenticate to validate the ip address
+	 *
+	 * @param string $session_var
+	 * @return bool - true if the ip address is valid, false otherwise.
+	 */
+	function is_valid_ip_address($session_var){
+		global $sugar_config;
+		// grab client ip address
+		$clientIP = query_client_ip();
+		$classCheck = 0;
+		// check to see if config entry is present, if not, verify client ip
+		if (!isset ($sugar_config['verify_client_ip']) || $sugar_config['verify_client_ip'] == true) {
+			// check to see if we've got a current ip address in $_SESSION
+			// and check to see if the session has been hijacked by a foreign ip
+			if (isset ($_SESSION[$session_var])) {
+				$session_parts = explode(".", $_SESSION[$session_var]);
+				$client_parts = explode(".", $clientIP);
+	            if(count($session_parts) < 4) {
+	             	$classCheck = 0;
+	            }else {
+	    			// match class C IP addresses
+	    			for ($i = 0; $i < 3; $i ++) {
+	    				if ($session_parts[$i] == $client_parts[$i]) {
+	    					$classCheck = 1;
+	    						continue;
+	    				} else {
+	    					$classCheck = 0;
+	    					break;
+	    					}
+	    				}
+	                }
+					// we have a different IP address
+					if ($_SESSION[$session_var] != $clientIP && empty ($classCheck)) {
+						$GLOBALS['log']->fatal("IP Address mismatch: SESSION IP: {$_SESSION[$session_var]} CLIENT IP: {$clientIP}");
+						return false;
+					}
+				} else {
+					return false;
+				}
+		}
+		return true;
 	}
 
 	function checkSessionAndModuleAccess($session, $login_error_key, $module_name, $access_level, $module_access_level_error_key, $errorObject) {
@@ -424,8 +468,7 @@ function validate_user($user_name, $password){
 		return $list;
 
 	} // fn
-
-
+	
 	function array_get_name_value_list($array){
 		$GLOBALS['log']->info('Begin: SoapHelperWebServices->array_get_name_value_list');
 		$list = array();

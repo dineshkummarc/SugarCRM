@@ -116,6 +116,8 @@ $listViewDefs[$module_name] = array(
     'ASSIGNED_USER_NAME' => array(
         'width' => '2', 
         'label' => 'LBL_ASSIGNED_USER',
+        'module' => 'Employees',
+        'id' => 'ASSIGNED_USER_ID',
         'default' => true),
 );
 ?>

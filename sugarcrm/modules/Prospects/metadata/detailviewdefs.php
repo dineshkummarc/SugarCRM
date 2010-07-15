@@ -52,24 +52,25 @@ $viewdefs['Prospects']['DetailView'] = array(
   array (
     'full_name',
     
-    array (
-      'name' => 'phone_work',
-      'label' => 'LBL_OFFICE_PHONE',
-    ),
+    
     ),
 
   array (
     'title',
-    'phone_mobile',
+    array (
+      'name' => 'phone_work',
+      'label' => 'LBL_OFFICE_PHONE',
+    ),
   ),
   
   array (
     'department',
-    'phone_fax',
+    'phone_mobile',
   ),
   
   array (
     'account_name',
+  	'phone_fax',
   ),
   
   array (

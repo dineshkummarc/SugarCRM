@@ -146,6 +146,7 @@ $searchdefs['Contacts'] = array(
 		        'default' => true,
 		        'width' => '10%',
 		      ),
+		      
 		    ),
 		  )
 );

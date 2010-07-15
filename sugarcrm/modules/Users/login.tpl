@@ -46,7 +46,7 @@ var LBL_REQUEST_SUBMIT = '{$MOD.LBL_REQUEST_SUBMIT}';
 		<td align="center">
 		<div class="dashletPanelMenu" style="width: 460px;">
 		<div class="hd"><div class="tl"></div><div class="hd-center"></div><div class="tr"></div></div>
-		<div class="bd">	
+		<div class="bd">
 		<div class="ml"></div>
 		<div class="bd-center">
 			<div class="loginBox">
@@ -90,15 +90,15 @@ var LBL_REQUEST_SUBMIT = '{$MOD.LBL_REQUEST_SUBMIT}';
 									</tr>
 									<tr>
 										<td scope="row" width="30%">{$MOD.LBL_USER_NAME}:</td>
-										<td width="70%"><input type="text" size='35' tabindex="1" id="user_name" name="user_name"  value='{$LOGIN_USER_NAME}'</td>
+										<td width="70%"><input type="text" size='35' tabindex="1" id="user_name" name="user_name" value='{$LOGIN_USER_NAME}' /></td>
 									</tr>
 									<tr>
 										<td scope="row">{$MOD.LBL_PASSWORD}:</td>
-										<td width="30%"><input type="password" size='26' tabindex="2" id="user_password" name="user_password" value=''</td>
+										<td width="30%"><input type="password" size='26' tabindex="2" id="user_password" name="user_password" value='' /></td>
 									</tr>
 									{if !empty($SELECT_LANGUAGE)}
 									<tr>
-										<td colspan="2" class="login_more"><div  style="cursor: hand; cursor: pointer; display:{$LOGIN_DISPLAY}" onclick='toggleDisplay("more");'><IMG src="index.php?entryPoint=getImage&themeName='+SUGAR.themes.theme_name+'&imageName=advanced_search.gif" border="0" alt="Hide Options" id="more_options">&nbsp;<a href='javascript:void(0)'>{$MOD.LBL_LOGIN_OPTIONS}</a></div>
+										<td colspan="2" class="login_more"><div  style="cursor: hand; cursor: pointer; display:{$LOGIN_DISPLAY}" onclick='toggleDisplay("more");'><IMG src="{sugar_getimagepath file='advanced_search.gif'}" border="0" alt="Hide Options" id="more_options">&nbsp;<a href='javascript:void(0)'>{$MOD.LBL_LOGIN_OPTIONS}</a></div>
 											<div id='more' style='display: none'>
 												<table cellpadding="0" cellspacing="2" border="0" align="center" width="100%">
 												    <tr>
@@ -112,7 +112,7 @@ var LBL_REQUEST_SUBMIT = '{$MOD.LBL_REQUEST_SUBMIT}';
 									{/if}
 									<tr>
 										<td>&nbsp;</td>
-										<td><input title="{$MOD.LBL_LOGIN_BUTTON_TITLE}" accessKey="{$MOD.LBL_LOGIN_BUTTON_TITLE}" class="button primary" type="submit" tabindex="3" id="login_button" name="Login" value="{$MOD.LBL_LOGIN_BUTTON_LABEL}"><br>&nbsp;</td>		
+										<td><input title="{$MOD.LBL_LOGIN_BUTTON_TITLE}" accessKey="{$MOD.LBL_LOGIN_BUTTON_TITLE}" class="button primary" type="submit" tabindex="3" id="login_button" name="Login" value="{$MOD.LBL_LOGIN_BUTTON_LABEL}"><br>&nbsp;</td>
 									</tr>
 								</table>
 							</form>
@@ -121,10 +121,10 @@ var LBL_REQUEST_SUBMIT = '{$MOD.LBL_REQUEST_SUBMIT}';
 									<tr>
 										<td colspan="2" class="login_more">
 										<div  style="cursor: hand; cursor: pointer; display:{$DISPLAY_FORGOT_PASSWORD_FEATURE};" onclick='toggleDisplay("forgot_password_dialog");'>
-											<IMG src="index.php?entryPoint=getImage&themeName='+SUGAR.themes.theme_name+'&imageName=advanced_search.gif" border="0" alt="Hide Options" id="forgot_password_dialog_options">
+											<IMG src="{sugar_getimagepath file='advanced_search.gif'}" border="0" alt="Hide Options" id="forgot_password_dialog_options">
 											<a href='javascript:void(0)'>{$MOD.LBL_LOGIN_FORGOT_PASSWORD}</a>
 										</div>
-											<div id="forgot_password_dialog" style="display:none" > 
+											<div id="forgot_password_dialog" style="display:none" >
 												<input type="hidden" name="entryPoint" value="GeneratePassword">
 												<table cellpadding="0" cellspacing="2" border="0" align="center" width="100%" >
 													<tr>
@@ -134,7 +134,7 @@ var LBL_REQUEST_SUBMIT = '{$MOD.LBL_REQUEST_SUBMIT}';
 													</tr>
 													<tr>
 														<td scope="row" width="30%">{$MOD.LBL_USER_NAME}:</td>
-														<td width="70%"><input type="text" size='26' id="fp_user_name" name="fp_user_name"  value='{$LOGIN_USER_NAME}'</td>
+														<td width="70%"><input type="text" size='26' id="fp_user_name" name="fp_user_name"  value='{$LOGIN_USER_NAME}' /></td>
 													</tr>
 													<tr>
 											            <td scope="row" width="30%">{$MOD.LBL_EMAIL}:</td>
@@ -143,7 +143,7 @@ var LBL_REQUEST_SUBMIT = '{$MOD.LBL_REQUEST_SUBMIT}';
 													{$CAPTCHA}
 													<tr>
 													    <td scope="row" width="30%"><div id='wait_pwd_generation'></div></td>
-														<td width="70%"><input title="Email Temp Password" class="button" type="button" style="display:inline" onclick="validateAndSubmit(); return document.getElementById('cant_login').value == ''" id="generate_pwd_button" name="fp_login" value="{$MOD.LBL_LOGIN_SUBMIT}"></td>		
+														<td width="70%"><input title="Email Temp Password" class="button" type="button" style="display:inline" onclick="validateAndSubmit(); return document.getElementById('cant_login').value == ''" id="generate_pwd_button" name="fp_login" value="{$MOD.LBL_LOGIN_SUBMIT}"></td>
 													</tr>
 												</table>
 											</div>
@@ -152,8 +152,8 @@ var LBL_REQUEST_SUBMIT = '{$MOD.LBL_REQUEST_SUBMIT}';
 								</table>
 							</form>
 						</div>
-						
-						
+
+
 					</td>
 				</tr>
 			</table>

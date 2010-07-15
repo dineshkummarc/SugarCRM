@@ -182,7 +182,7 @@ class MssqlManager extends DBManager
 			}
          }
 
-        if($this->checkError('Could Not Connect:', $dieOnError))
+        if($this->checkError('Could Not Connect', $dieOnError))
             $GLOBALS['log']->info("connected to db");
 
         $GLOBALS['log']->info("Connect:".$this->database);
@@ -227,9 +227,9 @@ class MssqlManager extends DBManager
                     $sqlmsg = '';
             }
         }
-        
+
         if ( strlen($sqlmsg) > 2 ) {
-        	$GLOBALS['log']->fatal("SQL Server error: " . $sqlmsg);
+        	$GLOBALS['log']->fatal("$msg: SQL Server error: " . $sqlmsg);
             return true;
         }
 
@@ -254,24 +254,24 @@ class MssqlManager extends DBManager
         $GLOBALS['log']->info('Query:' . $sql);
         $this->checkConnection();
         $this->query_time = microtime(true);
-        
+
         // Bug 34892 - Clear out previous error message by checking the @@ERROR global variable
         $errorNumberHandle = mssql_query("SELECT @@ERROR",$this->database);
 		$errorNumber = array_shift(mssql_fetch_row($errorNumberHandle));
-		
+
         if ($suppress) {
         }
         else {
             $result = @mssql_query($sql, $this->database);
         }
-        
+
         $this->lastmysqlrow = -1;
 
         $this->query_time = microtime(true) - $this->query_time;
         $GLOBALS['log']->info('Query Execution Time:'.$this->query_time);
 
 
-        $this->checkError($msg.' Query Failed:' . $sql . '::', $dieOnError);
+        $this->checkError($msg.' Query Failed: ' . $sql, $dieOnError);
 
         return $result;
     }
@@ -520,7 +520,7 @@ class MssqlManager extends DBManager
                         if (!strpos($upperQuery,"JOIN")){
                             $from_pos = strpos($upperQuery , "FROM") + 4;
                             $where_pos = strpos($upperQuery, "WHERE");
-                            $tablename = trim(substr($upperQuery,$from_pos, $where_pos - $from_pos));   
+                            $tablename = trim(substr($upperQuery,$from_pos, $where_pos - $from_pos));
                         }else{
                             $tablename = $this->getTableNameFromModuleName($_REQUEST['module'],$sql);
                         }
@@ -827,7 +827,7 @@ class MssqlManager extends DBManager
         $sql
         )
     {
-        
+
         global $beanList, $beanFiles;
         $GLOBALS['log']->debug("Module being processed is " . $module_str);
         //get the right module files
@@ -1071,7 +1071,7 @@ class MssqlManager extends DBManager
         $this->checkConnection();
         $result = $this->query(
             "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME='".$tableName."'");
-        
+
         $rowCount = $this->getRowCount($result);
         $this->freeResult($result);
         return ($rowCount == 0) ? false : true;
@@ -1092,13 +1092,13 @@ class MssqlManager extends DBManager
 
         return $alters;
     }
-    
+
     /**
      * @see DBManager::dropIndexes()
      */
     public function dropIndexes(
-        $tablename, 
-        $indexes, 
+        $tablename,
+        $indexes,
         $execute = true
         )
     {
@@ -1106,7 +1106,7 @@ class MssqlManager extends DBManager
         foreach ($indexes as $index) {
             if ( !empty($sql) ) $sql .= ";";
             $name = $index['name'];
-            if($execute) 
+            if($execute)
                 unset($GLOBALS['table_descriptions'][$tablename]['indexes'][$name]);
             if ($index['type'] == 'primary')
                 $sql .= "ALTER TABLE $tablename DROP CONSTRAINT $name";
@@ -1114,9 +1114,9 @@ class MssqlManager extends DBManager
                 $sql .= "DROP INDEX $name on $tablename";
         }
         if (!empty($sql))
-            if($execute) 
+            if($execute)
                 $this->query($sql);
-        
+
         return $sql;
     }
 
@@ -1216,8 +1216,8 @@ class MssqlManager extends DBManager
      * @see DBManager::convert()
      */
     public function convert(
-        $string, 
-        $type, 
+        $string,
+        $type,
         array $additional_parameters = array(),
         array $additional_parameters_oracle_only = array()
         )
@@ -1226,54 +1226,54 @@ class MssqlManager extends DBManager
         $additional_parameters_string = '';
         if (!empty($additional_parameters))
             $additional_parameters_string = ','.implode(',',$additional_parameters);
-        
+
         switch ($type) {
-        case 'today': return "GETDATE()";	
-        case 'left': return "LEFT($string".$additional_parameters_string.")";			
-        case 'date_format': 
+        case 'today': return "GETDATE()";
+        case 'left': return "LEFT($string".$additional_parameters_string.")";
+        case 'date_format':
             if(!empty($additional_parameters) && in_array("'%Y-%m'", $additional_parameters))
                return "CONVERT(varchar(7),". $string . ",120)";
             else
                return "CONVERT(varchar(10),". $string . ",120)";
-        case 'IFNULL': return "ISNULL($string".$additional_parameters_string.")";		
+        case 'IFNULL': return "ISNULL($string".$additional_parameters_string.")";
         case 'CONCAT': return "$string+".implode("+",$additional_parameters);
         case 'text2char': return "CAST($string AS varchar(8000))";
         }
-        
+
         return "$string";
     }
-    
+
     /**
      * @see DBManager::concat()
      */
     public function concat(
-        $table, 
+        $table,
         array $fields
         )
     {
         $ret = '';
-        
+
         foreach ( $fields as $index => $field )
 			if (empty($ret))
-			    $ret =  db_convert($table.".".$field,'IFNULL', array("''"));	
-			else 
+			    $ret =  db_convert($table.".".$field,'IFNULL', array("''"));
+			else
 			    $ret .=	" + ' ' + ".db_convert($table.".".$field,'IFNULL', array("''"));
-        
+
 		return $ret;
     }
-    
+
     /**
      * @see DBManager::fromConvert()
      */
     public function fromConvert(
-        $string, 
+        $string,
         $type)
     {
         switch($type) {
         case 'date': return substr($string, 0,11);
         case 'time': return substr($string, 11);
 		}
-		
+
 		return $string;
     }
 }

@@ -112,7 +112,7 @@ $mod_strings = array(
   'ERR_PERFORM_HTACCESS_1' => 'Não pode atualizar o',
   'ERR_PERFORM_HTACCESS_2' => 'arquivo. ',
   'ERR_PERFORM_HTACCESS_3' => 'Se você quiser prevenir que o seu arquivo de log seja acessado por navegador, crie um arquivo htaccess em seu diretório de log com a linha: ',
-  'ERR_PERFORM_NO_TCPIP' => '<b>Nós não pudemos detectar uma conexão internet.</b>Quando você tiver uma conexão, por favor visite <a href="http://www.sugarcrm.com/crm/products/offline-product-registration.html">http://www.sugarcrm.com/crm/products/offline-product-registration.html</a> para se registrar com a SugarCRM. Deixando nós conhecermos um pouco mais sobre os seus planos de uso do SugarCRM, nós podemos assegurar que sempre entregaremos a aplicação certa para as suas necessidades de negócios',
+  'ERR_PERFORM_NO_TCPIP' => '<b>Nós não pudemos detectar uma conexão internet.</b>Quando você tiver uma conexão, por favor visite <a href="http://www.sugarcrm.com/home/index.php?option=com_extended_registration&task=register">http://www.sugarcrm.com/home/index.php?option=com_extended_registration&task=register</a> para se registrar com a SugarCRM. Deixando nós conhecermos um pouco mais sobre os seus planos de uso do SugarCRM, nós podemos assegurar que sempre entregaremos a aplicação certa para as suas necessidades de negócios',
   'ERR_SESSION_DIRECTORY_NOT_EXISTS' => 'Diretório da sessão fornecido não é um diretório válido',
   'ERR_SESSION_DIRECTORY' => 'Diretório de sessão forneciso não é um diretório com permissão de escrita',
   'ERR_SESSION_PATH' => 'Caminho da sessão é obrigatório se você desejar especificar o seu próprio',

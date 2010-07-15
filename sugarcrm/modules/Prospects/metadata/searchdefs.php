@@ -42,6 +42,7 @@ $searchdefs['Prospects'] = array(
   					'basic_search' => array(
  							array('name'=>'search_name','label' =>'LBL_NAME', 'type' => 'name'),
                            array('name'=>'current_user_only', 'label'=>'LBL_CURRENT_USER_FILTER', 'type'=>'bool'),
+                           
 						),
 					'advanced_search' => array(
 							'first_name', 
@@ -55,6 +56,7 @@ $searchdefs['Prospects'] = array(
 							array('name' => 'address_postalcode', 'label' =>'LBL_POSTAL_CODE', 'type' => 'name'),
 							array('name' => 'primary_address_country', 'label' =>'LBL_COUNTRY', 'type' => 'name', 'options' => 'countries_dom', ), 
 							array('name' => 'assigned_user_id', 'type' => 'enum', 'label' => 'LBL_ASSIGNED_TO', 'function' => array('name' => 'get_user_array', 'params' => array(false))),
+							
 					),
 				),
 		   );

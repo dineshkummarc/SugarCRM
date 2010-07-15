@@ -46,6 +46,7 @@ $default_connectors = array (
     array ( 
     ),
   ), 
+
 );
 
 
@@ -58,6 +59,7 @@ $default_modules_sources = array (
   array (
     'ext_rest_linkedin' => 'ext_rest_linkedin',
   ),
+   
   'Leads' =>
   array (
     'ext_rest_linkedin' => 'ext_rest_linkedin',
@@ -65,7 +67,9 @@ $default_modules_sources = array (
   'Prospects' =>
   array (
     'ext_rest_linkedin' => 'ext_rest_linkedin',
+     
   ),
+    
 );
 
 if(!file_exists('custom/modules/Connectors/metadata')) {

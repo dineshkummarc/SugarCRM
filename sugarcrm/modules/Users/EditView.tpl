@@ -105,12 +105,12 @@ EditView_tabs.on('contentReady', function(e){
 
 <div id="EditView_tabs" class="yui-navset">
     <ul class="yui-nav">
-        <li class="selected"><a href="#tab1"><em>{$MOD.LBL_USER_INFORMATION}</em></a></li>
-        <li {if $CHANGE_PWD == 0}style='display:none'{/if}><a href="#tab2"><em>{$MOD.LBL_CHANGE_PASSWORD_TITLE}</em></a></li>
+        <li class="selected"><a id="tab1" href="#tab1"><em>{$MOD.LBL_USER_INFORMATION}</em></a></li>
+        <li {if $CHANGE_PWD == 0}style='display:none'{/if}><a id="tab2" href="#tab2"><em>{$MOD.LBL_CHANGE_PASSWORD_TITLE}</em></a></li>
         {if $SHOW_THEMES}
-        <li><a href="#tab3"><em>{$MOD.LBL_THEME}</em></a></li>
+        <li><a id="tab3" href="#tab3"><em>{$MOD.LBL_THEME}</em></a></li>
         {/if}
-        <li><a href="#tab4" style='display:{$HIDE_FOR_GROUP_AND_PORTAL};'><em>{$MOD.LBL_ADVANCED}</em></a></li>
+        <li><a id="tab4" href="#tab4" style='display:{$HIDE_FOR_GROUP_AND_PORTAL};'><em>{$MOD.LBL_ADVANCED}</em></a></li>
     </ul>            
     <div class="yui-content">
         <div>
@@ -539,7 +539,15 @@ EditView_tabs.on('contentReady', function(e){
                                     onkeydown='setSigDigits();' onkeyup='setSigDigits();'>
                             </slot></td></tr>
                         {else}
-                            <input type='hidden' name='num_grp_sep' id='default_number_grouping_seperator' value='{$NUM_GRP_SEP}'>
+                            <tr>
+                            <td scope="row"><slot></td>
+                            <td ><slot></slot></td>
+                            <td width="17%" scope="row"><slot>{$MOD.LBL_NUMBER_GROUPING_SEP}:</slot>&nbsp;{sugar_help text=$MOD.LBL_NUMBER_GROUPING_SEP_TEXT }</td>
+                            <td ><slot>
+                                <input tabindex='14' name='num_grp_sep' id='default_number_grouping_seperator'
+                                    type='text' maxlength='1' size='1' value='{$NUM_GRP_SEP}' 
+                                    onkeydown='setSigDigits();' onkeyup='setSigDigits();'>
+                            </slot></td></tr>
                         {/if}
                         {capture name=SMARTY_LOCALE_NAME_FORMAT_DESC}&nbsp;{$MOD.LBL_LOCALE_NAME_FORMAT_DESC}<br />{$MOD.LBL_LOCALE_NAME_FORMAT_DESC_2}{/capture}
                         <tr>

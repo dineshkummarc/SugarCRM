@@ -34,61 +34,20 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
  ********************************************************************************/
-/*********************************************************************************
-
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
-
-
-
-
-
-
-require_once('modules/Administration/Forms.php');
-
-global $mod_strings;
-global $app_list_strings;
-global $app_strings;
-global $current_user;
-
-if (!is_admin($current_user)) sugar_die("Unauthorized access to administration.");
-
-
-$title = get_module_title($mod_strings['LBL_MODULE_NAME'], $mod_strings['LBL_CONFIGURE_TABS'].":", true);
-
-global $theme, $currentModule, $app_list_strings, $app_strings;
-
-
-
-$GLOBALS['log']->info("Administration ConfigureTabs view");
-require_once("modules/MySettings/TabController.php");
-$controller = new TabController();
-$tabs = $controller->get_tabs_system();
-
-$enabled= array();
-foreach ($tabs[0] as $key=>$value)
-{
-    $enabled[] = array("module" => $key, 'label' => translate($key));
+require_once('include/EditView/SubpanelQuickCreate.php');
+class PopupQuickCreate extends SubpanelQuickCreate{
+	
+	function PopupQuickCreate($module, $view='QuickCreate'){
+		$this->defaultProcess = false;
+		parent::SubpanelQuickCreate($module, $view, true);
+		$this->ev->defs['templateMeta']['form']['buttons'] = array('POPUPSAVE', 'POPUPCANCEL');
+	}
+	
+	function process($module){
+        $form_name = 'form_QuickCreate_' . $module;
+        $this->ev->formName = $form_name;
+        $this->ev->process(true, $form_name);
+		return $this->ev->display(false, true);
+	}
 }
-$disabled = array();
-foreach ($tabs[1] as $key=>$value)
-{
-	$disabled[] = array("module" => $key, 'label' => translate($key));
-}
-
-$user_can_edit = $controller->get_users_can_edit();
-$this->ss->assign('APP', $GLOBALS['app_strings']);
-$this->ss->assign('MOD', $GLOBALS['mod_strings']);
-$this->ss->assign('title',  $title);
-$this->ss->assign('user_can_edit',  $user_can_edit);
-$this->ss->assign('enabled_tabs', json_encode($enabled));
-$this->ss->assign('disabled_tabs', json_encode($disabled));
-$this->ss->assign('description',  $mod_strings['LBL_CONFIG_TABS']);
-
-echo $this->ss->fetch('modules/Administration/ConfigureTabs.tpl');	
-
 ?>

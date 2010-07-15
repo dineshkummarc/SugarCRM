@@ -91,8 +91,10 @@
 	<tr>
 	<td scope="row" width='15%'><slot>{MOD.LBL_SEND_AS_TEXT}</slot></td>
 	<td><slot><input id='text_only' type="checkbox" disabled="disabled" {TEXT_ONLY_CHECKED} /></slot></td>
-	<td scope="row"><slot>&nbsp;</slot></td>
-	<td><slot>&nbsp;</slot></td>
+	
+	<td scope="row" width='15%'><slot>{APP.LBL_ASSIGNED_TO}</slot></td>
+	<td><slot>{ASSIGNED_USER_NAME}</slot></td>
+	
 	</tr>
 	<tr>
 	<td scope="row" valign="top"><slot>{MOD.LBL_BODY}</slot></td>

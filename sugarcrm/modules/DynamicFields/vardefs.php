@@ -66,4 +66,3 @@ $dictionary['FieldsMetaData'] = array (
 		array('name' => 'idx_meta_cm_del', 'type' => 'index', 'fields' => array('custom_module', 'deleted')),
 	),
 );
-?>

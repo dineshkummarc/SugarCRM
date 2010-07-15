@@ -50,8 +50,7 @@ class ViewModulelistmenu extends SugarView
  	
  	public function display()
  	{
-        //last viewed
-        $tracker = new Tracker();
+ 	    $tracker = new Tracker();
         $history = $tracker->get_recently_viewed($GLOBALS['current_user']->id,$this->module);
         foreach ( $history as $key => $row ) {
             $history[$key]['item_summary_short'] = getTrackerSubstring($row['item_summary']);

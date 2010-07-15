@@ -94,9 +94,16 @@ $subpanel_layout = array(
 		'date_modified' => array(
 			'width'					=> '10%',
 		),
+		'date_entered'=>array(
+			'vname' => 'LBL_LIST_DATE_ENTERED',
+			'width' => '10%',
+		),
 		'assigned_user_name' => array (
 			'name' => 'assigned_user_name',
 			'vname' => 'LBL_LIST_ASSIGNED_TO_NAME',
+			'widget_class' => 'SubPanelDetailViewLink',
+		 	'target_record_key' => 'assigned_user_id',
+			'target_module' => 'Employees',
 		),
 		'edit_button' => array(
 			'vname' => 'LBL_EDIT_BUTTON',

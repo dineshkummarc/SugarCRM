@@ -78,7 +78,8 @@ class SugarWidgetSubPanelRemoveButtonMeetings extends SugarWidgetField
             $focus->retrieve($return_id);
         }
 		
-		if($focus->assigned_user_id == $record) return '';
+        //CCL - Comment out restriction to not remove assigned user
+		//if($focus->assigned_user_id == $record) return '';
 		
 		if (isset($layout_def['linked_field_set']) && !empty($layout_def['linked_field_set'])) {
 			$linked_field= $layout_def['linked_field_set'] ;

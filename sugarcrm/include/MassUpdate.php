@@ -622,9 +622,9 @@ EOJS;
 			$parent_type = $field['parent_type'];
             $parent_types = $app_list_strings[$parent_type];
             $disabled_parent_types = ACLController::disabledModuleList($parent_types,false, 'list');
-            foreach($disabled_parent_types as $disabled_parent_type)
-                if($disabled_parent_type != $this->sugarbean->parent_type)
-				    unset($parent_types[$disabled_parent_type]);
+            foreach($disabled_parent_types as $disabled_parent_type) {
+			    unset($parent_types[$disabled_parent_type]);
+            }
 			$types = get_select_options_with_id($parent_types, '');
 			//BS Fix Bug 17110
 			$pattern = "/\n<OPTION.*".$app_strings['LBL_NONE']."<\/OPTION>/";

@@ -71,6 +71,14 @@ class SugarWidgetFieldEnum extends SugarWidgetReportField {
 		}
 		return $this->_get_column_select($layout_def)." = '".$GLOBALS['db']->quote($input_name0)."'\n";
 	}
+	
+	function queryFilteris_not(& $layout_def) {
+		$input_name0 = $layout_def['input_name0'];
+		if (is_array($layout_def['input_name0'])) {
+			$input_name0 = $layout_def['input_name0'][0];
+		}
+		return $this->_get_column_select($layout_def)." != '".$GLOBALS['db']->quote($input_name0)."'\n";
+	}
 
 	function queryFilterone_of(& $layout_def) {
 		$arr = array ();

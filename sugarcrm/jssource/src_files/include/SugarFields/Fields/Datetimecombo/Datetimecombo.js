@@ -93,7 +93,7 @@ function Datetimecombo (datetime, field, timeformat, tabindex, showCheckbox, che
     this.meridiem = this.hasMeridiem ? trim(this.datetime.substring(16)) : '';
     this.datetime = this.datetime.substr(0,10);
     this.showCheckbox = showCheckbox;
-    this.checked = checked;
+    this.checked = parseInt(checked);
     document.getElementById(this.fieldname + '_date').value = this.datetime;
 
 }

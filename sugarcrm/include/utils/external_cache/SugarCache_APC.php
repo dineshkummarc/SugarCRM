@@ -92,4 +92,12 @@ class SugarCache_APC extends SugarCache_ExternalAbstract
         parent::__unset($key);
         apc_delete($this->_realKey($key));
     }
+
+    /**
+     * Clean opcode cache
+     */
+    function clean_opcodes()
+    {
+		apc_clear_cache();
+    }
 }

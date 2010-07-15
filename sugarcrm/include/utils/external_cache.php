@@ -37,7 +37,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 /**##@+
  * Load require libraries
- * 
+ *
  * @ignore
  */
 require 'include/utils/external_cache/SugarCache.php';
@@ -46,6 +46,7 @@ require 'include/utils/external_cache/SugarCache_ExternalAbstract.php';
 require 'include/utils/external_cache/SugarCache_APC.php';
 require 'include/utils/external_cache/SugarCache_Memcache.php';
 require 'include/utils/external_cache/SugarCache_Zend.php';
+require 'include/utils/external_cache/SugarCache_ZendServer.php';
 require 'include/utils/external_cache/SugarCache_sMash.php';
 require 'include/utils/external_cache/SugarCache_Wincache.php';
 /**##@- */
@@ -57,7 +58,7 @@ $GLOBALS['external_cache_checked'] = false;
 
 /**
  * Internal -- Is the external cache available.  This setting is determined by checking for the availability
- * of the external cache functions.  It can be overridden by adding a config variable 
+ * of the external cache functions.  It can be overridden by adding a config variable
  * (external_cache_disabled=true).
  */
 $GLOBALS['external_cache_enabled'] = false;
@@ -106,7 +107,7 @@ define('EXTERNAL_CACHE_INTERVAL_SECONDS', 300 );
 /**
  * This constant is provided as a convenience for users that want to store null values
  * in the cache.  If your function frequently has null results that take a long time to
- * calculate, store those results in the cache.  On retrieval, substitue the value you 
+ * calculate, store those results in the cache.  On retrieval, substitue the value you
  * stored for null.
  */
 define('EXTERNAL_CACHE_NULL_VALUE', "SUGAR_CACHE_NULL_ZZ");
@@ -119,7 +120,7 @@ define('EXTERNAL_CACHE_NULL_VALUE', "SUGAR_CACHE_NULL_ZZ");
 define('EXTERNAL_CACHE_DEBUG', false);
 
 /**
- * Set this to true to validate that all items stored in the external cache are 
+ * Set this to true to validate that all items stored in the external cache are
  * identical when they are retrieved.  This forces an immediate retrieve after each
  * store call to make sure the contents are reproduced exactly.
  */
@@ -132,19 +133,19 @@ define('EXTENRAL_CACHE_VALIDATE_STORES', false);
 define('EXTERNAL_CACHE_WORKING_CHECK_KEY', 'EXTERNAL_CACHE_WORKING_CHECK_KEY');
 
 /**
- * Internal -- Determine if there is an external cache available for use.  
+ * Internal -- Determine if there is an external cache available for use.
  * Currently only Zend Platform is supported.
  */
 function check_cache()
 {
     if(EXTERNAL_CACHE_DEBUG) SugarCache::log("Checking cache");
-    
+
     if($GLOBALS['external_cache_checked'] == false)
     {
         $GLOBALS['external_cache_checked'] = true;
         $GLOBALS['external_cache_object'] = SugarCache::discover();
     }
-    
+
     if(EXTERNAL_CACHE_DEBUG) SugarCache::log("Checking cache: " . var_export($GLOBALS['external_cache_enabled'], true));
 }
 
@@ -222,9 +223,9 @@ function sugar_cache_clear($key)
 }
 
 /**
- * Turn off external caching for the rest of this round trip and for all round 
+ * Turn off external caching for the rest of this round trip and for all round
  * trips for the next cache timeout.  This function should be called when global arrays
- * are affected (studio, module loader, upgrade wizard, ... ) and it is not ok to 
+ * are affected (studio, module loader, upgrade wizard, ... ) and it is not ok to
  * wait for the cache to expire in order to see the change.
  */
 function sugar_cache_reset()
@@ -232,11 +233,26 @@ function sugar_cache_reset()
     //@todo implement this in new code
     // Set a flag to clear the code.
     sugar_cache_put('EXTERNAL_CACHE_RESET', true);
-    
+
     // Clear the local cache
     $GLOBALS['cache_local_store'] = array();
-    
+
     // Disable the external cache for the rest of the round trip
     $GLOBALS['external_cache_enabled'] = false;
+
+    sugar_clean_opcodes();
 }
 
+/**
+ * Reset opcode cache if present
+ */
+function sugar_clean_opcodes()
+{
+    if($GLOBALS['external_cache_checked'] == false) {
+        check_cache();
+    }
+
+    if($GLOBALS['external_cache_object']) {
+    	$GLOBALS['external_cache_object']->clean_opcodes();
+    }
+}

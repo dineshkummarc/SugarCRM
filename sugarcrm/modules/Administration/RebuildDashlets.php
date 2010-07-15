@@ -49,6 +49,6 @@ if(is_admin($current_user)){
    if( !$silent ) echo '<br><br><br><br>' . $mod_strings['LBL_REBUILD_DASHLETS_DESC_SUCCESS'];
 }
 else{
-	die('Admin Only Section');	
+	sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']); 
 }
 ?>

@@ -53,6 +53,8 @@ $listViewDefs['ProspectLists'] = array(
         'default' => true),
     'ASSIGNED_USER_NAME' => array(
         'width' => '10', 
-        'label' => 'LBL_LIST_ASSIGNED_USER', 
+        'label' => 'LBL_LIST_ASSIGNED_USER',
+        'module' => 'Employees',
+        'id' => 'ASSIGNED_USER_ID', 
         'default' => true),
 );

@@ -37,7 +37,7 @@ require_once('include/SugarObjects/templates/basic/Basic.php');
  class Company extends Basic{
  	
  	function Company(){
- 		parent::SugarBean();	
+ 		parent::Basic();	
  		$this->emailAddress = new SugarEmailAddress();
  	}
  	function save($check_notify=false) {

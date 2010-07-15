@@ -98,8 +98,8 @@ class EditView
         }
         $this->metadataFile = $metadataFile;
 
-        if(!empty($sugar_config['disable_vcr'])) {
-           $this->showVCRControl = $sugar_config['disable_vcr'];
+        if(isset($GLOBALS['sugar_config']['disable_vcr'])) {
+           $this->showVCRControl = !$GLOBALS['sugar_config']['disable_vcr'];
         }
         if(!empty($this->metadataFile) && file_exists($this->metadataFile)){
         	include($this->metadataFile);
@@ -404,10 +404,10 @@ class EditView
 	       	 	{
 	               $this->fieldDefs[$name]['value'] = $value;
 	       	 	}
-
+	       	 	
 
 	            //This code is used for QuickCreates that go to Full Form view
-	        	if($this->populateBean && empty($this->focus->id) && !isset($this->fieldDefs[$name]['function']) && isset($_REQUEST[$name])) {
+	        	if($this->populateBean && empty($this->focus->id) && (isset($this->fieldDefs[$name]['function']['returns']) ? $this->fieldDefs[$name]['function']['returns'] != 'html' : true) && isset($_REQUEST[$name])) {
 	               $this->fieldDefs[$name]['value'] = $this->getValueFromRequest($_REQUEST, $name);
 	            } //if
 

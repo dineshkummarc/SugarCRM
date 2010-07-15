@@ -52,31 +52,8 @@ require_once('include/EditView/EditView2.php');
  	}
 
  	function preDisplay(){
- 		$metadataFile = null;
- 		$foundViewDefs = false;
- 		if(file_exists('custom/modules/' . $this->module . '/metadata/editviewdefs.php')){
- 			$metadataFile = 'custom/modules/' . $this->module . '/metadata/editviewdefs.php';
- 			$foundViewDefs = true;
- 		}else{
-	 		if(file_exists('custom/modules/'.$this->module.'/metadata/metafiles.php')){
-				require_once('custom/modules/'.$this->module.'/metadata/metafiles.php');
-				if(!empty($metafiles[$this->module]['editviewdefs'])){
-					$metadataFile = $metafiles[$this->module]['editviewdefs'];
-					$foundViewDefs = true;
-				}
-			}elseif(file_exists('modules/'.$this->module.'/metadata/metafiles.php')){
-				require_once('modules/'.$this->module.'/metadata/metafiles.php');
-				if(!empty($metafiles[$this->module]['editviewdefs'])){
-					$metadataFile = $metafiles[$this->module]['editviewdefs'];
-					$foundViewDefs = true;
-				}
-			}
- 		}
- 		$GLOBALS['log']->debug("metadatafile=". $metadataFile);
-		if(!$foundViewDefs && file_exists('modules/'.$this->module.'/metadata/editviewdefs.php')){
-				$metadataFile = 'modules/'.$this->module.'/metadata/editviewdefs.php';
- 		}
-
+ 		
+ 	    $metadataFile = $this->getMetaDataFile();
  		$this->ev = new EditView();
  		$this->ev->ss =& $this->ss;
  		$this->ev->setup($this->module, $this->bean, $metadataFile, 'include/EditView/EditView.tpl');

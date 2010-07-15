@@ -43,7 +43,7 @@
 {include file="modules/DynamicFields/templates/Fields/Forms/coreTop.tpl"}
 
 <tr>
-	<td class='mbLBL'>{$MOD.LBL_IMAGE_WIDTH}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="LBL_IMAGE_WIDTH"}:</td>
 	<td>
 		<input id ="width" type="text" name="width" 
 		{if !$vardef.width && !$vardef.height}
@@ -56,7 +56,7 @@
 	</td>
 </tr>
 <tr>
-	<td class='mbLBL'>{$MOD.LBL_IMAGE_HEIGHT}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="LBL_IMAGE_HEIGHT"}:</td>
 	<td>
 		<input id ="height" type="text" name="height" 
 		{if !$vardef.width && !$vardef.height}
@@ -69,7 +69,7 @@
 	</td>
 </tr>
 <tr>
-	<td class='mbLBL'>{$MOD.LBL_IMAGE_BORDER}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="LBL_IMAGE_BORDER"}:</td>
 	<td>	
 		<input type="checkbox" id ="border" name="border" value="1" {if !empty($vardef.border)}checked{/if}/>
 	</td>

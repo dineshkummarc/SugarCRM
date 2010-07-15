@@ -78,7 +78,11 @@ class UndeployedMetaDataImplementation extends AbstractMetaDataImplementation im
         $fielddefs = array_change_key_case ( $module->mbvardefs->vardefs [ 'fields' ] ) ;
 
         // Set the global mod_strings directly as Sugar does not automatically load the language files for undeployed modules (how could it?)
-        $GLOBALS [ 'mod_strings' ] = array_merge ( $GLOBALS [ 'mod_strings' ], $module->getModStrings () ) ;
+        $selected_lang = 'en_us';
+        if(isset($GLOBALS['current_language']) &&!empty($GLOBALS['current_language'])) {
+            $selected_lang = $GLOBALS['current_language'];
+        }
+        $GLOBALS [ 'mod_strings' ] = array_merge ( $GLOBALS [ 'mod_strings' ], $module->getModStrings ($selected_lang) ) ;
 
         //Load relationshhip based fields and labels
         $moduleRels = $pak->getRelationshipsForModule($moduleName);

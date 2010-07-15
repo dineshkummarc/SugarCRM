@@ -70,20 +70,26 @@ $viewdefs['Campaigns']['DetailView'] = array(
 	      'name' => 'start_date',
 	      'label' => 'LBL_CAMPAIGN_START_DATE',
 	    ),
-	
-	    array (
-	      'name' => 'end_date',
-	      'label' => 'LBL_CAMPAIGN_END_DATE',
-	    ),
-	
+		'campaign_type',
 	  ),
 	
 	  array (
-	    'campaign_type',
-	          array('name' => 'frequency',
-	          'customCode' => '{if $fields.campaign_type.value == "NewsLetter"}<div style=\'none\' id=\'freq_field\'>{$fields.frequency.value}</div>{/if}&nbsp;',
-	          'customLabel' => '{if $fields.campaign_type.value == "NewsLetter"}<div style=\'none\' id=\'freq_label\'>{$MOD.LBL_CAMPAIGN_FREQUENCY}</div>{/if}&nbsp;')
-	          ,
+	  	array (
+	      'name' => 'end_date',
+	      'label' => 'LBL_CAMPAIGN_END_DATE',
+	    ),
+	    array(
+          	'name' => 'frequency',
+          	'customCode' => '{if $fields.campaign_type.value == "NewsLetter"}<div style=\'none\' id=\'freq_field\'>{$fields.frequency.value}</div>{/if}&nbsp;',
+          	'customLabel' => '{if $fields.campaign_type.value == "NewsLetter"}<div style=\'none\' id=\'freq_label\'>{$MOD.LBL_CAMPAIGN_FREQUENCY}</div>{/if}&nbsp;'
+          ),
+	  ),
+	  
+	  array (
+		array (
+	      'name' => 'impressions',
+	      'label' => 'LBL_CAMPAIGN_IMPRESSIONS',
+	    ),
 	  ),
 	
 	  array (
@@ -109,14 +115,6 @@ $viewdefs['Campaigns']['DetailView'] = array(
 	    array (
 	      'name' => 'expected_cost',
 	      'label' => '{$MOD.LBL_CAMPAIGN_EXPECTED_COST} ({$CURRENCY})',
-	    ),
-	  ),
-	
-	  array (
-	
-	    array (
-	      'name' => 'impressions',
-	      'label' => 'LBL_CAMPAIGN_IMPRESSIONS',
 	    ),
 	  ),
 	

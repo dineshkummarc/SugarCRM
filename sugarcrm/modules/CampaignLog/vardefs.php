@@ -71,7 +71,7 @@ $dictionary['CampaignLog'] = array ('audited'=>false,
 			'name' => 'target_type',
 			'vname' => 'LBL_TARGET_TYPE',
 			'type' => 'varchar',
-			'len' => '25',
+			'len' => 100,
 			'comment' => 'Descriptor of the target record type (e.g., Contact, Lead)'
 			),
 		'activity_type' => array (
@@ -79,7 +79,7 @@ $dictionary['CampaignLog'] = array ('audited'=>false,
 			'vname' => 'LBL_ACTIVITY_TYPE',
 			'type' => 'enum',
 			'options'=>'campainglog_activity_type_dom',
-			'len' => '25',
+			'len' => 100,
 			'comment' => 'The activity that occurred (e.g., Viewed Message, Bounced, Opted out)'
 			),
 		'activity_date' => array (
@@ -98,7 +98,7 @@ $dictionary['CampaignLog'] = array ('audited'=>false,
 			'name' => 'related_type',
 			'vname' => 'LBL_RELATED_TYPE',
 			'type' => 'varchar',
-			'len' => '25',
+			'len' => 100,
 			),
 		'archived' => array (
 			'name' => 'archived',

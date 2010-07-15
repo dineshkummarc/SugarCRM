@@ -72,8 +72,8 @@ class MyCallsDashlet extends DashletGeneric {
         
         if($this->myItemsOnly) { // handle myitems only differently
             $lvsParams = array(
-                           'custom_from' => ' INNER JOIN calls_users ON calls.id = calls_users.call_id ',
-                           'custom_where' => ' AND calls_users.deleted = 0 AND (calls.assigned_user_id = \'' . $current_user->id . '\' OR calls_users.user_id = \'' . $current_user->id . '\') ',
+                           'custom_from' => ' LEFT JOIN calls_users ON calls.id = calls_users.call_id AND calls_users.deleted = 0',
+                           'custom_where' => ' AND (calls.assigned_user_id = \'' . $current_user->id . '\' OR calls_users.user_id = \'' . $current_user->id . '\') ',
                            'distinct' => true
                            );
         } else {

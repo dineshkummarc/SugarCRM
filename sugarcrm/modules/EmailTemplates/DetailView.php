@@ -123,6 +123,7 @@ $xtpl->assign("BODY", $focus->body);
 $xtpl->assign("BODY_HTML", from_html($focus->body_html));
 $xtpl->assign("DATE_MODIFIED", $focus->date_modified);
 $xtpl->assign("DATE_ENTERED", $focus->date_entered);
+$xtpl->assign("ASSIGNED_USER_NAME", $focus->assigned_user_name);
 
 
 if(ACLController::checkAccess('EmailTemplates', 'edit', true)) {

@@ -132,8 +132,9 @@ class SugarWidgetField extends SugarWidget {
 		}
 
 		$subpanel_module = $layout_def['subpanel_module'];
+		$html_var = $subpanel_module . "_CELL";
 		if (empty ($this->base_URL)) {
-			$this->base_URL = ListView :: getBaseURL('CELL');
+			$this->base_URL = ListView :: getBaseURL($html_var);
 			$split_url = explode('&to_pdf=true&action=SubPanelViewer&subpanel=', $this->base_URL);
 			$this->base_URL = $split_url[0];
 			$this->base_URL .= '&inline=true&to_pdf=true&action=SubPanelViewer&subpanel=';
@@ -143,7 +144,7 @@ class SugarWidgetField extends SugarWidget {
 			$sort_by_name = $layout_def['sort_by'];
 		}
 
-		$sort_by = ListView :: getSessionVariableName('CELL', "ORDER_BY").'='.$sort_by_name;
+		$sort_by = ListView :: getSessionVariableName($html_var, "ORDER_BY").'='.$sort_by_name;
 
 		$start = (empty ($layout_def['start_link_wrapper'])) ? '' : $layout_def['start_link_wrapper'];
 		$end = (empty ($layout_def['end_link_wrapper'])) ? '' : $layout_def['end_link_wrapper'];

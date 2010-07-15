@@ -42,6 +42,7 @@
                     'layout' => array(
                         'basic_search' => array(
                                 'document_name',
+                                
                             ),
                         'advanced_search' => array(
                                 'document_name', 
@@ -49,6 +50,7 @@
                                 'subcategory_id',
                                 'active_date',
                                 'exp_date',
+                                
                         ),
                     ),
                );

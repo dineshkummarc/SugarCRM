@@ -107,6 +107,10 @@ class AuthenticationController {
 				return false;
 			}
 			
+			//call business logic hook
+			if(isset($GLOBALS['current_user']))
+				$GLOBALS['current_user']->call_custom_logic('after_login');
+			
 			// Check for running Admin Wizard
 			$config = new Administration();
 			$config->retrieveSettings();
@@ -130,11 +134,6 @@ class AuthenticationController {
 				header("Location: index.php?module=Users&action=Wizard");
 				sugar_cleanup(true);
 			}
-			
-			
-			//call business logic hook
-			if(isset($GLOBALS['current_user']))
-				$GLOBALS['current_user']->call_custom_logic('after_login');
 		}else{
 			//kbrill bug #13225
 			LogicHook::initialize();

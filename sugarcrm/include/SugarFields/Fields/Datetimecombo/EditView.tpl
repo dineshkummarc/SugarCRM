@@ -38,6 +38,9 @@
 {{if !empty($displayParams.idName)}}
     {{assign var=idname value=$displayParams.idName}}
 {{/if}}
+
+{{assign var=flag_field value=$vardef.name|cat:_flag}}
+
 <table border="0" cellpadding="0" cellspacing="0">
 <tr valign="middle">
 <td nowrap>
@@ -80,7 +83,7 @@ function set_{{$idname}}_values(form) {ldelim}
 <input type="hidden" id="{{$idname}}" name="{{$idname}}" value="{$fields[{{sugarvar key='name' stringFormat=true}}].value}">
 <script type="text/javascript" src="include/SugarFields/Fields/Datetimecombo/Datetimecombo.js"></script>
 <script type="text/javascript">
-var combo_{{$idname}} = new Datetimecombo("{$fields[{{sugarvar key='name' stringFormat=true}}].value}", "{{$idname}}", "{$TIME_FORMAT}", "{{$tabindex}}", '{{$displayParams.showNoneCheckbox}}', '{$fields[{{sugarvar key='name' stringFormat=true}}_flag].value}', true); 
+var combo_{{$idname}} = new Datetimecombo("{$fields[{{sugarvar key='name' stringFormat=true}}].value}", "{{$idname}}", "{$TIME_FORMAT}", "{{$tabindex}}", '{{$displayParams.showNoneCheckbox}}', '{$fields.{{$flag_field}}.value}', true); 
 //Render the remaining widget fields
 text = combo_{{$idname}}.html('{{$displayParams.updateCallback}}');
 document.getElementById('{{$idname}}_time_section').innerHTML = text;

@@ -42,12 +42,12 @@
 
 {include file="modules/DynamicFields/templates/Fields/Forms/coreTop.tpl"}
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_DEFAULT_VALUE}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DEFAULT_VALUE"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type='text' id='default' name='default' value='{$vardef.default}'>
 		<script>
-		addToValidate('popup_form', 'default', 'float', false,'{$MOD.COLUMN_TITLE_DEFAULT_VALUE}' );
+		addToValidate('popup_form', 'default', 'float', false,'{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DEFAULT_VALUE"}' );
 		formWithPrecision = new addToValidatePrecision('popup_form_id', 'default', 'precision');
 		</script>
 	{else}
@@ -56,22 +56,22 @@
 	</td>
 </tr>
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_MAX_SIZE}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_MAX_SIZE"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type='text' name='len' value='{$vardef.len|default:18}'></td>
-		<script>addToValidate('popup_form', 'len', 'int', false,'{$MOD.COLUMN_TITLE_MAX_SIZE}' );</script>
+		<script>addToValidate('popup_form', 'len', 'int', false,'{sugar_translate module="DynamicFields" label="COLUMN_TITLE_MAX_SIZE"}' );</script>
 	{else}
 		<input type='hidden' name='len' value='{$vardef.len}'>{$vardef.len}
 	{/if}
 	</td>
 </tr>
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_PRECISION}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_PRECISION"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type='text' id='precision' name='precision' value='{$vardef.precision|default:0}'>
-		<script>addToValidate('popup_form', 'ext1', 'int', false,'{$MOD.COLUMN_TITLE_PRECISION}' );</script>
+		<script>addToValidate('popup_form', 'ext1', 'int', false,'{sugar_translate module="DynamicFields" label="COLUMN_TITLE_PRECISION"}' );</script>
 	{else}
 		<input type='hidden' name='precision' value='{$vardef.precision}'>{$vardef.precision}
 	{/if}

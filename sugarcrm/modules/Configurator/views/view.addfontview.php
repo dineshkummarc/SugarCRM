@@ -51,7 +51,7 @@ class ConfiguratorViewAddFontView extends SugarView {
     public function display(){
         global $mod_strings, $app_list_strings, $app_strings, $current_user;
         if(!is_admin($current_user)){
-            sugar_die('Admin Only');    
+            sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']);  
         }
         $this->ss->assign("MODULE_TITLE", 
             get_module_title(

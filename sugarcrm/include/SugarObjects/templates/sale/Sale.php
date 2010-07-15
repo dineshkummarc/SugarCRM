@@ -46,7 +46,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  class Sale extends Basic{
 
  	function Sale(){
- 		parent::SugarBean();
+ 		parent::Basic();
 
  	}
  	

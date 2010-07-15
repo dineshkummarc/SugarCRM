@@ -410,10 +410,13 @@ SugarWidgetSchedulerAttendees.prototype.display = function() {
 	if(typeof (GLOBAL_REGISTRY) == 'undefined') {
 		return;
 	}
+	// CCL - Comment out default of current user
 	// grab current user (as event-coordinator)
+	/*
 	if(typeof (GLOBAL_REGISTRY.focus.users_arr) == 'undefined' || GLOBAL_REGISTRY.focus.users_arr.length == 0) {
 		GLOBAL_REGISTRY.focus.users_arr = [ GLOBAL_REGISTRY.current_user ];
 	}
+	*/
 	if(typeof GLOBAL_REGISTRY.focus.users_arr_hash == 'undefined') {
 		GLOBAL_REGISTRY.focus.users_arr_hash = new Object();
 	}
@@ -505,19 +508,21 @@ SugarWidgetScheduleRow.prototype.display = function() {
 	//var td = tr.insertCell(tr.cells.length);
 	td.className = 'schedulerAttendeeDeleteCell';
 	td.noWrap = true;
-	if ( GLOBAL_REGISTRY.focus.fields.assigned_user_id != self.focus_bean.fields.id ) {
-        td.innerHTML = '<a title="'+ GLOBAL_REGISTRY['meeting_strings']['LBL_DEL'] +'" class="listViewTdToolsS1" href="javascript:SugarWidgetScheduleRow.deleteRow(\''+self.focus_bean.fields.id+'\');">&nbsp;<img src="index.php?entryPoint=getImage&themeName='+SUGAR.themes.theme_name+'&imageName=delete_inline.gif" align="absmiddle" alt="'+ GLOBAL_REGISTRY['meeting_strings']['LBL_DEL'] +'" border="0"> '+ GLOBAL_REGISTRY['meeting_strings']['LBL_DEL'] +'</a>';
-    }
+	//CCL - Remove check to disallow removal of assigned user or current user
+	//if ( GLOBAL_REGISTRY.focus.fields.assigned_user_id != self.focus_bean.fields.id && GLOBAL_REGISTRY.current_user.fields.id != self.focus_bean.fields.id) {
+       td.innerHTML = '<a title="'+ GLOBAL_REGISTRY['meeting_strings']['LBL_REMOVE'] +'" class="listViewTdToolsS1" style="text-decoration:none;" href="javascript:SugarWidgetScheduleRow.deleteRow(\''+self.focus_bean.fields.id+'\');">&nbsp;<img src="index.php?entryPoint=getImage&themeName='+SUGAR.themes.theme_name+'&imageName=delete_inline.gif" align="absmiddle" alt="'+ GLOBAL_REGISTRY['meeting_strings']['LBL_REMOVE'] +'" border="0"> '+ GLOBAL_REGISTRY['meeting_strings']['LBL_REMOVE'] +'</a>';
+	//}
 	this.element = tr;
 	this.element_index = this.thetable.rows.length - 1;
 }
 
 SugarWidgetScheduleRow.deleteRow = function(bean_id) {
 	// can't delete organizer
+	/*
 	if(GLOBAL_REGISTRY.focus.users_arr.length == 1 || GLOBAL_REGISTRY.focus.fields.assigned_user_id == bean_id) {
 		return;
 	}
-
+    */
 	for(var i=0;i<GLOBAL_REGISTRY.focus.users_arr.length;i++) {
 		if(GLOBAL_REGISTRY.focus.users_arr[i]['fields']['id']==bean_id) {
 			delete GLOBAL_REGISTRY.focus.users_arr_hash[GLOBAL_REGISTRY.focus.users_arr[i]['fields']['id']];

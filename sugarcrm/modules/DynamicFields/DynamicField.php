@@ -96,7 +96,7 @@ class DynamicField {
 	 */
 	function buildCache($module = false) {
 		//We can't build the cache while installing as the required database tables may not exist.
-		if (!empty($GLOBALS['installing']) && $GLOBALS['installing'] == true)
+		if (!empty($GLOBALS['installing']) && $GLOBALS['installing'] == true|| !$GLOBALS['db'])
 			return false;
 		if($module == '../data')return false;
 
@@ -177,15 +177,15 @@ class DynamicField {
 	 * @param array $result
 	 */
 	function saveToVardef($module,$result) {
-		
+
 		global $beanList;
 		if (! empty ( $beanList [$module] )) {
 			$object = $beanList [$module];
-			
+
 			if ($object == 'aCase') {
 				$object = 'Case';
 			}
-			
+
 			if(empty($GLOBALS['dictionary'][$object]['fields'])){
 				//if the vardef isn't loaded let's try loading it.
 				VardefManager::refreshVardefs($module,$object, null, false);
@@ -233,7 +233,7 @@ class DynamicField {
 	 *
 	 * @return array select=>select columns, join=>prebuilt join statement
 	 */
-  function getJOIN( $expandedList = false , $includeRelates = false){
+  function getJOIN( $expandedList = false , $includeRelates = false, &$where = false){
 
         if(!$this->bean->hasCustomFields()){
             return false;
@@ -272,7 +272,7 @@ class DynamicField {
 						$pattern = '/'.$field['name'].'\slike/i';
 						$replacement = $relateJoinInfo['name_field'].' like';
 						$where = preg_replace($pattern,$replacement,$where);
-					}										
+					}
 					$jtCount++;
 				}
 			}
@@ -301,7 +301,7 @@ class DynamicField {
     		if(isset($name_field_def['db_concat_fields']))
 	    	{
 	    		$name_field = db_concat($joinTableAlias, $name_field_def['db_concat_fields']);
-	    	} 
+	    	}
 	    	//If the name field is non-db, we need to find another field to display
 	    	else if(!empty($rel_mod->field_defs['name']['source']) && $rel_mod->field_defs['name']['source'] == "non-db" && !empty($field_def['rname']))
 	    	{
@@ -422,7 +422,7 @@ class DynamicField {
                     $GLOBALS['db']->query($queryInsert);
                 }else{
                     $checkquery = "SELECT id_c FROM {$this->bean->table_name}_cstm WHERE id_c = '{$this->bean->id}'";
-                    if ( $GLOBALS['db']->getOne($checkquery) )                        
+                    if ( $GLOBALS['db']->getOne($checkquery) )
                         $result = $GLOBALS['db']->query($query);
                     else
                     	$GLOBALS['db']->query($queryInsert);
@@ -448,11 +448,11 @@ class DynamicField {
 			$widget->name = $field_name;
 		}
 		$object_name = $beanList[$this->module];
-        
+
 		if ($object_name == 'aCase') {
             $object_name = 'Case';
         }
-        
+
 		$GLOBALS['db']->query("DELETE FROM fields_meta_data WHERE id='" . $this->module . $widget->name . "'");
         $sql = $widget->get_db_delete_alter_table( $this->bean->table_name . "_cstm" ) ;
         if (! empty( $sql ) )
@@ -499,7 +499,7 @@ class DynamicField {
 		$GLOBALS['log']->debug('adding field');
 		$object_name = $this->module;
         $db_name = $field->name;
-        
+
         $fmd = new FieldsMetaData();
         $id =  $fmd->retrieve($object_name.$db_name,true, false);
         $is_update = false;

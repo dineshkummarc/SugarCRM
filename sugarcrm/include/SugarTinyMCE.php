@@ -88,6 +88,8 @@ class SugarTinyMCE {
 	    'plugins' => 'advhr,insertdatetime,table,preview,paste,searchreplace,directionality',
 		'elements'	=> '',
         'extended_valid_elements' => 'style,hr[class|width|size|noshade]',
+        'content_css' => 'include/javascript/tiny_mce/themes/advanced/skins/default/content.css',
+
 	);
 	
 	

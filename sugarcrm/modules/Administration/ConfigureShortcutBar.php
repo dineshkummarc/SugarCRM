@@ -94,7 +94,7 @@ if (!empty($_REQUEST['enabled_modules']))
 	$modules = $app_list_strings['moduleList'];
 	foreach ($modules as $module => $modLabel)
 	{
-		if (is_file("modules/$module/metadata/quickcreatedefs.php"))
+		if (is_file("modules/$module/metadata/quickcreatedefs.php") || is_file("custom/modules/$module/metadata/quickcreatedefs.php"))
 		   $availibleModules[$module] = $module;
 	}
 	

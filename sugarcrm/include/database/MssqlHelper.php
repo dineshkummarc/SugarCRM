@@ -245,10 +245,13 @@ class MssqlHelper extends DBHelper
            case 'unique':
                $columns[] = "ALTER TABLE $tableName ADD CONSTRAINT " . $index['name'] . " UNIQUE ($fields)";
                break;
+           case 'clustered':
+               $columns[] = "CREATE CLUSTERED INDEX $name ON $tableName ( $fields )";
+               break;
            case 'index':
            case 'alternate_key':
            case 'foreign':
-               $columns[] = "create index $name on $tableName ( $fields )";
+               $columns[] = "CREATE INDEX $name ON $tableName ( $fields )";
                break;
            case 'fulltext':
                if ($this->full_text_indexing_enabled()) {

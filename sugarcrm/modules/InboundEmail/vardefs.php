@@ -125,7 +125,7 @@ $dictionary['InboundEmail'] = array('table' => 'inbound_email', 'comment' => 'In
 			'name' => 'status',
 			'vname' => 'LBL_STATUS',
 			'type' => 'varchar',
-			'len' => '25',
+			'len' => 100,
 			'default' => 'Active',
 			'required' => true,
 			'reportable' => false,

@@ -61,6 +61,7 @@ $searchdefs['Opportunities'] = array(
         'default' => true,
         'width' => '10%',
       ),
+      
     ),
     'advanced_search' => 
     array (
@@ -124,6 +125,7 @@ $searchdefs['Opportunities'] = array(
         'default' => true,
         'name' => 'next_step',
       ),
+	  
     ),
   ),
 					

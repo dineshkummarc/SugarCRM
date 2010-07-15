@@ -43,13 +43,15 @@
 						'basic_search' => array(
 						 	'name',
 						 	array('name'=>'current_user_only', 'label'=>'LBL_CURRENT_USER_FILTER', 'type'=>'bool'),
-						),
+						 	
+                        ),
 						'advanced_search' => array(
 							'name', 
 							'estimated_start_date',
 							'estimated_end_date',
 							'status',
-							'priority',							
+							'priority',		
+							
 						),
 					),
  			   );

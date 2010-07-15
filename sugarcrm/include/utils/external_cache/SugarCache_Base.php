@@ -63,7 +63,7 @@ class SugarCache_Base
      * @access protected
      */
     var $_cache = array();
-    
+
     var $_my_class_name = '';
 
     /**
@@ -138,5 +138,13 @@ class SugarCache_Base
     function __unset($key)
     {
         unset($this->_cache[$key]);
+    }
+
+    /**
+     * Clean opcode cache
+     */
+    function clean_opcodes()
+    {
+    	/* nothing by default */
     }
 }

@@ -43,42 +43,37 @@ array('customCode'=> '<input title="{$APP.LBL_EXPORT}"  class="button" type="but
                                         array('label' => '10', 'field' => '30')
                                         ),
                         ),
-'panels' =>array (
-
-  array (
-      'name'
-  ),
-
-  array (
-      'list_type',
-      'domain_name',
-  ),
-
-  array (
-      'assigned_user_name',
-  ),
-
-  array (
-      array (
-        'name' => 'date_modified',
-        'label' => 'LBL_DATE_MODIFIED',
-        'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
-      ),
-      array (
-        'name' => 'date_entered',
-        'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
-      ),
-    ),
-
-  array (
-      array('name'=>'entry_count','label'=>'LBL_ENTRIES'),
-  ),
-
-  array (
-      'description',
-  ),
+'panels' => array(
+   'default' => array (
+  	  array (
+  	  	  'name',
+  	  	  array('name'=>'entry_count','label'=>'LBL_ENTRIES'),
+  	  ),
+	  array (
+	      'list_type',
+	      'domain_name',
+	  ),
+	  array (
+	      'description',
+	  ),
+	),
+	'LBL_PANEL_ASSIGNMENT' => array(
+		array (
+		  'assigned_user_name',  
+		  array (
+		      'name' => 'date_modified',
+		      'label' => 'LBL_DATE_MODIFIED',
+		      'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
+		  ),
+		),	
+		array (
+			array (
+		      'name' => 'date_entered',
+		      'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
+		  	),
+		),
+	)
 )
-
 
 
 );

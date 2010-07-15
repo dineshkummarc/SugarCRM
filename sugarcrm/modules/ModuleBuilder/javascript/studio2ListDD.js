@@ -37,9 +37,8 @@
  	if (typeof el == 'number') {
  		el = el + "";
 	}
- 	if (typeof el == "string") {
+ 	if (typeof el == 'string')
  		el = document.getElementById(el);
- 	}
 	if (el != null) {
 		var Dom = YAHOO.util.Dom;
 		Studio2.ListDD.superclass.constructor.call(this, el, sGroup);
@@ -68,8 +67,7 @@ YAHOO.extend(Studio2.ListDD, YAHOO.util.DDProxy, {
 		
 		this.parentID = clickEl.parentNode.id;
 		this.clickContent = clickEl.innerHTML;
-		dragEl.innerHTML = clickEl.innerHTML; /*"<table><tr><td><b>" + clickEl.getElementsByTagName("b")[0].innerHTML + "</b>" 
-			+ clickEl.getElementsByTagName("span")[0].innerHTML + "</td></tr></table>";*/
+		dragEl.innerHTML = clickEl.innerHTML;
 		
 		Dom.addClass(dragEl, clickEl.className);
 		Dom.setStyle(dragEl, "color", Dom.getStyle(clickEl, "color"));

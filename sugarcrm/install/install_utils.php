@@ -1044,7 +1044,7 @@ function handleSugarConfig() {
         $sugar_config['sugarbeet']      = $_SESSION['setup_site_sugarbeet_anonymous_stats'];
     }
     $sugar_config['demoData'] = $_SESSION['demoData'];
-    if( isset( $sugar_config['unique_key'] ) ){
+    if( isset( $setup_site_guid ) ){
         $sugar_config['unique_key'] = $setup_site_guid;
     }
     if(empty($sugar_config['unique_key'])){

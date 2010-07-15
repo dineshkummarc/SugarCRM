@@ -436,8 +436,6 @@ class TemplateHandler {
                             $sqs_objects[$name]['field_list'] = $field['populate_list'];
                         }
                     }
-                } else if($field['type'] == 'parent') {
-                    $sqs_objects[$name] = $qsd->getQSParent();
                 } //if-else
             } //foreach
         }

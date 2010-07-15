@@ -44,43 +44,43 @@ formsWithFieldLogic=null;
 
 {include file="modules/DynamicFields/templates/Fields/Forms/coreTop.tpl"}
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_DEFAULT_VALUE}:</td><td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DEFAULT_VALUE"}:</td><td>
 	{if $hideLevel < 5}
 		<input type='text' name='default' id='int_default' value='{$vardef.default}'>
-		<script>addToValidate('popup_form', 'default', 'int', false,'{$MOD.COLUMN_TITLE_DEFAULT_VALUE}' );</script>
+		<script>addToValidate('popup_form', 'default', 'int', false,'{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DEFAULT_VALUE"}' );</script>
 	{else}
 		<input type='hidden' name='default' id='int_default' value='{$vardef.default}'>{$vardef.default}
 	{/if}
 	</td>
 </tr>
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_MIN_VALUE}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_MIN_VALUE"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type='text' name='min' id='int_min' value='{$vardef.validation.min}'>
-		<script>addToValidate('popup_form', 'min', 'int', false,'{$MOD.COLUMN_TITLE_MIN_VALUE}' );</script>
+		<script>addToValidate('popup_form', 'min', 'int', false,'{sugar_translate module="DynamicFields" label="COLUMN_TITLE_MIN_VALUE"}' );</script>
 	{else}
 		<input type='hidden' name='min' id='int_min' value='{$vardef.validation.min}'>{$vardef.range.min}
 	{/if}
 	</td>
 </tr>
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_MAX_VALUE}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_MAX_VALUE"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type='text' name='max' id='int_max' value='{$vardef.validation.max}'>
-		<script>addToValidate('popup_form', 'max', 'int', false,'{$MOD.COLUMN_TITLE_MAX_VALUE}' );</script>
+		<script>addToValidate('popup_form', 'max', 'int', false,'{sugar_translate module="DynamicFields" label="COLUMN_TITLE_MAX_VALUE"}' );</script>
 	{else}
 		<input type='hidden' name='max' id='int_max' value='{$vardef.validation.max}'>{$vardef.range.max}
 	{/if}
 	</td>
 </tr>
 <tr>
-	<td class='mbLBL'>{$MOD.COLUMN_TITLE_MAX_SIZE}:</td>
+	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_MAX_SIZE"}:</td>
 	<td>
 	{if $hideLevel < 5}
 		<input type='text' name='len' id='int_len' value='{$vardef.len|default:11}'></td>
-		<script>addToValidate('popup_form', 'len', 'int', false,'{$MOD.COLUMN_TITLE_MAX_SIZE}' );</script>
+		<script>addToValidate('popup_form', 'len', 'int', false,'{sugar_translate module="DynamicFields" label="COLUMN_TITLE_MAX_SIZE"}' );</script>
 	{else}
 		<input type='hidden' name='len' id='int_len' value='{$vardef.len}'>{$vardef.len}
 	{/if}
@@ -101,17 +101,17 @@ formsWithFieldLogic=null;
 *}
 {if !empty($vardef.auto_increment) }
 <tr id="autoinc_start_wrap" {if empty($vardef.auto_increment) }style="display:none" {/if}>
-    <td class='mbLBL'>{$MOD.COLUMN_TITLE_AUTOINC_NEXT}:</td>
+    <td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_AUTOINC_NEXT"}:</td>
     <td>
         <input type='hidden' name='auto_increment' id='auto_increment' value='true'>
 		<input type='text' name='autoinc_next' id='autoinc_next' value='{$vardef.autoinc_next|default:1}' {if $MB}disabled=1{/if}>
-        <script>addToValidateMoreThan('popup_form', 'autoinc_next', 'int', false,'{$MOD.COLUMN_TITLE_AUTOINC_NEXT}', {$vardef.autoinc_next|default:1});</script>
+        <script>addToValidateMoreThan('popup_form', 'autoinc_next', 'int', false,'{sugar_translate module="DynamicFields" label="COLUMN_TITLE_AUTOINC_NEXT"}', {$vardef.autoinc_next|default:1});</script>
         <input type='hidden' name='autoinc_val_changed' id='autoinc_val_changed' value='false'>
     </td>
 </tr>
 {/if}
 <tr>
-    <td class='mbLBL'>{$MOD.COLUMN_DISABLE_NUMBER_FORMAT}:</td>
+    <td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_DISABLE_NUMBER_FORMAT"}:</td>
     <td>
         <input type='checkbox' name='ext3' value=1 {if !empty($vardef.disable_num_format) }checked{/if} {if $hideLevel > 5}disabled{/if} />
         {if $hideLevel > 5}<input type='hidden' name='ext3' value='{$vardef.disable_num_format}'>{/if}

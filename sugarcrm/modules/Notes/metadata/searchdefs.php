@@ -45,6 +45,7 @@ array (
         'default' => true,
         'width' => '10%',
       ),
+      
     ),
     'advanced_search' => 
     array (
@@ -85,6 +86,7 @@ array (
         'default' => true,
         'name' => 'date_entered',
       ),
+      
     ),
   ),
   'templateMeta' => 

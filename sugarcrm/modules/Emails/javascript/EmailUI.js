@@ -3271,10 +3271,9 @@ SE.search = {
 
         if (search) 
         {
-            //If the parent type is selected ensure the user selected a parent_id.
-            if( !SE.composeLayout.isParentTypeAndNameValid('_search') )
+            if(! this.validateSearchFormInput() )
                 return;
-                
+                                
         	SE.grid.params['emailUIAction'] = 'searchAdvanced';
         	SE.grid.params['mbox'] = app_strings.LBL_EMAIL_SEARCH_RESULTS_TITLE;
         	var accountListSearch = document.getElementById('accountListSearch');
@@ -3284,6 +3283,22 @@ SE.search = {
         }
     },
     
+    /**
+    *  Validates the search form inputs to ensure all parameters are valid
+    *  @return bool
+    */
+    validateSearchFormInput: function()
+    { 
+        addToValidate('advancedSearchForm', 'dateTo', 'date', false, app_strings.LBL_EMAIL_SEARCH_DATE_UNTIL);  
+        addToValidate('advancedSearchForm', 'dateFrom', 'date', false, app_strings.LBL_EMAIL_SEARCH_DATE_FROM); 
+        var dateCheck = check_form('advancedSearchForm');
+       
+        //If the parent type is selected ensure the user selected a parent_id.
+        if( SE.composeLayout.isParentTypeAndNameValid('_search') && dateCheck)
+            return true;
+        else
+            return false;
+    },
     /**
     *   Toggles the advanced options, either hidding or showing the selection.
     */

@@ -246,42 +246,67 @@ class Bug extends SugarBean {
 	}
 
 
-	function set_release() {
-			$query = "SELECT r1.name from releases r1, $this->table_name i1 where r1.id = i1.found_in_release and i1.id = '$this->id' and i1.deleted=0 and r1.deleted=0";
-			$result = $this->db->query($query,true," Error filling in additional detail fields: ");
+	public function set_release() 
+	{
+	    static $releases;
+	    
+	    if ( empty($this->found_in_release) ) {
+	        return;
+	    }
+	    if ( isset($releases[$this->found_in_release]) ) {
+	        $this->release_name = $releases[$this->found_in_release];
+	        return;
+	    }
+	    
+		$query = "SELECT r1.name from releases r1, $this->table_name i1 where r1.id = i1.found_in_release and i1.id = '$this->id' and i1.deleted=0 and r1.deleted=0";
+        $result = $this->db->query($query,true," Error filling in additional detail fields: ");
 
-			// Get the id and the name.
-			$row = $this->db->fetchByAssoc($result);
+        // Get the id and the name.
+        $row = $this->db->fetchByAssoc($result);
 
-			if($row != null)
-			{
-				$this->release_name = $row['name'];
-			}
-			else
-			{
-				$this->release_name = '';
-			}
+        if($row != null)
+        {
+            $this->release_name = $row['name'];
+        }
+        else
+        {
+            $this->release_name = '';
+        }
+        
+        $releases[$this->found_in_release] = $this->release_name;
 	}
 
 	
-	function set_fixed_in_release() {
-			$query = "SELECT r1.name from releases r1, $this->table_name i1 where r1.id = i1.fixed_in_release and i1.id = '$this->id' and i1.deleted=0 and r1.deleted=0";
-			$result = $this->db->query($query,true," Error filling in additional detail fields: ");
+	public function set_fixed_in_release() 
+	{
+	    static $releases;
+	    
+	    if ( empty($this->fixed_in_release) ) {
+	        return;
+	    }
+	    if ( isset($releases[$this->fixed_in_release]) ) {
+	        $this->fixed_in_release_name = $releases[$this->fixed_in_release];
+	        return;
+	    }
+	    
+        $query = "SELECT r1.name from releases r1, $this->table_name i1 where r1.id = i1.fixed_in_release and i1.id = '$this->id' and i1.deleted=0 and r1.deleted=0";
+        $result = $this->db->query($query,true," Error filling in additional detail fields: ");
 
-			// Get the id and the name.
-			$row = $this->db->fetchByAssoc($result);
+        // Get the id and the name.
+        $row = $this->db->fetchByAssoc($result);
 
+        
+        
+        if($row != null)
+        {
+            $this->fixed_in_release_name = $row['name'];
+        }
+        else
+        {
+            $this->fixed_in_release_name = '';
+        }
 			
-			
-			if($row != null)
-			{
-				$this->fixed_in_release_name = $row['name'];
-			}
-			else
-			{
-				$this->fixed_in_release_name = '';
-			}
-			
+        $releases[$this->fixed_in_release] = $this->fixed_in_release_name;
 			
 	}
 	

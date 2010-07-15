@@ -82,6 +82,7 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
                 $lead->id = create_guid();
                 $lead->new_with_id = true;
             }
+            $GLOBALS['check_notify'] = true;
             $lead = $leadForm->handleSave($prefix, false, true, false, $lead);
             
 			if(!empty($lead)){

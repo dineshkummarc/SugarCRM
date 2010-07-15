@@ -49,7 +49,8 @@ class ViewPopup extends SugarView{
         
 		if(isset($_REQUEST['metadata']) && strpos($_REQUEST['metadata'], "..") !== false)
 			die("Directory navigation attack denied.");
-		if(!empty($_REQUEST['metadata']) && $_REQUEST['metadata'] != 'undefined' && file_exists('modules/' . $this->module . '/metadata/' . $_REQUEST['metadata'] . '.php')) // if custom metadata is requested
+		if(!empty($_REQUEST['metadata']) && $_REQUEST['metadata'] != 'undefined' 
+			&& file_exists('modules/' . $this->module . '/metadata/' . $_REQUEST['metadata'] . '.php')) // if custom metadata is requested
 			require_once('modules/' . $this->module . '/metadata/' . $_REQUEST['metadata'] . '.php');
 		elseif(file_exists('custom/modules/' . $this->module . '/metadata/popupdefs.php'))
 	    	require_once('custom/modules/' . $this->module . '/metadata/popupdefs.php');
@@ -87,12 +88,16 @@ class ViewPopup extends SugarView{
 	    	require_once('modules/'.$this->module.'/metadata/searchdefs.php');
 		}
 		
-        if(!empty($this->bean) && isset($_REQUEST[$this->module.'2_'.strtoupper($this->bean->object_name).'_offset'])) {//if you click the pagination button, it will poplate the search criteria here
+		//if you click the pagination button, it will poplate the search criteria here
+        if(!empty($this->bean) && isset($_REQUEST[$this->module.'2_'.strtoupper($this->bean->object_name).'_offset'])) {
             if(!empty($_REQUEST['current_query_by_page'])) {
-                $blockVariables = array('mass', 'uid', 'massupdate', 'delete', 'merge', 'selectCount', 'lvso', 'sortOrder', 'orderBy', 'request_data', 'current_query_by_page');
+                $blockVariables = array('mass', 'uid', 'massupdate', 'delete', 'merge', 'selectCount', 
+                	'lvso', 'sortOrder', 'orderBy', 'request_data', 'current_query_by_page');
                 $current_query_by_page = unserialize(base64_decode($_REQUEST['current_query_by_page']));
                 foreach($current_query_by_page as $search_key=>$search_value) {
-                    if($search_key != $this->module.'2_'.strtoupper($this->bean->object_name).'_offset' && !in_array($search_key, $blockVariables)) {
+                    if($search_key != $this->module.'2_'.strtoupper($this->bean->object_name).'_offset' 
+                    	&& !in_array($search_key, $blockVariables)) 
+                    {
 						if (!is_array($search_value)) {
                         	$_REQUEST[$search_key] = $GLOBALS['db']->quoteForEmail($search_value);
 						}
