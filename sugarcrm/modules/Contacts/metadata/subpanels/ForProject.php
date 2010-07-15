@@ -70,7 +70,11 @@ $subpanel_layout = array(
 		),
 		'last_name' => array(
 		    'usage'=>'query_only',
-		)				
+        ),
+		'salutation'=>array(
+			'name'=>'salutation',
+		 	'usage' => 'query_only',
+		),
 	),
 );
 ?>

@@ -55,6 +55,10 @@ $subpanel_layout = array(
 			'name'=>'last_name',
 		 	'usage' => 'query_only',
 		),
+		'salutation'=>array(
+			'name'=>'salutation',
+		 	'usage' => 'query_only',
+		),
 		'name'=>array(
 			'name'=>'name',		
 			'vname' => 'LBL_LIST_NAME',

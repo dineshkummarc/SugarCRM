@@ -48,7 +48,7 @@ $dashletData['MyContactsDashlet']['columns'] = array('name' => array('width'   =
                                                                      'label'   => 'LBL_NAME',
                                                                      'link'    => true,
                                                                      'default' => true,
-                                                                     'related_fields' => array('first_name', 'last_name')),
+                                                                     'related_fields' => array('first_name', 'last_name', 'salutation')),
                                                      'account_name' => array('width' => '20',
                                                                              'label' => 'LBL_ACCOUNT_NAME',
                                                                              'sortable' => false,

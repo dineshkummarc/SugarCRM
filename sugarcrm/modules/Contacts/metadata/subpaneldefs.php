@@ -218,7 +218,7 @@ $layout_defs['Contacts'] = array(
 			'title_key' => 'LBL_PROJECTS_SUBPANEL_TITLE',
 			'top_buttons' => array(
 				array('widget_class' => 'SubPanelTopButtonQuickCreate'),
-				array('widget_class' => 'SubPanelTopSelectButton'),
+				array('widget_class' => 'SubPanelTopSelectButton', 'mode'=>'MultiSelect'),
 			),
 		),
         'campaigns' => array(

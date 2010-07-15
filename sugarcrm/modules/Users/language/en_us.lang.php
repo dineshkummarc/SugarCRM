@@ -372,7 +372,7 @@ $mod_strings = array (
     'LBL_AFFECTED'                      => 'affected',
 
     'LBL_USER_NAME_FOR_ROLE'            =>'Users/Teams/Roles',
-    'LBL_SESSION_EXPIRED'               => 'Your session expired. Please login again.',
+    'LBL_SESSION_EXPIRED'               => 'You have been logged out because your session has expired.',
 
 // INBOUND EMAIL STRINGS
 	'LBL_APPLY_OPTIMUMS'				=> 'Apply Optimums',

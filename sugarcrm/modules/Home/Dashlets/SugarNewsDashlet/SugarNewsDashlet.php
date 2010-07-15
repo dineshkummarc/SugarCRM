@@ -41,7 +41,7 @@ require_once('include/Dashlets/Dashlet.php');
 class SugarNewsDashlet extends Dashlet {
     var $displayTpl = 'modules/Home/Dashlets/SugarNewsDashlet/display.tpl';
     var $configureTpl = 'modules/Home/Dashlets/SugarNewsDashlet/configure.tpl';
-    var $defaultURL = 'http://apps.sugarcrm.com/dashlet/5.2.0/sugarcrm-news-dashlet.html?lang=@@LANG@@&edition=@@EDITION@@&ver=@@VER@@';
+    var $defaultURL = 'http://apps.sugarcrm.com/dashlet/sugarcrm-news-dashlet.html?lang=@@LANG@@&edition=@@EDITION@@&ver=@@VER@@';
     var $url;
 
     function SugarNewsDashlet($id, $options = null) {

@@ -1732,6 +1732,7 @@ $app_strings = array (
     'LBL_REMOVE' => 'Remove',
     'LBL_REPORTS_TO' => 'Reports To',
     'LBL_REQUIRED_SYMBOL' => '*',
+    'LBL_REQUIRED_TITLE' => 'Indicates required field',
     'LBL_SAVE_BUTTON_KEY' => 'S',
     'LBL_SAVE_BUTTON_LABEL' => 'Save',
     'LBL_EMAIL_DONE_BUTTON_LABEL' => 'Done',

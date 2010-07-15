@@ -41,7 +41,7 @@ require_once('include/Dashlets/Dashlet.php');
 class iFrameDashlet extends Dashlet {
     var $displayTpl = 'modules/Home/Dashlets/iFrameDashlet/display.tpl';
     var $configureTpl = 'modules/Home/Dashlets/iFrameDashlet/configure.tpl';
-    var $defaultURL = 'http://apps.sugarcrm.com/dashlet/5.2.0/sugarcrm-news-dashlet.html?lang=@@LANG@@&edition=@@EDITION@@&ver=@@VER@@';
+    var $defaultURL = 'http://apps.sugarcrm.com/dashlet/sugarcrm-news-dashlet.html?lang=@@LANG@@&edition=@@EDITION@@&ver=@@VER@@';
     var $url;
 
     function iFrameDashlet($id, $options = null) {
@@ -56,7 +56,7 @@ class iFrameDashlet extends Dashlet {
         }
         if(empty($options['url'])) { 
             $this->url = $this->defaultURL;
-            $this->url = 'http://apps.sugarcrm.com/dashlet/5.2.0/go-pro.html?lang=@@LANG@@&edition=@@EDITION@@&ver=@@VER@@';
+            $this->url = 'http://apps.sugarcrm.com/dashlet/go-pro.html?lang=@@LANG@@&edition=@@EDITION@@&ver=@@VER@@';
         } else {
             $this->url = $options['url'];
         }
