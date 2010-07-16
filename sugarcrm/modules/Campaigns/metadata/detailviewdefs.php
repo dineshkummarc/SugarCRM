@@ -98,23 +98,20 @@ $viewdefs['Campaigns']['DetailView'] = array(
 	      'name' => 'budget',
 	      'label' => '{$MOD.LBL_CAMPAIGN_BUDGET} ({$CURRENCY})',
 	    ),
-	
 	    array (
-	      'name' => 'actual_cost',
-	      'label' => '{$MOD.LBL_CAMPAIGN_ACTUAL_COST} ({$CURRENCY})',
+	      'name' => 'expected_cost',
+	      'label' => '{$MOD.LBL_CAMPAIGN_EXPECTED_COST} ({$CURRENCY})',
 	    ),
 	  ),
 	
 	  array (
-	
+		array (
+	      'name' => 'actual_cost',
+	      'label' => '{$MOD.LBL_CAMPAIGN_ACTUAL_COST} ({$CURRENCY})',
+	    ),
 	    array (
 	      'name' => 'expected_revenue',
 	      'label' => '{$MOD.LBL_CAMPAIGN_EXPECTED_REVENUE} ({$CURRENCY})',
-	    ),
-	
-	    array (
-	      'name' => 'expected_cost',
-	      'label' => '{$MOD.LBL_CAMPAIGN_EXPECTED_COST} ({$CURRENCY})',
 	    ),
 	  ),
 	

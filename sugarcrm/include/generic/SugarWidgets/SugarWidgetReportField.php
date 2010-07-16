@@ -332,6 +332,10 @@ class SugarWidgetReportField extends SugarWidgetField
  	return '( '.$this->_get_column_select($layout_def)."='".$GLOBALS['db']->quote($layout_def['input_name0'])."')\n";
  }
 
+  function queryFilteris_not(&$layout_def)
+ {
+ 	return '( '.$this->_get_column_select($layout_def)."<>'".$GLOBALS['db']->quote($layout_def['input_name0'])."')\n";
+ }
  function queryFilterNot_Empty(&$layout_def)
  {
     $reporter = $this->layout_manager->getAttribute("reporter");

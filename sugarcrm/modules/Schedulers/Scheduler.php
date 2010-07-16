@@ -914,15 +914,18 @@ class Scheduler extends SugarBean {
 		global $mod_strings;
 		global $sugar_config;
 		$error = '';
-		if(is_windows()) {
-			if(isset($_ENV['Path']) && !empty($_ENV['Path'])) { // IIS IUSR_xxx may not have access to Path or it is not set
-				if(!strpos($_ENV['Path'], 'php')) {
+		if (!isset($_SERVER['Path'])) {
+            $_SERVER['Path'] = getenv('Path');
+        }
+        if(is_windows()) {
+			if(isset($_SERVER['Path']) && !empty($_SERVER['Path'])) { // IIS IUSR_xxx may not have access to Path or it is not set
+				if(!strpos($_SERVER['Path'], 'php')) {
 					$error = '<em>'.$mod_strings['LBL_NO_PHP_CLI'].'</em>';
 				}
 			}
 		} else {
-			if(isset($_ENV['Path']) && !empty($_ENV['Path'])) { // some Linux servers do not make this available
-				if(!strpos($_ENV['PATH'], 'php')) {
+			if(isset($_SERVER['Path']) && !empty($_SERVER['Path'])) { // some Linux servers do not make this available
+				if(!strpos($_SERVER['PATH'], 'php')) {
 					$error = '<em>'.$mod_strings['LBL_NO_PHP_CLI'].'</em>';
 				}
 			}

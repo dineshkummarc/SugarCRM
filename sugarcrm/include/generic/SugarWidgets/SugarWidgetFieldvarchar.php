@@ -56,6 +56,10 @@ class SugarWidgetFieldVarchar extends SugarWidgetReportField
  {
 		return $this->_get_column_select($layout_def)." LIKE '%".$GLOBALS['db']->quote($layout_def['input_name0'])."%'\n";
  }
+  function queryFilterdoes_not_contain(&$layout_def)
+ {
+		return $this->_get_column_select($layout_def)." NOT LIKE '%".$GLOBALS['db']->quote($layout_def['input_name0'])."%'\n";
+ }
 
  function queryFilterStarts_With(&$layout_def)
  {

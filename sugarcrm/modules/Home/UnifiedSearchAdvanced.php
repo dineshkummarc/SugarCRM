@@ -261,6 +261,13 @@ class UnifiedSearchAdvanced {
 			$manager->loadVardef( $moduleName , $beanName ) ;
 
 			// obtain the field definitions used by generateSearchWhere (duplicate code in view.list.php)
+			if(file_exists('custom/modules/'.$moduleName.'/metadata/metafiles.php')){
+                require('custom/modules/'.$moduleName.'/metadata/metafiles.php');	
+            }elseif(file_exists('modules/'.$moduleName.'/metadata/metafiles.php')){
+                require('modules/'.$moduleName.'/metadata/metafiles.php');
+            }
+ 		
+			
 			if(!empty($metafiles[$moduleName]['searchfields']))
 				require $metafiles[$moduleName]['searchfields'] ;
 			elseif(file_exists("modules/{$moduleName}/metadata/SearchFields.php"))

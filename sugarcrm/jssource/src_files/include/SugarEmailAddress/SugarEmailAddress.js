@@ -477,11 +477,25 @@
 		          return false;
 		       }
 		       
-		       if(this.emailView == 'EditView') {
-		          theForm.submit();
-		       } else if(this.emailView == 'QuickCreate') {
-		          SUGAR.subpanelUtils.inlineSave(theForm.id, theForm.module.value.toLowerCase());
+		       if(document.getElementById('new_password')) {
+		    	  alert("here!");
+		    	  if(!verify_data(this.emailView)) {
+		    		 return false;
+		    	  }
 		       }
+		       
+		       if(this.emailView == 'EditView') {
+			    	  //C.L. Bug 38464
+			    	  //If there is a Save button, just simulate the click since there may be additional things
+			    	  //done in the onclick attribute (as in case with Users)
+			    	  if(document.getElementById('Save') && typeof document.getElementById('Save') == 'object' && document.getElementById('Save').type == 'button') {
+			    		  document.getElementById('Save').click();
+			    	  } else {
+			    		  theForm.submit();
+			    	  }
+			   } else if(this.emailView == 'QuickCreate') {
+			          SUGAR.subpanelUtils.inlineSave(theForm.id, theForm.module.value.toLowerCase());
+			   }
 		    } 
 		} //forceSubmit 
 	};

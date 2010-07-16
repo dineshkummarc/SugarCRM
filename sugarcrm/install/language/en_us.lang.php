@@ -527,8 +527,6 @@ $mod_strings = array(
 	'LBL_YOUR_PHP_VERSION' => '(Your current php version is ',
 	'LBL_RECOMMENDED_PHP_VERSION' =>' Recommended php version is 5.2.x)',
 	'LBL_BACKWARD_COMPATIBILITY_ON' => 'Php Backward Compatibility mode is turned on. Set zend.ze1_compatibility_mode to Off for proceeding further',
-    'LBL_CHECKSYS_VARIABLE_ORDER_TITLE' => 'Variables order setting',
-    'LBL_CHECKSYS_VARIABLE_ORDER_INFO' => 'Sugar currently uses superglobals. Your variables_order setting is not set. Please set your variables_order to the default setting "EGPCS"',
 );
 
 ?>

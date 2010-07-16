@@ -630,6 +630,10 @@ function user_status_display(field){
 			document.getElementById('is_admin').value='0';
 			document.getElementById('UserTypeDesc').innerHTML="{/literal}{$MOD.LBL_REGULAR_DESC}{literal}";
 		break;
+		case 'UserAdministrator':
+			document.getElementById('is_admin').value='0';
+			document.getElementById('UserTypeDesc').innerHTML="{/literal}{$MOD.LBL_USER_ADMIN_DESC}{literal}";
+		break;
 	}
 }
 
@@ -771,21 +775,19 @@ document.getElementById('email_link_type').onchange = function()
 document.getElementById('email_link_type').onchange();
 {/literal}
 {/if}
-{literal}
-{/literal}
 -->
 </script>
 {$JAVASCRIPT}
 {literal}
 <script type="text/javascript" language="Javascript">
 {/literal}
+{$confirmReassignJs}
 {$getNameJs}
 {$getNumberJs}
 {$currencySymbolJs}
 setSymbolValue(document.getElementById('currency_select').options[document.getElementById('currency_select').selectedIndex].value);
 setSigDigits();
 
-{$confirmReassignJs}
 </script>
 
 </form>

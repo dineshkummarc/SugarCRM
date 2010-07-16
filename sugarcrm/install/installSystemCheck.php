@@ -140,19 +140,6 @@ if(ini_get("zend.ze1_compatibility_mode")) {
 
 }
 
-if(ini_get("variables_order") != 'EGPCS') {
-    installLog($mod_strings['LBL_CHECKSYS_VARIABLE_ORDER_INFO'].'  '.$mod_strings['LBL_CHECKSYS_VARIABLE_ORDER_TITLE']);
-    $variable_order_info = "<b><span class=stop>{$mod_strings['LBL_CHECKSYS_VARIABLE_ORDER_INFO']}</span></b>";
-    $error_found = true;
-    $error_txt .= '
-      <tr>
-        <td><b>'.$mod_strings['LBL_CHECKSYS_VARIABLE_ORDER_TITLE'].'</b></td>
-        <td ><span class="error">'.$variable_order_info.'</span></td>
-      </tr>';
-
-}
-
-
 // database and connect
 
 if (!empty($_REQUEST['setup_db_type']))

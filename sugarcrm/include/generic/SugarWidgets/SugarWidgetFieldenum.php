@@ -77,7 +77,7 @@ class SugarWidgetFieldEnum extends SugarWidgetReportField {
 		if (is_array($layout_def['input_name0'])) {
 			$input_name0 = $layout_def['input_name0'][0];
 		}
-		return $this->_get_column_select($layout_def)." != '".$GLOBALS['db']->quote($input_name0)."'\n";
+		return $this->_get_column_select($layout_def)." <> '".$GLOBALS['db']->quote($input_name0)."'\n";
 	}
 
 	function queryFilterone_of(& $layout_def) {
@@ -89,6 +89,17 @@ class SugarWidgetFieldEnum extends SugarWidgetReportField {
 		$str = implode(",", $arr);
 		return $this->_get_column_select($layout_def)." IN (".$str.")\n";
 	}
+
+	function queryFilternot_one_of(& $layout_def) {
+		$arr = array ();
+		foreach ($layout_def['input_name0'] as $value) {
+			$arr[] = "'".$GLOBALS['db']->quote($value)."'";
+		}
+	    $reporter = $this->layout_manager->getAttribute("reporter");
+		$str = implode(",", $arr);
+		return $this->_get_column_select($layout_def)." NOT IN (".$str.")\n";
+	}
+
 
 	function & displayListPlain($layout_def) {
 		if(!empty($layout_def['column_key'])){

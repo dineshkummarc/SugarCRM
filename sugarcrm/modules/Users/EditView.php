@@ -56,7 +56,8 @@ $admin = new Administration();
 $admin->retrieveSettings();
 
 $focus = new User();
-$is_current_admin=is_admin($current_user)||is_admin_for_module($GLOBALS['current_user'],'Users');
+$is_current_admin=is_admin($current_user)
+                ||is_admin_for_module($GLOBALS['current_user'],'Users');
 $is_super_admin = is_admin($current_user);
 if(!$is_current_admin && $_REQUEST['record'] != $current_user->id) sugar_die("Unauthorized access to administration.");
 
@@ -199,6 +200,7 @@ if($focus->getPreference('no_opps') == 'on') {
 
 // check if the user has access to the User Management
 $sugar_smarty->assign('USER_ADMIN',is_admin_for_module($current_user,'Users')&& !is_admin($current_user));
+
 
 ///////////////////////////////////////////////////////////////////////////////
 ////	NEW USER CREATION ONLY

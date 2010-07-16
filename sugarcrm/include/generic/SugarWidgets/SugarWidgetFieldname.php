@@ -231,7 +231,7 @@ class SugarWidgetFieldName extends SugarWidgetFieldVarchar
 			$input_name0 = $current_user->id;
 		}
 
-		return SugarWidgetFieldid::_get_column_select($layout_def)."!='"
+		return SugarWidgetFieldid::_get_column_select($layout_def)."<>'"
 			.$GLOBALS['db']->quote($input_name0)."'\n";
 	}
     // $rename_columns, if true then you're coming from reports
@@ -258,7 +258,30 @@ class SugarWidgetFieldName extends SugarWidgetFieldVarchar
         
 		return SugarWidgetFieldid::_get_column_select($layout_def)." IN (".$str.")\n";
 	}
-	
+    // $rename_columns, if true then you're coming from reports
+	function queryFilternot_one_of(&$layout_def, $rename_columns = true)
+	{
+		require_once('include/generic/SugarWidgets/SugarWidgetFieldid.php');
+        if($rename_columns) { // this was a hack to get reports working, sugarwidgets should not be renaming $name!
+    		$layout_def['name'] = 'id';
+    		$layout_def['type'] = 'id';
+        }
+		$arr = array();
+
+		foreach($layout_def['input_name0'] as $value)
+		{
+			if ($value == 'Current User') {
+				global $current_user;
+				array_push($arr,"'".$GLOBALS['db']->quote($current_user->id)."'");
+			}
+			else
+				array_push($arr,"'".$GLOBALS['db']->quote($value)."'");
+		}
+
+		$str = implode(",",$arr);
+
+		return SugarWidgetFieldid::_get_column_select($layout_def)." NOT IN (".$str.")\n";
+	}
 	function &queryGroupBy($layout_def)
 	{
         if( $this->reporter->db->dbType == 'mysql') {
