@@ -126,7 +126,7 @@
 		        }
 		        
 		        if(savePressed || this.enterPressed) {
-		        	setTimeout("SUGAR.EmailAddressWidget.instances." + this.id + ".forceSubmit()", 2100);
+		           setTimeout("SUGAR.EmailAddressWidget.instances." + this.id + ".forceSubmit()", 2100);
 		        } else if(this.tabPressed) {
 		           Dom.get(this.id + 'emailAddressPrimaryFlag' + index).focus();
 		        }
@@ -475,13 +475,6 @@
 		       
 		       if(!check_form(this.emailView)) {
 		          return false;
-		       }
-		       
-		       if(document.getElementById('new_password')) {
-		    	  alert("here!");
-		    	  if(!verify_data(this.emailView)) {
-		    		 return false;
-		    	  }
 		       }
 		       
 		       if(this.emailView == 'EditView') {

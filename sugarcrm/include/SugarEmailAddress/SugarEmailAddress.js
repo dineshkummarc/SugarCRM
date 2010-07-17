@@ -66,5 +66,4 @@ if(!primaryFound){Dom.get(this.id+'emailAddressPrimaryFlag0').checked=true;Dom.g
 {var form=document.forms[this.emailView];if(!form){form=document.forms['editContactForm'];}
 if(SUGAR.isIE){for(i=0;i<form.elements.length;i++){var id=new String(form.elements[i].id);if(id.match(/emailAddressInvalidFlag/gim)&&form.elements[i].type=='checkbox'&&id!=el.id){form.elements[i].checked=false;}}
 el.checked=true;}},forceSubmit:function(){var theForm=Dom.get(this.emailView);if(theForm){theForm.action.value='Save';if(!check_form(this.emailView)){return false;}
-if(document.getElementById('new_password')){alert("here!");if(!verify_data(this.emailView)){return false;}}
 if(this.emailView=='EditView'){if(document.getElementById('Save')&&typeof document.getElementById('Save')=='object'&&document.getElementById('Save').type=='button'){document.getElementById('Save').click();}else{theForm.submit();}}else if(this.emailView=='QuickCreate'){SUGAR.subpanelUtils.inlineSave(theForm.id,theForm.module.value.toLowerCase());}}}};emailAddressWidgetLoaded=true;})();
