@@ -931,8 +931,8 @@ EOHTML;
         
         $metadataFile = null;
  		$foundViewDefs = false;
- 		$viewDef = strtolower($this->type) . 'viewdefs.php';
- 		$coreMetaPath = 'modules/'.$this->module.'/metadata/' . $viewDef;
+ 		$viewDef = strtolower($this->type) . 'viewdefs';
+ 		$coreMetaPath = 'modules/'.$this->module.'/metadata/' . $viewDef . '.php';
  		if(file_exists('custom/' .$coreMetaPath )){
  			$metadataFile = 'custom/' . $coreMetaPath;
  			$foundViewDefs = true;

@@ -135,7 +135,6 @@
     border-width: 1px 0;
     border-style: solid;
     border-color: #808080;
-    background: url(sprite.png) repeat-x 0 0;
     margin: auto .25em;
 }
 
@@ -411,7 +410,6 @@ p#clear {
 }
 
  .yui-calcontainer .title {
-    background: url(sprite.png) repeat-x 0 0;
     border-bottom: 1px solid #cccccc;
     font: 100% sans-serif;
     color: #000;
@@ -433,7 +431,6 @@ p#clear {
 }
 
  .yui-calcontainer .calclose {
-    background: url(sprite.png) no-repeat 0 -300px;
     width: 25px;
     height: 15px;
     top: .4em;
@@ -468,7 +465,6 @@ p#clear {
 }
 
  .yui-calendar .calnavleft {
-    background: url(sprite.png) no-repeat 0 -450px;
     width: 25px;
     height: 15px;
     top: 0;
@@ -479,7 +475,6 @@ p#clear {
 }
 
  .yui-calendar .calnavright {
-    background: url(sprite.png) no-repeat 0 -500px;
     width: 25px;
     height: 15px;
     top: 0;
@@ -613,7 +608,6 @@ p#clear {
 }
 
  .yui-calendar a.calnav:hover {
-    background: url(sprite.png) repeat-x 0 0;
     border-color: #A0A0A0;
     cursor: pointer;
 }
@@ -683,7 +677,6 @@ p#clear {
 
  .yui-calcontainer .yui-cal-nav .yui-cal-nav-btn {
     border: 1px solid #808080;
-    background: url(sprite.png) repeat-x 0 0;
     background-color: #ccc;
     margin: auto .15em;
 }
@@ -702,7 +695,6 @@ p#clear {
     {
     border: 1px solid #304369;
     background-color: #426fd9;
-    background: url(sprite.png) repeat-x 0 -1400px;
 }
 
  .yui-calcontainer .yui-cal-nav .yui-cal-nav-btn.yui-default button
@@ -791,13 +783,11 @@ p#clear {
 }
 
  .yui-carousel-nav {
-    background: url(sprite.png) repeat-x 0 0;
     padding: 3px;
     text-align: right;
 }
 
  .yui-carousel-button {
-    background: url(sprite.png) no-repeat 0 -600px;
     float: right;
     height: 19px;
     margin: 5px;
@@ -883,7 +873,6 @@ p#clear {
 }
 
  .yui-carousel-nav ul li a {
-    background: url(sprite.png) no-repeat 0 -650px;
     display: block;
     height: 9px;
     margin: 10px 0 0 5px;
@@ -1286,7 +1275,6 @@ p#clear {
 }
 
  .yui-simple-dialog .bd .yui-icon {
-    background: url(sprite.png) no-repeat 0 0;
     width: 16px;
     height: 16px;
     margin-right: 10px;
@@ -1581,7 +1569,6 @@ tbody .yui-dt-editable {
 }
 
 .yui-dt-editor .yui-dt-button button {
-    background: url(sprite.png) repeat-x 0 0;
     border: 1px solid #999;
     width: 4em;
     height: 1.8em;
@@ -1589,19 +1576,16 @@ tbody .yui-dt-editable {
 }
 
 .yui-dt-editor .yui-dt-button button.yui-dt-default {
-    background: url(sprite.png) repeat-x 0 -1400px;
     background-color: #5584E0;
     border: 1px solid #304369;
     color: #FFF
 }
 
 .yui-dt-editor .yui-dt-button button:hover {
-    background: url(sprite.png) repeat-x 0 -1300px;
     color: #000;
 }
 
 .yui-dt-editor .yui-dt-button button:active {
-    background: url(sprite.png) repeat-x 0 -1700px;
     color: #000;
 }
 
@@ -2339,7 +2323,6 @@ h2.yui-editor-skipheader,h3.yui-editor-skipheader {
 }
 
  .yui-toolbar-container .yui-toolbar-titlebar {
-    background: url(sprite.png) repeat-x 0 -200px;
     position: relative;
 }
 
@@ -2414,10 +2397,6 @@ h2.yui-editor-skipheader,h3.yui-editor-skipheader {
     padding: 0.25em;
 }
 
- .yui-toolbar-container .collapse {
-    background: url(sprite.png) no-repeat 0 -400px;
-}
-
  .yui-toolbar-container .yui-toolbar-titlebar span.collapse
     {
     cursor: pointer;
@@ -2433,7 +2412,6 @@ h2.yui-editor-skipheader,h3.yui-editor-skipheader {
 
  .yui-toolbar-container .yui-push-button, .yui-toolbar-container .yui-color-button, .yui-toolbar-container .yui-menu-button
     {
-    background: url(sprite.png) repeat-x 0 0;
     position: relative;
     display: block;
     height: 22px;
@@ -2504,12 +2482,10 @@ h2.yui-editor-skipheader,h3.yui-editor-skipheader {
 }
 
  .yui-toolbar-container .yui-button-hover {
-    background: url(sprite.png) repeat-x 0 -1300px;
     border-color: #808080;
 }
 
  .yui-toolbar-container .yui-button-selected {
-    background: url(sprite.png) repeat-x 0 -1700px;
     border-color: #808080;
 }
 
@@ -2808,7 +2784,6 @@ h2.yui-editor-skipheader,h3.yui-editor-skipheader {
  .yui-editor-panel .hd h3 {
     color: #000;
     border: 1px solid #808080;
-    background: url(sprite.png) repeat-x 0 -200px;
     width: 99%;
     position: relative;
     margin: 0;
@@ -2947,7 +2922,6 @@ h2.yui-editor-skipheader,h3.yui-editor-skipheader {
 }
 
  .yui-editor-panel .hd span.close {
-    background: url(sprite.png) no-repeat 0 -300px;
     cursor: pointer;
     display: block;
     height: 16px;
@@ -3638,7 +3612,6 @@ body.yui-layout {
     line-height: 2;
     line-height: 1.9;
     border: solid 1px #808080;
-    background: url(sprite.png) repeat-x 0 0;
 }
 
  .yuimenubarnav .yuimenubaritem {
@@ -3665,10 +3638,6 @@ body.yui-layout {
  .yuimenubarnav .yuimenubaritemlabel-hassubmenu {
     background: url(menubaritem_submenuindicator.png) right center no-repeat
         ;
-}
-
- .yuimenubaritem-selected {
-    background: url(sprite.png) repeat-x 0 -1700px;
 }
 
  .yuimenubaritemlabel-selected {
@@ -3744,7 +3713,6 @@ body.yui-layout {
     {
     height: 16px;
     border: solid 1px #808080;
-    background: #fff url(sprite.png) no-repeat 0 0;
 }
 
  .yuimenu .topscrollbar {
@@ -4968,7 +4936,6 @@ h2.yui-editor-skipheader,h3.yui-editor-skipheader {
 }
 
  .yui-toolbar-container .yui-toolbar-titlebar {
-    background: url(sprite.png) repeat-x 0 -200px;
     position: relative;
 }
 
@@ -5043,10 +5010,6 @@ h2.yui-editor-skipheader,h3.yui-editor-skipheader {
     padding: 0.25em;
 }
 
- .yui-toolbar-container .collapse {
-    background: url(sprite.png) no-repeat 0 -400px;
-}
-
  .yui-toolbar-container .yui-toolbar-titlebar span.collapse
     {
     cursor: pointer;
@@ -5062,7 +5025,6 @@ h2.yui-editor-skipheader,h3.yui-editor-skipheader {
 
  .yui-toolbar-container .yui-push-button, .yui-toolbar-container .yui-color-button, .yui-toolbar-container .yui-menu-button
     {
-    background: url(sprite.png) repeat-x 0 0;
     position: relative;
     display: block;
     height: 22px;
@@ -5133,12 +5095,10 @@ h2.yui-editor-skipheader,h3.yui-editor-skipheader {
 }
 
  .yui-toolbar-container .yui-button-hover {
-    background: url(sprite.png) repeat-x 0 -1300px;
     border-color: #808080;
 }
 
  .yui-toolbar-container .yui-button-selected {
-    background: url(sprite.png) repeat-x 0 -1700px;
     border-color: #808080;
 }
 
@@ -5437,7 +5397,6 @@ h2.yui-editor-skipheader,h3.yui-editor-skipheader {
  .yui-editor-panel .hd h3 {
     color: #000;
     border: 1px solid #808080;
-    background: url(sprite.png) repeat-x 0 -200px;
     width: 99%;
     position: relative;
     margin: 0;
@@ -5576,7 +5535,6 @@ h2.yui-editor-skipheader,h3.yui-editor-skipheader {
 }
 
  .yui-editor-panel .hd span.close {
-    background: url(sprite.png) no-repeat 0 -300px;
     cursor: pointer;
     display: block;
     height: 16px;

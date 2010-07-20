@@ -54,14 +54,6 @@ color: #C60C30;
 	float: none;
 }
 
-.dashletPanelMenu
-{
-	border-left: 1px solid #4E8CCF;
-	border-right: 1px solid #4E8CCF;
-	border-bottom: 1px solid #4E8CCF;
-}
-
-
 .dashletPanelMenu .bd .bd-center .screen {
 
 	border: 0px none;

@@ -117,7 +117,7 @@ function isValidEmail(emailStr){if(emailStr.length==0){return true;}
 var lastChar=emailStr.charAt(emailStr.length-1);if(!lastChar.match(/[^\.]/i)){return false;}
 var reg=/@.*?;/g;while((results=reg.exec(emailStr))!=null){orignial=results[0];parsedResult=results[0].replace(';','::;::');emailStr=emailStr.replace(orignial,parsedResult);}
 reg=/@.*?,/g;while((results=reg.exec(emailStr))!=null){orignial=results[0];parsedResult=results[0].replace(',','::;::');emailStr=emailStr.replace(orignial,parsedResult);}
-var emailArr=emailStr.split(/::;::/);for(var i=0;i<emailArr.length;i++){emailAddress=emailArr[i];if(trim(emailAddress)!=''){if(!/^\s*[\w.%+\-&'\/]+@([A-Z0-9-]+\.)*[A-Z0-9-]+\.[\w-]{2,}\s*$/i.test(emailAddress)&&!/^.*<[A-Z0-9._%+\-&']+?@([A-Z0-9-]+\.)*[A-Z0-9-]+\.[\w-]{2,}>\s*$/i.test(emailAddress)){return false;}}}
+var emailArr=emailStr.split(/::;::/);for(var i=0;i<emailArr.length;i++){emailAddress=emailArr[i];if(trim(emailAddress)!=''){if(!/^\s*[\w.%+\-&'\/]+\w+@([A-Z0-9-]+\.)*[A-Z0-9-]+\.[\w-]{2,}\s*$/i.test(emailAddress)&&!/^.*<[A-Z0-9._%+\-&']+?@([A-Z0-9-]+\.)*[A-Z0-9-]+\.[\w-]{2,}>\s*$/i.test(emailAddress)){return false;}}}
 return true;}
 function isValidPhone(phoneStr){if(phoneStr.length==0){return true;}
 if(!/^[0-9\-\(\)\s]+$/.test(phoneStr))

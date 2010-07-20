@@ -829,35 +829,59 @@ class SugarEmailAddress extends SugarBean {
         $invalid = array();
         $mod = isset($focus) ? $focus->module_dir : "";
 
-        while(isset($_POST[$mod . 'emailAddress' . $count])) {
-              $emails[] = $_POST[$mod . 'emailAddress' . $count];
-              $count++;
-        } //while
+        $widget_id = $_POST[$mod .'_email_widget_id'];
+        $this->smarty->assign('email_widget_id',$widget_id);
+        $this->smarty->assign('emailAddressWidget',$_POST['emailAddressWidget']);
+ 	
+        if(isset($_POST[$mod . $widget_id . 'emailAddressPrimaryFlag'])) {
+           $primary = $_POST[$mod . $widget_id . 'emailAddressPrimaryFlag'];
+        }
+        
+        while(isset($_POST[$mod . $widget_id . "emailAddress" . $count])) {
+            $emails[] = $_POST[$mod . $widget_id . 'emailAddress' . $count];
+            $count++;
+        }
 
         if($count == 0) {
            return "";
         }
-
-        if(isset($_POST[$mod . 'emailAddressPrimaryFlag'])) {
-           $primary = $_POST[$mod . 'emailAddressPrimaryFlag'];
-        }
-
-        if(isset($_POST[$mod . 'emailAddressOptOutFlag'])) {
-           foreach($_POST[$mod . 'emailAddressOptOutFlag'] as $v) {
+        
+        if(isset($_POST[$mod . $widget_id . 'emailAddressOptOutFlag'])) {
+           foreach($_POST[$mod . $widget_id . 'emailAddressOptOutFlag'] as $v) {
               $optOut[] = $v;
            }
         }
 
-        if(isset($_POST[$mod . 'emailAddressInvalidFlag'])) {
-           foreach($_POST[$mod . 'emailAddressInvalidFlag'] as $v) {
+        if(isset($_POST[$mod . $widget_id . 'emailAddressInvalidFlag'])) {
+           foreach($_POST[$mod . $widget_id . 'emailAddressInvalidFlag'] as $v) {
               $invalid[] = $v;
            }
+        }
+        
+        if(isset($_POST[$mod . $widget_id . 'emailAddressReplyToFlag'])) {
+           foreach($_POST[$mod . $widget_id . 'emailAddressReplyToFlag'] as $v) {
+              $replyTo[] = $v;
+           }
+        }
+        
+        if(isset($_POST[$mod . $widget_id . 'emailAddressDeleteFlag'])) {
+           foreach($_POST[$mod . $widget_id . 'emailAddressDeleteFlag'] as $v) {
+              $delete[] = $v;
+           }
+        }
+        
+        while(isset($_POST[$mod . $widget_id . "emailAddressVerifiedValue" . $count])) {
+            $verified[] = $_POST[$mod . $widget_id . 'emailAddressVerifiedValue' . $count];
+            $count++;
         }
 
         $this->smarty->assign('emails', $emails);
         $this->smarty->assign('primary', $primary);
         $this->smarty->assign('optOut', $optOut);
         $this->smarty->assign('invalid', $invalid);
+        $this->smarty->assign('replyTo', $invalid);
+        $this->smarty->assign('delete', $invalid);
+        $this->smarty->assign('verified', $invalid);
         $this->smarty->assign('moduleDir', $mod);
 
         return $this->smarty->fetch("include/SugarEmailAddress/templates/forDuplicatesView.tpl");
@@ -871,23 +895,34 @@ class SugarEmailAddress extends SugarBean {
         $get = "";
         $count = 0;
         $mod = isset($focus) ? $focus->module_dir : "";
-        while(isset($_REQUEST['emailAddress' . $count])) {
-              $get .= "&" . $mod . "emailAddress" . $count . "=" . urlencode($_REQUEST['emailAddress' . $count]);
+        
+        $widget_id = $_POST[$mod .'_email_widget_id'];
+        $get .= '&' . $mod . '_email_widget_id='. $widget_id;
+        $get .= '&emailAddressWidget='.$_POST['emailAddressWidget'];
+        
+        while(isset($_REQUEST[$mod . $widget_id . 'emailAddress' . $count])) {
+              $get .= "&" . $mod . $widget_id . "emailAddress" . $count . "=" . urlencode($_REQUEST[$mod . $widget_id . 'emailAddress' . $count]);
+              $count++;
+        } //while
+        
+        while(isset($_REQUEST[$mod . $widget_id . 'emailAddressVerifiedValue' . $count])) {
+              $get .= "&" . $mod . $widget_id . "emailAddressVerifiedValue" . $count . "=" . urlencode($_REQUEST[$mod . $widget_id . 'emailAddressVerifiedValue' . $count]);
               $count++;
         } //while
 
-        $options = array('emailAddressPrimaryFlag', 'emailAddressOptOutFlag', 'emailAddressInvalidFlag');
+        $options = array('emailAddressPrimaryFlag', 'emailAddressOptOutFlag', 'emailAddressInvalidFlag', 'emailAddressDeleteFlag', 'emailAddressReplyToFlag');
 
         foreach($options as $option) {
             $count = 0;
-            if(isset($_REQUEST[$option])) {
-               if(is_array($_REQUEST[$option])) {
-                   foreach($_REQUEST[$option] as $optOut) {
-                      $get .= "&" . $mod . $option . "[" . $count . "]=" . $optOut;
+            $optionIdentifier = $mod.$widget_id.$option;
+            if(isset($_REQUEST[$optionIdentifier])) {
+               if(is_array($_REQUEST[$optionIdentifier])) {
+                   foreach($_REQUEST[$optionIdentifier] as $optOut) {
+                      $get .= "&" . $optionIdentifier . "[" . $count . "]=" . $optOut;
                       $count++;
                    } //foreach
                } else {
-                   $get .= "&" . $mod . $option . "=" . $_REQUEST[$option];
+                   $get .= "&" . $optionIdentifier . "=" . $_REQUEST[$optionIdentifier];
                }
             } //if
         } //foreach

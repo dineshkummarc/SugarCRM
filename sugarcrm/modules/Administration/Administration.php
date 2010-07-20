@@ -115,7 +115,8 @@ class Administration extends SugarBean {
 		return $this;
 	}
 
-	function saveConfig() {
+	function saveConfig() {		
+		
 		// outbound email settings
 		$oe = new OutboundEmail();
 

@@ -472,7 +472,7 @@ else{
 
 $sugar_smarty->assign('IS_FOCUS_ADMIN', is_admin($focus));
 
-$disable_download_tab = (!isset($sugar_config['disable_download_tab']) || $admin_edit_self) ? false : $sugar_config['disable_download_tab'];
+$disable_download_tab = !isset($sugar_config['disable_download_tab']) ? false : $sugar_config['disable_download_tab'];
 
 if($edit_self && !$disable_download_tab) {
 	$sugar_smarty->assign('EDIT_SELF','1');

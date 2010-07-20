@@ -225,6 +225,7 @@ Studio2 = {
 	toggleFieldWidth:function(id){
 
 		var field = YAHOO.util.Dom.get(id);
+		if ( typeof(field) == 'undefined' || field === null ) return; 
 		var img = field.childNodes[1];
 
 		if( field.getAttribute("state") && field.getAttribute("state")=='reduced' ){

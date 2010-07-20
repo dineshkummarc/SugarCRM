@@ -1304,6 +1304,7 @@ eoq;
 		            . $_REQUEST['qc_module'] . '/' . $GLOBALS['current_language'] . '.js?s=' . $GLOBALS['sugar_version'] . '&c='
 		            . $GLOBALS['sugar_config']['js_custom_version'] . '&j=' . $GLOBALS['sugar_config']['js_lang_version'] . '"></script>';
 
+		            
 		$EditView->view = 'EmailQCView';
 		$EditView->defs['templateMeta']['form']['headerTpl'] = 'include/EditView/header.tpl';
 		$EditView->defs['templateMeta']['form']['footerTpl'] = 'include/EditView/footer.tpl';

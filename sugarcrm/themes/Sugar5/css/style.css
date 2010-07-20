@@ -3564,7 +3564,3 @@ ul.tablist li a.current:link, ul.tablist li a.current:visited, ul.tablist li a.c
     background : transparent url('../../../../index.php?entryPoint=getImage&themeName=Sugar55&imageName=sugar-yui-sprites.png')  no-repeat scroll 0px -70px;
  }
  
-#basic_search_link
-{
-    margin-left:6px !important;
-}

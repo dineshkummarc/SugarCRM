@@ -124,6 +124,9 @@ $ss->assign("MRKT_ID", $mrkt_focus->id);
 $ss->assign("MRKT_NAME", $mrkt_focus->name);
 $ss->assign("MRKT_FROM_NAME", $mrkt_focus->from_name);
 $ss->assign("MRKT_FROM_ADDR", $mrkt_focus->from_addr);
+$def = $mrkt_focus->getFieldDefinition('from_name');
+$ss->assign("MRKT_FROM_NAME_LEN", $def['len']);
+
 //jc: bug 15498
 // assigning the length of the reply name from the var defs to the template to be used
 // as the max length for the input field

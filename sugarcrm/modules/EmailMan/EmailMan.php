@@ -778,11 +778,10 @@ class EmailMan extends SugarBean{
 			$mail->FromName = $this->current_emailmarketing->from_name;
 			$mail->ClearCustomHeaders();
             $mail->AddCustomHeader('X-CampTrackID:'.$this->target_tracker_key);
-            //added support for using the reply to address from reply to name from configured mailbox.
-            //we removed code that was using the from name of the marketing template as the reply to name
-            //and current mailbox's reply to address.
-			$replyToName =$this->current_mailbox->get_stored_options('reply_to_name',$mail->FromName ,null);
-            $replyToAddr =$this->current_mailbox->get_stored_options('reply_to_addr',$mail->From,null);
+            //CL - Bug 25256 Check if we have a reply_to_name/reply_to_addr value from the email marketing table.  If so use email marketing entry; otherwise current mailbox (inbound email) entry
+			$replyToName = empty($this->current_emailmarketing->reply_to_name) ? $this->current_mailbox->get_stored_options('reply_to_name',$mail->FromName,null) : $this->current_emailmarketing->reply_to_name;
+			$replyToAddr = empty($this->current_emailmarketing->reply_to_addr) ? $this->current_mailbox->get_stored_options('reply_to_addr',$mail->From,null) : $this->current_emailmarketing->reply_to_addr;          
+
 			$mail->AddReplyTo($replyToAddr,$locale->translateCharsetMIME(trim($replyToName), 'UTF-8', $OBCharset));
 
 			//parse and replace bean variables.

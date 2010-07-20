@@ -274,7 +274,7 @@ class ListViewDisplay {
 		// delete
 		if ( ACLController::checkAccess($this->seed->module_dir,'delete',true) && $this->delete )
 			$menuItems .= $this->buildDeleteLink();
-        // compose email
+		// compose email
         if ( isset($_REQUEST['module']) && $_REQUEST['module'] != 'Users' && $_REQUEST['module'] != 'Employees' &&
             ( SugarModule::get($_REQUEST['module'])->moduleImplements('Company') 
                 || SugarModule::get($_REQUEST['module'])->moduleImplements('Person') ) )
@@ -284,7 +284,7 @@ class ListViewDisplay {
 		$mass->setSugarBean($this->seed);
 		if ( ACLController::checkAccess($this->seed->module_dir,'edit',true) && $this->showMassupdateFields && $mass->doMassUpdateFieldsExistForFocus() )
             $menuItems .= $this->buildMassUpdateLink();
-		// merge
+        // merge
 		if ( $this->mailMerge )
 		    $menuItems .= $this->buildMergeLink();
 		if ( $this->mergeduplicates ) 

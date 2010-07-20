@@ -187,7 +187,7 @@ class GridLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
             if ( AbstractMetaDataParser::validField ( $def,  $this->_view ) || isset($this->_originalViewDef[$key]) )
             {
                 //If the field original label existing, we should use the original label instead the label in its fielddefs.
-                if(isset($this->_originalViewDef[$key]['label'])){
+            	if(isset($this->_originalViewDef[$key]) && is_array($this->_originalViewDef[$key]) && isset($this->_originalViewDef[$key]['label'])){
                     $availableFields [ $key ] = array ( 'name' => $key , 'label' => $this->_originalViewDef[$key]['label']) ; 
                 }else{
                     $availableFields [ $key ] = array ( 'name' => $key , 'label' => isset($def [ 'label' ]) ? $def [ 'label' ] : $def['vname'] ) ; // layouts use 'label' not 'vname' for the label entry

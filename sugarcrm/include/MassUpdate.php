@@ -336,7 +336,6 @@ eoq;
 
 						if(!empty($old_reports_to_id)) {
 						   $old_id = $old_reports_to_id == 'null' ? '' : $old_reports_to_id;
-						   $newbean->update_team_memberships($old_id);
 						}
 					}
 				}

@@ -81,6 +81,9 @@ var ERR_REENTER_PASSWORDS = '{$MOD.ERR_REENTER_PASSWORDS}';
 var EditView_tabs = new YAHOO.widget.TabView("EditView_tabs");
 
 {literal}
+//Override so we do not force submit
+SUGAR.EmailAddressWidget.prototype.forceSubmit = function() { }
+
 EditView_tabs.on('contentReady', function(e){
 {/literal}
 });
@@ -775,19 +778,21 @@ document.getElementById('email_link_type').onchange = function()
 document.getElementById('email_link_type').onchange();
 {/literal}
 {/if}
+{literal}
 -->
 </script>
 {$JAVASCRIPT}
+{/literal}
 {literal}
 <script type="text/javascript" language="Javascript">
 {/literal}
-{$confirmReassignJs}
 {$getNameJs}
 {$getNumberJs}
 {$currencySymbolJs}
 setSymbolValue(document.getElementById('currency_select').options[document.getElementById('currency_select').selectedIndex].value);
 setSigDigits();
 
+{$confirmReassignJs}
 </script>
 
 </form>

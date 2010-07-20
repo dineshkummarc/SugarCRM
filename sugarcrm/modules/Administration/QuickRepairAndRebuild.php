@@ -170,23 +170,7 @@ class RepairAndClear
 				}
 				
 				$GLOBALS['sugar_config']['developerMode'] = $dm;
-				$olddictionary = $dictionary;
-				$dictionary = array();
-
-				include ('modules/TableDictionary.php');
-				$GLOBALS['table_dictionary'] = $dictionary;
-				foreach ($dictionary as $meta) {
-					$indices = array();
-					$tablename = $meta['table'];
-					$fielddefs = $meta['fields'];
-					if(!empty($meta['indices'])){
-						$indices = $meta['indices'];
-					}
-
-					$sql .= $db->repairTableParams($tablename, $fielddefs, $indices, $this->execute);
-				}
-
-
+				
 		        if ($this->show_output) echo "<script type=\"text/javascript\">document.getElementById('rdloading').style.display = \"none\";</script>";
 	    		if (isset ($sql) && !empty ($sql))
 	    		{

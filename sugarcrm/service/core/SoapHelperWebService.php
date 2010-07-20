@@ -194,7 +194,7 @@ function validate_user($user_name, $password){
 		if(!empty($session_id)){
 			session_id($session_id);
 			session_start();
-			if(!empty($_SESSION['is_valid_session']) && is_valid_ip_address('ip_address') && $_SESSION['type'] == 'user'){
+			if(!empty($_SESSION['is_valid_session']) && $this->is_valid_ip_address('ip_address') && $_SESSION['type'] == 'user'){
 
 				global $current_user;
 				require_once('modules/Users/User.php');

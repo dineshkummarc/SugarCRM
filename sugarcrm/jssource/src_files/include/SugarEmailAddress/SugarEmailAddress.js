@@ -478,19 +478,12 @@
 		       }
 		       
 		       if(this.emailView == 'EditView') {
-			    	  //C.L. Bug 38464
-			    	  //If there is a Save button, just simulate the click since there may be additional things
-			    	  //done in the onclick attribute (as in case with Users)
-			    	  if(document.getElementById('Save') && typeof document.getElementById('Save') == 'object' && document.getElementById('Save').type == 'button') {
-			    		  document.getElementById('Save').click();
-			    	  } else {
-			    		  theForm.submit();
-			    	  }
-			   } else if(this.emailView == 'QuickCreate') {
-			          SUGAR.subpanelUtils.inlineSave(theForm.id, theForm.module.value.toLowerCase());
-			   }
+		          theForm.submit();
+		       } else if(this.emailView == 'QuickCreate') {
+		          SUGAR.subpanelUtils.inlineSave(theForm.id, theForm.module.value.toLowerCase());
+		       }
 		    } 
-		} //forceSubmit 
+		} //forceSubmit
 	};
 	emailAddressWidgetLoaded = true;
 })();

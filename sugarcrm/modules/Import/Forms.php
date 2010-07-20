@@ -52,7 +52,7 @@ function loadImportBean(
     $module
     )
 {
-    $focus = SugarModule::get($module)->loadBean(false);
+    $focus = SugarModule::get($module)->loadBean();
     if ( $focus ) {
         if ( !$focus->importable )
             return false;
