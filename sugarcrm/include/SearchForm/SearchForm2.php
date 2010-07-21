@@ -465,6 +465,14 @@ require_once('include/EditView/EditView2.php');
                 }
             }
         }
+
+       if ( is_array($this->searchFields) ) {
+           foreach ( $this->searchFields as $fieldName => $field ) {
+               if ( !empty($field['value']) && is_string($field['value']) ) {
+                   $this->searchFields[$fieldName]['value'] = trim($field['value']);
+               }
+           }
+       }
     }
 
     /**

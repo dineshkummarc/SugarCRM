@@ -61,6 +61,7 @@ function getSystemInfo($send_usage_info=true){
 
 		$user_list = get_user_array(false, "Active", "", false, null, " AND is_group=0 AND portal_only=0 ", false);
 
+
 		
 		$info['users']=count($user_list);
 		if(empty($administration)){

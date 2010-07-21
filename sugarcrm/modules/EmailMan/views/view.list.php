@@ -50,7 +50,6 @@ class EmailManViewList extends ViewList
             sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']); 
  	    
  		$this->lv = new ListViewSmarty();
- 		$this->lv->showMassupdateFields = false;
  		$this->lv->export = false;
  		$this->lv->quickViewLinks = false;
  	}

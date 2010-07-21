@@ -47,4 +47,5 @@ class UsersViewList extends ViewList
  	    $this->lv = new ListViewSmarty();
  		$this->lv->delete = false;
  	}
+
 }
