@@ -123,7 +123,7 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
         foreach ( $this->_viewdefs as $key => $def )
         {
             // add in the default fields from the listviewdefs but hide fields disabled in the listviewdefs.
-            if (! empty ( $def [ 'default' ] ) 
+            if (! empty ( $def [ 'default' ] ) && (!isset($def['enabled']) || $def['enabled'] != false)
             	&& (!isset($def [ 'studio' ]) || ($def [ 'studio' ] !== false && $def [ 'studio' ] != "false")))
             {
                 if (isset($this->_fielddefs [ $key ] )) {
@@ -175,19 +175,18 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
         // Select available fields from the field definitions - don't need to worry about checking if ok to include as the Implementation has done that already in its constructor
         foreach ( $this->_fielddefs as $key => $def )
         {
-            if ($this->isValidField($key, $def))
+            if ($this->isValidField($key, $def) && !isset($this->_viewdefs[$key]))
         	    $availableFields [ $key ] = self::_trimFieldDefs( $this->_fielddefs [ $key ] ) ;
-        	    
-        	$origDefs = $this->getOriginalViewDefs();
-        	foreach($origDefs as $key => $def)
-        	{
-        		$availableFields [ $key ] = $def;
-        	}
+        }
+    	$origDefs = $this->getOriginalViewDefs();
+        foreach($origDefs as $key => $def)
+        {
+        	if (!isset($this->_viewdefs[$key]) || 
+        		(isset($this->_viewdefs[$key]['enabled']) && $this->_viewdefs[$key]['enabled'] == false))
+        	$availableFields [ $key ] = $def;
         }
 
-        //$GLOBALS['log']->debug(get_class($this).'->getAvailableFields(): '.print_r($availableFields,true));
-        // now remove all fields that are already in the viewdef - they are not available; they are in use
-        return ListLayoutMetaDataParser::getArrayDiff ( $availableFields, $this->_viewdefs) ;
+        return $availableFields;
     }
 
     public function isValidField($key, $def)
@@ -297,6 +296,8 @@ class ListLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
 	                    $newViewdefs [ $fieldname ] [ 'currency_format' ] = true;
 	                }
                 }
+                if (isset($newViewdefs [ $fieldname ]['enabled']))
+                		$newViewdefs [ $fieldname ]['enabled'] = true;
 
                 if (isset ( $_REQUEST [ strtolower ( $fieldname ) . 'width' ] ))
                 {

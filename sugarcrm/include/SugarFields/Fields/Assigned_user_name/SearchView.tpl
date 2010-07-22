@@ -1,5 +1,4 @@
-<?php
- if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+{*
 /*********************************************************************************
  * SugarCRM is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2010 SugarCRM Inc.
@@ -34,13 +33,7 @@
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
  ********************************************************************************/
-
-
-
-$sugar_version      = '6.1.0beta';
-$sugar_db_version   = '6.1.0beta';
-$sugar_flavor       = 'CE';
-$sugar_build		= '5089';
-$sugar_timestamp    = '2010-07-21 05:15pm';
-
-?>
+*}
+{{capture name=display_size assign=size}}{{$displayParams.size|default:6}}{{/capture}}
+{php}$this->_tpl_vars['user_options'] = get_user_array(false);{/php}
+{html_options name='{{$vardef.name}}[]' options=$user_options size="{{$size}}" style="width: 150px" {{if $size > 1}}multiple="1"{{/if}} selected={{sugarvar key='value' string=true}}}

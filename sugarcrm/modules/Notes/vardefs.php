@@ -61,55 +61,61 @@ $dictionary['Note'] = array('table' => 'notes',
     'type' => 'datetime',
     'comment' => 'Date record last modified'
   ),
-    'modified_user_id' =>
-  array (
-    'name' => 'modified_user_id',
-    'rname' => 'user_name',
-    'id_name' => 'modified_user_id',
-    'vname' => 'LBL_MODIFIED',
-    'type' => 'assigned_user_name',
-    'table' => 'users',
-    'isnull' => 'false',
-    'dbType' => 'id',
-    'reportable'=>true,
-    'comment' => 'User who last modified record'
-  ),
-    'modified_by_name' =>
-  array (
-    'name' => 'modified_by_name',
+   'modified_user_id' =>
+	  array (
+	    'name' => 'modified_user_id',
+	    'rname' => 'user_name',
+	    'id_name' => 'modified_user_id',
+	    'vname' => 'LBL_MODIFIED',
+	    'type' => 'assigned_user_name',
+	    'table' => 'users',
+	    'isnull' => 'false',
+	     'group'=>'modified_by_name',
+	    'dbType' => 'id',
+	    'reportable'=>true,
+	    'comment' => 'User who last modified record',
+	  ),
+	  'modified_by_name' => 
+	  array (
+	    'name' => 'modified_by_name',
     'vname' => 'LBL_MODIFIED_BY',
-    'type' => 'relate',
-    'reportable'=>false,
-    'source'=>'non-db',
-    'table' => 'users',
-    'id_name' => 'modified_user_id',
-    'module'=>'Users',
-    'duplicate_merge'=>'disabled'
-  ),
-  'created_by' =>
-  array (
-    'name' => 'created_by',
-    'rname' => 'user_name',
-    'id_name' => 'modified_user_id',
+	    'type' => 'relate',
+	    'reportable'=>false,
+	    'source'=>'non-db',
+	    'rname'=>'user_name',
+	    'table' => 'users',
+	    'id_name' => 'modified_user_id',
+	    'module'=>'Users',
+	    'link'=>'modified_user_link',
+	    'duplicate_merge'=>'disabled' 
+	  ),  
+	  'created_by' =>
+	  array (
+	    'name' => 'created_by',
+	    'rname' => 'user_name',
+	    'id_name' => 'modified_user_id',
     'vname' => 'LBL_CREATED_ID',
-    'type' => 'assigned_user_name',
-    'table' => 'users',
-    'isnull' => 'false',
-    'dbType' => 'id',
+	    'type' => 'assigned_user_name',
+	    'table' => 'users',
+	    'isnull' => 'false',
+	    'dbType' => 'id',
     'comment' => 'User who created record'
-  ),
-  'created_by_name' =>
-  array (
-    'name' => 'created_by_name',
+	  ),
+	  	'created_by_name' => 
+	  array (
+	    'name' => 'created_by_name',
     'vname' => 'LBL_CREATED_BY',
-    'type' => 'relate',
-    'reportable'=>false,
-    'source'=>'non-db',
-    'table' => 'users',
-    'id_name' => 'created_by',
-    'module'=>'Users',
-    'duplicate_merge'=>'disabled'
-  ),
+		'type' => 'relate',
+		'reportable'=>false,
+	    'link' => 'created_by_link',
+	    'rname' => 'user_name',
+		'source'=>'non-db',
+		'table' => 'users',
+		'id_name' => 'created_by',
+		'module'=>'Users',
+		'duplicate_merge'=>'disabled',
+        'importable' => 'false',
+	),
   'name' =>
   array (
     'name' => 'name',

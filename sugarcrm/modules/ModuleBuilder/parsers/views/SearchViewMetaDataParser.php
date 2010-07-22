@@ -113,8 +113,16 @@ class SearchViewMetaDataParser extends ListLayoutMetaDataParser
 
     public function isValidField($key, $def)
     {
+		if(isset($def['type']) && $def['type'] == "assigned_user_name")
+		{
+			$origDefs = $this->getOriginalViewDefs();
+			if (isset($def['group']) && isset($origDefs[$def['group']]))
+				return false;
+			if (!isset($def [ 'studio' ]) || (is_array($def [ 'studio' ]) && !isset($def [ 'studio' ]['searchview'])))
+				return true;
+		}
 		
-        if (!parent::isValidField($key, $def))
+    	if (!parent::isValidField($key, $def))
             return false;
 
         if (isset($def [ 'studio' ]) && is_array($def [ 'studio' ]) && isset($def [ 'studio' ]['searchview']))
@@ -122,13 +130,15 @@ class SearchViewMetaDataParser extends ListLayoutMetaDataParser
         	return $def [ 'studio' ]['searchview'] !== false && $def [ 'studio' ]['searchview'] != 'false';
         }
     	
-        //Special case to prevent multiple copies of assigned user on the search view
-        if (empty ($def[ 'studio' ] ) && $key == "assigned_user_name" )
+        //Special case to prevent multiple copies of assigned, modified, or created by user on the search view
+        if (empty ($def[ 'studio' ] ) && $key == "assigned_user_name")
         {
         	$origDefs = $this->getOriginalViewDefs();
-        	if (isset($origDefs['assigned_user_id']))
+        	if ($key == "assigned_user_name" && isset($origDefs['assigned_user_id']))
         		return false;
         }
+        if (substr($key, -8) == "_by_name" &&  isset($def['rname']) && $def['rname'] == "user_name")
+        	return false;
 
         //Remove image fields (unless studio was set)
         if (!empty($def [ 'studio' ]) && isset($def['type']) && $def['type'] == "image")

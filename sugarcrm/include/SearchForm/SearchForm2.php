@@ -111,11 +111,6 @@ require_once('include/EditView/EditView2.php');
  			$this->_build_field_defs();
  		}
 
- 		/*if(file_exists('modules/' . $this->module . '/metadata/SearchFields.php'))
- 			require_once('modules/' . $this->module . '/metadata/SearchFields.php');
-       	if(file_exists('custom/modules/' . $this->module . '/metadata/SearchFields.php'))
-       		require_once('custom/modules/' . $this->module . '/metadata/SearchFields.php');
-        */
         $this->searchFields = $searchFields[$this->module];
 
         // Setub the tab array
@@ -309,6 +304,9 @@ require_once('include/EditView/EditView2.php');
 		$this->fieldDefs = array();
 		foreach($this->searchdefs['layout'][$this->displayView] as $data){
 			if(is_array($data)){
+				//Fields may be listed but disabled so that when they are enabled, they have the correct custom display data.
+				if (isset($data['enabled']) && $data['enabled'] == false)
+					continue;
 				$data['name'] = $data['name'].'_'.$this->parsedView;
 				$this->formData[] = array('field' => $data);
 				$this->fieldDefs[$data['name']]= $data;
@@ -439,9 +437,14 @@ require_once('include/EditView/EditView2.php');
 
                 foreach($this->searchFields as $name => $params) {
 					$long_name = $name.'_'.$SearchName;           /*nsingh 21648: Add additional check for bool values=0. empty() considers 0 to be empty Only repopulates if value is 0 or 1:( */
-                    if(isset($array[$long_name]) && ( $array[$long_name] !== '' || (isset($this->fieldDefs[$long_name]) && $this->fieldDefs[$long_name]['type'] == 'bool' && ($array[$long_name]=='0' || $array[$long_name]=='1'))) ) { //advanced*/
+                    if(isset($array[$long_name]) && ( $array[$long_name] !== '' 
+						|| (isset($this->fieldDefs[$long_name]) && $this->fieldDefs[$long_name]['type'] == 'bool' 
+							&& ($array[$long_name]=='0' || $array[$long_name]=='1'))) ) 
+					{ //advanced*/
                         $this->searchFields[$name]['value'] = $array[$long_name];
-                        if(empty($this->fieldDefs[$long_name]['value'])) $this->fieldDefs[$long_name]['value'] = $array[$long_name];
+                        if(empty($this->fieldDefs[$long_name]['value'])) {
+                        	$this->fieldDefs[$long_name]['value'] = $array[$long_name];
+                        }
                     }else if(!empty($array[$name]) && !$fromMergeRecords) { //basic
                         $this->searchFields[$name]['value'] = $array[$name];
                         if(empty($this->fieldDefs[$long_name]['value'])) $this->fieldDefs[$long_name]['value'] = $array[$name];
@@ -454,9 +457,14 @@ require_once('include/EditView/EditView2.php');
                                                               'value'      => $array[$key.'_'.$SearchName]);
 
 
-                    		if (!empty($params['type']) && $params['type'] == 'parent' && !empty($params['type_name']) && !empty($this->searchFields[$key]['value'])) {
+                    		if (!empty($params['type']) && $params['type'] == 'parent' 
+                    			&& !empty($params['type_name']) && !empty($this->searchFields[$key]['value'])) 
+                    		{
                     			$this->searchFields[$params['type_name']] = array('query_type' => 'default',
                                                               					  'value'      => $array[$params['type_name']]);
+                    		}
+                    		if(empty($this->fieldDefs[$long_name]['value'])) {
+                    			$this->fieldDefs[$key.'_'.$SearchName]['value'] =  $array[$key.'_'.$SearchName];
                     		}
                         }
                     }

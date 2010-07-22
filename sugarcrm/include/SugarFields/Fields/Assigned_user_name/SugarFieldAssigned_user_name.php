@@ -1,5 +1,4 @@
 <?php
- if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 /*********************************************************************************
  * SugarCRM is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2010 SugarCRM Inc.
@@ -34,13 +33,18 @@
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
  ********************************************************************************/
+require_once('include/SugarFields/Fields/Base/SugarFieldBase.php');
 
+class SugarFieldAssigned_user_name extends SugarFieldBase {
 
-
-$sugar_version      = '6.1.0beta';
-$sugar_db_version   = '6.1.0beta';
-$sugar_flavor       = 'CE';
-$sugar_build		= '5089';
-$sugar_timestamp    = '2010-07-21 05:15pm';
-
-?>
+	function getSearchViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex) {
+    	$vardef['options'] = get_user_array(false);
+		if(!empty($vardef['function']['returns']) && $vardef['function']['returns']== 'html'){
+    	   $this->setup($parentFieldArray, $vardef, $displayParams, $tabindex);
+           return $this->fetch('include/SugarFields/Fields/Multienum/EditViewFunction.tpl');
+    	}else{
+    	   $this->setup($parentFieldArray, $vardef, $displayParams, $tabindex);
+           return $this->fetch('include/SugarFields/Fields/Assigned_user_name/SearchView.tpl');
+    	}
+    }
+}

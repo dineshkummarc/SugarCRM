@@ -401,10 +401,6 @@ class ParserModifyLayoutView extends ModuleBuilderParser
             else
             {
                 $GLOBALS['log']->debug( get_class($this)."->_getModelFields(): skipping $field from modelFields as it fails the test for inclusion");
-                if ($field == 'assigned_user_name')
-                {
-                    $GLOBALS['log']->debug( print_r($def,true));
-                }
             }
         }
         $GLOBALS['log']->debug( get_class($this)."->_getModelFields(): remaining entries in modelFields are: ".implode(",",array_keys($modelFields)));
