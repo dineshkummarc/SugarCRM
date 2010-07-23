@@ -4057,6 +4057,20 @@ function clearAllJsAndJsLangFilesWithoutOutput(){
 }
 
 /**
+ * This function will allow you to get a variable value from query string
+ */
+function getVariableFromQueryString($variable, $string){
+	$matches = array();
+	$number = preg_match("/{$variable}=([a-zA-Z0-9_-]+)[&]?/", $string, $matches);
+	if($number){
+		return $matches[1];
+	}
+	else{
+		return false;
+	}
+}
+
+/**
  * should_hide_iframes
  * This is a helper method to determine whether or not to show iframes (My Sites) related
  * information in the application.

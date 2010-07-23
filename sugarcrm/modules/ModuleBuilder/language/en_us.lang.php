@@ -347,6 +347,7 @@ $mod_strings = array(
 'LBL_DASHLETLISTVIEW'=>'Sugar Dashlet ListView',
 'LBL_DASHLETSEARCH'=>'Sugar Dashlet Search',
 'LBL_POPUP'=>'PopupView',
+'LBL_POPUPLIST'=>'Popup ListView',
 'LBL_POPUPLISTVIEW'=>'Popup ListView',
 'LBL_POPUPSEARCH'=>'Popup Search',
 'LBL_DASHLETSEARCHVIEW'=>'Sugar Dashlet Search',

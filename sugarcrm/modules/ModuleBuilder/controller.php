@@ -324,14 +324,10 @@ class ModuleBuilderController extends SugarController
         		global $mod_strings;
                 $mod_strings['LBL_ALL_MODULES'] = 'all_modules';
                 $repair = new RepairAndClear();
-        		$repair->show_output = false;
-        		$repair->module_list = array($class_name);
-                $repair->repairDatabase();
-        		$repair->clearVardefs();
-        		$repair->clearTpls();
-        		//#28707 ,clear all the js files in cache
-        		$repair->module_list = array();
-        		$repair->clearJsFiles();
+		        $repair->repairAndClearAll(array('rebuildExtensions', 'clearVardefs', 'clearTpls'), array($class_name), true, false);
+		        //#28707 ,clear all the js files in cache
+		        $repair->module_list = array();
+		        $repair->clearJsFiles();
             }
         } else
         {

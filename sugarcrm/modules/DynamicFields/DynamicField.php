@@ -40,9 +40,11 @@ if (! defined ( 'sugarEntry' ) || ! sugarEntry)
 class DynamicField {
 
     var $use_existing_labels = false; // this value is set to true by install_custom_fields() in ModuleInstaller.php; everything else expects it to be false
-
+	var $base_path = "";
+	
 	function DynamicField($module = '') {
 		$this->module = (! empty ( $module )) ? $module :( (isset($_REQUEST['module']) && ! empty($_REQUEST['module'])) ? $_REQUEST ['module'] : '');
+		$this->base_path = "custom/Extension/modules/{$this->module}/Ext/Vardefs";
 	}
 
    function getModuleName()
@@ -251,7 +253,7 @@ class DynamicField {
 				if (!empty($field['source']) && $field['source'] == 'custom_fields')
 					// assumption: that the column name in _cstm is the same as the field name. Currently true.
 					// however, two types of dynamic fields do not have columns in the custom table - html fields (they're readonly) and flex relates (parent_name doesn't exist)
-					if ( $field['type'] != 'html' && $name != 'parent_name' && $field['type'] != 'text')
+					if ( $field['type'] != 'html' && $name != 'parent_name')
 						$select .= ",{$this->bean->table_name}_cstm.{$name}" ;
 			}
         }
@@ -545,8 +547,88 @@ class DynamicField {
             if(!empty($query)){
                 $GLOBALS['db']->query($query);
             }
+            $this->saveExtendedAttributes($field, array_keys($fmd->field_defs));
         }
+        
         return true;
+    }
+    
+    function saveExtendedAttributes($field, $column_fields)
+    {
+   	 	require_once ('modules/ModuleBuilder/parsers/StandardField.php') ;
+   	 	require_once ('modules/DynamicFields/FieldCases.php') ;
+   	 	global $beanList;
+   	 	
+   	 	$to_save = array();
+   	 	$base_field = get_widget ( $field->type) ;
+    	foreach ($field->vardef_map as $property => $fmd_col){
+   	 		
+           	if (!isset($field->$property) || in_array($fmd_col, $column_fields) || in_array($property, $column_fields)
+           		|| $this->isDefaultValue($property, $field->$property, $base_field)
+           		|| $property == "action" || $property == "label_value" || $property == "label"
+            	|| (substr($property, 0,3) == 'ext' && strlen($property) == 4))
+           	{
+           		continue;
+           	}
+           	$to_save[$property] = 
+            	is_string($field->$property) ? htmlspecialchars_decode($field->$property, ENT_QUOTES) : $field->$property;
+        }
+        $bean_name = $beanList[$this->module];
+        
+        $this->writeVardefExtension($bean_name, $field, $to_save);
+    }
+    
+	protected function isDefaultValue($property, $value, $baseField)
+    {
+     	switch ($property) {
+	        case "importable": 
+	        	return ( $value === 'true' || $value === '1' || $value === true || $value === 1 ); break;
+	        case "required":
+        	case "audited":
+        	case "massupdate":
+	        	return ( $value === 'false' || $value === '0' || $value === false || $value === 0); break;
+        	case "default_value":
+        	case "default":
+        	case "help":
+        	case "comments":
+        		return ($value == "");
+        	case "duplicate_merge":
+	        	return ( $value === 'false' || $value === '0' || $value === false || $value === 0 || $value === "disabled"); break;
+        }
+        
+        if (isset($baseField->$property))
+        {
+        	return $baseField->$property == $value;
+        }
+        
+        return false;
+    }
+    
+    protected function writeVardefExtension($bean_name, $field, $def_override)
+    {
+    	$file_loc = "$this->base_path/sugarfield_{$field->name}.php";
+        
+		$out =  "<?php\n // created: " . date('Y-m-d H:i:s') . "\n";
+        foreach ($def_override as $property => $val) 
+        {
+        	$out .= override_value_to_string_recursive(array($bean_name, "fields", $field->name, $property), "dictionary", $val) . "\n";
+        }
+        
+        $out .= "\n ?>";
+        
+        if (!file_exists($this->base_path))
+            mkdir_recursive($this->base_path);
+            
+        if( $fh = @sugar_fopen( $file_loc, 'w' ) )
+	    {
+	        fputs( $fh, $out);
+	        fclose( $fh );
+	        return true ;
+	    }
+	    else
+	    {
+	        return false ;
+	    }
     }
 
     /**

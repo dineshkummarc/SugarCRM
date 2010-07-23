@@ -101,7 +101,7 @@ if(!$hasUserPreferences){
                                          'forceColumn' => 0,
                                          'fileLocation' => $dashletsFiles['iFrameDashlet']['file'],
                                          'options' => array('title' => translate('LBL_DASHLET_DISCOVER_SUGAR_PRO','Home'),
-                                                            'url' => 'http://apps.sugarcrm.com/dashlet/go-pro.html?lang=@@LANG@@&edition=@@EDITION@@&ver=@@VER@@',
+                                                            'url' => 'http://www.sugarcrm.com/crm/product/gopro',
                                                             'height' => 315,
                                              ));
 
@@ -116,7 +116,7 @@ if(!$hasUserPreferences){
                                          'forceColumn' => 1,
                                          'fileLocation' => $dashletsFiles['iFrameDashlet']['file'],
                                          'options' => array('title' => translate('LBL_DASHLET_SUGAR_NEWS','Home'),
-                                                            'url' => 'http://apps.sugarcrm.com/dashlet/sugarcrm-news-dashlet.html?lang=@@LANG@@&edition=@@EDITION@@&ver=@@VER@@',
+                                                            'url' => 'http://www.sugarcrm.com/crm/product/news',
                                                             'height' => 315,
                                              ));
         

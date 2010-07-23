@@ -270,7 +270,10 @@ $uwMain = $upgrade_directories_not_found;
 		    require_once('modules/UpgradeWizard/SugarMerge/SugarMerge.php');
 		    if(isset($_SESSION['unzip_dir']) && isset($_SESSION['zip_from_dir'])){
 		        $merger = new SugarMerge($_SESSION['unzip_dir'].'/'.$_SESSION['zip_from_dir']);
-		        $merger->mergeAll();
+		        //Perform a dry run and store the results for the commit layout page.  We perform a dry
+		        //run here so we can skip the commit layout page if no results are found.
+		        $_SESSION['sugarMergeDryRunResults'] = $merger->mergeAll(FALSE,FALSE,FALSE);
+		        logThis('Commit step finished SugarMerge dry run with the following results:' . print_r($_SESSION['sugarMergeDryRunResults'], true));
 		    }
 		}
 
@@ -655,7 +658,8 @@ $showRecheck = false;
 $showNext =($stop) ? false : true;
 
 $stepBack = $_REQUEST['step'] - 1;
-$stepNext = $_REQUEST['step'] + 1;
+//Skip ahead to the end page as no layouts need to be merged.
+$stepNext = (count($_SESSION['sugarMergeDryRunResults']) > 0 ) ? $_REQUEST['step'] + 1 : $_REQUEST['step'] + 2; 
 $stepCancel = -1;
 $stepRecheck = $_REQUEST['step'];
 

@@ -34,7 +34,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
  ********************************************************************************/
-
+require_once('include/generic/SugarWidgets/SugarWidgetFielddatetime.php');
 
 
 class SugarWidgetFieldDateTimecombo extends SugarWidgetFieldDateTime {

@@ -90,11 +90,11 @@ var LBL_REQUEST_SUBMIT = '{$MOD.LBL_REQUEST_SUBMIT}';
 									</tr>
 									<tr>
 										<td scope="row" width="30%">{$MOD.LBL_USER_NAME}:</td>
-										<td width="70%"><input type="text" size='35' tabindex="1" id="user_name" name="user_name" value='{$LOGIN_USER_NAME}' /></td>
+										<td width="70%"><input type="text" size='35' tabindex="1" id="user_name" name="user_name"  value='{$LOGIN_USER_NAME}' /></td>
 									</tr>
 									<tr>
 										<td scope="row">{$MOD.LBL_PASSWORD}:</td>
-										<td width="30%"><input type="password" size='26' tabindex="2" id="user_password" name="user_password" value='' /></td>
+										<td width="30%"><input type="password" size='26' tabindex="2" id="user_password" name="user_password" value='{$LOGIN_PASSWORD}' /></td>
 									</tr>
 									{if !empty($SELECT_LANGUAGE)}
 									<tr>
@@ -112,7 +112,7 @@ var LBL_REQUEST_SUBMIT = '{$MOD.LBL_REQUEST_SUBMIT}';
 									{/if}
 									<tr>
 										<td>&nbsp;</td>
-										<td><input title="{$MOD.LBL_LOGIN_BUTTON_TITLE}" accessKey="{$MOD.LBL_LOGIN_BUTTON_TITLE}" class="button primary" type="submit" tabindex="3" id="login_button" name="Login" value="{$MOD.LBL_LOGIN_BUTTON_LABEL}"><br>&nbsp;</td>
+										<td><input title="{$MOD.LBL_LOGIN_BUTTON_TITLE}" accessKey="{$MOD.LBL_LOGIN_BUTTON_TITLE}" class="button primary" type="submit" tabindex="3" id="login_button" name="Login" value="{$MOD.LBL_LOGIN_BUTTON_LABEL}"><br>&nbsp;</td>		
 									</tr>
 								</table>
 							</form>

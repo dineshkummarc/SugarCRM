@@ -224,6 +224,7 @@ else{
 		            'upload',
 		            'preflight',
 		            'commit',
+		            'layouts',
 		            'end',
 		            'cancel',
 		    ),
@@ -233,6 +234,7 @@ else{
 		            $mod_strings['LBL_UPLOAD_UPGRADE'],
 		            $mod_strings['LBL_UW_TITLE_PREFLIGHT'],
 		            $mod_strings['LBL_UW_TITLE_COMMIT'],
+		            $mod_strings['LBL_UW_TITLE_LAYOUTS'],
 		            $mod_strings['LBL_UW_TITLE_END'],
 		            $mod_strings['LBL_UW_TITLE_CANCEL'],
 		    ),
@@ -443,9 +445,38 @@ function handlePreflight(step) {
 				}
 			}
 		}
-
+		
+		if(step == 'layouts')
+		   getSelectedModulesForLayoutMerge();
+		  
 		return;
 	}
+	
+function getSelectedModulesForLayoutMerge()
+{
+    var results = new Array();
+    var table = document.getElementById('layoutSelection');
+    var moduleCheckboxes = table.getElementsByTagName('input');
+    for (var i = 0; i < moduleCheckboxes.length; i++) 
+    {   
+        var singleCheckbox = moduleCheckboxes[i];
+        if( typeof(singleCheckbox.type) != 'undefined' && singleCheckbox.type == 'checkbox' 
+            && singleCheckbox.name.substring(0,2) == 'lm' && singleCheckbox.checked )
+        {
+            results.push(singleCheckbox.name.substring(3)); //remove the 'lm_' key
+        }
+    }  
+
+    var selectedModules = results.join('^,^');
+    
+    var selectedModulesElement = document.createElement('input');
+    selectedModulesElement.setAttribute('type', 'hidden');
+    selectedModulesElement.setAttribute('name', 'layoutSelectedModules');
+    selectedModulesElement.setAttribute('value', selectedModules);
+    
+    var upgradeForms = document.getElementsByName('UpgradeWizardForm');
+    upgradeForms[0].appendChild(selectedModulesElement);
+}
 </script>
 eoq;
 

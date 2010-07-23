@@ -273,5 +273,11 @@ $mod_strings = array(
 	'LBL_CURRENT_PHP_VERSION' => '(Your current php version is ',
 	'LBL_RECOMMENDED_PHP_VERSION' => '. Recommended php version is 5.2.1 or above)',
 	'LBL_MODULE_NAME' => 'UpgradeWizard',
- );
+	'LBL_UW_TITLE_LAYOUTS' => 'Confirm Layouts',
+	'LBL_LAYOUT_MODULE_TITLE' => 'Layouts',
+	'LBL_LAYOUT_MERGE_DESC' => 'There are new fields available which have been added as part of this upgrade and can be automatically appended to your existing layouts.  If you do not wish to append the new fields, please un-check the module and your custom layouts will remain unchanged.',
+    'LBL_UW_CONFIRM_LAYOUTS' => 'Confirm Layouts',
+    'LBL_UW_CONFIRM_LAYOUT_RESULTS' => 'Confirm Layout Results',
+    'LBL_UW_CONFIRM_LAYOUT_RESULTS_DESC' => 'The following layouts were merged successfully:',
+);
 ?>

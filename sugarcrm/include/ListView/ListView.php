@@ -417,7 +417,7 @@ function process_dynamic_listview($source_module, $sugarbean,$subpanel_def)
                         // We need to call into the old SugarWidgets for the time being, so it can generate a proper link with all the various corner-cases handled
                         // So we'll populate the field data with the pre-rendered display for the field
                         $list_field['fields'][$field_name] = $widget_contents;
-                        if('full_name' == $field_name || 'contact_name' == $field_name){//bug #32465
+                        if('full_name' == $field_name){//bug #32465
                            $list_field['fields'][strtoupper($field_name)] = $widget_contents;
                         }
                         $widget_contents = $layout_manager->widgetDisplay($list_field);

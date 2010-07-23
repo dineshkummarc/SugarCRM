@@ -34,54 +34,86 @@
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
  ********************************************************************************/
-
-
 *}
 
-<table cellspacing='2'>
-	<tr>
-	{$buttons}
-	</tr>
+<table id='layoutEditorButtons' cellspacing='2'>
+    <tr>
+    {$buttons}
+    </tr>
 </table>
-<div style='width:675px;' class='preview'>
-<div style='position: relative; left:245px; top:45px; float:left' id='layoutPreview'>
+<div id='layoutEditor' style="width:675px;">
+
+<div id='toolbox' style='display:none';>
+</div>
+
+<div id='panels' style='float:left; overflow-y:auto; overflow-x:hidden'>
+
 <h3>{$layouttitle}</h3>
 {foreach from=$layout item='panel' key='panelid'}
-	<div class='le_panel'>
+
+    <div class='le_panel' id='{$idCount}'>
+
         <div class='panel_label' id='le_panellabel_{$idCount}'>
-          <span class='panel_name' id='le_panelname_{$idCount}'>{if !empty($translate)}{sugar_translate label=$panelid|upper module=$language}{else}{$panelid}{/if}</span>
+          <span class='panel_name' id='le_panelname_{$idCount}'>
+          	{capture name=panel_upper assign=panel_upper}{$panelid|upper}{/capture}
+			{if $panelid eq 'default'}
+          		{$mod.LBL_DEFAULT}
+			{elseif $from_mb && isset($current_mod_strings.$panel_upper)}
+                {$current_mod_strings.$panel_upper}
+			{elseif !empty($translate)}
+			    {sugar_translate label=$panelid|upper module=$language}
+			{else}
+			    {$panelid}
+			{/if}</span>
           <span class='panel_id' id='le_panelid_{$idCount}'>{$panelid}</span>
         </div>
-		{counter name='idCount' assign='idCount' print=false}
-			
-		{foreach from=$panel item='row' key='rid'}
-			<div class='le_row'>
-			{counter name='idCount' assign='idCount' print=false}	
-			{foreach from=$row item='col' key='cid'}
-				{if $col.name != "(empty)"}
-				{assign var='nextcid' value=`$cid+1`}
-				<div class='le_field' {if $cid == 0 && $row.$nextcid.name == "(empty)"}style="width:290px"{/if}> 
-					{if isset($col.type) && ($col.type == 'address')}
-						{$icon_address}
-					{/if}
-					{if isset($col.type) && ($col.type == 'phone')}
-						{$icon_phone}
-					{/if}
-					<span >{if !empty($translate) && !empty($col.label)}
-						{eval var=$col.label assign='newLabel'}
-						{sugar_translate label=$newLabel module=$language}
-					{else}
-						{$col.label}
-					{/if}</span>
-					<span class='field_name'>{$col.name}</span>
-					<span class='field_label'>{$col.label}</span>
-					<span class='field_tabindex'>{$col.tabindex}</span>
-				</div>
-				{/if}
-				{counter name='idCount' assign='idCount' print=false}
-			{/foreach}
-		</div>	
-	{/foreach}
-	</div>
+        {if $panelid ne 'default'}
+ 
+        {/if}
+        {counter name='idCount' assign='idCount' print=false}
+
+        {foreach from=$panel item='row' key='rid'}
+            <div class='le_row' id='{$idCount}'>
+            {counter name='idCount' assign='idCount' print=false}
+
+            {foreach from=$row item='col' key='cid'}
+                <div class='le_field' id='{$idCount}'>
+                    {if ! $fromModuleBuilder && ($col.name != '(filler)')}
+                       
+                    {/if}
+
+                    {if isset($col.type) && ($col.type == 'address')}
+                        {$icon_address}
+                    {/if}
+                    {if isset($col.type) && ($col.type == 'phone')}
+                        {$icon_phone}
+                    {/if}
+                    <span id='le_label_{$idCount}'>
+                    {eval var=$col.label assign='label'}
+                    {if !empty($translate) && !empty($col.label)}
+                        {sugar_translate label=$label module=$language}
+                    {else}
+		                {if !empty($current_mod_strings[$label])}
+		                    {$current_mod_strings[$label]}
+		                {elseif !empty($mod[$label])}
+		                    {$mod[$label]}
+		                {else}
+		                	{$label}
+		                {/if}
+		            {/if}</span>
+                    <span class='field_name'>{$col.name}</span>
+                    <span class='field_label'>{$col.label}</span>
+                    <span id='le_tabindex_{$idCount}' class='field_tabindex'>{$col.tabindex}</span>
+                </div>
+                {counter name='idCount' assign='idCount' print=false}
+            {/foreach}
+
+        </div>
+    {/foreach}
+
+    </div>
 {/foreach}
-</div></div>
+
+</div>
+<input type='hidden' id='idCount' value='{$idCount}'>
+</div>
