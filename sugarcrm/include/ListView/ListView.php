@@ -1157,7 +1157,6 @@ function getUserVariable($localVarName, $varName) {
 			$admin->retrieveSettings('system');
 
 			$user_merge = $current_user->getPreference('mailmerge_on');
-
 			if($user_merge == 'on' && isset($admin->settings['system_mailmerge_on']) && $admin->settings['system_mailmerge_on']) {
 				echo "<script>
 				function mailmerge_overlib() {
@@ -1174,7 +1173,7 @@ function getUserVariable($localVarName, $varName) {
 			} else {
 				$merge_link = "&nbsp;";
 			}
-
+			
 			$selected_objects_span = "&nbsp;|&nbsp;{$this->local_app_strings['LBL_LISTVIEW_SELECTED_OBJECTS']}<input  style='border: 0px; background: transparent; font-size: inherit; color: inherit' type='text' readonly name='selectCount[]' value='" . (!empty($select_entire_list) ? $row_count : 0) . "' />";
 
 			if($_REQUEST['module'] == 'Home' || $this->local_current_module == 'Import'

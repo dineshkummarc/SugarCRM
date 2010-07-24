@@ -2391,7 +2391,8 @@ eoq;
         $ret = $current_user->getUsersNameAndEmail();
 		$ret['name'] = from_html($ret['name']);
 		$useMyAccountString = true;
-
+		
+		
         if(empty($ret['email'])) {
         	$systemReturn = $current_user->getSystemDefaultNameAndEmail();
         	$ret['email'] = $systemReturn['email'];

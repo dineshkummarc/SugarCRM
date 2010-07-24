@@ -493,6 +493,7 @@ FP;
         $admin->saveSetting('system','name',$_SESSION['setup_system_name']);  
     }
     
+    
     // Bug 28601 - Set the default list of tabs to show
     $enabled_tabs = array();
     $enabled_tabs[] = 'Home';

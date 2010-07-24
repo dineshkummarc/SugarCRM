@@ -445,9 +445,9 @@ var SugarWizard = new function()
                 smtp_type = document.getElementById('AdminWizard').mail_smtptype.value;
                 smtp_server_required = smtp_type == 'exchange' || smtp_type == 'other' ? true : false;
             
-                if(document.getElementById('notify_allow_default_outbound').checked ||
-                   document.getElementById('mail_smtpuser').value != '' ||
+                if(document.getElementById('mail_smtpuser').value != '' ||
                    document.getElementById('mail_smtppass').value != '' ||
+                   document.getElementById('notify_allow_default_outbound').checked ||
                    (smtp_server_required &&  document.getElementById('mail_smtpserver').value != '') 
                    ) {
                        

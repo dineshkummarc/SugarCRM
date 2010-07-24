@@ -51,8 +51,8 @@ class StudioWizard{
     function options(){
     	$options = array('SelectModuleWizard'=>$GLOBALS['mod_strings']['LBL_SW_EDIT_MODULE'], 
     	                 'EditDropDownWizard'=>$GLOBALS['mod_strings']['LBL_SW_EDIT_DROPDOWNS'],
-    	                 'ConfigureTabs'=>$GLOBALS['mod_strings']['LBL_SW_EDIT_TABS'],
     	                 'RenameTabs'=>$GLOBALS['mod_strings']['LBL_SW_RENAME_TABS'],
+    	                 'ConfigureTabs'=>$GLOBALS['mod_strings']['LBL_SW_EDIT_TABS'],
     	                 'ConfigureGroupTabs'=>$GLOBALS['mod_strings']['LBL_SW_EDIT_GROUPTABS'],
     	                 'Portal'=>$GLOBALS['mod_strings']['LBL_SW_EDIT_PORTAL'],
 				         'RepairCustomFields'=>$GLOBALS['mod_strings']['LBL_SW_REPAIR_CUSTOMFIELDS'],
@@ -78,15 +78,15 @@ class StudioWizard{
                 $newWiz = new $option();
                 $newWiz->display();
                 break;
-            case 'ConfigureTabs':
-                header('Location: index.php?module=Administration&action=ConfigureTabs');
-                sugar_cleanup(true); 
             case 'RenameTabs':
                 $_REQUEST['dropdown_name'] = 'moduleList';
                 require_once('modules/Studio/wizards/EditDropDownWizard.php');
                 $newWiz = new EditDropDownWizard();
                 $newWiz->process('EditDropdown');
                 break; 
+            case 'ConfigureTabs':
+                header('Location: index.php?module=Administration&action=ConfigureTabs');
+                sugar_cleanup(true); 
             case 'ConfigureGroupTabs':
                 require_once('modules/Studio/TabGroups/EditViewTabs.php');
                 break;

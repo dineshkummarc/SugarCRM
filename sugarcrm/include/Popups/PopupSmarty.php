@@ -128,7 +128,7 @@ class PopupSmarty extends ListViewSmarty{
 		if($this->export) $this->th->ss->assign('exportLink', $this->buildExportLink());
 		$this->th->ss->assign('quickViewLinks', $this->quickViewLinks);
 		if($this->mailMerge) $this->th->ss->assign('mergeLink', $this->buildMergeLink()); // still check for mailmerge access
-        if($this->mergeduplicates) $this->th->ss->assign('mergedupLink', $this->buildMergeDuplicatesLink());
+		if($this->mergeduplicates) $this->th->ss->assign('mergedupLink', $this->buildMergeDuplicatesLink());
         
 
 		if (!empty($_REQUEST['mode']) && strtoupper($_REQUEST['mode']) == 'MULTISELECT') {

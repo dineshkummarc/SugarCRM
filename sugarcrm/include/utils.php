@@ -2156,7 +2156,7 @@ function get_unlinked_email_query($type, $bean) {
 	join email_addr_bean_rel eabr on eabr.bean_id ='$bean->id' and eabr.bean_module = '$bean->module_dir' and
 	eabr.email_address_id = eear.email_address_id and eabr.deleted=0
 	where eear.deleted=0 and eear.email_id not in
-	(select eb.email_id from emails_beans eb where eb.bean_module ='$bean->module_dir' and eb.bean_id = '$bean->id' and eb.deleted=0)
+	(select eb.email_id from emails_beans eb where eb.bean_module ='$bean->module_dir' and eb.bean_id = '$bean->id')
 	) derivedemails on derivedemails.email_id = emails.id";
     $return_array['join_tables'][0] = '';
 

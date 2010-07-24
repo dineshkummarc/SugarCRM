@@ -236,25 +236,26 @@ class DynamicField {
 	 * @return array select=>select columns, join=>prebuilt join statement
 	 */
   function getJOIN( $expandedList = false , $includeRelates = false, &$where = false){
-
-        if(!$this->bean->hasCustomFields()){
+  		if(!$this->bean->hasCustomFields()){
             return false;
         }
 
-        if (! $expandedList )
+        if (empty($expandedList) )
         {
         	$select = ",{$this->bean->table_name}_cstm.*" ;
         }
         else
         {
         	$select = '';
+        	$isList = is_array($expandedList);
 			foreach($this->bean->field_defs as $name=>$field)
 			{
-				if (!empty($field['source']) && $field['source'] == 'custom_fields')
+				if (!empty($field['source']) && $field['source'] == 'custom_fields' && (!$isList || !empty($expandedList[$name]))){
 					// assumption: that the column name in _cstm is the same as the field name. Currently true.
 					// however, two types of dynamic fields do not have columns in the custom table - html fields (they're readonly) and flex relates (parent_name doesn't exist)
 					if ( $field['type'] != 'html' && $name != 'parent_name')
 						$select .= ",{$this->bean->table_name}_cstm.{$name}" ;
+				}
 			}
         }
         $join = " LEFT JOIN " .$this->bean->table_name. "_cstm ON " .$this->bean->table_name. ".id = ". $this->bean->table_name. "_cstm.id_c ";

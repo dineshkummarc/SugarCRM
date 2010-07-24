@@ -284,7 +284,7 @@ class ListViewDisplay {
 		$mass->setSugarBean($this->seed);
 		if ( ACLController::checkAccess($this->seed->module_dir,'edit',true) && $this->showMassupdateFields && $mass->doMassUpdateFieldsExistForFocus() )
             $menuItems .= $this->buildMassUpdateLink();
-        // merge
+		// merge
 		if ( $this->mailMerge )
 		    $menuItems .= $this->buildMergeLink();
 		if ( $this->mergeduplicates ) 
@@ -417,7 +417,6 @@ EOHTML;
 
         return $selectedObjectSpan;
 	}
-
     /**
 	 * Builds the mail merge link
 	 * The link can be disabled by setting module level duplicate_merge property to false
@@ -469,6 +468,7 @@ EOHTML;
         }
         return $str;
 	}
+	
 	/**
 	 * Builds the add to target list link
 	 *

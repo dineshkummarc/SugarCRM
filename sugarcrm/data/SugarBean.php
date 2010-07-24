@@ -34,7 +34,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
  ********************************************************************************/
-/*********************************************************************************
+/********************************************************************************* 
 
  * Description:  Defines the base class for all data entities used throughout the
  * application.  The base class including its methods and variables is designed to
@@ -2896,7 +2896,8 @@ function save_relationship_changes($is_update, $exclude=array())
     	$custom_join = false;
     	if((!isset($params['include_custom_fields']) || $params['include_custom_fields']) &&  isset($this->custom_fields))
     	{
-    		$custom_join = $this->custom_fields->getJOIN( true );
+    		
+    		$custom_join = $this->custom_fields->getJOIN( empty($filter)? true: $filter );
     		if($custom_join)
     		{
     			$ret_array['select'] .= ' ' .$custom_join['select'];
@@ -2944,7 +2945,7 @@ function save_relationship_changes($is_update, $exclude=array())
     	{
     		$fields = 	$this->field_defs;
     	}
-
+		
         $used_join_key = array();
 
     	foreach($fields as $field=>$value)
