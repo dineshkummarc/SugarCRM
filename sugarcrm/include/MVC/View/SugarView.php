@@ -920,8 +920,7 @@ EOHTML;
         $theTitle .= "</span></div>\n";
     	return $theTitle;
     }
-    
-    
+
     /**
      * Return the metadata file that will be used by this view.
      *
@@ -959,6 +958,7 @@ EOHTML;
  		
  		return $metadataFile;
     }
+
     
     /**
      * Returns an array composing of the breadcrumbs to use for the module title

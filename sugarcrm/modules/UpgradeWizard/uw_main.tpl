@@ -210,6 +210,10 @@ if(document.getElementById("upgradeDiv") != null){
                 	currStage = UPGRADE_SUMMARY_IN_PROGRESS;
                 	document.getElementById(step).innerHTML='<i>'+SET_STEP_TO_COMPLETE+'</i>'
                 }
+                if(step == 'layouts'){
+                	currStage = UPGRADE_SUMMARY_IN_PROGRESS;
+                	document.getElementById(step).innerHTML='<i>'+SET_STEP_TO_COMPLETE+'</i>'
+                }
 	            msg_panel.setHeader(currStage);
 	            msg_panel.setBody(document.getElementById("upgradeDiv").innerHTML);
 	            //timedCount(currStage);

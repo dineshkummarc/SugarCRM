@@ -1267,7 +1267,8 @@ eoq;
 		//MFH BUG#20283 - checks for custom quickcreate fields
 		$EditView->setup($_REQUEST['qc_module'], $focus, 'custom/modules/'.$focus->module_dir.'/metadata/editviewdefs.php', 'include/EditView/EditView.tpl');
 		$EditView->process();
-		$EditView->render();
+		$EditView->render();		
+
 		$EditView->defs['templateMeta']['form']['buttons'] = array(
 			'email2save' => array(
 				'id' => 'e2AjaxSave',
@@ -1303,7 +1304,8 @@ eoq;
 		$jsLanguage = '<script type="text/javascript" src="' . $GLOBALS['sugar_config']['cache_dir'] . 'jsLanguage/'
 		            . $_REQUEST['qc_module'] . '/' . $GLOBALS['current_language'] . '.js?s=' . $GLOBALS['sugar_version'] . '&c='
 		            . $GLOBALS['sugar_config']['js_custom_version'] . '&j=' . $GLOBALS['sugar_config']['js_lang_version'] . '"></script>';
-
+      
+		
 		            
 		$EditView->view = 'EmailQCView';
 		$EditView->defs['templateMeta']['form']['headerTpl'] = 'include/EditView/header.tpl';
@@ -2391,7 +2393,6 @@ eoq;
         $ret = $current_user->getUsersNameAndEmail();
 		$ret['name'] = from_html($ret['name']);
 		$useMyAccountString = true;
-		
 		
         if(empty($ret['email'])) {
         	$systemReturn = $current_user->getSystemDefaultNameAndEmail();

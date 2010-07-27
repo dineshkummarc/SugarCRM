@@ -117,6 +117,7 @@ class Administration extends SugarBean {
 
 	function saveConfig() {		
 		
+		
 		// outbound email settings
 		$oe = new OutboundEmail();
 
@@ -140,7 +141,8 @@ class Administration extends SugarBean {
 		if (!empty($oe->mail_smtpserver)) {
 			$oe->saveSystem();
 		}
-		$this->retrieveSettings(false, true);
+		
+		$this->retrieveSettings(false, true);		
 	}
 
     function saveSetting($category, $key, $value) {

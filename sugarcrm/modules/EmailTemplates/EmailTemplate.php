@@ -391,13 +391,13 @@ class EmailTemplate extends SugarBean {
 		if(!class_exists('Contact'))
 		if(!class_exists('Leads'))
 		if(!class_exists('Prospects'))
-
+		
 		require_once('modules/Accounts/Account.php');
 		$acct = new Account();
 		$contact = new Contact();
 		$lead = new Lead();
 		$prospect = new Prospect();
-
+		
 		foreach($lead->field_defs as $field_def) {
 			if(($field_def['type'] == 'relate' && empty($field_def['custom_type'])) || $field_def['type'] == 'assigned_user_name') {
          		continue;

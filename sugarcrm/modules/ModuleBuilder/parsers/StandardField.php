@@ -45,8 +45,7 @@ class StandardField extends DynamicField
 	
 
     function __construct($module = '') {
-        $this->module = (! empty ( $module )) ? $module :( (isset($_REQUEST['module']) && ! empty($_REQUEST['module'])) ? $_REQUEST ['module'] : '');
-        
+        parent::DynamicField($module);
     }
     
     protected function loadCustomDef($field){

@@ -34,7 +34,9 @@
  <table width="100%" id="layoutSelection">
  <thead>
     <tr>
+        {if $showCheckboxes}
         <th width="5%">&nbsp;</th>
+        {/if}
         <th width="25%">{$APP.LBL_MODULE}</th>
         <th width="50%">{$MOD.LBL_LAYOUT_MODULE_TITLE}</th>
     </tr>
@@ -42,9 +44,11 @@
 <tbody>
 {foreach from=$METADATA_DATA key=moduleKey item=data}
     <tr>
+        {if $showCheckboxes}
         <td>
             <input type="checkbox" name="lm_{$moduleKey}" checked>
         </td>
+        {/if}
         <td>
         {$data.moduleName}
         </td>
@@ -58,3 +62,11 @@
 {/foreach}
 </tbody>
 </table>
+
+<div id="upgradeDiv" style="display:none">
+    <table cellspacing="0" cellpadding="0" border="0">
+        <tr><td>
+           <p><img src='modules/UpgradeWizard/processing.gif'> <br>{$MOD.LBL_UPGRADE_TAKES_TIME_HAVE_PATIENCE}</p>
+        </td></tr>
+     </table>
+ </div>

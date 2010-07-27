@@ -563,54 +563,7 @@ class Email extends SugarBean {
 		/* from account */
 		$replyToAddress = $current_user->emailAddress->getReplyToAddress($current_user);
 		$replyToName = "";
-		if(empty($request['fromAccount'])) {
-			$defaults = $current_user->getPreferredEmail();
-			$mail->From = $defaults['email'];
-			$mail->FromName = $defaults['name'];
-			$replyToName = $mail->FromName;
-			//$replyToAddress = $current_user->emailAddress->getReplyToAddress($current_user);
-		} else {
-			// passed -> user -> system default
-			$ie = new InboundEmail();
-			$ie->retrieve($request['fromAccount']);
-			$storedOptions = unserialize(base64_decode($ie->stored_options));
-			$fromName = "";
-			$fromAddress = "";
-			$replyToName = "";
-			//$replyToAddress = "";
-			if (!empty($storedOptions)) {
-				$fromAddress = $storedOptions['from_addr'];
-				$fromName = from_html($storedOptions['from_name']);
-				$replyToAddress = (isset($storedOptions['reply_to_addr']) ? $storedOptions['reply_to_addr'] : "");
-				$replyToName = (isset($storedOptions['reply_to_name']) ? from_html($storedOptions['reply_to_name']) : "");
-			} // if
-			$defaults = $current_user->getPreferredEmail();
-			// Personal Account doesn't have reply To Name and Reply To Address. So add those columns on UI
-			// After adding remove below code
-
-			// code to remove
-			if ($ie->is_personal) 
-			{
-				if (empty($replyToAddress)) 
-				{
-					$replyToAddress = $current_user->emailAddress->getReplyToAddress($current_user);
-				} // if
-				if (empty($replyToName)) 
-				{
-					$replyToName = $defaults['name'];
-				} // if
-				//Personal accounts can have a reply_address, which should
-				//overwrite the users set default.
-				if( !empty($storedOptions['reply_to_addr']) )
-					$replyToAddress = $storedOptions['reply_to_addr'];
-				
-			}
-			// end of code to remove
-			$mail->From = (!empty($fromAddress)) ? $fromAddress : $defaults['email'];
-			$mail->FromName = (!empty($fromName)) ? $fromName : $defaults['name'];
-			$replyToName = (!empty($replyToName)) ? $replyToName : $mail->FromName;
-		}
-
+		
 		$mail->Sender = $mail->From; /* set Return-Path field in header to reduce spam score in emails sent via Sugar's Email module */
 		
 		if (!empty($replyToAddress)) {
@@ -815,8 +768,7 @@ class Email extends SugarBean {
             $mail->Body = $this->decodeDuringSend($mail->Body);
             $mail->AltBody = $this->decodeDuringSend($mail->AltBody);
             if (!$mail->Send()) {
-
-                $this->status = 'send_error';
+                $this->status = 'send_error'; 
                 ob_clean();
                 echo($app_strings['LBL_EMAIL_ERROR_PREPEND']. $mail->ErrorInfo);
                 return false;

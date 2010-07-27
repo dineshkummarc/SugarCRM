@@ -59,32 +59,34 @@ set_upgrade_progress('layouts','in_progress');
 //execute the merge.
 if( isset($_POST['layoutSelectedModules']) )
 {
-    logThis('Layout Commits about to merge metadata');
+    logThis('Layout Commits examining modules to revert');
     
-    $availableModulesForMerge = $_SESSION['sugarMergeDryRunResults'];
+    $mergedModules = $_SESSION['sugarMergeRunResults'];
     $selectedModules  = explode("^,^",$_POST['layoutSelectedModules']);
-    $filteredModules = array();
-    foreach ( $selectedModules as $moduleKey)
-    {
-        if(array_key_exists($moduleKey , $availableModulesForMerge))
-        {
-            logThis("Adding $moduleKey module to filtered layout module list for merge.");
-            $filteredModules[] = $moduleKey;
-        } 
-    }
+    logThis('Layout Commits, selected modules by user: ' . print_r($selectedModules, TRUE));
+    $rollBackList = array();
+    $actualMergedList = array();
     
-    if(file_exists('modules/UpgradeWizard/SugarMerge/SugarMerge.php'))
+    foreach ( $mergedModules as $moduleKey => $layouts)
     {
-        require_once('modules/UpgradeWizard/SugarMerge/SugarMerge.php');
-        if(isset($_SESSION['unzip_dir']) && isset($_SESSION['zip_from_dir']))
+        if( ! in_array($moduleKey , $selectedModules) )
         {
-            logThis('Layout Commits starting three way merge with filtered list ' . print_r($filteredModules, TRUE));
-            $merger = new SugarMerge($_SESSION['unzip_dir'].'/'.$_SESSION['zip_from_dir']);
-            $layoutMergeData = $merger->mergeAll($filteredModules);
-            logThis('Layout Commits finished merged');
+            logThis("Adding $moduleKey module to rollback list.");
+            $rollBackList[$moduleKey] = $layouts;
+        }
+        else 
+        {
+            $actualMergedList[$moduleKey] = $layouts;
         }
     }
-	
+    
+    logThis('Layout Commits will rollback the following modules: ' . print_r($rollBackList, TRUE));
+    logThis('Layout Commits merged the following modules: ' . print_r($actualMergedList, TRUE));
+    
+    $layoutMergeData = $actualMergedList;
+    
+    rollBackMergedModules($rollBackList);
+    
     $stepBack = $_REQUEST['step'] - 1;
     $stepNext = $_REQUEST['step'] + 1;
     $stepCancel = -1;
@@ -94,6 +96,7 @@ if( isset($_POST['layoutSelectedModules']) )
     logThis('Layout Commits completed successfully');
     $smarty->assign("CONFIRM_LAYOUT_HEADER", $mod_strings['LBL_UW_CONFIRM_LAYOUT_RESULTS']);
     $smarty->assign("CONFIRM_LAYOUT_DESC", $mod_strings['LBL_UW_CONFIRM_LAYOUT_RESULTS_DESC']);
+    $showCheckBoxes = FALSE;
 }
 else 
 {
@@ -101,12 +104,14 @@ else
     logThis('Layout Commits about to show selection table');
     $smarty->assign("CONFIRM_LAYOUT_HEADER", $mod_strings['LBL_UW_CONFIRM_LAYOUTS']);
     $smarty->assign("CONFIRM_LAYOUT_DESC", $mod_strings['LBL_LAYOUT_MERGE_DESC']);
-    $layoutMergeData = $_SESSION['sugarMergeDryRunResults'];
+    $layoutMergeData = $_SESSION['sugarMergeRunResults'];
+    $showCheckBoxes = TRUE;
 }
 
 $smarty->assign("APP", $app_strings);
 $smarty->assign("APP_LIST", $app_list_strings);
 $smarty->assign("MOD", $mod_strings);
+$smarty->assign("showCheckboxes", $showCheckBoxes);
 $layoutMergeData = formatLayoutMergeDataForDisplay($layoutMergeData);
 $smarty->assign("METADATA_DATA", $layoutMergeData);
 $uwMain = $smarty->fetch('modules/UpgradeWizard/tpls/layoutsMerge.tpl');
@@ -118,8 +123,56 @@ $showNext = TRUE;
 
 set_upgrade_progress('layouts','done');
 
+
 /**
- * Format dry run results from SugarMerge output to be used in the selection table.
+ * Rollback metadata files for each module provided in the list.
+ *
+ * @param array $data
+ */
+function rollBackMergedModules($data)
+{
+    logThis('Layout Commits, starting rollback');
+    $backupFileSufix = '.suback.php';
+    foreach ($data as $moduleName => $layouts)
+    {
+        logThis('Layout Commits, iterating over module:' . $moduleName);
+        foreach ($layouts as $fileName => $wasMerged)
+        {
+            if($wasMerged)
+            {
+                $srcFile = 'custom' . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . $moduleName . DIRECTORY_SEPARATOR . 'metadata'. DIRECTORY_SEPARATOR . $fileName;
+                $srcBackupFile = $srcFile . $backupFileSufix;
+                logThis('Layout Commits, rollBackMergedModules source file: ' . $srcDirectory);
+                logThis('Layout Commits, rollBackMergedModules backup file: ' . $srcBackupFile);
+                if( file_exists($srcBackupFile) )
+                {
+                    if( file_exists($srcFile) )
+                    {
+                        logThis('Layout Commits, rollBackMergedModules is removing file: ' . $srcFile);
+                        @unlink($srcFile);
+                    }
+                    $copyResult = @copy($srcBackupFile, $srcFile);
+                    if($copyResult === TRUE)
+                    {
+                        @unlink($srcBackupFile);
+                        logThis("Layout Commits, rollBackMergedModules successfully reverted file $srcFile");
+                    }
+                    else 
+                    {
+                        logThis("Layout Commits, rollBackMergedModules was unable to copy file: $srcBackupFile, to $srcFile.");
+                    }
+                }
+                else 
+                {
+                    logThis("Layout Commits, rollBackMergedModules is unable to find backup file $srcBackupFile , nothing to do.");
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Format results from SugarMerge output to be used in the selection table.
  *
  * @param array $layoutMergeData
  * @return array
@@ -138,7 +191,7 @@ function formatLayoutMergeDataForDisplay($layoutMergeData)
     foreach ($layoutMergeData as $k => $v)
     {
         $layouts = array();
-        foreach ($v as $layoutPath)
+        foreach ($v as $layoutPath => $isMerge)
         {
             if( preg_match('/listviewdefs.php/i', $layoutPath) )
                 $label = $module_builder_language['LBL_LISTVIEW'];
