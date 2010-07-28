@@ -43,7 +43,8 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  ********************************************************************************/
 
 $mod_strings = array (
-	'LBL_DELETE_USER_CONFIRM'           => 'When the User record is deleted, the corresponding Employee record will also be deleted. After the user is deleted, any workflow definitions and reports involving the user might need to be updated.',
+	'LBL_DELETE_USER_CONFIRM'           => 'When the User record is deleted, the corresponding Employee record will also be deleted. After the user is deleted, any workflow definitions and reports involving the user might need to be updated.<br/><br/>'.
+                                                'Click OK to delete the User record. After clicking OK, you will be given the ability to reassign records assigned to the user to another user',
 	'LNK_IMPORT_USERS'                 => 'Import Users',
 	'ERR_DELETE_RECORD'					=> 'A record number must be specified to delete the account.',
 	'ERR_EMAIL_INCORRECT'				=> 'Provide a valid email address in order to create and send the password.',
@@ -116,7 +117,7 @@ $mod_strings = array (
 
 
 	'LBL_CONFIRM_PASSWORD'				=> 'Confirm Password',
-	'LBL_CONFIRM_REGULAR_USER'			=> 'You have changed the user type from System Administrator User to Regular User.  After saving this change, the user will no longer have system administrator privileges.\n\nClick “OK�? to proceed.\nClick “Cancel�? to return to the record.',
+	'LBL_CONFIRM_REGULAR_USER'			=> 'You have changed the user type from System Administrator User to Regular User.  After saving this change, the user will no longer have system administrator privileges.\n\nClick ‚ÄúOKÔøΩ? to proceed.\nClick ‚ÄúCancelÔøΩ? to return to the record.',
 	'LBL_COUNTRY'						=> 'Country',
 	'LBL_CURRENCY_TEXT'					=> 'Select the currency that will be displayed by default when you create new records. This is also the currency that will be displayed in the Amount columns in the Opportunities ListView.',
 	'LBL_CURRENCY'						=> 'Currency',

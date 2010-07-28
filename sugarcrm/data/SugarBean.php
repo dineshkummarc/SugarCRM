@@ -1534,6 +1534,7 @@ class SugarBean
 
 		return $this->id;
 	}
+	
 
     /**
      * Performs a check if the record has been modified since the specified date

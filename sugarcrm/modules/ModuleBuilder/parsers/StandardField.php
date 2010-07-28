@@ -93,10 +93,12 @@ class StandardField extends DynamicField
             		|| (isset($currdef[$property]) && $currdef[$property] != $newDef[$property])
             	)
             ){
-               
-                $this->custom_def[$property] = 
+            	$this->custom_def[$property] = 
                     is_string($newDef[$property]) ? htmlspecialchars_decode($newDef[$property], ENT_QUOTES) : $newDef[$property];
             }
+            
+            if (isset($this->custom_def[$property]) && !isset($newDef[$property]))
+            	unset($this->custom_def[$property]);
         }
         
         if (isset($this->custom_def["duplicate_merge_dom_value"]) && !isset($this->custom_def["duplicate_merge"]))

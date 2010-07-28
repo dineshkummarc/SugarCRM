@@ -452,6 +452,14 @@ $out .=<<<EOQ
 EOQ;
 
 // CRON Settings
+if ( !isset($sugar_config['default_language']) )
+    $sugar_config['default_language'] = $_SESSION['default_language'];
+if ( !isset($sugar_config['cache_dir']) )
+    $sugar_config['cache_dir'] = $sugar_config_defaults['cache_dir'];
+if ( !isset($sugar_config['site_url']) )
+    $sugar_config['site_url'] = $_SESSION['setup_site_url'];
+if ( !isset($sugar_config['translation_string_prefix']) )
+    $sugar_config['translation_string_prefix'] = $sugar_config_defaults['translation_string_prefix'];
 $mod_strings_scheduler = return_module_language($GLOBALS['current_language'], 'Schedulers');
 $error = '';
 

@@ -1475,7 +1475,7 @@ function get_mailmerge_document($session, $file_name, $fields)
         require_once($bean1);
         $seed1 = new $beanL();
 
-        if(isset($merge_array['related_module']))
+        if(!empty($merge_array['related_module']))
         {
             $class2 = $merge_array['related_module'];
             $beanR = $beanList[$class2];
@@ -1491,26 +1491,14 @@ function get_mailmerge_document($session, $file_name, $fields)
         }
         foreach($fields as $field)
         {
-            $split_fields = explode('_', $field);
-            if(count($split_fields) > 1)
-            {
-                $name = '';
-                $index = 1;
-                for($i = 1; $i < count($split_fields); $i++)
-                {
-                    $name .= $split_fields[$i];
-                    $index++;
-                    if($index < count($split_fields))
-                        $name .= '_';
-                }
-                if(strtolower($split_fields[0]) == strtolower($class1))
-                {
-                    array_push($master_fields, $name);
-                }
-                else if(strtolower($split_fields[0]) == strtolower($class2))
-                {
-                    array_push($related_fields, $name);
-                }
+            $pos = strpos(strtolower($field), strtolower($class1));
+            $pos2 = strpos(strtolower($field), strtolower($class2));
+            if($pos !== false){
+            	$fieldName = str_replace(strtolower($class1).'_', '', strtolower($field));
+            	array_push($master_fields, $fieldName);
+            }else if($pos2 !== false){
+            	$fieldName = str_replace(strtolower($class2).'_', '', strtolower($field));
+            	array_push($related_fields, $fieldName);
             }
         }
 
@@ -1626,26 +1614,14 @@ function get_mailmerge_document2($session, $file_name, $fields)
         }
         foreach($fields as $field)
         {
-            $split_fields = explode('_', $field);
-            if(count($split_fields) > 1)
-            {
-                $name = '';
-                $index = 1;
-                for($i = 1; $i < count($split_fields); $i++)
-                {
-                    $name .= $split_fields[$i];
-                    $index++;
-                    if($index < count($split_fields))
-                        $name .= '_';
-                }
-                if(strtolower($split_fields[0]) == strtolower($class1))
-                {
-                    array_push($master_fields, $name);
-                }
-                else if(strtolower($split_fields[0]) == strtolower($class2))
-                {
-                    array_push($related_fields, $name);
-                }
+        	$pos = strpos(strtolower($field), strtolower($class1));
+            $pos2 = strpos(strtolower($field), strtolower($class2));
+            if($pos !== false){
+            	$fieldName = str_replace(strtolower($class1).'_', '', strtolower($field));
+            	array_push($master_fields, $fieldName);
+            }else if($pos2 !== false){
+            	$fieldName = str_replace(strtolower($class2).'_', '', strtolower($field));
+            	array_push($related_fields, $fieldName);
             }
         }
 

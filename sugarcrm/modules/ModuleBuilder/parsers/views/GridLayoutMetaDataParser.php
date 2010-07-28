@@ -184,7 +184,7 @@ class GridLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
     	$availableFields = array () ;
         foreach ( $this->_fielddefs as $key => $def )
         {
-            if ( AbstractMetaDataParser::validField ( $def,  $this->_view ) || isset($this->_originalViewDef[$key]) )
+            if ( GridLayoutMetaDataParser::validField ( $def,  $this->_view ) || isset($this->_originalViewDef[$key]) )
             {
                 //If the field original label existing, we should use the original label instead the label in its fielddefs.
             	if(isset($this->_originalViewDef[$key]) && is_array($this->_originalViewDef[$key]) && isset($this->_originalViewDef[$key]['label'])){
@@ -718,6 +718,13 @@ class GridLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
         $this->_viewdefs  [ 'templateMeta' ]['useTabs'] = $useTabs;
     }
 	
+    static function validField ( $def, $view = "")
+    {
+    	if (!parent::validField($def, $view))
+    		return false;
+    	
+    	return true;
+    }
 }
 
 ?>

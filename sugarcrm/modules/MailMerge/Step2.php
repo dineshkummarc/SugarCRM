@@ -123,7 +123,11 @@ else
 	}
 	$xtpl->assign("STEP", "3");	
 	//$xtpl->assign("MAIL_MERGE_CONTAINS_CONTACT_INFO", '<table><tr><td><input id="contains_contact_info" name="contains_contact_info" class="checkbox" type="checkbox" '.$checked.'/></td><td>'.$mod_strings['LBL_CONTAINS_CONTACT_INFO'].'</td></tr></table>');
-	$rel_options = array(""=>"--None--", "Contacts"=>"Contacts");
+	$rel_options = array(""=>"--None--");
+	$seed = loadBean($_SESSION['MAILMERGE_MODULE']);
+	if($seed->load_relationship('contacts')){
+		$rel_options["Contacts"] = "Contacts";
+	}
 	if($_SESSION['MAILMERGE_MODULE'] == "Accounts"){
 		$rel_options["Opportunities"] = "Opportunities";
 	}

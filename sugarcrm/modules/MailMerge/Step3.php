@@ -187,8 +187,17 @@ foreach($sel_obj as $key => $value)
 	$popup_request_data = array ('call_back_function' => 'set_return', 'form_name' => 'EditView', 'field_to_name_array' => array ('id' => 'rel_id_'.$code, 'name' => 'rel_name_'.$code,),);
 	$encoded_popup_request_data = urlencode($json->encode($popup_request_data));
 
-	$select = $selQuery[$relModule][$_SESSION['MAILMERGE_MODULE']];
-	$where = $whereQuery[$relModule][$_SESSION['MAILMERGE_MODULE']];
+	if(empty($selQuery[$relModule][$_SESSION['MAILMERGE_MODULE']])){
+		$select = generateSelect($seed, $relModule);
+	}else{
+		$select = $selQuery[$relModule][$_SESSION['MAILMERGE_MODULE']];
+	}
+	if(empty($whereQuery[$relModule][$_SESSION['MAILMERGE_MODULE']])){
+		$where = "{$seed->table_name}.id = ";
+	}else{
+		$where = $whereQuery[$relModule][$_SESSION['MAILMERGE_MODULE']];
+	}
+	
 	if($relModule == "Contacts"){
 	$limitSelect = str_replace('contacts.*', 'contacts.first_name, contacts.last_name, contacts.id, contacts.date_entered', $select);
 	}
@@ -196,6 +205,7 @@ foreach($sel_obj as $key => $value)
 		$limitSelect = str_replace(strtolower($relModule).'.*', strtolower($relModule).'.name, '.strtolower($relModule).'.date_entered', $select);
 	}
 	$fullQuery = $limitSelect." WHERE ".$where."'".$key."' ORDER BY date_entered";
+	
 	$result = $seed->db->limitQuery($fullQuery, 0, 1, true, "Error performing limit query");
 	$full_name = '';
 	$contact_id = '';
@@ -244,5 +254,20 @@ $xtpl->parse("main.items");
 
 $xtpl->parse("main");
 $xtpl->out("main");
+
+
+function generateSelect($seed, $relModule){
+	$lowerRelModule = strtolower($relModule);
+	if($seed->load_relationship($lowerRelModule)){
+		$params = array();
+		$params['join_table_alias'] = 'r1';
+		$params['join_table_link_alias'] = 'r2';
+		$params['join_type'] = 'LEFT JOIN';
+		$join = $seed->$lowerRelModule->getJoin($params);
+		$select = "SELECT {$seed->table_name}.* FROM {$seed->table_name} ".$join;
+		return $select;
+	}
+	return "";
+}
 
 ?>

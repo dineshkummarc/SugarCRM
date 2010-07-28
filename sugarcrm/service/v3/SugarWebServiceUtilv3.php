@@ -140,7 +140,7 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices {
 				$options_ret = array();
 				// Apparently the only purpose of this check is to make sure we only return fields
 				//   when we've read a record.  Otherwise this function is identical to get_module_field_list
-				if(isset($value->required_fields) && key_exists($var['name'], $value->required_fields)){
+				if( isset($var['required']) && ($var['required'] || $var['required'] == 'true') ){
 					$required = 1;
 				}
 				if(isset($var['options'])){

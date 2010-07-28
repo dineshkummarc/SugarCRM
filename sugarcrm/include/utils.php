@@ -104,7 +104,7 @@ function make_sugar_config(&$sugar_config)
 	$sugar_config = array (
 	'admin_export_only' => empty($admin_export_only) ? false : $admin_export_only,
 	'export_delimiter' => empty($export_delimiter) ? ',' : $export_delimiter,
-	'cache_dir' => empty($cache_dir) ? $_GLOBALS['sugar_config']['cache_dir'] : $cache_dir,
+	'cache_dir' => empty($cache_dir) ? 'cache/' : $cache_dir,
 	'calculate_response_time' => empty($calculate_response_time) ? true : $calculate_response_time,
 	'create_default_user' => empty($create_default_user) ? false : $create_default_user,
 	'date_formats' => empty($dateFormats) ? array(
@@ -217,6 +217,7 @@ function get_sugar_config_defaults() {
 	$sugar_config_defaults = array (
 	'admin_export_only' => false,
 	'export_delimiter' => ',',
+	'cache_dir' => 'cache/',
 	'calculate_response_time' => true,
 	'create_default_user' => false,
 	'date_formats' => array (
