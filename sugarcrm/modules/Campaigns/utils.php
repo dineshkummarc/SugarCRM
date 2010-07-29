@@ -557,6 +557,8 @@ function process_subscriptions($subscription_string_to_parse) {
                         // we need to remove the user from this unsubscription list.
                         //Begin by retrieving unsubscription prospect list
                         $exempt_subscription_list = new ProspectList();
+                        
+		                
                         $exempt_result = $exempt_subscription_list->retrieve($exempt_id);
                         if($exempt_result == null)
                         {//error happened while retrieving this list

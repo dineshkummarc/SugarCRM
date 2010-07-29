@@ -91,9 +91,6 @@ user_detailview_tabs.on('contentReady', function(e){
     <ul class="yui-nav">
         <li class="selected"><a id="tab1" href="#tab1"><em>{$MOD.LBL_USER_INFORMATION}</em></a></li>
         <li {if $IS_GROUP_OR_PORTAL == 1}style="display: none;"{/if}><a id="tab2" href="#tab2"><em>{$MOD.LBL_ADVANCED}</em></a></li>
-        {if $SHOW_ROLES}
-        <li><a id="tab3" href="#tab3"><em>{$MOD.LBL_USER_ACCESS}</em></a></li>
-        {/if}
     </ul>            
     <div class="yui-content">
         <div>

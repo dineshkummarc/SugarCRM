@@ -781,14 +781,12 @@ document.getElementById('email_link_type').onchange();
 -->
 </script>
 {$JAVASCRIPT}
-<script type="text/javascript" language="Javascript">
-{$confirmReassignJs}
-</script>
 {literal}
 <script type="text/javascript" language="Javascript">
 {/literal}
 {$getNameJs}
 {$getNumberJs}
+{$confirmReassignJs}
 {$currencySymbolJs}
 setSymbolValue(document.getElementById('currency_select').options[document.getElementById('currency_select').selectedIndex].value);
 setSigDigits();
