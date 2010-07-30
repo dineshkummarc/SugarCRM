@@ -476,7 +476,7 @@ class ImportFieldSanitize
         if ( isset($rvardef['type']) 
                 && method_exists($this,$rvardef['type']) ) {
             $fieldtype = $rvardef['type'];
-            $returnValue = $this->$fieldtype($value,$rvardef);
+            $returnValue = $this->$fieldtype($value,$rvardef,$focus,$addRelatedBean);
             if ( !$returnValue )
                 return false;
             else

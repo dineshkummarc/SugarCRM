@@ -2,7 +2,7 @@
   // these are account wide configuration settings
 
   // the URL where to the SAML Response/SAML Assertion will be posted
-  define('const_assertion_consumer_service_url', "http://localhost:8888/builds/Mango/ent/sugarcrm/index.php?module=Users&action=Authenticate");
+  define('const_assertion_consumer_service_url', $GLOBALS['sugar_config']['site_url']. "/index.php?module=Users&action=Authenticate");
   // name of this application
   define('const_issuer', "php-saml");
   // tells the IdP to return the email address of the current user

@@ -43,10 +43,9 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  ********************************************************************************/
 
 $mod_strings = array (
-         'LBL_DELETE_USER_CONFIRM'           => 'When the User record is deleted, the corresponding Employee record will also be deleted. After the user is deleted, any workflow definitions and reports involving the user might need to be updated.<br/><br/>'.
-                                                'Click OK to delete the User record. After clicking OK, you will be given the ability to reassign records assigned to the user to another user.',
-
-        'LNK_IMPORT_USERS'                 => 'Import Users',
+	'LBL_DELETE_USER_CONFIRM'           => 'When the User record is deleted, the corresponding Employee record will also be deleted. After the user is deleted, any workflow definitions and reports involving the user might need to be updated.<br/><br/>'.
+                                                'Click OK to delete the User record. After clicking OK, you will be given the ability to reassign records assigned to the user to another user',
+	'LNK_IMPORT_USERS'                 => 'Import Users',
 	'ERR_DELETE_RECORD'					=> 'A record number must be specified to delete the account.',
 	'ERR_EMAIL_INCORRECT'				=> 'Provide a valid email address in order to create and send the password.',
 	'ERR_EMAIL_NO_OPTS'					=> 'Could not find optimum settings for Inbound Email.',
@@ -510,7 +509,7 @@ $mod_strings = array (
     'LBL_WIZARD_SMTP' => 'Your Email Account',
     'LBL_WIZARD_PERSONALINFO_DESC' => 'Provide information about yourself. The information you provide about yourself will be visible to other Sugar users.<br />Fields marked with <span class="required">*</span> are required.',
     'LBL_WIZARD_LOCALE_DESC' => 'Specify your time zone and how you would like dates, currencies and names to appear in Sugar.',
-    'LBL_WIZARD_SMTP_DESC' => 'Provide your email account username and password for sending email.',
+    'LBL_WIZARD_SMTP_DESC' => 'Provide your email account username and password for the default outbound email server.',
 
 ); // END STRINGS DEFS
 

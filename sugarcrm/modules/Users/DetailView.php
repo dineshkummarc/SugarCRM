@@ -437,7 +437,8 @@ $sugar_smarty->assign("MAIL_SMTPUSER", $mail_smtpuser);
 $sugar_smarty->assign("MAIL_SMTPDISPLAY", $mail_smtpdisplay);
 
 
-$sugar_smarty->assign('SHOW_ROLES',(!($focus->is_group=='1' || $focus->portal_only=='1')));
+$show_roles = (!($focus->is_group=='1' || $focus->portal_only=='1'));
+$sugar_smarty->assign('SHOW_ROLES', $show_roles);
 
 // User Holidays subpanel on the advanced tab
 global $modules_exempt_from_availability_check;
@@ -453,7 +454,7 @@ $GLOBALS['sugar_config']['lock_subpanels'] = $locked;
 $sugar_smarty->display('modules/Users/DetailView.tpl');
 
 // Roles Grid and Roles subpanel should not be displayed for group and portal users
-if(!($focus->is_group=='1' || $focus->portal_only=='1')){
+if($show_roles){
     echo "<div>";
     require_once('modules/ACLRoles/DetailUserRole.php');
     echo "</div></div>";
