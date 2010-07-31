@@ -59,13 +59,6 @@ foreach($groupedTabStructure as $mainTab => $subModules){
  	$groupedTabStructure[$mainTab]['label'] = $mainTab;
  	$groupedTabStructure[$mainTab]['labelValue'] = $selectedAppLanguages[$mainTab];
 }
- //If there is other group in groupedTabStructure, we should add an empty array in it.
-if(!isset($groupedTabStructure['LBL_TABGROUP_OTHER'])){
-	$groupedTabStructure['LBL_TABGROUP_OTHER'] = array();
-	$groupedTabStructure['LBL_TABGROUP_OTHER']['modules']  = array();
-	$groupedTabStructure['LBL_TABGROUP_OTHER']['label']  = 'LBL_TABGROUP_OTHER';
-	$groupedTabStructure['LBL_TABGROUP_OTHER']['labelValue'] = $selectedAppLanguages['LBL_TABGROUP_OTHER'];
-}
 
 $smarty->assign('tabs', $groupedTabStructure);
 #end of 30205

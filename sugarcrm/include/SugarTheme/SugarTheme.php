@@ -170,7 +170,15 @@ class SugarTheme
         "scrollBarTrack"        => "0xeeeeee",
         "scrollBarTrackBorder"  => "0xcccccc",
         );
+        
+    /**
+     * Does this theme support group tabs
+     * 
+     * @var bool
+     */
+    protected $group_tabs;
     
+
     /**
      * Cache built of all css files locations
      *

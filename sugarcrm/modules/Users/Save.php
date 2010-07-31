@@ -184,6 +184,15 @@ if(!$current_user->is_admin  && !is_admin_for_module($GLOBALS['current_user'],'U
 	        $focus->setPreference('swap_shortcuts', '', 0, 'global');
 	    }
 	    
+	    if(isset($_POST['use_group_tabs']))
+	    {
+	        $focus->setPreference('navigation_paradigm', 'gm', 0, 'global');
+	    }
+	    else
+	    {
+	        $focus->setPreference('navagation_paradigm', 'm', 0, 'global');
+	    }
+
 	    if(isset($_POST['user_subpanel_tabs']))
 	    {
 	        $focus->setPreference('subpanel_tabs', $_POST['user_subpanel_tabs'], 0, 'global');

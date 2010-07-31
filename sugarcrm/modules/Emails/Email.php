@@ -853,14 +853,16 @@ class Email extends SugarBean {
 					if(!class_exists('aCase')) {
 						
 					}
-					$c = new aCase();
-					if($caseId = InboundEmail::getCaseIdFromCaseNumber($mail->Subject, $c)) {
-						$c->retrieve($caseId);
-						$c->load_relationship('emails');
-						$c->emails->add($this->id);
-						$this->parent_type = "Cases";
-						$this->parent_id = $caseId;
-					} // if
+					else{
+						$c = new aCase();
+						if($caseId = InboundEmail::getCaseIdFromCaseNumber($mail->Subject, $c)) {
+							$c->retrieve($caseId);
+							$c->load_relationship('emails');
+							$c->emails->add($this->id);
+							$this->parent_type = "Cases";
+							$this->parent_id = $caseId;
+						} // if
+					}
 
 				} // else
 

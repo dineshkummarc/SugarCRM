@@ -113,7 +113,7 @@ $mod_strings = array (
 'LBL_ED_WELCOME'=>'<h2>Drop Down Editor</h2><br><b>You can either edit an existing drop down or create a new drop down.',
 'LBL_DROPDOWN_NAME' => 'Dropdown Name:',
 'LBL_DROPDOWN_LANGUAGE' => 'Dropdown Language:',
-'LBL_TABGROUP_LANGUAGE' => 'Tab Group Language:',
+'LBL_TABGROUP_LANGUAGE' => 'Language:',
 
 //EDIT CUSTOM FIELDS
 'LBL_EC_WELCOME'=>'<h2>Custom Field Editor</h2><br><b>You can either view and edit an existing custom field, create a new custom field or clean the custom field cache.',
@@ -148,13 +148,13 @@ $mod_strings = array (
 'LBL_MODULES'=>'Modules',
 //nsingh: begin bug#15095 fix
 'LBL_MODULE_NAME' => 'Administration',
-'LBL_CONFIGURE_GROUP_TABS' => 'Configure Tabs Group',
+'LBL_CONFIGURE_GROUP_TABS' => 'Configure Grouped Modules',
  //end bug #15095 fix
-'LBL_GROUP_TAB_WELCOME'=>'The tabs and grouped subtabs below will be displayed for users who choose to view Grouped Modules in the navigation bar.  Drag and drop modules to and from the Tab boxes to configure which subtabs appear under which tabs. Empty tab groups will not be displayed in the navigation bar.',
+'LBL_GROUP_TAB_WELCOME'=>'The groups below will be displayed in the navigation bar for users who choose to view Grouped Modules. Drag and drop modules to and from the Groups to configure which modules appear under the groups. Note: Empty groups will not be displayed in the navigation bar.',
 'LBL_RENAME_TAB_WELCOME'=>'Click on any tab\'s Display Value in the table below to rename the tab.',
 'LBL_DELETE_MODULE'=>'Remove&nbsp;Module<br />From&nbsp;Group',
 'LBL_DISPLAY_OTHER_TAB_HELP' => 'Select to display the "Other" tab in the navigation bar.  By default, the "Other" tab displays any modules not already included in other groups.',
-'LBL_TAB_GROUP_LANGUAGE_HELP' => 'To set the tab group labels for other available languages, select a language, edit the labels and click Save & Deploy to make the changes for that language.',
+'LBL_TAB_GROUP_LANGUAGE_HELP' => 'Select an available language, edit the Group labels and click Save & Deploy to apply the labels in the selected language.',
 'LBL_ADD_GROUP'=>'Add Group',
 'LBL_NEW_GROUP'=>'New Group',
 'LBL_RENAME_TABS'=>'Rename Tabs',

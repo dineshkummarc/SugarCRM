@@ -465,6 +465,10 @@ EditView_tabs.on('contentReady', function(e){
                 <tr>
                     <th align="left" scope="row" colspan="4"><h4>{$MOD.LBL_LAYOUT_OPTIONS}</h4></th>
                 </tr>
+							<tr>	
+                                <td scope="row"><span>{$MOD.LBL_USE_GROUP_TABS}:</span>&nbsp;{sugar_help text=$MOD.LBL_NAVIGATION_PARADIGM_DESCRIPTION }</td>
+                                <td colspan="3"><input type="checkbox" name="use_group_tabs" {$USE_GROUP_TABS} tabindex='12'></td>
+                            </tr>
                             <tr>
                                 <td colspan="4">
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">

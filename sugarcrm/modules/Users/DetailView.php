@@ -387,6 +387,16 @@ else
   $sugar_smarty->assign("CALENDAR_SEARCH_URL", $sugar_config['site_url'].'/vcal_server.php/type=vfb&email=%NAME%@%SERVER%');
 }
 
+// Grouped tabs?
+$useGroupTabs = $current_user->getPreference('navigation_paradigm');
+if ( ! isset($useGroupTabs) ) {
+    if ( ! isset($GLOBALS['sugar_config']['default_navigation_paradigm']) ) {
+        $GLOBALS['sugar_config']['default_navigation_paradigm'] = 'm';
+    }
+    $useGroupTabs = $GLOBALS['sugar_config']['default_navigation_paradigm'];
+}
+$sugar_smarty->assign("USE_GROUP_TABS",($useGroupTabs=='gm')?'checked':'');
+
 $user_max_tabs = intval($focus->getPreference('max_tabs'));
 if(isset($user_max_tabs) && $user_max_tabs > 0)
     $sugar_smarty->assign("MAX_TAB", $user_max_tabs);

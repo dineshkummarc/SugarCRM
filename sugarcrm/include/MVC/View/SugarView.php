@@ -392,71 +392,127 @@ class SugarView
             $moduleTab = $this->_getModuleTab();
             $ss->assign('MODULE_TAB',$moduleTab);
             
-            
-            
-            $moduleExtraMenu = array();
-            $i = 1;
+
+            // See if they are using grouped tabs or not (removed in 6.0, returned in 6.1)
+            $user_navigation_paradigm = $current_user->getPreference('navigation_paradigm');
+            if ( !isset($user_navigation_paradigm) ) {
+                $user_navigation_paradigm = $GLOBALS['sugar_config']['default_navigation_paradigm'];
+            }
+
+
+            // Get the full module list for later use
             foreach ( query_module_access_list($current_user) as $module ) {
                 // Bug 25948 - Check for the module being in the moduleList
                 if ( isset($app_list_strings['moduleList'][$module]) ) {
-                    if ( $i < $max_tabs )
-                        $moduleTopMenu[$module] = $app_list_strings['moduleList'][$module];
-                    else
-                        $moduleExtraMenu[$module] = $app_list_strings['moduleList'][$module];
-                    ++$i;
+                    $fullModuleList[$module] = $app_list_strings['moduleList'][$module];
                 }
             }
-            
+
+
             if(!should_hide_iframes()) {
                 $iFrame = new iFrame();
                 $frames = $iFrame->lookup_frames('tab');
                 foreach($frames as $key => $values){
-                    if ( $i < $max_tabs )
-                        $moduleTopMenu[$key] = $values;
-                    else
-                        $moduleExtraMenu[$key] = $values;
-                    ++$i;
-                   
+                        $fullModuleList[$key] = $values;                    
                 }
             } 
-            elseif (isset($moduleExtraMenu['iFrames'])) {
-                unset($moduleExtraMenu['iFrames']);
+            elseif (isset($fullModuleList['iFrames'])) {
+                unset($fullModuleList['iFrames']);
+            }
+
+            if ( $user_navigation_paradigm == 'gm' && isset($themeObject->group_tabs) && $themeObject->group_tabs) {
+                // We are using grouped tabs
+                require_once('include/GroupedTabs/GroupedTabStructure.php');
+                $groupedTabsClass = new GroupedTabStructure();               
+                $modules = query_module_access_list($current_user);
+                //handle with submoremodules
+				$max_tabs = $current_user->getPreference('max_subtabs');
+				if ( !isset($max_subtabs) || $max_subtabs <= 0 ){
+                	$max_tabs = isset($GLOBALS['sugar_config']['default_max_subtabs'])?$GLOBALS['sugar_config']['default_max_subtabs']:8;
+                }
+                
+				$subMoreModules = false;
+				$groupTabs = $groupedTabsClass->get_tab_structure(get_val_array($modules));
+
+
+                // Setup the default group tab.
+                $tmp = array_keys($groupTabs);
+                $ss->assign('currentGroupTab',$tmp[0]);
+                // Figure out which tab they currently have selected (stored in a cookie)                
+                if ( isset($_COOKIE['sugar_theme_gm_current']) ) {
+                    if ( isset($groupTabs[$_COOKIE['sugar_theme_gm_current']]) ) {
+                        $ss->assign('currentGroupTab',$_COOKIE['sugar_theme_gm_current']);
+                    }
+                }
+
+                $usingGroupTabs = true;
+                
+            } else {
+                // Setup the default group tab.
+                $ss->assign('currentGroupTab',$app_strings['LBL_TABGROUP_ALL']);
+
+                $usingGroupTabs = false;
             }
             
-            // Now, we'll push the current module into the end of top menu list if it's not
-            // already there. In addition, we'll preserve this last entry for this session
-            // until a new value is added there.
-            if ( isset($moduleTopMenu[$moduleTab]) ) {
-                if ( isset($_SESSION['moreTab']) && isset($app_list_strings['moduleList'][$_SESSION['moreTab']])) {
-                    $moduleTopMenu[$_SESSION['moreTab']] = $app_list_strings['moduleList'][$_SESSION['moreTab']];
-                    unset($moduleExtraMenu[$_SESSION['moreTab']]);
-                }
-                else {
-                    $moduleTopMenu += array_slice($moduleExtraMenu,0,1);
-                    array_shift($moduleExtraMenu);
-                }
-                $ss->assign('USE_GROUP_TABS',false);
-            }
-            elseif ( isset($moduleExtraMenu[$moduleTab]) ) {
-                $_SESSION['moreTab'] = $moduleTab;
-                $moduleTopMenu[$_SESSION['moreTab']] = $app_list_strings['moduleList'][$_SESSION['moreTab']];
-                unset($moduleExtraMenu[$_SESSION['moreTab']]);
-            }
-            elseif ( !in_array($moduleTab,$moduleTopMenu) && !in_array($moduleTab,$moduleExtraMenu) ) {
-                $moduleTopMenu[$moduleTab] = !empty($app_list_strings['moduleList'][$moduleTab]) ? $app_list_strings['moduleList'][$moduleTab] : $moduleTab;
-            }
-            elseif ( isset($_SESSION['moreTab']) && isset($app_list_strings['moduleList'][$_SESSION['moreTab']])) {
-                $moduleTopMenu[$_SESSION['moreTab']] = $app_list_strings['moduleList'][$_SESSION['moreTab']];
-                unset($moduleExtraMenu[$_SESSION['moreTab']]);
-            }
-            else {
-                $moduleTopMenu += array_slice($moduleExtraMenu,0,1);
-                array_shift($moduleExtraMenu);
-            }
+            $groupTabs[$app_strings['LBL_TABGROUP_ALL']]['modules'] = $fullModuleList;
+
+            $topTabList = array();
             
+            // Now time to go through each of the tab sets and fix them up.
+            foreach ( $groupTabs as $tabIdx => $tabData ) {
+                $topTabs = $tabData['modules'];
+                if ( ! is_array($topTabs) ) {
+                    $topTabs = array();
+                }
+                $extraTabs = array();
+                
+                // Split it in to the tabs that go across the top, and the ones that are on the extra menu.
+                if ( count($topTabs) > $max_tabs ) {
+                    $extraTabs = array_splice($topTabs,$max_tabs);
+                }
+                // Make sure the current module is accessable through one of the top tabs
+                if ( !isset($topTabs[$moduleTab]) ) {
+                    // Nope, we need to add it.
+                    // First, take it out of the extra menu, if it's there
+                    if ( isset($extraTabs[$moduleTab]) ) {
+                        unset($extraTabs[$moduleTab]);
+                    }
+                    if ( count($topTabs) >= $max_tabs - 1 ) {
+                        // We already have the maximum number of tabs, so we need to shuffle the last one
+                        // from the top to the first one of the extras
+                        $lastElem = array_splice($topTabs,$max_tabs-1);
+                        $extraTabs = $lastElem + $extraTabs;
+                    }
+                    $topTabs[$moduleTab] = $app_list_strings['moduleList'][$moduleTab];
+                }
+                
+                
+                /*
+                // This was removed, but I like the idea, so I left the code in here in case we decide to turn it back on
+                // If we are using group tabs, add all the "hidden" tabs to the end of the extra menu
+                if ( $usingGroupTabs ) {
+                    foreach($fullModuleList as $moduleKey => $module ) {
+                        if ( !isset($topTabs[$moduleKey]) && !isset($extraTabs[$moduleKey]) ) {
+                            $extraTabs[$moduleKey] = $module;
+                        }
+                    }
+                }
+                */
+
+                // Get a unique list of the top tabs so we can build the popup menus for them
+                foreach ( $topTabs as $moduleKey => $module ) {
+                    $topTabList[$moduleKey] = $module;
+                }
+                
+                $groupTabs[$tabIdx]['modules'] = $topTabs;
+                $groupTabs[$tabIdx]['extra'] = $extraTabs;
+            }
+        }
+
+        if ( isset($topTabList) && is_array($topTabList) ) {
             // Adding shortcuts array to menu array for displaying shortcuts associated with each module
             $shortcutTopMenu = array();
-            foreach($moduleTopMenu as $module_key => $label) {
+            foreach($topTabList as $module_key => $label) {
                 global $mod_strings;
                 $mod_strings = return_module_language($current_language, $module_key);
                 foreach ( $this->getMenu($module_key) as $key => $menu_item ) {
@@ -465,15 +521,20 @@ class SugarView
                         "LABEL"       => $menu_item[1],
                         "MODULE_NAME" => $menu_item[2],
                         "IMAGE"       => $themeObject
-                            ->getImage($menu_item[2],"alt='".$menu_item[1]."'  border='0' align='absmiddle'"),
+                        ->getImage($menu_item[2],"alt='".$menu_item[1]."'  border='0' align='absmiddle'"),
                         );
                 }
             }
-            $ss->assign("moduleTopMenu",$moduleTopMenu);
+            $ss->assign("groupTabs",$groupTabs);
             $ss->assign("shortcutTopMenu",$shortcutTopMenu);
-            $ss->assign("moduleExtraMenu",$moduleExtraMenu);
+            $ss->assign('USE_GROUP_TABS',$usingGroupTabs);
+
+            // This is here for backwards compatibility, someday, somewhere, it will be able to be removed
+            $ss->assign("moduleTopMenu",$groupTabs[$app_strings['LBL_TABGROUP_ALL']]['modules']);
+            $ss->assign("moduleExtraMenu",$groupTabs[$app_strings['LBL_TABGROUP_ALL']]['extra']);
+
         }
-        
+
 		global $mod_strings;
 		$mod_strings = $bakModStrings;
         $headerTpl = $themeObject->getTemplate('header.tpl');

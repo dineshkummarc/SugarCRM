@@ -1602,7 +1602,9 @@ function disableOnUnloadEditView(theForm) {
         window.onbeforeunload = null;
     } else {
         // Otherwise, it just disables it for this form
-        editViewSnapshots[theForm.id] = null;
+        if ( typeof(theForm.id) != 'undefined' && typeof(editViewSnapshots[theForm.id]) != 'undefined' ) {
+            editViewSnapshots[theForm.id] = null;
+        }
     }
 }
 

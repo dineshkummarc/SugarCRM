@@ -334,6 +334,11 @@ user_detailview_tabs.on('contentReady', function(e){
             <th colspan='4' align="left" width="100%" valign="top"><h4><slot>{$MOD.LBL_LAYOUT_OPTIONS}</slot></h4></th>
             </tr>
             <tr>
+            <td width="15%" scope="row"><slot>{$MOD.LBL_USE_GROUP_TABS}:</slot></td>
+            <td><slot><input class="checkbox" type="checkbox" disabled {$USE_GROUP_TABS}></slot></td>
+            <td><slot>{$MOD.LBL_NAVIGATION_PARADIGM_DESCRIPTION}&nbsp;</slot></td>
+            </tr>
+            <tr>
             <td width="15%" scope="row"><slot>{$MOD.LBL_MAX_TAB}:</slot></td>
             <td width="15%"><slot>{$MAX_TAB}&nbsp;</slot></td>
             <td><slot>{$MOD.LBL_MAX_TAB_DESCRIPTION}&nbsp;</slot></td>

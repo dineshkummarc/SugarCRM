@@ -102,15 +102,6 @@
 <input type="hidden" name="slot_count" id="slot_count" value="" />  
 <table  cellpadding="0" cellspacing="0" border="0" width="100%">
 <tr>
-	<td width="2%" class='dataLabel'>
-		<input name="other_group_tab_displayed" value="1" class="checkbox"  type="checkbox" {$other_group_tab_displayed} >
-	</td>
-	<td width="97%" class='dataLabel'>
-	{$MOD.LBL_DISPLAY_OTHER_TAB}
-	{sugar_help text=$MOD.LBL_DISPLAY_OTHER_TAB_HELP}
-	</td>
-</tr>
-<tr>
 	<td width="100%" class='dataLabel' colspan=2>
 	{$MOD.LBL_TABGROUP_LANGUAGE}&nbsp;
 	{html_options name='grouptab_lang' options=$available_languages selected=$tabGroupSelected_lang onchange=" tabLanguageChange(this)"}
@@ -163,7 +154,7 @@ subtabModules['modSlot{$modCounter}'] = '{$value.label}'</script>
 </span></h2><input type='hidden' name='tablabelid_{$tabCounter}' id='tablabelid_{$tabCounter}'  value='{$tab.label}'><input type='text' name='tablabel_{$tabCounter}' id='tablabel_{$tabCounter}' style='display:none' value='{$tab.labelValue}' onblur='studiotabs.editTabGroupLabel({$tabCounter}, true)'>
 <ul id='ul{$tabCounter}' class='listContainer'>
 {counter start=0 name="subtabCounter" print=false assign="subtabCounter"}
-{foreach from=$tab.modules item='list'}
+{foreach from=$tab.modules key='list' item='name'}
 
 <li id='subslot{$tabCounter}_{$subtabCounter}' class='listStyle' name='{$list}'><span class='slotB' >{$availableModuleList[$list].label}</span></li>
 <script>subtabModules['subslot{$tabCounter}_{$subtabCounter}'] = '{$availableModuleList[$list].label}'</script>

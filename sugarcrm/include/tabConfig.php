@@ -38,52 +38,47 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 
 $GLOBALS['tabStructure'] = array(
-    "LBL_TABGROUP_HOME" => array(
-        'label' => 'LBL_TABGROUP_HOME',
-        'modules' => array(
-            "Home",
-            "Dashboard",
-        )
-    ),
     "LBL_TABGROUP_SALES" => array(
         'label' => 'LBL_TABGROUP_SALES',
         'modules' => array(
+            "Home",
             "Accounts",
+            "Contacts",
             "Opportunities",
             "Leads",
             "Contracts",
             "Quotes",
             "Forecasts",
-            "Contacts",
         )
     ),
     "LBL_TABGROUP_MARKETING" => array(
         'label' => 'LBL_TABGROUP_MARKETING',
         'modules' => array(
-            "Campaigns",
-            "Leads",    
-            "Contacts",
+            "Home",
             "Accounts",
+            "Contacts",
+            "Leads",    
+            "Campaigns",
         )
     ),
     "LBL_TABGROUP_SUPPORT" => array(
         'label' => 'LBL_TABGROUP_SUPPORT',
         'modules' => array(
-            "Cases",
-            "Bugs",
-            "Products",    
+            "Home",
             "Accounts",
             "Contacts",
+            "Cases",
+            "Bugs",
         )
     ),
     "LBL_TABGROUP_ACTIVITIES" => array(
         'label' => 'LBL_TABGROUP_ACTIVITIES',
         'modules' => array(
-            "Activities",
+            "Home",
             "Calendar",
-            "Emails",
             "Calls",
             "Meetings",
+            "Emails",
             "Tasks",
             "Notes",
         )
@@ -91,26 +86,18 @@ $GLOBALS['tabStructure'] = array(
     "LBL_TABGROUP_COLLABORATION"=>array(
         'label' => 'LBL_TABGROUP_COLLABORATION',
         'modules' => array(
+            "Home",
             "Emails",
-            "Project",
             "Documents",
-            //"Forums",
+            "Project",
         )
     ),
-    /*
-    "LBL_TABGROUP_TOOLS"=>array(
-        'label' => 'LBL_TABGROUP_TOOLS',
-        'modules' => array(
-            "Feeds",
-            "iFrames",
-        )
-    ),
-    */
     "LBL_TABGROUP_REPORTS"=>array(
         'label' => 'LBL_TABGROUP_REPORTS',
         'modules' => array(
+            "Home",
             "Reports",
-            "Dashboard",
+            "Forecasts",
         )
     ),
 );

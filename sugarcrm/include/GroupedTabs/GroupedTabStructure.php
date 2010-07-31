@@ -55,7 +55,7 @@ class GroupedTabStructure
 	 */
     function get_tab_structure($modList = '', $patch = '', $ignoreSugarConfig=false, $labelAsKey=false)
     {
-    	global $modListHeader, $app_strings, $modInvisListActivities;
+    	global $modListHeader, $app_strings, $app_list_strings, $modInvisListActivities;
         
         /* Use default if not provided */
         if(!$modList)
@@ -108,7 +108,7 @@ class GroupedTabStructure
             }else{
                 $retStruct[$app_strings[$subModules['label']]]['modules']= array();
             }
-            
+
             foreach($subModules['modules'] as $key => $subModule)
             {
                /* Perform a case-insensitive in_array check
@@ -119,9 +119,9 @@ class GroupedTabStructure
                     if(is_string($module) && strcasecmp($subModule, $module) === 0)
                     {
                     	if($labelAsKey){
-                    		$retStruct[$subModules['label']]['modules'][] = $subModule;
+                    		$retStruct[$subModules['label']]['modules'][$module] = $app_list_strings['moduleList'][$module];
                     	}else{
-                    		$retStruct[$app_strings[$subModules['label']]]['modules'][] = $subModule;
+                    		$retStruct[$app_strings[$subModules['label']]]['modules'][$module] = $app_list_strings['moduleList'][$module];
                     	}                        
                         $mlhUsed[$module] = true;
                         break;
@@ -140,35 +140,6 @@ class GroupedTabStructure
 			}
         }
         
-       //The other tab is shown by default . If the other_group_tab_displayed was set false in sugar config, we will not show the 'Other' tab in Group Tab List.
-        global $sugar_config;
-        //If return result ignore sugar config or $sugar_config['other_group_tab_displayed'] is not set ever or $sugar_config['other_group_tab_displayed'] is true 
-        if($ignoreSugarConfig || ( !isset($sugar_config['other_group_tab_displayed']) || $sugar_config['other_group_tab_displayed'])){
-        /* Put all the unused modules in modList
-         * into the 'Other' tab.
-         */
-	        foreach($modList as $module)
-	        {
-	        	if(is_array($module) || !isset($mlhUsed[$module]))
-	            {
-		            	if($labelAsKey){
-		            		$retStruct['LBL_TABGROUP_OTHER']['modules'] []= $module;
-	            		}else{
-			            	$retStruct[$app_strings['LBL_TABGROUP_OTHER']]['modules'] []= $module;
-			            }
-	            }
-	        }
-        }else{
-        	//If  the 'Other' group tab was not allowed returned, we should check the $retStruct array to make sure there is no 'Other' group tab in it.
-        	if(isset($retStruct[$app_strings['LBL_TABGROUP_OTHER']])){
-        		if($labelAsKey){
-            		unset($retStruct['LBL_TABGROUP_OTHER']);
-        		}else{
-        			unset($retStruct[$app_strings['LBL_TABGROUP_OTHER']]);
-        		}
-        
-        	}	        	
-        }
 //        _pp($retStruct);
         return $retStruct;
     }
