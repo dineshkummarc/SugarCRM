@@ -41,10 +41,12 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 class Configurator {
 	var $config = '';
 	var $override = '';
-	var $allow_undefined = array ('stack_trace_errors', 'export_delimiter', 'use_real_names', 'developerMode', 'default_module_favicon');
+	var $allow_undefined = array ('stack_trace_errors', 'export_delimiter', 'use_real_names', 'developerMode', 'default_module_favicon', 'authenticationClass', 'SAML_loginurl', 'SAML_X509Cert');
 	var $errors = array ('main' => '');
 	var $logger = NULL;
 	var $previous_sugar_override_config_array = array();
+	var $useAuthenticationClass = false;
+	
 	function Configurator() {
 		$this->loadConfig();
 	}
@@ -56,6 +58,7 @@ class Configurator {
 	}
 
 	function populateFromPost() {
+		echo "in populateFromPost\n";
 		$sugarConfig = SugarConfig::getInstance();
 		foreach ($_POST as $key => $value) {
 			if (isset ($this->config[$key]) || in_array($key, $this->allow_undefined)) {
@@ -75,16 +78,28 @@ class Configurator {
 		}
 	}
 
-	function handleOverride() {
+	function handleOverride($fromParseLoggerSettings=false) {
 		global $sugar_config, $sugar_version;
 		$sc = SugarConfig::getInstance();
-		$overrideArray = $this->readOverride();		
+		$overrideArray = $this->readOverride();
 		$this->previous_sugar_override_config_array = $overrideArray;
 		$diffArray = deepArrayDiff($this->config, $sugar_config);
 		$overrideArray = sugarArrayMergeRecursive($overrideArray, $diffArray);
+		
+		// To remember checkbox state
+      if (!$this->useAuthenticationClass && !$fromParseLoggerSettings) {
+      	if ($overrideArray['authenticationClass'] == 'SAMLAuthenticate') {
+      	  unset($overrideArray['authenticationClass']);	
+      	}
+      }
+		
 		$overideString = "<?php\n/***CONFIGURATOR***/\n";
+		
 		sugar_cache_put('sugar_config', $this->config);
 		$GLOBALS['sugar_config'] = $this->config;
+		
+		//print_r($overrideArray);
+		
 		foreach($overrideArray as $key => $val) {
 			if (in_array($key, $this->allow_undefined) || isset ($sugar_config[$key])) {
 				if (strcmp("$val", 'true') == 0) {
@@ -99,6 +114,7 @@ class Configurator {
 			$overideString .= override_value_to_string_recursive2('sugar_config', $key, $val);
 		}
 		$overideString .= '/***CONFIGURATOR***/';
+		
 		$this->saveOverride($overideString);
 		if(isset($this->config['logger']['level']) && $this->logger) $this->logger->setLevel($this->config['logger']['level']);
 	}
@@ -245,7 +261,7 @@ class Configurator {
 				'suffix' => '%m_%Y'),
 			'level' => 'fatal');
 		}
-		$this->handleOverride();
+		$this->handleOverride(true);
 
 
 	}

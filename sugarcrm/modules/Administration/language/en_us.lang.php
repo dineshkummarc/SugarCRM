@@ -1066,4 +1066,11 @@ $mod_strings = array (
 	'WorkFlowAlertShells'  => 'WorkFlowAlertShell',
 	'WorkFlowTriggerShells'  => 'WorkFlowTriggerShell',
 	'Worksheet'  => 'Worksheet',
+   'LBL_SAML_ENABLE' => 'Enable SAML Authentication',
+   'LBL_SAML_HELP_TXT' => 'When SAML authentication is enabled, passwords can only be handled through SAML. None of the Sugar Password Management feature settings will apply.',
+   'LBL_SAML_TITLE' => 'SAML Authentication',
+   'LBL_SAML_CERT' => 'X509 Certificate',
+   'LBL_SAML_CERT_DESC' => 'Enter X509 Certificate',
+   'LBL_SAML_LOGIN_URL' => 'Login URL',
+   'LBL_SAML_LOGIN_URL_DESC' => 'Enter Login URL'
 	);

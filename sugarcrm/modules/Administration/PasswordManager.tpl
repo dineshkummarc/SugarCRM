@@ -293,7 +293,7 @@
 									{assign var='system_ldap_enabled_checked' value=''}
 									{assign var='ldap_display' value='none'}
 							{/if}
-							<table width="100%" border="0" cellspacing="0" cellpadding="0" class="edit view">
+							<table id='ldap_table' width="100%" border="0" cellspacing="0" cellpadding="0" class="edit view">
 								<tr>
 									<td>
 										<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -303,7 +303,7 @@
 											<tr>
 												<td width="25%" scope="row" valign='middle'>
 													{$MOD.LBL_LDAP_ENABLE}{sugar_help text=$MOD.LBL_LDAP_HELP_TXT}
-												</td><td valign='middle'><input name="system_ldap_enabled" id="system_ldap_enabled" class="checkbox"  type="checkbox" {$system_ldap_enabled_checked} onclick='toggleDisplay("ldap_display");enableDisablePasswordTable();'></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+												</td><td valign='middle'><input name="system_ldap_enabled" id="system_ldap_enabled" class="checkbox"  type="checkbox" {$system_ldap_enabled_checked} onclick='toggleDisplay("ldap_display");enableDisablePasswordTable("system_ldap_enabled");'></td><td>&nbsp;</td><td>&nbsp;</td></tr>
 											<tr>
 												<td colspan='4'>
 													<table  cellspacing='0' cellpadding='1' id='ldap_display' style='display:{$ldap_display}' width='100%'>
@@ -417,22 +417,68 @@
 									</td>
 								</tr>
 							</table>
-							{if !empty($settings.system_ldap_enabled)}
-									{assign var='system_ldap_enabled_checked' value='CHECKED'}
-									{assign var='ldap_display' value='inline'}
-								{else}
-									{assign var='system_ldap_enabled_checked' value=''}
-									{assign var='ldap_display' value='none'}
-							{/if}
-						<div style="padding-top: 2px;">
-							<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" class="button primary" id="btn_save" type="submit" onclick="addcheck(form);return check_form('ConfigurePasswordSettings');" name="save" value="{$APP.LBL_SAVE_BUTTON_LABEL}" />
-							&nbsp;<input title="{$MOD.LBL_CANCEL_BUTTON_TITLE}"  onclick="document.location.href='index.php?module=Administration&action=index'" class="button"  type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" />
-						</div>
+							
+						             <!-- start SAML -->
+						   {if !empty($config.authenticationClass) && $config.authenticationClass === 'SAMLAuthenticate'}
+                           {assign var='saml_enabled_checked' value='CHECKED'}
+                           {assign var='saml_display' value='inline'}
+                        {else}
+                           {assign var='saml_enabled_checked' value=''}
+                           {assign var='saml_display' value='none'}
+                     {/if}
+        
+                     <table id = 'saml_table' width="100%" border="0" cellspacing="0" cellpadding="0" class="edit view">
+                        <tr>
+                           <td>
+                              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                 <tr>
+                                    <th align="left" scope="row" colspan='3'><h4>{$MOD.LBL_SAML_TITLE}</h4></th>
+                                 </tr>
+                                 <tr>
+                                    <td width="25%" scope="row" valign='middle'>
+                                       {$MOD.LBL_SAML_ENABLE}{sugar_help text=$MOD.LBL_SAML_HELP_TXT}
+                                    </td><td valign='middle'>
+                                    
+                                    <input name="authenticationClass" id="system_saml_enabled" class="checkbox"  
+                                       value="SAMLAuthenticate" type="checkbox" 
+                                       {if $saml_enabled_checked}checked="1"{/if} 
+                                       onclick='toggleDisplay("saml_display");enableDisablePasswordTable("system_saml_enabled");'>
+                                    </td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                                 <tr>
+                                    <td colspan='4'>
+                                       <table  cellspacing='0' cellpadding='1' id='saml_display' style='display:{$saml_display}' width='100%'>
+                                            <tr>
+                                             <td scope="row" valign='middle' nowrap>{$MOD.LBL_SAML_LOGIN_URL} {sugar_help text=$MOD.LBL_SAML_LOGIN_URL_DESC}</td>
+                                             <td align="left"  valign='middle'><input name="SAML_loginurl" size='35' type="text" value="{$config.SAML_loginurl}"></td>
+                                             
+                                          </tr>
+                                          <tr>
+                                             <td width='25%' scope="row" valign='top' nowrap>{$MOD.LBL_SAML_CERT} {sugar_help text=$MOD.LBL_SAML_CERT_DESC}</td>{$settings.proxy_host}
+                                             <td width='25%' align="left"  valign='top'><textarea style='height:200px;width:600px' name="SAML_X509Cert" >{$config.SAML_X509Cert}</textarea></td>
+                                             
+                                          </tr>
+                                        
+                                          
+                     </table>
+ 
+                  
+               </td>
+            </tr>
+         </table>
+         <!-- end SAML -->	
 					</td>
 				</tr>
 			</table>
+			<div style="padding-top: 2px;">
+                     <input title="{$APP.LBL_SAVE_BUTTON_TITLE}" class="button primary" id="btn_save" type="submit" onclick="addcheck(form);return check_form('ConfigurePasswordSettings');" name="save" value="{$APP.LBL_SAVE_BUTTON_LABEL}" />
+                     &nbsp;<input title="{$MOD.LBL_CANCEL_BUTTON_TITLE}"  onclick="document.location.href='index.php?module=Administration&action=index'" class="button"  type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" />
+                  </div>
 		</td>
 	</tr>
+</table>
+
+      </td>
+   </tr>
 </table>
 </form>
 {$JAVASCRIPT}
@@ -480,9 +526,10 @@ function open_email_template_form(fieldToSet) {
 	}
 }
 
-function enableDisablePasswordTable() {
-	var ldapEnabled = document.getElementById("system_ldap_enabled").checked;
-	if (ldapEnabled) {
+function enableDisablePasswordTable(checkbox_id) {
+   var other = checkbox_id == "system_saml_enabled" ? "ldap_table" :  "saml_table";
+	var enabled = document.getElementById(checkbox_id).checked;
+	if (enabled) {
 		document.getElementById("emailTemplatesId").style.display = "none";
 		document.getElementById("sysGeneratedId").style.display = "none";
 		document.getElementById("userResetPassId").style.display = "none";
@@ -629,7 +676,9 @@ var syst_generated_pwd_select=table_fields.getElementsByTagName('select');
 }
 forgot_password_enable(document.getElementById('forgotpassword_checkbox'));
 enable_syst_generated_pwd(document.getElementById('SystemGeneratedPassword_checkbox'));
-enableDisablePasswordTable();
+if(document.getElementById('system_saml_enabled').checked)enableDisablePasswordTable('system_saml_enabled');
+if(document.getElementById('system_ldap_enabled').checked)enableDisablePasswordTable('system_ldap_enabled');
+
 </script>
 
 {/literal}

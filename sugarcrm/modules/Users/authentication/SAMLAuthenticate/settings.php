@@ -13,20 +13,10 @@
 
     $settings                           = new Settings();
     // when using Service Provider Initiated SSO (starting at index.php), this URL asks the IdP to authenticate the user. 
-    $settings->idp_sso_target_url       = "https://app.onelogin.com/saml/signon/6774";
+    $settings->idp_sso_target_url       = $GLOBALS['sugar_config']['SAML_loginurl'];
+    
     // the certificate for the users account in the IdP
-    $settings->x509certificate          = "-----BEGIN CERTIFICATE-----
-MIIBrTCCAaGgAwIBAgIBATADBgEAMGcxCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApD
-YWxpZm9ybmlhMRUwEwYDVQQHDAxTYW50YSBNb25pY2ExETAPBgNVBAoMCE9uZUxv
-Z2luMRkwFwYDVQQDDBBhcHAub25lbG9naW4uY29tMB4XDTEwMDYwMTIxNTY0MFoX
-DTE1MDYwMTIxNTY0MFowZzELMAkGA1UEBhMCVVMxEzARBgNVBAgMCkNhbGlmb3Ju
-aWExFTATBgNVBAcMDFNhbnRhIE1vbmljYTERMA8GA1UECgwIT25lTG9naW4xGTAX
-BgNVBAMMEGFwcC5vbmVsb2dpbi5jb20wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJ
-AoGBAOKM1kQspmj0fyIN1i9mWEjXLUD0ZkLgMqGHVI9Ni7w+4YKB3fQV4UWg6Geq
-E+UUgR9Ogu/wsxfUcFGk0X9oQaueUgtQp6s9cdx07ZXZT93CuKwvgebDH1BbWXJY
-TFtExwgSpVafozcm+d6W6JWW97qEL47nG0hkXUjzloXn+hzjAgMBAAEwAwYBAAMB
-AA==
------END CERTIFICATE-----";
+    $settings->x509certificate          = $GLOBALS['sugar_config']['SAML_X509Cert'];
 
     return $settings;
   }
