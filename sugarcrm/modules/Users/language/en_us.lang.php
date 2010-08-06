@@ -280,8 +280,8 @@ $mod_strings = array (
 	'LBL_PORTAL_ONLY_USER'					=> 'Portal API User',
 	'LBL_POSTAL_CODE'					=> 'Postal Code',
 	'LBL_PRIMARY_ADDRESS'				=> 'Primary Address',
-	'LBL_PROMPT_TIMEZONE_TEXT'			=> 'Check to have the user goto the User Wizard on login.',
-	'LBL_PROMPT_TIMEZONE'				=> 'User Wizard prompt',
+	'LBL_PROMPT_TIMEZONE_TEXT'			=> 'Select to have new users go through the New User Wizard upon first login.',
+	'LBL_PROMPT_TIMEZONE'				=> 'User Wizard Prompt',
 	'LBL_PROVIDE_USERNAME_AND_EMAIL' 	=> 'Provide both a User Name and an Email Address.',
 	'LBL_PUBLISH_KEY'					=> 'Publish Key',
 	

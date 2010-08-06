@@ -2403,23 +2403,22 @@ function save_relationship_changes($is_update, $exclude=array())
 							$list_column[0] = $bean_queried->table_name .".".$list_column[0] ;
 						}
 						$value = implode($list_column,' ');
+						// Bug 38803 - Use CONVERT() function when doing an order by on ntext, text, and image fields
+						if ( $this->db->dbType == 'mssql' 
+						     && $source == 'db'
+                            && in_array(
+                                $this->db->getHelper()->getColumnType($this->db->getHelper()->getFieldType($bean_queried->field_defs[$list_column_name])),
+                                array('ntext','text','image')
+                                )
+                            ) {
+                        $value = "CONVERT(varchar(500),{$list_column[0]}) {$list_column[1]}";
+                        }
 					}
 					else
 					{
 						$GLOBALS['log']->debug("process_order_by: ($list_column[0]) does not have a vardef entry.");
 					}
 				}
-			}
-			// Bug 38803 - Use CONVERT() function when doing an order by on ntext, text, and image fields
-			if ( $this->db->dbType == 'mssql' 
-			        && isset($bean_queried->field_defs[$list_column[0]])
-			        && in_array(
-			            $this->db->getHelper()->getColumnType($this->db->getHelper()->getFieldType($bean_queried->field_defs[$list_column[0]])),
-			            array('ntext','text','image')
-			            )
-			        ) {
-		        $list_column = explode(' ',trim($value));
-		        $value = "CONVERT(varchar(500),{$list_column[0]}) {$list_column[1]}";
 			}
 			$elements[$key]=$value;
 		}

@@ -702,6 +702,10 @@ function upgradeUWFiles($file) {
 		$destFile = str_replace(clean_path($cacheUploadUpgradesTemp.'/'.$manifest['copy_files']['from_dir']), $cwd, $file);
         copy($file,$destFile);
 	}
+	
+	// Clear the language cache incase new strings have been added to the Upgrade Wizard.
+	require_once('include/SugarObjects/LanguageManager.php');
+	LanguageManager::clearLanguageCache('UpgradeWizard');	
 }
 
 
@@ -4422,7 +4426,7 @@ function upgradeModulesForTeam() {
 			if(!empty($content['dashlets']) && !empty($content['pages'])){
 				$originalDashlets = $content['dashlets'];
 				foreach($originalDashlets as $key => $ds){
-				    if(!empty($ds['options']['url']) && stristr($ds['options']['url'],'http://apps.sugarcrm.com/dashlet/go-pro.html')){
+				    if(!empty($ds['options']['url']) && stristr($ds['options']['url'],'http://www.sugarcrm.com/crm/product/gopro')){
 						unset($originalDashlets[$key]);
 					}
 				}
