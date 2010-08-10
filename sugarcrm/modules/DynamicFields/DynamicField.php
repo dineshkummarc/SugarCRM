@@ -460,6 +460,8 @@ class DynamicField {
         $sql = $widget->get_db_delete_alter_table( $this->bean->table_name . "_cstm" ) ;
         if (! empty( $sql ) )
             $GLOBALS['db']->query( $sql );
+        
+        $this->removeVardefExtension($widget);
         VardefManager::clearVardef();
         VardefManager::refreshVardefs($this->module, $object_name);
 
@@ -631,6 +633,17 @@ class DynamicField {
 	        return false ;
 	    }
     }
+    
+    protected function removeVardefExtension($field)
+    {
+    	$file_loc = "$this->base_path/sugarfield_{$field->name}.php";
+    	
+    	if (is_file($file_loc))
+    	{
+    		unlink($file_loc);
+    	}
+    }
+    
 
     /**
      * DEPRECIATED: Use addFieldObject instead.

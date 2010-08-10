@@ -509,6 +509,12 @@ class ModuleBuilderController extends SugarController
                 //Need to load the entire field_meta_data for some field types
                 $field = $df->getFieldWidget($moduleName, $field->name);
                 $field->delete ( $df ) ;
+                
+                $GLOBALS [ 'mod_strings' ]['LBL_ALL_MODULES'] = 'all_modules';
+                $_REQUEST['execute_sql'] = true;
+                include_once ('modules/Administration/QuickRepairAndRebuild.php') ;
+                $repair = new RepairAndClear();
+                $repair->repairAndClearAll(array('rebuildExtensions', 'clearVardefs', 'clearTpls'), array($class_name), true, false);
                 require_once 'modules/ModuleBuilder/Module/StudioModuleFactory.php' ;
                 $module = StudioModuleFactory::getStudioModule( $moduleName ) ;
             }

@@ -126,7 +126,7 @@ function verifyArguments($argv,$usage_regular){
         } else {
             echo "*******************************************************************************\n";
             echo "*** ERROR: 3rd parameter must be a valid directory.  Tried to cd to [ {$argv[3]} ].\n";
-            die();
+            exit(1);
         }
     }
 
@@ -140,21 +140,21 @@ function verifyArguments($argv,$usage_regular){
             echo "*** ERROR: First argument must be a full path to the patch file. Got [ {$argv[1]} ].\n";
             echo $usage_regular;
             echo "FAILURE\n";
-            die();
+            exit(1);
         }
         if(count($argv) < 5) {
             echo "*******************************************************************************\n";
             echo "*** ERROR: Missing required parameters.  Received ".count($argv)." argument(s), require 5.\n";
             echo $usage_regular;
             echo "FAILURE\n";
-            die();
+            exit(1);
         }
     }
     else {
         //this should be a regular sugar install
         echo "*******************************************************************************\n";
         echo "*** ERROR: Tried to execute in a non-SugarCRM root directory.\n";
-        die();
+        exit(1);
     }
 
     if(isset($argv[7]) && file_exists($argv[7].'SugarTemplateUtilties.php')){
@@ -170,7 +170,8 @@ function verifyArguments($argv,$usage_regular){
 
 // only run from command line
 if(isset($_SERVER['HTTP_USER_AGENT'])) {
-	die('This utility may only be run from the command line or command prompt.');
+	fwrite(STDERR, 'This utility may only be run from the command line or command prompt.');
+	exit(1);
 }
 //Clean_string cleans out any file  passed in as a parameter
 $_SERVER['PHP_SELF'] = 'silentUpgrade.php';
@@ -281,7 +282,7 @@ $errors = array();
 	   }
 	   else{
 	   	echo "Not an admin user in users table. Please provide an admin user\n";
-		die();
+		exit(1);
 	   }
 	}
 	else {
@@ -289,7 +290,7 @@ $errors = array();
 		echo "*** ERROR: 4th parameter must be a valid admin user.\n";
 		echo $usage;
 		echo "FAILURE\n";
-		die();
+		exit(1);
 	}
 
 /////retrieve admin user
@@ -306,7 +307,8 @@ $_SESSION['zip_from_dir'] = $zip_from_dir;
 
 mkdir_recursive($unzip_dir);
 if(!is_dir($unzip_dir)) {
-	die("\n{$unzip_dir} is not an available directory\nFAILURE\n");
+	fwrite(STDERR, "\n{$unzip_dir} is not an available directory\nFAILURE\n");
+	exit(1);
 }
 unzip($argv[1], $unzip_dir);
 // mimic standard UW by copy patch zip to appropriate dir

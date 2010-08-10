@@ -938,9 +938,6 @@ EOHTML;
     	$theTitle = "<div class='moduleTitle'>\n<h2>";
     	
     	$module = preg_replace("/ /","",$this->module);
-        if (is_file(SugarThemeRegistry::current()->getImageURL($this->module.'.gif'))) {
-            $theTitle .= "<img src='".SugarThemeRegistry::current()->getImageURL($module.'.gif')."' alt='".$module."'>&nbsp;";
-        }
         
         $params = $this->_getModuleTitleParams();
         $count = count($params);
@@ -1026,9 +1023,9 @@ EOHTML;
      *
      * @return array
      */
-    protected function _getModuleTitleParams()
+    protected function _getModuleTitleParams($bTitle=false)
     {
-    	$params = array($this->_getModuleTitleListParam());
+    	$params = array($this->_getModuleTitleListParam($bTitle));
     	
     	if (isset($this->action)){
     	    switch ($this->action) {
@@ -1055,9 +1052,10 @@ EOHTML;
      *
      * @return string
      */
-    protected function _getModuleTitleListParam()
+    protected function _getModuleTitleListParam($bTitle=false)
     {
     	global $current_user;
+    	global $app_strings;
     	
     	if(!empty($GLOBALS['app_list_strings']['moduleList'][$this->module]))
     		$firstParam = $GLOBALS['app_list_strings']['moduleList'][$this->module];
@@ -1065,9 +1063,18 @@ EOHTML;
     		$firstParam = $this->module;
     	
     	if($this->action == "ListView" || $this->action == "index")
-    		return $firstParam;
+			if (is_file(SugarThemeRegistry::current()->getImageURL('icon_'.$this->module.'_32.png',false)) && !$bTitle) {
+				return $theTitle .= "<a href='index.php?module={$this->module}&action=index'><img src='".SugarThemeRegistry::current()->getImageURL('icon_'.$this->module.'_32.png')."' alt='".$this->module."' title='".$this->module."' align='absmiddle'></a><span class='pointer'>&raquo;</span>".$app_strings['LBL_SEARCH'];
+			} else {
+				return $firstParam;
+			}
     	else
-    		return "<a href='index.php?module={$this->module}&action=index'>{$firstParam}</a>";
+		
+			if (is_file(SugarThemeRegistry::current()->getImageURL('icon_'.$this->module.'_32.png',false)) && !$bTitle) {
+				return $theTitle .= "<a href='index.php?module={$this->module}&action=index'><img src='".SugarThemeRegistry::current()->getImageURL('icon_'.$this->module.'_32.png')."' alt='".$this->module."' title='".$this->module."' align='absmiddle'></a>";
+			} else {
+				return "<a href='index.php?module={$this->module}&action=index'>{$firstParam}</a>";
+			}
     }
     
     /**
@@ -1083,8 +1090,8 @@ EOHTML;
         $browserTitle = $app_strings['LBL_BROWSER_TITLE'];
         if ( $this->module == 'Users' && ($this->action == 'SetTimezone' || $this->action == 'Login') )
             return $browserTitle;
-        
-        foreach ( $this->_getModuleTitleParams() as $value )
+        $params = $this->_getModuleTitleParams(true);
+        foreach ($params  as $value )
             $browserTitle = strip_tags($value) . ' &raquo; ' . $browserTitle;
         
         return $browserTitle;

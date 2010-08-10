@@ -257,7 +257,7 @@ function verifyArguments($argv,$usage_dce,$usage_regular){
         } else {
             echo "*******************************************************************************\n";
             echo "*** ERROR: 3rd parameter must be a valid directory.  Tried to cd to [ {$argv[3]} ].\n";
-            die();
+            exit(1);
         }
     }
 
@@ -272,7 +272,7 @@ function verifyArguments($argv,$usage_dce,$usage_regular){
             echo "*** ERROR: Missing required parameters.  Received ".count($argv)." argument(s), require 7.\n";
             echo $usage_dce;
             echo "FAILURE\n";
-            die();
+            exit(1);
         }
         // this is an instance
         if(!is_dir($argv[1])) { // valid directory . template path?
@@ -280,7 +280,7 @@ function verifyArguments($argv,$usage_dce,$usage_regular){
             echo "*** ERROR: First argument must be a full path to the template. Got [ {$argv[1]} ].\n";
             echo $usage_dce;
             echo "FAILURE\n";
-            die();
+            exit(1);
         }
     }
     else if(is_file("{$cwd}/include/entryPoint.php")) {
@@ -292,21 +292,21 @@ function verifyArguments($argv,$usage_dce,$usage_regular){
             echo "*** ERROR: First argument must be a full path to the patch file. Got [ {$argv[1]} ].\n";
             echo $usage_regular;
             echo "FAILURE\n";
-            die();
+            exit(1);
         }
         if(count($argv) < 5) {
             echo "*******************************************************************************\n";
             echo "*** ERROR: Missing required parameters.  Received ".count($argv)." argument(s), require 5.\n";
             echo $usage_regular;
             echo "FAILURE\n";
-            die();
+            exit(1);
         }
     }
     else {
         //this should be a regular sugar install
         echo "*******************************************************************************\n";
         echo "*** ERROR: Tried to execute in a non-SugarCRM root directory.\n";
-        die();      
+        exit(1);      
     }
 
     if(isset($argv[7]) && file_exists($argv[7].'SugarTemplateUtilties.php')){
@@ -351,7 +351,8 @@ function threeWayMerge(){
 
 // only run from command line
 if(isset($_SERVER['HTTP_USER_AGENT'])) {
-	die('This utility may only be run from the command line or command prompt.');
+	fwrite(STDERR,'This utility may only be run from the command line or command prompt.');
+	exit(1);
 }
 //Clean_string cleans out any file  passed in as a parameter
 $_SERVER['PHP_SELF'] = 'silentUpgrade.php';
