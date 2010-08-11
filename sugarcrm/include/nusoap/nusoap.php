@@ -2,7 +2,7 @@
 if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 /*
-$Id: nusoap.php 51508 2009-10-14 14:40:23Z jmertic $
+$Id: nusoap.php 57707 2010-08-10 19:26:13Z kjing $
 
 NuSOAP - Web Services Toolkit for PHP
 
@@ -84,7 +84,7 @@ class nusoap_base {
 	 * @var string
 	 * @access private
 	 */
-	var $revision = '$Revision: 51508 $';
+	var $revision = '$Revision: 57707 $';
     /**
      * Current error string (manipulated by getError/setError)
 	 *
@@ -3621,6 +3621,9 @@ class soap_server extends nusoap_base {
 				$instance = new $class ();
 				$call_arg = array(&$instance, $method);
 			}
+			if(empty($this->methodparams)) {
+			    $this->methodparams = array();
+			}
 			$this->methodreturn = call_user_func_array($call_arg, $this->methodparams);
 		}
         $this->debug('in invoke_method, methodreturn:');
@@ -4017,7 +4020,7 @@ class soap_server extends nusoap_base {
     function configureWSDL($serviceName,$namespace = false,$endpoint = false,$style='rpc', $transport = 'http://schemas.xmlsoap.org/soap/http', $schemaTargetNamespace = false)
     {
     	global $HTTP_SERVER_VARS;
-		
+
 		if (isset($_SERVER)) {
 			$SERVER_NAME = $_SERVER['SERVER_NAME'];
 			$SERVER_PORT = $_SERVER['SERVER_PORT'];
@@ -6497,7 +6500,7 @@ class nusoapclient extends nusoap_base  {
 		if(!$proxyhost){
 			if(empty($proxy_config)){
 				if(!empty($GLOBALS['db'])){
-					
+
 					$proxy_config = new Administration();
 					$proxy_config->retrieveSettings('proxy');
 				}

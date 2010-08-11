@@ -118,13 +118,7 @@ class SugarWidgetFieldEnum extends SugarWidgetReportField {
 
 			if(isset($field_def['options'])){
 				$cell = translate($field_def['options'], $field_def['module'], $value);
-				if(is_array($cell)){
-					//bug: 35366 - if the result is an array it means translate could not find the value, so
-					//return empty string.
-					$cell = '';
-				}
-			}else if(isset($field_def['type']) && $field_def['type'] == 'enum' && isset($field_def['function']))
-	        {
+			}else if(isset($field_def['type']) && $field_def['type'] == 'enum' && isset($field_def['function'])){
 	            global $beanFiles;
 	            if(empty($beanFiles)) {
 	                include('include/modules.php');
@@ -135,11 +129,15 @@ class SugarWidgetFieldEnum extends SugarWidgetReportField {
 	            $cell = $list[$value];
 	        }
 		if (is_array($cell)) {
+			
 			//#22632  
 			$value = unencodeMultienum($value);
 			$cell=array();
 			foreach($value as $val){
-				array_push( $cell, translate($field_def['options'],$field_def['module'],$val));
+				$returnVal = translate($field_def['options'],$field_def['module'],$val);
+				if(!is_array($returnVal)){
+					array_push( $cell, translate($field_def['options'],$field_def['module'],$val));
+				}
 			}
 			$cell = implode(", ",$cell);
 		}

@@ -152,5 +152,46 @@ class SqlsrvHelper extends MssqlHelper
         
         return parent::indexSQL($tableName, $fieldDefs, $indices); 
     }
+    
+    /**
+     * @see DBHelper::get_indices()
+     */
+    public function get_indices(
+        $tablename
+        ) 
+    {
+        //find all unique indexes and primary keys.
+        $query = <<<EOSQL
+SELECT LEFT(so.name, 30) TableName, 
+        LEFT(si.name, 50) 'Key_name',
+        LEFT(sik.key_ordinal, 30) Sequence, 
+        LEFT(sc.name, 30) Column_name,
+		si.is_unique isunique
+    FROM sys.indexes si
+        INNER JOIN sys.index_columns sik 
+            ON (si.object_id = sik.object_id AND si.index_id = sik.index_id)
+        INNER JOIN sys.objects so 
+            ON si.object_id = so.object_id
+        INNER JOIN sys.columns sc 
+            ON (so.object_id = sc.object_id AND sik.column_id = sc.column_id)
+    WHERE so.name = '$tablename'
+    ORDER BY Key_name, Sequence, Column_name
+EOSQL;
+        $result = $this->db->query($query);
+        
+        $indices = array();
+        while (($row=$this->db->fetchByAssoc($result)) != null) {
+            $index_type = 'index';
+            if ($row['Key_name'] == 'PRIMARY')
+                $index_type = 'primary';
+            elseif ($row['isunique'] == 1 )
+                $index_type = 'unique';
+            $name = strtolower($row['Key_name']);
+            $indices[$name]['name']     = $name;
+            $indices[$name]['type']     = $index_type;
+            $indices[$name]['fields'][] = strtolower($row['Column_name']);
+        }
+        return $indices;
+    }
 }
 ?>

@@ -1064,14 +1064,14 @@ EOHTML;
     	
     	if($this->action == "ListView" || $this->action == "index")
 			if (is_file(SugarThemeRegistry::current()->getImageURL('icon_'.$this->module.'_32.png',false)) && !$bTitle) {
-				return $theTitle .= "<a href='index.php?module={$this->module}&action=index'><img src='".SugarThemeRegistry::current()->getImageURL('icon_'.$this->module.'_32.png')."' alt='".$this->module."' title='".$this->module."' align='absmiddle'></a><span class='pointer'>&raquo;</span>".$app_strings['LBL_SEARCH'];
+				return "<a href='index.php?module={$this->module}&action=index'><img src='".SugarThemeRegistry::current()->getImageURL('icon_'.$this->module.'_32.png')."' alt='".$this->module."' title='".$this->module."' align='absmiddle'></a><span class='pointer'>&raquo;</span>".$app_strings['LBL_SEARCH'];
 			} else {
 				return $firstParam;
 			}
     	else
 		
 			if (is_file(SugarThemeRegistry::current()->getImageURL('icon_'.$this->module.'_32.png',false)) && !$bTitle) {
-				return $theTitle .= "<a href='index.php?module={$this->module}&action=index'><img src='".SugarThemeRegistry::current()->getImageURL('icon_'.$this->module.'_32.png')."' alt='".$this->module."' title='".$this->module."' align='absmiddle'></a>";
+				return "<a href='index.php?module={$this->module}&action=index'><img src='".SugarThemeRegistry::current()->getImageURL('icon_'.$this->module.'_32.png')."' alt='".$this->module."' title='".$this->module."' align='absmiddle'></a>";
 			} else {
 				return "<a href='index.php?module={$this->module}&action=index'>{$firstParam}</a>";
 			}

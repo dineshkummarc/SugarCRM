@@ -550,7 +550,7 @@ if($upgradeType == constant('DCE_INSTANCE')){
 			$error = validate_manifest($manifest);
 			if(!empty($error)) {
 				$error = strip_tags(br2nl($error));
-				fwire(STDERR, "\n{$error}\n\nFAILURE\n");
+				fwrite(STDERR,"\n{$error}\n\nFAILURE\n");
 				exit(1);
 			}
 		}

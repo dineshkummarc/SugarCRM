@@ -423,8 +423,8 @@ function threeWayMerge(){
 
 // only run from command line
 if(isset($_SERVER['HTTP_USER_AGENT'])) {
-	fwrite(STDERR, 'This utility may only be run from the command line or command prompt.');
-    exit(1);
+	fwrite(STDERR,'This utility may only be run from the command line or command prompt.');
+	exit(1);
 }
 //Clean_string cleans out any file  passed in as a parameter
 $_SERVER['PHP_SELF'] = 'silentUpgrade.php';
@@ -618,7 +618,7 @@ $_SESSION['zip_from_dir'] = $zip_from_dir;
 
 mkdir_recursive($unzip_dir);
 if(!is_dir($unzip_dir)) {
-	fwrite(STDERR, "\n{$unzip_dir} is not an available directory\nFAILURE\n");
+	fwrite(STDERR,"\n{$unzip_dir} is not an available directory\nFAILURE\n");
 	exit(1);
 }
 unzip($argv[1], $unzip_dir);
@@ -668,20 +668,20 @@ if(is_file("{$cwd}/{$sugar_config['upload_dir']}upgrades/temp/manifest.php")) {
 	// provides $manifest array
 	include("{$cwd}/{$sugar_config['upload_dir']}upgrades/temp/manifest.php");
 	if(!isset($manifest)) {
-		fwrite(STDERR, "\nThe patch did not contain a proper manifest.php file.  Cannot continue.\n\n");
-		exit(1);
+		fwrite(STDERR,"\nThe patch did not contain a proper manifest.php file.  Cannot continue.\n\n");
+	    exit(1);
 	} else {
 		copy("{$cwd}/{$sugar_config['upload_dir']}upgrades/temp/manifest.php", "{$cwd}/{$sugar_config['upload_dir']}upgrades/patch/{$zip_from_dir}-manifest.php");
 
 		$error = validate_manifest($manifest);
 		if(!empty($error)) {
 			$error = strip_tags(br2nl($error));
-			fwrite(STDERR, "\n{$error}\n\nFAILURE\n");
+			fwrite(STDERR,"\n{$error}\n\nFAILURE\n");
 			exit(1);
 		}
 	}
 } else {
-	fwrite(STDERR, "\nThe patch did not contain a proper manifest.php file.  Cannot continue.\n\n");
+	fwrite(STDERR,"\nThe patch did not contain a proper manifest.php file.  Cannot continue.\n\n");
 	exit(1);
 }
 
@@ -751,7 +751,8 @@ if((count($errors) == 1)) { // only diffs
 	logThis('file preflight check passed successfully.');
 }
 else{
-	die("\nThe user doesn't have sufficient permissions to write to database'.\n\n");
+	fwrite(STDERR,"\nThe user doesn't have sufficient permissions to write to database'.\n\n");
+	exit(1);
 }
 */
 //If version less than 500 then look for modules to be upgraded
@@ -1169,17 +1170,6 @@ if(isset($_SESSION['upgrade_from_flavor'])){
         
 
 }
-
-// clear out the theme cache
-if(!class_exists('SugarThemeRegistry')){
-    require_once('include/SugarTheme/SugarTheme.php');
-}
-
-
-// re-minify the JS source files
-$_REQUEST['root_directory'] = getcwd();
-$_REQUEST['js_rebuild_concat'] = 'rebuild';
-require_once('jssource/minify.php');
 
 //Also set the tracker settings if  flavor conversion ce->pro or ce->ent
 if(isset($_SESSION['current_db_version']) && isset($_SESSION['target_db_version'])){

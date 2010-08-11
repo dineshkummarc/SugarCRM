@@ -160,6 +160,7 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices {
 	            $entry['type'] = $var['type'];
 	            $entry['group'] = isset($var['group']) ? $var['group'] : '';
 	            $entry['id_name'] = isset($var['id_name']) ? $var['id_name'] : '';
+	            
 	            if ($var['type'] == 'link') {
 		            $entry['relationship'] = (isset($var['relationship']) ? $var['relationship'] : '');
 		            $entry['module'] = (isset($var['module']) ? $var['module'] : '');
@@ -173,6 +174,7 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices {
 		            }
 		            $entry['required'] = $required;
 		            $entry['options'] = $options_ret;
+		            $entry['related_module'] = (isset($var['id_name']) && isset($var['module'])) ? $var['module'] : '';
 					if(isset($var['default'])) {
 					   $entry['default_value'] = $var['default'];
 					}
