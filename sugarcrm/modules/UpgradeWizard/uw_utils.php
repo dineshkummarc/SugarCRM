@@ -702,10 +702,6 @@ function upgradeUWFiles($file) {
 		$destFile = str_replace(clean_path($cacheUploadUpgradesTemp.'/'.$manifest['copy_files']['from_dir']), $cwd, $file);
         copy($file,$destFile);
 	}
-	
-	// Clear the language cache incase new strings have been added to the Upgrade Wizard.
-	require_once('include/SugarObjects/LanguageManager.php');
-	LanguageManager::clearLanguageCache('UpgradeWizard');	
 }
 
 
@@ -2517,7 +2513,7 @@ function getChecklist($steps, $step) {
 	$skip = array('start', 'cancel', 'uninstall');
 	$j=0;
 	$i=1;
-	$ret  = '<table cellpadding="3" cellspacing="0" border="0">';
+	$ret  = '<table cellpadding="3" cellspacing="4" border="0">';
 	$ret .= '<tr><th colspan="3" align="left">'.$mod_strings['LBL_UW_CHECKLIST'].':</th></tr>';
 	foreach($steps['desc'] as $k => $desc) {
 		if(in_array($steps['files'][$j], $skip)) {
@@ -2526,17 +2522,22 @@ function getChecklist($steps, $step) {
 		}
 
 		//$status = "<span class='error'>{$mod_strings['LBL_UW_INCOMPLETE']}</span>";
-		$status = '';
+		$desc_mod_pre = '';
+		$desc_mod_post = '';
+		/*
 		if(isset($_SESSION['step'][$steps['files'][$k]]) && $_SESSION['step'][$steps['files'][$k]] == 'success') {
-			$status = $mod_strings['LBL_UW_COMPLETE'];
+			//$status = $mod_strings['LBL_UW_COMPLETE'];
 		}
+		*/
 
 		if($k == $_REQUEST['step']) {
-			$status = $mod_strings['LBL_UW_IN_PROGRESS'];
+			//$status = $mod_strings['LBL_UW_IN_PROGRESS'];
+			$desc_mod_pre = "<font color=blue><i>";
+			$desc_mod_post = "</i></font>";
 		}
 
-		$ret .= "<tr><td>&nbsp;</td><td><b>{$i}: {$desc}</b></td>";
-		$ret .= "<td id={$steps['files'][$j]}><i>{$status}</i></td></tr>";
+		$ret .= "<tr><td>&nbsp;</td><td><b>{$i}: {$desc_mod_pre}{$desc}{$desc_mod_post}</b></td>";
+		$ret .= "<td id={$steps['files'][$j]}><i></i></td></tr>";
 		$i++;
 		$j++;
 	}

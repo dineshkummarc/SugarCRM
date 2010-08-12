@@ -81,6 +81,15 @@
 					type		= "submit"
 					value		= "  {$MOD.LBL_BUTTON_BACK}  ">
 		{/if}
+		{if $showNext}
+			<input	title		= "{$MOD.LBL_BUTTON_NEXT}"
+					class		= "button"
+					{$disableNextForLicense}
+ 					onclick	= " handleUploadCheck('{$step}', {$u_allow}); if(!{$u_allow}) return; upgradeP('{$step}');this.form.step.value='{$STEP_NEXT}'; handlePreflight('{$step}'); document.forms['form'].submit();"
+					type		= "button"
+					value		= "  {$MOD.LBL_BUTTON_NEXT}  "
+					id			= "next_button" >
+		{/if}
 		{if $showCancel}
 			<input	title		= "{$MOD.LBL_BUTTON_CANCEL}"
 					class		= "button"
@@ -95,15 +104,12 @@
 					type		= "submit"
 					value		= "  {$MOD.LBL_BUTTON_RECHECK}  ">
 		{/if}
-
-		{if $showNext}
-			<input	title		= "{$MOD.LBL_BUTTON_NEXT}"
+		{if $showDone}
+			<input	title		= "{$MOD.LBL_BUTTON_DONE}"
 					class		= "button"
-					{$disableNextForLicense}
- 					onclick	= "upgradeP('{$step}');this.form.step.value='{$STEP_NEXT}'; handlePreflight('{$step}');"
+					onclick		= "deleteCacheAjax();window.location.href='index.php?module=Home&action=About';"
 					type		= "submit"
-					value		= "  {$MOD.LBL_BUTTON_NEXT}  "
-					id			= "next_button" >
+					value		= "  {$MOD.LBL_BUTTON_DONE}  ">
 		{/if}
 
 </form>
@@ -117,8 +123,15 @@
     class="{if !isset($includeContainerCSS) || $includeContainerCSS}tabDetailView{else}detail view small{/if}">
 {if $frozen}
 	<tr>
-		<td colspan="2">
+		<td id=error_messages colspan="2">
 			<span class="error"><b>{$frozen}</b></span>
+		</td>
+	</tr>
+{/if}
+{if $upload_success}
+	<tr>
+		<td colspan="2">
+			<span class="error"><b>{$upload_success}</b></span>
 		</td>
 	</tr>
 {/if}
@@ -131,15 +144,79 @@
 			{$UW_MAIN}&nbsp;
 		</slot></td>
 	</tr>
-
+{if $step == "upload"}
 	<tr>
 		<td valign="top" {if !isset($includeContainerCSS) || $includeContainerCSS}class="tabDetailViewDF"{/if}>
 			&nbsp;<br />
 			{$UW_HISTORY}
 		</td>
 	</tr>
+{/if}
 </table>
 </div>
+<br />
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+	<tr>
+		<td>
+<form action="index.php" method="post" name="UpgradeWizardForm" id="form">
+	<input type="hidden" name="module" value="UpgradeWizard">
+	<input type="hidden" name="action" value="index">
+	<input type="hidden" name="step" value="{$UW_STEP}">
+	<input type="hidden" name="overwrite_files" id="over">
+	<input type="hidden" name="schema_change" id="schema">
+	<input type="hidden" name="schema_drop"   id="schema_drop">
+	<input type="hidden" name="overwrite_files_serial" id="overwrite_files_serial">
+	<input type="hidden" name="addTaskReminder" id="addTaskReminder">
+	<input type="hidden" name="addEmailReminder" id="addEmailReminder">
+    {if !isset($includeContainerCSS) || $includeContainerCSS}
+    <link rel='stylesheet' type='text/css' href='include/javascript/yui/assets/container.css' />
+        {if $step == 'commit'}
+    <link rel='stylesheet' type='text/css' href='include/javascript/yui/build/container/assets/container.css'/>
+    <link rel='stylesheet' type='text/css' href='themes/default/css/yui.css'/>
+       {/if}
+    {/if}
+		{if $showBack}
+			<input	title		= "{$MOD.LBL_BUTTON_BACK}"
+					class		= "button"
+					onclick		= "this.form.step.value='{$STEP_BACK}';"
+					type		= "submit"
+					value		= "  {$MOD.LBL_BUTTON_BACK}  ">
+		{/if}
+		{if $showNext}
+			<input	title		= "{$MOD.LBL_BUTTON_NEXT}"
+					class		= "button"
+					{$disableNextForLicense}
+ 					onclick	= " handleUploadCheck('{$step}', {$u_allow}); if(!{$u_allow}) return; upgradeP('{$step}');this.form.step.value='{$STEP_NEXT}'; handlePreflight('{$step}'); document.forms['form'].submit();"
+					type		= "button"
+					value		= "  {$MOD.LBL_BUTTON_NEXT}  "
+					id			= "next_button" >
+		{/if}
+		{if $showCancel}
+			<input	title		= "{$MOD.LBL_BUTTON_CANCEL}"
+					class		= "button"
+					onclick		= "cancelUpgrade();this.form.step.value='{$STEP_CANCEL}';"
+					type		= "submit"
+					value		= "  {$MOD.LBL_BUTTON_CANCEL}  ">
+		{/if}
+		{if $showRecheck}
+			<input	title		= "{$MOD.LBL_BUTTON_RECHECK}"
+					class		= "button"
+					onclick		= "this.form.step.value='{$STEP_RECHECK}';"
+					type		= "submit"
+					value		= "  {$MOD.LBL_BUTTON_RECHECK}  ">
+		{/if}
+		{if $showDone}
+			<input	title		= "{$MOD.LBL_BUTTON_DONE}"
+					class		= "button"
+					onclick		= "deleteCacheAjax();window.location.href='index.php?module=Home&action=About';"
+					type		= "submit"
+					value		= "  {$MOD.LBL_BUTTON_DONE}  ">
+		{/if}
+
+</form>
+		</td>
+	</tr>
+</table>
 
 
 <script>
@@ -186,7 +263,7 @@ if(document.getElementById("upgradeDiv") != null){
                 }
                 if(step == 'systemCheck'){
                 	currStage = UPLOADE_UPGRADE_IN_PROGRESS;
-                	document.getElementById(step).innerHTML='<i>'+SET_STEP_TO_COMPLETE+'</i>'
+                	//document.getElementById(step).innerHTML='<i>'+SET_STEP_TO_COMPLETE+'</i>'
                 }
                 if(step == 'uploadingUpgardePackage'){
                 	currStage = UPLOADING_UPGRADE_PACKAGE;
@@ -194,25 +271,25 @@ if(document.getElementById("upgradeDiv") != null){
                 if(step == 'license_fiveO'){
                 	//currStage = LICENSE_CHECK_IN_PROGRESS;
                 	currStage = PREFLIGHT_CHECK_IN_PROGRESS;
-                	document.getElementById(step).innerHTML='<i>'+SET_STEP_TO_COMPLETE+'</i>'
+                	//document.getElementById(step).innerHTML='<i>'+SET_STEP_TO_COMPLETE+'</i>'
                 }
                 if(step == 'upload'){
                 	//currStage = LICENSE_CHECK_IN_PROGRESS;
                 	currStage = PREFLIGHT_CHECK_IN_PROGRESS;
-                	document.getElementById(step).innerHTML='<i>'+SET_STEP_TO_COMPLETE+'</i>'
+                	//document.getElementById(step).innerHTML='<i>'+SET_STEP_TO_COMPLETE+'</i>'
                 }
                 if(step == 'preflight'){
                 	//currStage = PREFLIGHT_CHECK_IN_PROGRESS;
                 	currStage = COMMIT_UPGRADE_IN_PROGRESS;
-                	document.getElementById(step).innerHTML='<i>'+SET_STEP_TO_COMPLETE+'</i>'
+                	//document.getElementById(step).innerHTML='<i>'+SET_STEP_TO_COMPLETE+'</i>'
                 }
                 if(step == 'commit'){
                 	currStage = UPGRADE_SUMMARY_IN_PROGRESS;
-                	document.getElementById(step).innerHTML='<i>'+SET_STEP_TO_COMPLETE+'</i>'
+                	//document.getElementById(step).innerHTML='<i>'+SET_STEP_TO_COMPLETE+'</i>'
                 }
                 if(step == 'layouts'){
                 	currStage = UPGRADE_SUMMARY_IN_PROGRESS;
-                	document.getElementById(step).innerHTML='<i>'+SET_STEP_TO_COMPLETE+'</i>'
+                	//document.getElementById(step).innerHTML='<i>'+SET_STEP_TO_COMPLETE+'</i>'
                 }
 	            msg_panel.setHeader(currStage);
 	            msg_panel.setBody(document.getElementById("upgradeDiv").innerHTML);

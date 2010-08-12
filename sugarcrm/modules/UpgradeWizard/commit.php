@@ -594,6 +594,16 @@ $uwMain =<<<eoq
 		</th>
 	</tr>
 	<tr>
+		<td>
+			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td>
+			{$mod_strings['LBL_UW_COMMIT_DESC']}
+		</td>
+	</tr>
+	<tr>
 		<td align="left">
 			<p>
 			{$delete_chance}

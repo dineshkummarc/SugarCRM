@@ -231,6 +231,11 @@ if(isset($_SESSION['install_file']) && !empty($_SESSION['install_file']) && is_f
 if($stop == false) set_upgrade_progress('upload','done');
 $frozen = $out;
 
+$GLOBALS['upload_success'] = '';
+if(!$stop){
+    $GLOBALS['upload_success'] = $mod_strings['LBL_UPLOAD_SUCCESS'];
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 ////	UPLOAD FORM
 $form = '';
@@ -246,7 +251,7 @@ $form =<<<eoq
 	<table width="450" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td>
-				{$mod_strings['LBL_UPLOAD_UPGRADE']}
+				{$mod_strings['LBL_SELECT_FILE']}
 				<input type="file" onchange="uploadCheck();" name="upgrade_zip" id="upgrade_zip" size="40" />
 			</td>
 			<td valign="bottom">&nbsp;
@@ -368,8 +373,8 @@ $uwMain = $form2.$form3.$form5;
 
 $showBack		= true;
 $showCancel		= true;
-$showRecheck	= true;
-$showNext		= ($stop) ? false : true;
+$showRecheck	= false;
+$showNext		= true;
 
 $stepBack		= $_REQUEST['step'] - 1;
 $stepNext		= $_REQUEST['step'] + 1;

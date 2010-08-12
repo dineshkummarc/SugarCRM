@@ -149,7 +149,7 @@ if (version_compare(phpversion(),'5.2.0') >=0) {
 	if((count($errors) == 1)) { // only diffs
 		logThis('file preflight check passed successfully.');
 		$stop = false;
-		$out  = $mod_strings['LBL_UW_PREFLIGHT_TESTS_PASSED'];
+		$out  = $mod_strings['LBL_UW_PREFLIGHT_TESTS_PASSED']."<BR><BR>".$mod_strings['LBL_UW_PREFLIGHT_TESTS_PASSED2'];
 		$stop = false;
 
 		$disableEmail = (empty($current_user->email1)) ? 'DISABLED' : 'CHECKED';

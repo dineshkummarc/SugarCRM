@@ -36,6 +36,47 @@
 require_once('service/core/SoapHelperWebService.php');
 class SugarWebServiceUtilv3 extends SoapHelperWebServices {
 	
+    function filter_fields($value, $fields)
+    {
+        $GLOBALS['log']->info('Begin: SoapHelperWebServices->filter_fields');
+        global $invalid_contact_fields;
+        $filterFields = array();
+        foreach($fields as $field)
+        {
+            if (is_array($invalid_contact_fields)) 
+            {
+                if (in_array($field, $invalid_contact_fields)) 
+                {
+                    continue;
+                } 
+            }
+            if (isset($value->field_defs[$field])) 
+            {
+                $var = $value->field_defs[$field];
+                if( isset($var['source']) 
+                    && ($var['source'] != 'db' && $var['source'] != 'custom_fields' && $var['source'] != 'non-db') 
+                    && $var['name'] != 'email1' && $var['name'] != 'email2' 
+                    && (!isset($var['type'])|| $var['type'] != 'relate')) {
+
+                    if( $value->module_dir == 'Emails' 
+                        && (($var['name'] == 'description') || ($var['name'] == 'description_html') || ($var['name'] == 'from_addr_name') 
+                            || ($var['name'] == 'reply_to_addr') || ($var['name'] == 'to_addrs_names') || ($var['name'] == 'cc_addrs_names') 
+                            || ($var['name'] == 'bcc_addrs_names') || ($var['name'] == 'raw_source'))) 
+                    {
+
+                    } 
+                    else 
+                    {
+                        continue;
+                    }
+                }
+            }
+            $filterFields[] = $field;
+        }
+        $GLOBALS['log']->info('End: SoapHelperWebServices->filter_fields');
+        return $filterFields;
+    }
+	
     function getRelationshipResults($bean, $link_field_name, $link_module_fields, $optional_where = '', $order_by = '') {
 		$GLOBALS['log']->info('Begin: SoapHelperWebServices->getRelationshipResults');
 		require_once('include/TimeDate.php');

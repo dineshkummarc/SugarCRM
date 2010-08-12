@@ -258,27 +258,8 @@ $uwMain =<<<eoq
 	<tr>
 		<td align="left">
 			<p>
-			{$mod_strings['LBL_UW_END_DESC']}
-			</p>
-			<p>
-			{$mod_strings['LBL_UW_END_DESC2']}
-			</p>
-		</td>
-	</tr>
-	<tr>
-		<td align="left">
-			<p>
 				<b class="error">{$mod_strings['LBL_UW_END_LOGOUT']}</b>
 			</p>
-			<p>
-				<a href="index.php?module=Users&action=Logout">{$mod_strings['LBL_UW_END_LOGOUT2']}</a>
-			</p>
-		</td>
-	</tr>
-
-	<tr>
-		<td align="left">
-			<input type="button" value="{$mod_strings['LBL_BUTTON_DONE']}" onclick="deleteCacheAjax();window.location.href='$cleanUrl?module=Home&action=About'">
 		</td>
 	</tr>
 </table>
@@ -301,6 +282,7 @@ $showBack		= false;
 $showCancel		= false;
 $showRecheck	= false;
 $showNext		= false;
+$showDone       = true;
 
 $stepBack		= 0;
 $stepNext		= 0;

@@ -861,24 +861,23 @@ EOHTML;
         $module = null
         )
     {
-        global $current_language, $mod_strings, $app_strings;
+        global $current_language, $current_user, $mod_strings, $app_strings;
         
         if ( empty($module) )
             $module = $this->module;
         
-        $module_menu = sugar_cache_retrieve("{$module}_module_menu_{$current_language}");
+        $module_menu = sugar_cache_retrieve("{$current_user->id}_{$module}_module_menu_{$current_language}");
         if ( !is_array($module_menu) ) {
             $module_menu = array();
             
-            if (file_exists('modules/' . $module . '/Menu.php'))
+            if (file_exists('modules/' . $module . '/Menu.php')) {
                 require('modules/' . $module . '/Menu.php');
-            if (file_exists('custom/modules/' . $module . '/Ext/Menus/menu.ext.php'))
+            }
+            if (file_exists('custom/modules/' . $module . '/Ext/Menus/menu.ext.php')) {
                 require('custom/modules/' . $module . '/Ext/Menus/menu.ext.php');
-            if (file_exists('custom/application/Ext/Menus/menu.ext.php'))
-                require('custom/application/Ext/Menus/menu.ext.php');
+            }
             if (!file_exists('modules/' . $module . '/Menu.php') 
                     && !file_exists('custom/modules/' . $module . '/Ext/Menus/menu.ext.php') 
-                    && !file_exists('custom/application/Ext/Menus/menu.ext.php') 
                     && !empty($GLOBALS['mod_strings']['LNK_NEW_RECORD'])) {
                 $module_menu[] = array("index.php?module=$module&action=EditView&return_module=$module&return_action=DetailView",
                     $GLOBALS['mod_strings']['LNK_NEW_RECORD'],"{$GLOBALS['app_strings']['LBL_CREATE_BUTTON_LABEL']}$module" ,$module );
@@ -892,8 +891,11 @@ EOHTML;
                         $module_menu[] = array("index.php?module=Import&action=Step1&import_module=$module&return_module=$module&return_action=index", 
                             $app_strings['LBL_IMPORT'], "Import", $module);
             }
+            if (file_exists('custom/application/Ext/Menus/menu.ext.php')) {
+                require('custom/application/Ext/Menus/menu.ext.php');
+            }
             
-            sugar_cache_put("{$module}_module_menu_{$current_language}",$module_menu);
+            sugar_cache_put("{$current_user->id}_{$module}_module_menu_{$current_language}",$module_menu);
         }
         
         return $module_menu;

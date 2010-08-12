@@ -190,7 +190,7 @@ if(!$current_user->is_admin  && !is_admin_for_module($GLOBALS['current_user'],'U
 	    }
 	    else
 	    {
-	        $focus->setPreference('navagation_paradigm', 'm', 0, 'global');
+	        $focus->setPreference('navigation_paradigm', 'm', 0, 'global');
 	    }
 
 	    if(isset($_POST['user_subpanel_tabs']))

@@ -234,13 +234,7 @@ $uwMain =<<<eoq
 	}
 
 </style>
-<table cellpadding="3" cellspacing="0" border="0">
-	<tr>
-		<th align="left" colspan="2">
-			{$mod_strings['LBL_UW_FILE_ISSUES']}:
-			<hr>
-		</th>
-	</tr>
+<table cellpadding="3" cellspacing="4" border="0">
 	<tr>
 		<td align="left" valign="top">
 			{$mod_strings['LBL_UW_FILE_ISSUES_PERMS']}
@@ -255,12 +249,6 @@ $uwMain =<<<eoq
 		</td>
 	</tr>
 	<tr>
-		<th align="left" colspan="2">
-			{$mod_strings['LBL_UW_DB_ISSUES']}:
-			<hr>
-		</th>
-	</tr>
-	<tr>
 		<td align="left" valign="top">
 			{$mod_strings['LBL_UW_DB_ISSUES_PERMS']}
 		</td>
@@ -272,12 +260,6 @@ $uwMain =<<<eoq
 		<td colspan="2">
 			<p>&nbsp;</p>
 		</td>
-	</tr>
-	<tr>
-		<th align="left" colspan="2">
-			{$mod_strings['LBL_UW_COMPLIANCE_TITLE']}:
-			<hr>
-		</th>
 	</tr>
 	<tr>
 		<td align="left" valign="top">

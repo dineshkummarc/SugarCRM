@@ -616,6 +616,8 @@ $_SESSION['unzip_dir'] = $unzip_dir;
 $_SESSION['install_file'] = $install_file;
 $_SESSION['zip_from_dir'] = $zip_from_dir;
 
+// Clear out previous upgrade files so the don't get intermixed with the new ones
+rmdir_recursive($unzip_dir);
 mkdir_recursive($unzip_dir);
 if(!is_dir($unzip_dir)) {
 	fwrite(STDERR,"\n{$unzip_dir} is not an available directory\nFAILURE\n");
@@ -724,14 +726,14 @@ foreach($parserFiles as $file) {
 
 	if(!file_exists($targetFile))
 	 {
-		logThis('Copying file to destination: ' . $targetFile);
+		logThis('Copying file to destination: ' . $targetFile, $path);
 		if(!copy($srcFile, $targetFile)) {
-			logThis('*** ERROR: could not copy file: ' . $targetFile);
+			logThis('*** ERROR: could not copy file: ' . $targetFile, $path);
 		} else {
 			$copiedFiles[] = $targetFile;
 		}
 	} else {
-		logThis('Skipping file: ' . $targetFile);
+		logThis('Skipping file: ' . $targetFile, $path);
 		//$skippedFiles[] = $targetFile;
 	}
    }
@@ -748,7 +750,7 @@ foreach($parserFiles as $file) {
 /*
 $errors = preflightCheck();
 if((count($errors) == 1)) { // only diffs
-	logThis('file preflight check passed successfully.');
+	logThis('file preflight check passed successfully.', $path);
 }
 else{
 	fwrite(STDERR,"\nThe user doesn't have sufficient permissions to write to database'.\n\n");
