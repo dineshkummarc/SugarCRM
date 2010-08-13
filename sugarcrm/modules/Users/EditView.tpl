@@ -535,27 +535,20 @@ EditView_tabs.on('contentReady', function(e){
                             </slot></td>
                             <!-- END: currency -->
                         </tr>
-                        {if ($IS_ADMIN)} 
                         <tr>
+                        {if ($IS_ADMIN)} 
                             <td scope="row"><slot>{$MOD.LBL_PROMPT_TIMEZONE}:</slot>&nbsp;{sugar_help text=$MOD.LBL_PROMPT_TIMEZONE_TEXT }</td>
                             <td ><slot><input type="checkbox" tabindex='14'class="checkbox" name="ut" value="0" {$PROMPTTZ}></slot></td>
-                            <td width="17%" scope="row"><slot>{$MOD.LBL_NUMBER_GROUPING_SEP}:</slot>&nbsp;{sugar_help text=$MOD.LBL_NUMBER_GROUPING_SEP_TEXT }</td>
-                            <td ><slot>
-                                <input tabindex='14' name='num_grp_sep' id='default_number_grouping_seperator'
-                                    type='text' maxlength='1' size='1' value='{$NUM_GRP_SEP}' 
-                                    onkeydown='setSigDigits();' onkeyup='setSigDigits();'>
-                            </slot></td></tr>
                         {else}
-                            <tr>
                             <td scope="row"><slot></td>
                             <td ><slot></slot></td>
+                        {/if}
                             <td width="17%" scope="row"><slot>{$MOD.LBL_NUMBER_GROUPING_SEP}:</slot>&nbsp;{sugar_help text=$MOD.LBL_NUMBER_GROUPING_SEP_TEXT }</td>
                             <td ><slot>
                                 <input tabindex='14' name='num_grp_sep' id='default_number_grouping_seperator'
                                     type='text' maxlength='1' size='1' value='{$NUM_GRP_SEP}' 
                                     onkeydown='setSigDigits();' onkeyup='setSigDigits();'>
                             </slot></td></tr>
-                        {/if}
                         {capture name=SMARTY_LOCALE_NAME_FORMAT_DESC}&nbsp;{$MOD.LBL_LOCALE_NAME_FORMAT_DESC}<br />{$MOD.LBL_LOCALE_NAME_FORMAT_DESC_2}{/capture}
                         <tr>
                             <td  scope="row" valign="top">{$MOD.LBL_LOCALE_DEFAULT_NAME_FORMAT}:&nbsp;{sugar_help text=$smarty.capture.SMARTY_LOCALE_NAME_FORMAT_DESC }</td>

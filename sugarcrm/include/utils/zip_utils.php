@@ -38,27 +38,43 @@
 if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 require_once('include/pclzip/pclzip.lib.php');
 
-function unzip( $zip_archive, $zip_dir ){
+function unzip( $zip_archive, $zip_dir, $forceOverwrite = false ){
     if( !is_dir( $zip_dir ) ){
         die( "Specified directory '$zip_dir' for zip file '$zip_archive' extraction does not exist." );
     }
 
     $archive = new PclZip( $zip_archive );
 
-    if( $archive->extract( PCLZIP_OPT_PATH, $zip_dir ) == 0 ){
-        die( "Error: " . $archive->errorInfo(true) );
+    if ( $forceOverwrite ) {
+        if( $archive->extract( PCLZIP_OPT_PATH, $zip_dir, PCLZIP_OPT_REPLACE_NEWER ) == 0 ){
+            die( "Error: " . $archive->errorInfo(true) );
+        }
+    }
+    else {
+        if( $archive->extract( PCLZIP_OPT_PATH, $zip_dir ) == 0 ){
+            die( "Error: " . $archive->errorInfo(true) );
+        }
     }
 }
 
-function unzip_file( $zip_archive, $archive_file, $to_dir ){
+function unzip_file( $zip_archive, $archive_file, $to_dir, $forceOverwrite = false ){
     if( !is_dir( $to_dir ) ){
         die( "Specified directory '$to_dir' for zip file '$zip_archive' extraction does not exist." );
     }
 
     $archive = new PclZip( "$zip_archive" );
-    if( $archive->extract(  PCLZIP_OPT_BY_NAME, $archive_file,
-                            PCLZIP_OPT_PATH,    $to_dir         ) == 0 ){
-        die( "Error: " . $archive->errorInfo(true) );
+    if ( $forceOverwrite ) {
+        if( $archive->extract(  PCLZIP_OPT_BY_NAME, $archive_file,
+                                PCLZIP_OPT_PATH,    $to_dir,
+                                PCLZIP_OPT_REPLACE_NEWER ) == 0 ){
+            die( "Error: " . $archive->errorInfo(true) );
+        }
+    }
+    else {
+        if( $archive->extract(  PCLZIP_OPT_BY_NAME, $archive_file,
+                                PCLZIP_OPT_PATH,    $to_dir        ) == 0 ){
+            die( "Error: " . $archive->errorInfo(true) );
+        }
     }
 }
 

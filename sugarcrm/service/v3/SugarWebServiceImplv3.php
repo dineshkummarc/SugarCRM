@@ -48,6 +48,116 @@ class SugarWebServiceImplv3 extends SugarWebServiceImpl {
     {
         self::$helperObject = new SugarWebServiceUtilv3();
     }
+    
+    
+    /**
+     * Log the user into the application
+     *
+     * @param UserAuth array $user_auth -- Set user_name and password (password needs to be
+     *      in the right encoding for the type of authentication the user is setup for.  For Base
+     *      sugar validation, password is the MD5 sum of the plain text password.
+     * @param String $application -- The name of the application you are logging in from.  (Currently unused).
+     * @param array $name_value_list -- Array of name value pair of extra parameters. As of today only 'language' and 'notifyonsave' is supported
+     * @return Array - id - String id is the session_id of the session that was created.
+     * 				 - module_name - String - module name of user
+     * 				 - name_value_list - Array - The name value pair of user_id, user_name, user_language, user_currency_id, user_currency_name, 
+     *                                         - user_default_team_id, user_is_admin, user_default_dateformat, user_default_timeformat
+     * @exception 'SoapFault' -- The SOAP error, if any
+     */
+    public function login($user_auth, $application, $name_value_list){
+        $GLOBALS['log']->info('Begin: SugarWebServiceImpl->login');
+        global $sugar_config, $system_config;
+        $error = new SoapError();
+        $user = new User();
+        $success = false;
+        if(!empty($user_auth['encryption']) && $user_auth['encryption'] === 'PLAIN')
+        {
+            $user_auth['password'] = md5($user_auth['password']);
+        }
+        //rrs
+        $system_config = new Administration();
+        $system_config->retrieveSettings('system');
+        $authController = new AuthenticationController((!empty($sugar_config['authenticationClass'])? $sugar_config['authenticationClass'] : 'SugarAuthenticate'));
+        //rrs
+        $isLoginSuccess = $authController->login($user_auth['user_name'], $user_auth['password'], array('passwordEncrypted' => true));
+        $usr_id=$user->retrieve_user_id($user_auth['user_name']);
+        if($usr_id) 
+            $user->retrieve($usr_id);
+        
+        if ($isLoginSuccess) 
+        {
+            if ($_SESSION['hasExpiredPassword'] =='1') 
+            {
+                $error->set_error('password_expired');
+                $GLOBALS['log']->fatal('password expired for user ' . $user_auth['user_name']);
+                LogicHook::initialize();
+                $GLOBALS['logic_hook']->call_custom_logic('Users', 'login_failed');
+                self::$helperObject->setFaultObject($error);
+                return;
+            } 
+            if(!empty($user) && !empty($user->id) && !$user->is_group) 
+            {
+                $success = true;
+                global $current_user;
+                $current_user = $user;
+            } 
+        } 
+        else if($usr_id && isset($user->user_name) && ($user->getPreference('lockout') == '1')) 
+        {
+            $error->set_error('lockout_reached');
+            $GLOBALS['log']->fatal('Lockout reached for user ' . $user_auth['user_name']);
+            LogicHook::initialize();
+            $GLOBALS['logic_hook']->call_custom_logic('Users', 'login_failed');
+            self::$helperObject->setFaultObject($error);
+            return;
+        } 
+        else if(function_exists('mcrypt_cbc'))
+        {
+            $password = self::$helperObject->decrypt_string($user_auth['password']);
+            if($authController->login($user_auth['user_name'], $password) && isset($_SESSION['authenticated_user_id']))
+                $success = true;
+        }
+
+        if($success)
+        {
+            session_start();
+            global $current_user;
+            //$current_user = $user;
+            self::$helperObject->login_success($name_value_list);
+            $current_user->loadPreferences();
+            $_SESSION['is_valid_session']= true;
+            $_SESSION['ip_address'] = query_client_ip();
+            $_SESSION['user_id'] = $current_user->id;
+            $_SESSION['type'] = 'user';
+            $_SESSION['avail_modules']= self::$helperObject->get_user_module_list($current_user);
+            $_SESSION['authenticated_user_id'] = $current_user->id;
+            $_SESSION['unique_key'] = $sugar_config['unique_key'];
+            $current_user->call_custom_logic('after_login');
+            $GLOBALS['log']->info('End: SugarWebServiceImpl->login - succesful login');
+            $nameValueArray = array();
+            global $current_language;
+            $nameValueArray['user_id'] = self::$helperObject->get_name_value('user_id', $current_user->id);
+            $nameValueArray['user_name'] = self::$helperObject->get_name_value('user_name', $current_user->user_name);
+            $nameValueArray['user_language'] = self::$helperObject->get_name_value('user_language', $current_language);
+            $cur_id = $current_user->getPreference('currency');
+            $nameValueArray['user_currency_id'] = self::$helperObject->get_name_value('user_currency_id', $cur_id);
+            $nameValueArray['user_is_admin'] = self::$helperObject->get_name_value('user_is_admin', is_admin($current_user));
+            $nameValueArray['user_default_team_id'] = self::$helperObject->get_name_value('user_default_team_id', $current_user->default_team );
+            $nameValueArray['user_default_dateformat'] = self::$helperObject->get_name_value('user_default_dateformat', $current_user->getPreference('datef') );
+            $nameValueArray['user_default_timeformat'] = self::$helperObject->get_name_value('user_default_timeformat', $current_user->getPreference('timef') );
+            $currencyObject = new Currency();
+            $currencyObject->retrieve($cur_id);
+            $nameValueArray['user_currency_name'] = self::$helperObject->get_name_value('user_currency_name', $currencyObject->name);
+            $_SESSION['user_language'] = $current_language;
+            return array('id'=>session_id(), 'module_name'=>'Users', 'name_value_list'=>$nameValueArray);
+        }
+        LogicHook::initialize();
+        $GLOBALS['logic_hook']->call_custom_logic('Users', 'login_failed');
+        $error->set_error('invalid_login');
+        self::$helperObject->setFaultObject($error);
+        $GLOBALS['log']->info('End: SugarWebServiceImpl->login - failed login');
+    }
+    
     /**
      * Retrieve the md5 hash of the vardef entries for a particular module.
      *

@@ -269,6 +269,7 @@ class DashletGeneric extends Dashlet {
                 switch($widgetDef['type']) {// handle different types
                     case 'date':
                     case 'datetime':
+                    case 'datetimecombo':
                         if(is_array($params) && !empty($params)) {
                             if(!empty($params['date']))
                                 $widgetDef['input_name0'] = $params['date'];

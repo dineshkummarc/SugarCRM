@@ -535,7 +535,7 @@ if($upgradeType != constant('DCE_INSTANCE')) {
 
 	ini_set('error_reporting',1);
 	require_once('include/entryPoint.php');
-	
+	require_once('include/SugarLogger/SugarLogger.php');
 	require_once('include/utils/zip_utils.php');
 	
 	
@@ -615,14 +615,14 @@ $install_file = clean_path("{$cwd}/{$sugar_config['upload_dir']}upgrades/patch/"
 $_SESSION['unzip_dir'] = $unzip_dir;
 $_SESSION['install_file'] = $install_file;
 $_SESSION['zip_from_dir'] = $zip_from_dir;
-
-// Clear out previous upgrade files so the don't get intermixed with the new ones
-rmdir_recursive($unzip_dir);
+rmdir_recursive($unzip_dir.'/scripts');
+rmdir_recursive($unzip_dir.'/manifest.php');
 mkdir_recursive($unzip_dir);
 if(!is_dir($unzip_dir)) {
 	fwrite(STDERR,"\n{$unzip_dir} is not an available directory\nFAILURE\n");
 	exit(1);
 }
+
 unzip($argv[1], $unzip_dir);
 // mimic standard UW by copy patch zip to appropriate dir
 copy($argv[1], $install_file);
