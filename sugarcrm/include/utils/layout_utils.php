@@ -178,10 +178,12 @@ function get_module_title(
     
     $the_title = "<div class='moduleTitle'>\n<h2>";
     $module = preg_replace("/ /","",$module);
-    if (is_file(SugarThemeRegistry::current()->getImageURL($module.'.gif'))) {
-        $the_title .= "<img src='".SugarThemeRegistry::current()->getImageURL($module.'.gif')."' alt='".$module."'>&nbsp;";
-    }
-    $the_title .= $module_title."</h2>\n";
+    if (is_file(SugarThemeRegistry::current()->getImageURL('icon_'.$module.'_32.png',false))) {
+        $the_title .= "<a href='index.php?module={$module}&action=index'><img src='".SugarThemeRegistry::current()->getImageURL('icon_'.$module.'_32.png')."' alt='".$module."' title='".$module."' align='absmiddle'></a>".$module_title;
+    } else {
+		$the_title .= $module_title;
+	}
+    $the_title .= "</h2>\n";
     
     if ($show_help) {
         $the_title .= "<span class='utils'>";

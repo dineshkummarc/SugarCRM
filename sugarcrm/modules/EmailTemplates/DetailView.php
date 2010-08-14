@@ -92,8 +92,7 @@ if(isset($_REQUEST['account_id']) && is_null($focus->parent_id)) {
 }
 
 $params = array();
-$params[] = "<a href='index.php?module={$focus->module_dir}&action=index'>{$GLOBALS['app_list_strings']['moduleList'][$focus->module_dir]}</a>";
-$params[] = $focus->name;
+$params[] = "<span class='pointer'>&raquo;</span>".$focus->name;
 
 echo getClassicModuleTitle($focus->module_dir, $params, true);
 
