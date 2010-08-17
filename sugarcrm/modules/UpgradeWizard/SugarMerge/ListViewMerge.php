@@ -73,7 +73,7 @@ class ListViewMerge extends EditViewMerge{
 	 * @param ARRAY $panels - this is the 'panel' section of the meta-data for list views all the meta data is one panel since it is just a list of fields
 	 * @return ARRAY $fields - an associate array of fields and their meta-data as well as their location
 	 */
-	protected function getFields($panels, $multiple = true){
+	protected function getFields(&$panels, $multiple = true){
 		$fields = array();
 		$blanks = 0;
 		if(!$multiple)$panels = array($panels);

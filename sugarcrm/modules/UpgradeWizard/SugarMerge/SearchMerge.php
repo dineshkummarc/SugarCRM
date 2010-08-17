@@ -74,7 +74,7 @@ class SearchMerge extends ListViewMerge{
 	 * @return ARRAY $fields - an associate array of fields and their meta-data as well as their location
 	 */
 	
-	protected function getFields($panels, $multiple = true){
+	protected function getFields(&$panels, $multiple = true){
 		$fields = array();
 		if(!$multiple)$panels = array($panels);
 		

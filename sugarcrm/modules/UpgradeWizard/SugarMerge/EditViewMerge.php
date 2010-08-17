@@ -560,7 +560,7 @@ class EditViewMerge{
 	 * @param ARRAY $panels - this is the 'panel' section of the meta-data
 	 * @return ARRAY $fields - an associate array of fields and their meta-data as well as their location
 	 */
-	protected function getFields($panels){
+	protected function getFields(&$panels){
 
 		$fields = array();
 		$blanks = 0;

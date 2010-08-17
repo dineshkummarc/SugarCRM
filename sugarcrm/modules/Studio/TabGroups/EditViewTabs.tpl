@@ -45,9 +45,8 @@
 <script>
 	var jstransaction = new JSTransaction();
 </script>
-<script src = "include/javascript/yui/dragdrop.js" ></script>
-<script src='modules/Studio/studiotabgroups.js'></script>
-<script src = "modules/Studio/ygDDListStudio.js" ></script>				 	
+<script src="modules/Studio/studiotabgroups.js"></script>
+<script src="modules/Studio/ygDDListStudio.js"></script>				 	
 <script type="text/javascript" src="modules/Studio/studiodd.js" ></script>	
 <script type="text/javascript" src="modules/Studio/studio.js" ></script>	
 <style type='text/css'>
@@ -96,7 +95,6 @@
             onclick='studiotabs.generateForm("edittabs");document.edittabs.submit()'>
             {$MOD.LBL_BTN_SAVEPUBLISH}</button>
 </table>
-{if isset($tabs[$otherLabel]) }
 <p />
 <form name='edittabs' id='edittabs' method='POST' action='index.php'>
 <input type="hidden" name="slot_count" id="slot_count" value="" />  
@@ -109,7 +107,6 @@
 	</td>
 </tr>
 </table>
-{/if}
 <table><tr><td valign='top' nowrap class="edit view" style="width: auto;">
 <table  cellpadding="0" cellspacing="0" width="100%"   id='s_field_delete'>
 							<tr><td ><ul id='trash' class='listContainer'>

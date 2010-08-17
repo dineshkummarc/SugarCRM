@@ -45,6 +45,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 $mod_strings = array (
   'LBL_MODULE_NAME'=>'Calendar',
   'LBL_MODULE_TITLE'=>'Calendar',
+  'LBL_MODULE_ACTION'=>'View',
   'LNK_NEW_CALL' => 'Log Call',
   'LNK_NEW_MEETING' => 'Schedule Meeting',
   'LNK_NEW_APPOINTMENT' => 'Create Appointment',

@@ -44,7 +44,7 @@ if(!ACLController::checkAccess('Calendar', 'list', true)){
 	ACLController::displayNoAccess(true);
 }
 
-echo get_module_title($mod_strings['LBL_MODULE_NAME'], $mod_strings['LBL_MODULE_TITLE'], true);
+echo get_module_title($mod_strings['LBL_MODULE_NAME'], "<span class='pointer'>&raquo;</span>".$mod_strings['LBL_MODULE_ACTION'], true);
 
 if ( empty($_REQUEST['view']))
 {

@@ -69,17 +69,6 @@ class TabGroupHelper{
     function saveTabGroups($params){
     	//#30205 
     	global $sugar_config;
-		if (strcmp($params['other_group_tab_displayed'], '1') == 0) {
-			$value = true;
-		}else{
-			$value = false;
-		}
-		if(!isset($sugar_config['other_group_tab_displayed']) || $sugar_config['other_group_tab_displayed'] != $value){
-			require_once('modules/Configurator/Configurator.php');
-    		$cfg = new Configurator();
-    		$cfg->config['other_group_tab_displayed'] = $value;
-    		$cfg->handleOverride();
-		}
 
     	//Get the selected tab group language 
     	$grouptab_lang = (!empty($params['grouptab_lang'])?$params['grouptab_lang']:$_SESSION['authenticated_user_language']);  
@@ -100,8 +89,8 @@ class TabGroupHelper{
         	
         	$labelID = (!empty($params['tablabelid_' . $index]))?$params['tablabelid_' . $index]: 'LBL_GROUPTAB' . $count . '_'. time();
         	$labelValue = $params['tablabel_' . $index];
-        	$appStirngs = return_application_language($grouptab_lang);
-        	if(empty($appStirngs[$labelID]) || $appStirngs[$labelID] != $labelValue){
+        	$app_strings = return_application_language($grouptab_lang);
+        	if(empty($app_strings[$labelID]) || $app_strings[$labelID] != $labelValue){
         		$contents = return_custom_app_list_strings_file_contents($grouptab_lang);
         		$new_contents = replace_or_add_app_string($labelID,$labelValue, $contents);
         		save_custom_app_list_strings_contents($new_contents, $grouptab_lang);
@@ -111,8 +100,8 @@ class TabGroupHelper{
         			if($grouptab_lang == $language){
         				continue;
         			}
-					$appStirngs = return_application_language($language);
-		        	if(!isset($appStirngs[$labelID])){
+					$app_strings = return_application_language($language);
+		        	if(!isset($app_strings[$labelID])){
         				$contents = return_custom_app_list_strings_file_contents($language);
 		        		$new_contents = replace_or_add_app_string($labelID,$labelValue, $contents);
 		        		save_custom_app_list_strings_contents($new_contents, $language);
@@ -131,7 +120,8 @@ class TabGroupHelper{
         	$completedIndexes[$index] = true;
         	
     	} 
-    	sugar_cache_put('app_strings', $GLOBALS['app_strings']);
+        // Force a rebuild of the app language
+    	sugar_cache_clear('app_strings.'.$grouptab_lang);
      	$newFile = create_custom_directory('include/tabConfig.php');
      	write_array_to_file("GLOBALS['tabStructure']", $tabGroups, $newFile);
    		$GLOBALS['tabStructure'] = $tabGroups; 

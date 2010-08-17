@@ -102,11 +102,10 @@ if (isset($buttons)) $sugar_smarty->assign("BUTTONS", $buttons);
 
 echo "\n<p>\n";
 $params = array();
-$params[] = "<a href='index.php?module=Users&action=index'>{$mod_strings['LBL_MODULE_NAME']}</a>";
 if(empty($focus->id)){
-	$params[] = $GLOBALS['app_strings']['LBL_CREATE_BUTTON_LABEL'];
+	$params[] = "<span class='pointer'>&raquo;</span>".$GLOBALS['app_strings']['LBL_CREATE_BUTTON_LABEL'];
 }else{
-	$params[] = "<a href='index.php?module=Users&action=DetailView&record={$focus->id}'>".$locale->getLocaleFormattedName($focus->first_name,$focus->last_name)."</a>";
+	$params[] = "<span class='pointer'>&raquo;</span><a href='index.php?module=Users&action=DetailView&record={$focus->id}'>".$locale->getLocaleFormattedName($focus->first_name,$focus->last_name)."</a>";
 	$params[] = $GLOBALS['app_strings']['LBL_EDIT_BUTTON_LABEL'];
 }
 echo getClassicModuleTitle("Users", $params, true);
