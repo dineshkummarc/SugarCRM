@@ -179,7 +179,6 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
         $out['fromAccounts'] = $email->et->getFromAccountsArray($ie);
         $out['errorArray'] = array();
         
-        //Check if any error messages have been set for the user override account.
         $oe = new OutboundEmail();
         if( $oe->doesUserOverrideAccountRequireCredentials($current_user->id) )
         {
