@@ -237,7 +237,7 @@ $uwMain =<<<eoq
 <table cellpadding="3" cellspacing="4" border="0">
 	<tr>
 		<td align="left" valign="top">
-			{$mod_strings['LBL_UW_FILE_ISSUES_PERMS']}
+			{$mod_strings['LBL_UW_FILE_ISSUES_PERMS']}:
 		</td>
 		<td>
 			{$filesOut}
@@ -250,7 +250,7 @@ $uwMain =<<<eoq
 	</tr>
 	<tr>
 		<td align="left" valign="top">
-			{$mod_strings['LBL_UW_DB_ISSUES_PERMS']}
+			{$mod_strings['LBL_UW_DB_ISSUES_PERMS']}:
 		</td>
 		<td>
 			{$dbOut}
@@ -263,7 +263,7 @@ $uwMain =<<<eoq
 	</tr>
 	<tr>
 		<td align="left" valign="top">
-			{$mod_strings['LBL_UW_COMPLIANCE_TITLE2']}
+			{$mod_strings['LBL_UW_COMPLIANCE_TITLE2']}:
 		</td>
 		<td>
 			{$sysCompliance}

@@ -207,8 +207,9 @@ $mod_strings = array(
 	'LBL_UW_SKIPPED_FILES_TITLE'				=> 'Skipped Files',
 	'LBL_UW_SKIPPING_FILE_OVERWRITE'			=> 'Skipping File Overwrites - Manual Merge Selected.',
 	'LBL_UW_SQL_RUN'							=> 'Check when SQL has been manually run',
-	'LBL_UW_START_DESC'							=> 'Welcome to the SugarCRM Upgrade Wizard. This wizard is designed to assist administrators when upgrading their SugarCRM instances.  Please follow the instructions carefully.',
-	'LBL_UW_START_DESC2'						=> 'We highly recommend that you perform a test upgrade on a cloned instance of your production system first. Please backup the database and the system files (all of the files in the SugarCRM folder) before upgrading your production system. Click Next to perform a check on your system to make sure that the system is ready for the upgrade.  This includes file permissions, database privileges and server settings.',
+	'LBL_UW_START_DESC'							=> 'This wizard will assist you in upgrading this Sugar instance.',
+	'LBL_UW_START_DESC2'						=> 'Note: We recommend that you backup the Sugar database and the system files (all of the files in the SugarCRM folder) before upgrading your production system. We highly recommend that you perform a test upgrade on a cloned instance of your production system first.',
+	'LBL_UW_START_DESC3'						=> 'Click Next to perform a check on your system to make sure that the system is ready for the upgrade. The check includes file permissions, database privileges and server settings.',
 	'LBL_UW_START_UPGRADED_UW_DESC'				=> 'The new Upgrade Wizard will now resume the upgrade process. Please continue your upgrade.',
 	'LBL_UW_START_UPGRADED_UW_TITLE'			=> 'Welcome to the new Upgrade Wizard',
 

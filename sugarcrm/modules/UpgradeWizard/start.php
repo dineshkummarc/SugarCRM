@@ -82,14 +82,19 @@ $uwMain =<<<eoq
 	<tr>
 		<td align="left">
 			<p>
-			{$mod_strings['LBL_UW_START_DESC']}
+		    {$mod_strings['LBL_UW_START_DESC']}
 			</p>
+			<BR>
 			<p>
 			<span class="error">
 			{$mod_strings['LBL_UW_START_DESC2']}
 			</span>
 			</p>
-		</td>
+			<BR>
+			<p>
+			{$mod_strings['LBL_UW_START_DESC3']}
+			</p>
+			</td>
 	</tr>
 </table>
 <div id="upgradeDiv" style="display:none">

@@ -34,7 +34,8 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
  ********************************************************************************/
-$dictionary['Note'] = array('table' => 'notes', 
+$dictionary['Note'] = array(
+    'table' => 'notes', 
 	'unified_search' => true,
 	'comment' => 'Notes and Attachments'
                                ,'fields' => array (

@@ -60,7 +60,7 @@
 <form action="index.php" method="post" name="UpgradeWizardForm" id="form">
 	<input type="hidden" name="module" value="UpgradeWizard">
 	<input type="hidden" name="action" value="index">
-	<input type="hidden" name="step" value="{$UW_STEP}">
+	<input type="hidden" name="step" id="step" value="{$UW_STEP}">
 	<input type="hidden" name="overwrite_files" id="over">
 	<input type="hidden" name="schema_change" id="schema">
 	<input type="hidden" name="schema_drop"   id="schema_drop">
@@ -85,7 +85,7 @@
 			<input	title		= "{$MOD.LBL_BUTTON_NEXT}"
 					class		= "button"
 					{$disableNextForLicense}
- 					onclick	= " handleUploadCheck('{$step}', {$u_allow}); if(!{$u_allow}) return; upgradeP('{$step}');this.form.step.value='{$STEP_NEXT}'; handlePreflight('{$step}'); document.forms['form'].submit();"
+ 					onclick	= " handleUploadCheck('{$step}', {$u_allow}); if(!{$u_allow}) return; upgradeP('{$step}');this.form.step.value='{$STEP_NEXT}'; handlePreflight('{$step}'); document.getElementById('form').submit();"
 					type		= "button"
 					value		= "  {$MOD.LBL_BUTTON_NEXT}  "
 					id			= "next_button" >
@@ -186,7 +186,7 @@
 			<input	title		= "{$MOD.LBL_BUTTON_NEXT}"
 					class		= "button"
 					{$disableNextForLicense}
- 					onclick	= " handleUploadCheck('{$step}', {$u_allow}); if(!{$u_allow}) return; upgradeP('{$step}');this.form.step.value='{$STEP_NEXT}'; handlePreflight('{$step}'); document.forms['form'].submit();"
+ 					onclick	= " handleUploadCheck('{$step}', {$u_allow}); if(!{$u_allow}) return; upgradeP('{$step}');this.form.step.value='{$STEP_NEXT}'; handlePreflight('{$step}'); document.getElementById('form').submit();"
 					type		= "button"
 					value		= "  {$MOD.LBL_BUTTON_NEXT}  "
 					id			= "next_button" >
@@ -242,6 +242,10 @@ var currStage
 var timeOutWindowMultiplier = 1
 var timeOutWindow = 60
 function upgradeP(step){
+if(step == 'systemCheck'){
+	return;
+}
+
 if(document.getElementById("upgradeDiv") != null){
 	    var args = {    width:"300px",
 	                    modal:true,
@@ -261,10 +265,13 @@ if(document.getElementById("upgradeDiv") != null){
                 	//currStage = START_IN_PROGRESS;
                 	currStage = SYSTEM_CHECK_IN_PROGRESS;
                 }
+                /* removed window from system check. if you need to add back, remove check at the top
+                 * of this function as well
                 if(step == 'systemCheck'){
                 	currStage = UPLOADE_UPGRADE_IN_PROGRESS;
                 	//document.getElementById(step).innerHTML='<i>'+SET_STEP_TO_COMPLETE+'</i>'
                 }
+                */
                 if(step == 'uploadingUpgardePackage'){
                 	currStage = UPLOADING_UPGRADE_PACKAGE;
                 }
