@@ -191,7 +191,10 @@ class EditView
 		    	foreach($p as $row=>$rowDef) {
 		            foreach($rowDef as $col => $colDef) {
 		                $field = (is_array($p[$row][$col])) ? $p[$row][$col]['name'] : $p[$row][$col];
-		                if((!empty($this->focus->field_defs[$field]) && !empty($this->focus->field_defs[$field]['required'])) || !empty($p[$row][$col]['displayParams']['required'])){
+		                if((!empty($this->focus->field_defs[$field]) 
+		                        && !empty($this->focus->field_defs[$field]['required'])) 
+		                    || ( !empty($p[$row][$col]['displayParams']['required']) 
+		                        && ( isset($this->focus->field_defs[$field]) ? $this->focus->field_defs[$field]['required'] !== false : false ) ) ) {
 		                	$reqCol++;
 		                	if($reqCol == $this->defs['templateMeta']['maxColumns']) {
 		                		$reqCol = -1;

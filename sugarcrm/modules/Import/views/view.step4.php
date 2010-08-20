@@ -386,6 +386,7 @@ class ImportViewStep4 extends SugarView
             
             // Now try to validate flex relate fields
             if ( isset($focus->field_defs['parent_name']) 
+                    && isset($focus->parent_name)
                     && ($focus->field_defs['parent_name']['type'] == 'parent') ) {
                 // populate values from the picker widget if the import file doesn't have them
                 $parent_idField = $focus->field_defs['parent_name']['id_name'];

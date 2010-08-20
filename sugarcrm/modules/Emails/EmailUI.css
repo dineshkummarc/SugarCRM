@@ -274,7 +274,7 @@ li.yuimenuitem-disabled {
 }
 
 .yui-dt table tr th {
-	padding: 0 !important;
+	padding: 2px 5px !important;
 }
 
 div #rollover {
@@ -414,6 +414,7 @@ td.yui-dt-col-bean_id {
 
 #settingsDialog h4 {
 	text-align:left;
+	padding-left: 0px;
 }
 
 button img {

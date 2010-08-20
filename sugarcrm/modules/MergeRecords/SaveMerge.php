@@ -50,7 +50,13 @@ foreach($focus->merge_bean->column_fields as $field)
 	if(isset($_POST[$field]))
 	{
 		$value = $_POST[$field];
-		$focus->merge_bean->$field = $value;
+		if(is_array($value) && !empty($focus->merge_bean->field_defs[$field]['isMultiSelect'])) {
+            if(empty($value[0])) {
+                unset($value[0]);
+            }
+            $value = encodeMultienumValue($value);
+        }
+        $focus->merge_bean->$field = $value;
 	}elseif (isset($focus->merge_bean->field_name_map[$field]['type']) && $focus->merge_bean->field_name_map[$field]['type'] == 'bool'  ) {
 		$focus->merge_bean->$field = 0;
 	}
@@ -61,6 +67,12 @@ foreach($focus->merge_bean->additional_column_fields as $field)
 	if(isset($_POST[$field]))
 	{
 		$value = $_POST[$field];
+		if(is_array($value) && !empty($focus->merge_bean->field_defs[$field]->properties['isMultiSelect'])) {
+            if(empty($value[0])) {
+                unset($value[0]);
+            }
+            $value = encodeMultienumValue($value);
+        }
 		$focus->merge_bean->$field = $value;
 	}
 }

@@ -2402,6 +2402,10 @@ function save_relationship_changes($is_update, $exclude=array())
 						{
 							$list_column[0] = $bean_queried->table_name .".".$list_column[0] ;
 						}
+						if (empty($bean_queried->field_defs[$list_column_name]['table']) && $source=='custom_fields')
+						{
+						    $list_column[0] = $bean_queried->table_name ."_cstm.".$list_column[0] ;
+						}
 						$value = implode($list_column,' ');
 						// Bug 38803 - Use CONVERT() function when doing an order by on ntext, text, and image fields
 						if ( $this->db->dbType == 'mssql' 
@@ -2412,6 +2416,16 @@ function save_relationship_changes($is_update, $exclude=array())
                                 )
                             ) {
                         $value = "CONVERT(varchar(500),{$list_column[0]}) {$list_column[1]}";
+                        }
+						// Bug 29011 - Use TO_CHAR() function when doing an order by on a clob field
+						if ( $this->db->dbType == 'oci8' 
+						     && $source == 'db'
+                            && in_array(
+                                $this->db->getHelper()->getColumnType($this->db->getHelper()->getFieldType($bean_queried->field_defs[$list_column_name])),
+                                array('clob')
+                                )
+                            ) {
+                        $value = "TO_CHAR({$list_column[0]}) {$list_column[1]}";
                         }
 					}
 					else

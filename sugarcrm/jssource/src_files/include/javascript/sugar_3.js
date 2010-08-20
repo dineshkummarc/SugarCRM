@@ -2993,7 +2993,7 @@ SUGAR.searchForm = function() {
 					enableQS(true);
 					ajaxStatus.hideStatus();
 				}
-				url = 	'index.php?module=' + module + '&action=ListView&search_form_only=true&to_pdf=true&search_form_view=' + theView;
+				url = 	'index.php?module=' + module + '&action=index&search_form_only=true&to_pdf=true&search_form_view=' + theView;
 
 				//check to see if tpl has been specified.  If so then pass location through url string
 				var tpl ='';

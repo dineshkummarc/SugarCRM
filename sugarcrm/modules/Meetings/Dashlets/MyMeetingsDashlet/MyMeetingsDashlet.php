@@ -74,9 +74,7 @@ class MyMeetingsDashlet extends DashletGeneric {
         
         if($this->myItemsOnly) { // handle myitems only differently
             $lvsParams = array(
-                           'custom_from' => ' INNER JOIN meetings_users ON meetings.id = meetings_users.meeting_id ',
-                           'custom_where' => ' AND meetings_users.deleted = 0 AND (meetings.assigned_user_id = \'' . $current_user->id . '\' OR meetings_users.user_id = \'' . $current_user->id . '\') ',
-                           'distinct' => true
+                           'custom_where' => ' AND meetings.id IN ( SELECT meeting_id FROM meetings_users WHERE meetings_users.deleted = 0 AND (meetings.assigned_user_id = \'' . $current_user->id . '\' OR meetings_users.user_id = \'' . $current_user->id . '\') ) ',
                            );
         } else {
             $lvsParams = array();

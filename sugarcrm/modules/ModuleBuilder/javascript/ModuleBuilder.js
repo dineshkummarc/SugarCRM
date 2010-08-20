@@ -1023,6 +1023,18 @@ if (typeof(ModuleBuilder) == 'undefined') {
 				select[count] = new Option(ajaxResponse[key], key);
 				count++;
 			}
+		},
+		setSelectedOption : function (sel, option)
+		{
+			var sel = Dom.get(sel);
+			for (var i = 0; i < sel.options.length; i++)
+			{
+				if(sel.options[i].value == option) {
+					sel.selectedIndex = i;
+					return true;
+				}
+			}
+			return false;
 		}
 	};
 	ModuleBuilder.buttons = {};

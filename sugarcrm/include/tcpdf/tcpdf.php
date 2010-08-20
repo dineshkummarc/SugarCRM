@@ -12347,19 +12347,21 @@ if (!class_exists('TCPDF', false)) {
 					break;
 				}
 				case 'tcpdf': {
-					// NOT HTML: used to call TCPDF methods
-					if (isset($tag['attribute']['method'])) {
-						$tcpdf_method = $tag['attribute']['method'];
-						if (method_exists($this, $tcpdf_method)) {
-							if (isset($tag['attribute']['params']) AND (!empty($tag['attribute']['params']))) {
-								eval('$params = array('.$tag['attribute']['params'].');');
-								call_user_func_array(array($this, $tcpdf_method), $params);
-							} else {
-								$this->$tcpdf_method();
-							}
-							$this->newline = true;
-						}
-					}
+					if (defined('K_TCPDF_CALLS_IN_HTML') AND (K_TCPDF_CALLS_IN_HTML === true)) {
+						 // Special tag used to call TCPDF methods
+                        if (isset($tag['attribute']['method'])) {
+                            $tcpdf_method = $tag['attribute']['method'];
+                            if (method_exists($this, $tcpdf_method)) {
+                                if (isset($tag['attribute']['params']) AND (!empty($tag['attribute']['params']))) {
+                                    $params = unserialize(urldecode($tag['attribute']['params']));
+                                    call_user_func_array(array($this, $tcpdf_method), $params);
+                                } else {
+                                    $this->$tcpdf_method();
+                                }
+                                $this->newline = true;
+                            }
+                        }
+                    }
 				}
 				default: {
 					break;

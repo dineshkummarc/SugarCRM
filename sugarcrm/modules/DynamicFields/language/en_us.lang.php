@@ -110,6 +110,7 @@ $mod_strings = array (
 	'LBL_DEPENDENT_TRIGGER'=>'Trigger',
     'LBL_CALCULATED'=>'Calculated',
     'LBL_FORMULA'=>'Formula',
+    'LBL_DYNAMIC_VALUES_CHECKBOX' => 'Dependent',
     'LBL_BTN_EDIT_VISIBILITY'=>'Edit Visibility',
     'LBL_LINK_TARGET'=>'Open Link In',
     'LBL_IMAGE_WIDTH' => 'Width',

@@ -102,8 +102,11 @@
 <!-- BEGIN: merge_cell_edit_dropdown -->
 	<td width="{CELL_WIDTH}" valign="top" ><slot><select tabindex="{TAB_INDEX}" name="{EDIT_FIELD_NAME}" id="{EDIT_FIELD_NAME}">{SELECT_OPTIONS}</select></slot></td>
 <!-- END: merge_cell_edit_dropdown -->
+<!-- BEGIN: merge_cell_edit_multidropdown -->
+	<td width="{CELL_WIDTH}" valign="top" ><slot><select tabindex="{TAB_INDEX}" name="{EDIT_FIELD_NAME}[]" id="{EDIT_FIELD_NAME}" multiple="true" size="6">{SELECT_OPTIONS}</select></slot></td>
+<!-- END: merge_cell_edit_multidropdown -->
 <!-- BEGIN: merge_cell_edit_popup -->
-	<td width="{CELL_WIDTH}" valign="top"  ><slot><input class="sqsEnabled" autocomplete="off" tabindex="{TAB_INDEX}" "id="{POPUP_NAME_FIELD}" name='{POPUP_NAME_FIELD}' type="text" value="{POPUP_NAME_VALUE}"><input id='{POPUP_ID_FIELD}' name='{POPUP_ID_FIELD}' type="hidden" value="{POPUP_ID_VALUE}"/>
+	<td width="{CELL_WIDTH}" valign="top"  ><slot><input class="sqsEnabled" autocomplete="off" tabindex="{TAB_INDEX}" "id="{POPUP_NAME_FIELD}" name="{POPUP_NAME_FIELD}" type="text" value="{POPUP_NAME_VALUE}"><input id='{POPUP_ID_FIELD}' name='{POPUP_ID_FIELD}' type="hidden" value="{POPUP_ID_VALUE}"/>
 		<input title="{APP.LBL_SELECT_BUTTON_TITLE}" accessKey="{APP.LBL_SELECT_BUTTON_KEY}" type="button" tabindex='1' class="button" value='{APP.LBL_SELECT_BUTTON_LABEL}' name=btn1
 			onclick='open_popup("{POPUP_MODULE}", 600, 400, "", true, false, {ENCODED_POPUP_DATA},"single",true);' /></slot></td>
 <!-- END: merge_cell_edit_popup -->

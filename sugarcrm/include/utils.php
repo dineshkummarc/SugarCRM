@@ -3283,9 +3283,12 @@ if(file_exists('custom/include/custom_utils.php')){
  */
 function setPhpIniSettings() {
 	// zlib module
-	if(function_exists('gzclose') && headers_sent() == false) {
+	// Bug 37579 - Comment out force enabling zlib.output_compression, since it can cause problems on certain hosts
+	/*
+    if(function_exists('gzclose') && headers_sent() == false) {
 		ini_set('zlib.output_compression', 1);
 	}
+	*/
 	// mbstring module
 	//nsingh: breaks zip/unzip functionality. Commenting out 4/23/08
 

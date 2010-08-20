@@ -235,7 +235,7 @@
                         accessKey="n" 
                         class="button"
                         onClick='SUGAR.email2.accounts.clearInboundAccountEditScreen();SE.accounts.setPortDefault();'
-                        name="button" id="addButton" value="  {$app_strings.LBL_EMAIL_SETTINGS_ADD_ACCOUNT}  ">
+                        name="button" id="clearButton" value="  {$app_strings.LBL_EMAIL_SETTINGS_ADD_ACCOUNT}  ">
 						&nbsp;
 					</td>
 				</tr>

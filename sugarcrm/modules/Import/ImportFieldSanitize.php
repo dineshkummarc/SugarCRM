@@ -467,6 +467,18 @@ class ImportFieldSanitize
             return false;
         $newbean = loadBean($vardef['module']);
         
+        // Bug 38885 - If we are relating to the Users table on user_name, there's a good chance
+        // that the related field data is the full_name, rather than the user_name. So to be sure
+        // let's try to lookup the field the relationship is expecting to use (user_name).
+        if ( $vardef['module'] == 'Users' && $vardef['rname'] == 'user_name' ) {
+            $userFocus = new User;
+            $userFocus->retrieve_by_string_fields(
+                array(db_concat('users',array('first_name','last_name')) => $value ));
+            if ( !empty($userFocus->id) ) {
+                $value = $userFocus->user_name;
+            }
+        }       
+        
         // Bug 32869 - Assumed related field name is 'name' if it is not specified
         if ( !isset($vardef['rname']) )
             $vardef['rname'] = 'name';
@@ -491,6 +503,13 @@ class ImportFieldSanitize
                 $checkfocus = loadBean($vardef['module']);
                 if ( $checkfocus && is_null($checkfocus->retrieve($focus->$idField)) )
                     $focus->$idField = '';
+            }
+            
+            // Bug 38356 - Populate the table entry in the vardef from the bean information in case it's not provided
+            if (!isset($vardef['table'])) {
+                // Set target module table as the default table name
+                $tmpfocus = loadBean($vardef['module']);
+                $vardef['table'] = $tmpfocus->table_name;
             }
             
             // be sure that the id isn't already set for this row

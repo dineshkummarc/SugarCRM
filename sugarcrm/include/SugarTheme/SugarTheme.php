@@ -423,6 +423,7 @@ class SugarTheme
             'fonts',
             'barChartColors',
             'pieChartColors',
+            'group_tabs',
             );
     }
     

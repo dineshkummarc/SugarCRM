@@ -200,6 +200,18 @@ function copy_value(json_array)
 	    }
 	    target_element.value = json_array['field_value'];
 	}
+	else if(json_array['field_type'] == 'multienum'){
+	    var multienumObj = document.getElementById(json_array['field_name']);
+	    for(var i=0; i< multienumObj.length; i++){
+	        
+            if ( json_array['field_value'].indexOf(multienumObj.options[i].value) != -1 ) {
+                multienumObj.options[i].selected='checked';
+            }
+            else {
+                multienumObj.options[i].selected = '';
+            }
+        }
+	}
 	else
 	{
 		target_element.value = json_array['field_value'];

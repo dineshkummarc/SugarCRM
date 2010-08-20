@@ -89,7 +89,7 @@ class SugarWidgetSubPanelTopCreateCampaignLogEntryButton extends SugarWidgetSubP
             if (is_array($widget_data['initial_filter_fields'])) {
                 foreach ($widget_data['initial_filter_fields'] as $value=>$alias) {
                     if (isset($focus->$value) and !empty($focus->$value)) {
-                        $initial_filter.="&".$alias . '='.$focus->$value;
+                        $initial_filter.="&".$alias . '='.urlencode($focus->$value);
                     }
                 }
             }
@@ -130,7 +130,7 @@ class SugarWidgetSubPanelTopCreateCampaignLogEntryButton extends SugarWidgetSubP
         if (is_array($this->button_properties) && !empty($this->button_properties['add_to_passthru_data']['return_type'])) {
             
             if ($this->button_properties['add_to_passthru_data']['return_type']=='report') {
-                $initial_filter = "&module_name=${widget_data['module']}";
+                $initial_filter = "&module_name=". urlencode($widget_data['module']);
             }
             if ($this->button_properties['add_to_passthru_data']['return_type']=='addtoprospectlist') {
                 if (isset($widget_data['query'])) {

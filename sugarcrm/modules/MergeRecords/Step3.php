@@ -62,6 +62,7 @@ $filter_for_valid_editable_attributes =
          array('type'=>'datetime','source'=>'db'),
          array('type'=>'varchar','source'=>'db'),
          array('type'=>'enum','source'=>'db'),
+         array('type'=>'multienum','source'=>'db'),
          array('type'=>'text','source'=>'db'),
          array('type'=>'date','source'=>'db'),
          array('type'=>'time','source'=>'db'),
@@ -233,6 +234,12 @@ foreach ($temp_field_array as $field_array) {
                 $xtpl->assign("CELL_WIDTH",$col_width);
                 $xtpl->parse("main.".$section_name.".merge_cell_edit_dropdown");
                 break;
+            case ('multienum') :
+                $select_row_curr_field_value = unencodeMultienum($select_row_curr_field_value);
+                $xtpl->assign("SELECT_OPTIONS", get_select_options_with_id($app_list_strings[$field_array['options']], $select_row_curr_field_value));
+                $xtpl->assign("CELL_WIDTH",$col_width);
+                $xtpl->parse("main.".$section_name.".merge_cell_edit_multidropdown");
+                break;
                 //popup fields need to be fixed.., cant automate with vardefs
             case ('relate') :
                 if(!empty($field_array['link'])) {
@@ -315,6 +322,14 @@ foreach ($temp_field_array as $field_array) {
                     }
                     $field_name="main.".$section_name.".merge_cell_field_value";
                     break;
+                case ('multienum') :
+                    if ($mergeBeanArray[$id]-> $field_array['name'] != '' and isset($field_array['options']) and isset($app_list_strings[$field_array['options']][$mergeBeanArray[$id]-> $field_array['name']])) {
+                        display_field_value(str_replace("^","",$app_list_strings[$field_array['options']][$mergeBeanArray[$id]-> $field_array['name']]));
+                    } else {
+                        display_field_value(str_replace("^","",$mergeBeanArray[$id]-> $field_array['name']));
+                    }
+                    $field_name="main.".$section_name.".merge_cell_field_value";
+                    break;
                 case ('relate') :
                 case ('link') :
                     $related_name=false;
@@ -343,6 +358,8 @@ foreach ($temp_field_array as $field_array) {
             	$json_data['field_value'] = TeamSetManager::getCommaDelimitedTeams($mergeBeanArray[$id]->team_set_id, $mergeBeanArray[$id]->team_id, true);
             	$json_data['field_value2'] = TeamSetManager::getTeamsFromSet($mergeBeanArray[$id]->team_set_id);
             	$json_data['field_value3'] =  $mergeBeanArray[$id]->team_set_id;
+            } else if($field_check == 'multienum') {
+                $json_data['field_value'] = unencodeMultienum($mergeBeanArray[$id]-> $field_array['name']);
             } else {
                 $json_data['field_value'] = $mergeBeanArray[$id]-> $field_array['name'];
             }
