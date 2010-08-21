@@ -243,7 +243,8 @@ class SugarFeed extends Basic {
                 $linkClass->handleInput($feed,$link_type,$link_url);
             }
         }
-		$text = '<b>{this.CREATED_BY}</b> ' . strip_tags($text);
+        $text = strip_tags(from_html($text));
+		$text = '<b>{this.CREATED_BY}</b> ' . $text;
 		$feed->name = substr($text, 0, 255);
 		if(strlen($text) > 255){
 			$feed->description = substr($text, 255, 510);

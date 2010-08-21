@@ -142,16 +142,16 @@ $viewdefs['Leads']['DetailView'] = array (
 		),	
 	
 		array (
+			'opportunity_amount',
+			'refered_by',
+		),	
+		
+		array (
 			array (
 				'name' => 'campaign_name',
 				'label' => 'LBL_CAMPAIGN',
 				
 			),
-			'refered_by',
-		),	
-		
-		array (
-			'',
 		    'do_not_call'
 		)
 		

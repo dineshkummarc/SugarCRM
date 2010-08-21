@@ -1125,7 +1125,7 @@ function getUserVariable($localVarName, $varName) {
 				</script>";
 
 			if($this->show_select_menu) {
-				$select_link = "<a id='select_link' onclick='return select_overlib();' href=\"#\">".$this->local_app_strings['LBL_LINK_SELECT']."&nbsp;<img src='".SugarThemeRegistry::current()->getImageURL('MoreDetail.png')."' width='8' height='7' border='0''>"."</a>";
+				$select_link = "<a id='select_link' onclick='return select_overlib();' href=\"#\">".$this->local_app_strings['LBL_LINK_SELECT']."&nbsp;<img src='".SugarThemeRegistry::current()->getImageURL('MoreDetail.png')."' width='11' height='7' border='0''>"."</a>";
 			} else {
 				$select_link = "&nbsp;";
 			}

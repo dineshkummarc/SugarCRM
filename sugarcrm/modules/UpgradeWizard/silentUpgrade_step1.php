@@ -615,8 +615,14 @@ $install_file = clean_path("{$cwd}/{$sugar_config['upload_dir']}upgrades/patch/"
 $_SESSION['unzip_dir'] = $unzip_dir;
 $_SESSION['install_file'] = $install_file;
 $_SESSION['zip_from_dir'] = $zip_from_dir;
-rmdir_recursive($unzip_dir.'/scripts');
-rmdir_recursive($unzip_dir.'/manifest.php');
+if(is_dir($unzip_dir.'/scripts'))
+{
+	rmdir_recursive($unzip_dir.'/scripts');
+}
+if(is_file($unzip_dir.'/manifest.php'))
+{
+	rmdir_recursive($unzip_dir.'/manifest.php');
+}
 mkdir_recursive($unzip_dir);
 if(!is_dir($unzip_dir)) {
 	fwrite(STDERR,"\n{$unzip_dir} is not an available directory\nFAILURE\n");

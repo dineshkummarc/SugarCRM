@@ -43,6 +43,7 @@ class FieldViewer{
 		$mod = return_module_language($GLOBALS['current_language'], 'EditCustomFields');
 		$this->ss->assign('vardef', $vardef);
 		$this->ss->assign('MOD', $mod);
+		$this->ss->assign('APP', $GLOBALS['app_strings']);
 		$GLOBALS['log']->debug('FieldViewer.php->getLayout() = '.$vardef['type']);
 		switch($vardef['type']){
 			case 'address':

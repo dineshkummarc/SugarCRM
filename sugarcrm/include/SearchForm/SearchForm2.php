@@ -402,7 +402,7 @@ require_once('include/EditView/EditView2.php');
      * @param bool $addAllBeanFields true to process at all bean fields
      */
     function populateFromArray(&$array, $switchVar = null, $addAllBeanFields = true) {
-
+	
        if((!empty($array['searchFormTab']) || !empty($switchVar)) && !empty($this->searchFields)) {
 			$arrayKeys = array_keys($array);
             $searchFieldsKeys = array_keys($this->searchFields);
@@ -450,25 +450,27 @@ require_once('include/EditView/EditView2.php');
                         if(empty($this->fieldDefs[$long_name]['value'])) $this->fieldDefs[$long_name]['value'] = $array[$name];
                     }
                 }
+   
                 if((empty($array['massupdate']) || $array['massupdate'] == 'false') && $addAllBeanFields) {
                     foreach($this->seed->field_name_map as $key => $params) {
-                    	if(in_array($key.'_'.$SearchName, $arrayKeys) && !in_array($key, $searchFieldsKeys)) {
-                        	$this->searchFields[$key] = array('query_type' => 'default',
-                                                              'value'      => $array[$key.'_'.$SearchName]);
-
-
-                    		if (!empty($params['type']) && $params['type'] == 'parent' 
-                    			&& !empty($params['type_name']) && !empty($this->searchFields[$key]['value'])) 
-                    		{
-                    			$this->searchFields[$params['type_name']] = array('query_type' => 'default',
-                                                              					  'value'      => $array[$params['type_name']]);
-                    		}
-                    		if(empty($this->fieldDefs[$long_name]['value'])) {
-                    			$this->fieldDefs[$key.'_'.$SearchName]['value'] =  $array[$key.'_'.$SearchName];
-                    		}
+                    	if($key != 'assigned_user_name' && $key != 'modified_by_name')
+                    	{
+	                    	if(in_array($key.'_'.$SearchName, $arrayKeys) && !in_array($key, $searchFieldsKeys)) {
+	                        	$this->searchFields[$key] = array('query_type' => 'default',
+	                                                              'value'      => $array[$key.'_'.$SearchName]);
+                                if (!empty($params['type']) && $params['type'] == 'parent'
+                                    && !empty($params['type_name']) && !empty($this->searchFields[$key]['value']))
+                                {
+                                        $this->searchFields[$params['type_name']] = array('query_type' => 'default',
+                                                                                          'value'      => $array[$params['type_name']]);
+                                    }
+                                if(empty($this->fieldDefs[$long_name]['value'])) {
+                                    $this->fieldDefs[$key.'_'.$SearchName]['value'] =  $array[$key.'_'.$SearchName];
+                                }
+                            }
                         }
                     }
-
+             
 
                 }
             }
@@ -506,7 +508,6 @@ require_once('include/EditView/EditView2.php');
         $this->seed->fill_in_additional_detail_fields();
 
         //rrs check for team_id
-
         foreach($this->searchFields as $field=>$parms) {
 			$customField = false;
             // Jenny - Bug 7462: We need a type check here to avoid database errors

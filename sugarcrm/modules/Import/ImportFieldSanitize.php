@@ -473,14 +473,14 @@ class ImportFieldSanitize
         if ( $vardef['module'] == 'Users' && $vardef['rname'] == 'user_name' ) {
             $userFocus = new User;
             $userFocus->retrieve_by_string_fields(
-                array(db_concat('users',array('first_name','last_name')) => $value ));
+                array($userFocus->db->concat('users',array('first_name','last_name')) => $value ));
             if ( !empty($userFocus->id) ) {
                 $value = $userFocus->user_name;
             }
         }       
         
         // Bug 32869 - Assumed related field name is 'name' if it is not specified
-        if ( !isset($vardef['rname']) )
+        if ( !isset($vardef['rname']) )            
             $vardef['rname'] = 'name';
         
         // Bug 27046 - Validate field against type as it is in the related field

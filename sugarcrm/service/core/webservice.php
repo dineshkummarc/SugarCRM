@@ -41,7 +41,6 @@ if(!defined('sugarEntry'))define('sugarEntry', true);
  */
 ob_start();
 require('include/entryPoint.php');
-$GLOBALS['log']->setLevel('debug');
 require_once('soap/SoapError.php');
 require_once('SoapHelperWebService.php');
 require_once('SugarRestUtils.php');

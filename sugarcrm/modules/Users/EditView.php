@@ -487,7 +487,7 @@ if ( $usertype == 'GROUP' ) {
 }
 
 $configurator = new Configurator();
-if ( ($configurator->config['passwordsetting']['SystemGeneratedPasswordON'] || $configurator->config['passwordsetting']['forgotpasswordON'])
+if ( isset($configurator->config['passwordsetting']) && ($configurator->config['passwordsetting']['SystemGeneratedPasswordON'] || $configurator->config['passwordsetting']['forgotpasswordON'])
         && $usertype != 'GROUP' && $usertype != 'PORTAL_ONLY' )
 	$sugar_smarty->assign('REQUIRED_EMAIL_ADDRESS','1');
 else

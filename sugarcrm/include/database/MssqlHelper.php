@@ -157,32 +157,39 @@ class MssqlHelper extends DBHelper
         $ignoreRequired = false
         )
     {
-        $sql='';
-        $constraints = $this->get_field_default_constraint_name($tablename);
+        $pre_sql  = '';
+        $post_sql = '';
+        
+        $constraints = $this->get_indices($tablename);
         if ($this->isFieldArray($fieldDefs)) {
             foreach ($fieldDefs as $def)
       		{
-          		//if the column is being modified drop the default value
-          		//constraint if it exists. alterSQLRep will add the constraint back
-          		if (!empty($constraints[$def['name']])) {
-          			$sql.=" ALTER TABLE " . $tablename . " DROP CONSTRAINT " . $constraints[$def['name']];
+          		// If the column is being modified has indexes, we need to drop them first before
+          		// modifying the field. We'll then add them back afterwards.
+          		foreach ( $constraints as $constraint ) {
+          		    if ( in_array($def['name'],$constraint['fields']) ) {
+          		        $pre_sql  .= $this->add_drop_constraint($tablename,$constraint,true).'; ';
+          		        $post_sql .= $this->add_drop_constraint($tablename,$constraint,false).'; ';
+          		    }
           		}
 
           		$columns[] = $this->alterSQLRep($action, $def, $ignoreRequired,$tablename);
       		}
         }
         else {
-            //if the column is being modified drop the default value
-      		//constraint if it exists. alterSQLRep will add the constraint back
-      		if (!empty($constraints[$fieldDefs['name']])) {
-      			$sql.=" ALTER TABLE " . $tablename . " DROP CONSTRAINT " . $constraints[$fieldDefs['name']];
-      		}
+            // If the column is being modified has indexes, we need to drop them first before
+            // modifying the field. We'll then add them back afterwards.
+            foreach ( $constraints as $constraint ) {
+                if ( in_array($fieldDefs['name'],$constraint['fields']) ) {
+                    $pre_sql  .= $this->add_drop_constraint($tablename,$constraint,true).'; ';
+                    $post_sql .= $this->add_drop_constraint($tablename,$constraint,false).'; ';
+                }
+            }
 
-          	$columns[] = $this->alterSQLRep($action, $fieldDefs, $ignoreRequired,$tablename);
+            $columns[] = $this->alterSQLRep($action, $fieldDefs, $ignoreRequired,$tablename);
         }
-
-        $columns = implode(", ", $columns);
-        $sql .= " ALTER TABLE $tablename $columns";
+        
+        $sql = $pre_sql . "ALTER TABLE $tablename " . implode(", ", $columns) . $post_sql;
         
         return $sql;
     }
@@ -460,7 +467,7 @@ EOSQL;
         case 'index':
         case 'alternate_key':
             if ($drop)
-                $sql = "DROP INDEX {$name} ";
+                $sql = "DROP INDEX {$name} ON {$table}";
             else
                 $sql = "CREATE INDEX {$name} ON {$table} ({$fields})";
             break;
@@ -473,7 +480,7 @@ EOSQL;
             break;
         case 'primary':
             if ($drop)
-                $sql = "ALTER TABLE {$table} DROP PRIMARY KEY";
+                $sql = "ALTER TABLE {$table} DROP CONSTRAINT {$name}";
             else
                 $sql = "ALTER TABLE {$table} ADD CONSTRAINT {$name} PRIMARY KEY ({$fields})";
             break;

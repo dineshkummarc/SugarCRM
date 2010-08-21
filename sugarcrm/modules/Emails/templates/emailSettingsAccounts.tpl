@@ -36,11 +36,6 @@
 *}
 <table cellpadding="4" cellspacing="0" border="0" width="100%" class="view">
 	<tr>
-		<th colspan="2">
-			<h4 >{$app_strings.LBL_EMAIL_ACCOUNTS_TITLE}</h4>
-		</th>
-	</tr>	
-	<tr>
 		<td NOWRAP>
 			{include file="modules/Emails/templates/emailSettingsAccountDetails.tpl"}
 		</td>

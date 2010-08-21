@@ -41,7 +41,8 @@ if(!defined('sugarEntry') || !sugarEntry)
  * Portions created by SugarCRM are Copyright(C) SugarCRM, Inc. All Rights
  * Reserved. Contributor(s): ______________________________________..
  * *******************************************************************************/
-$trackerManager = TrackerManager::getInstance();
+require_once('include/SugarLogger/SugarLogger.php');	
+$trackerManager = TrackerManager::getInstance();	
 $trackerManager->pause();
 $trackerManager->unsetMonitors();
 

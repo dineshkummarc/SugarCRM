@@ -487,4 +487,25 @@ class SqlsrvManager extends MssqlManager
 
         return $sql;
     }
-}
+
+    
+	/**
+     * Compares two vardefs. Overriding 39098  due to bug: 39098 . IN 6.0 we changed the id columns to dbType = 'id'
+     * for example emails_beans.  In 554 the field email_id was nvarchar but in 6.0 since it id dbType = 'id' we would want to alter
+     * it to varchar. This code will prevent it.
+     *
+     * @param  array  $fielddef1
+     * @param  array  $fielddef2
+     * @return bool   true if they match, false if they don't
+     */
+    public function compareVarDefs($fielddef1,$fielddef2)
+    {
+        if(isset($fielddef2['dbType']) && $fielddef2['dbType'] == 'id'){
+            if(isset($fielddef1['type']) && isset($fielddef2['type'])){
+                $fielddef2['type'] = $fielddef1['type'];
+            }
+        }
+        return parent::compareVarDefs($fielddef1, $fielddef2);
+    }
+}   
+

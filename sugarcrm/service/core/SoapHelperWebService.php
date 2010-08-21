@@ -431,9 +431,10 @@ function validate_user($user_name, $password){
 		$GLOBALS['log']->info('Begin: SoapHelperWebServices->get_name_value_list_for_fields');
 		global $app_list_strings;
 		global $invalid_contact_fields;
-
+		
 		$list = array();
 		if(!empty($value->field_defs)){
+			if(empty($fields))$fields = array_keys($value->field_defs);
 			if(isset($value->assigned_user_name) && in_array('assigned_user_name', $fields)) {
 				$list['assigned_user_name'] = $this->get_name_value('assigned_user_name', $value->assigned_user_name);
 			}
@@ -443,7 +444,7 @@ function validate_user($user_name, $password){
 			if(isset($value->created_by_name) && in_array('created_by_name', $fields)) {
 				$list['created_by_name'] = $this->get_name_value('created_by_name', $value->created_by_name);
 			}
-
+			
 			$filterFields = $this->filter_fields($value, $fields);
 			foreach($filterFields as $field){
 				$var = $value->field_defs[$field];

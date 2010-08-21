@@ -65,7 +65,7 @@
 	<td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DEFAULT_VALUE"}:</td>
 	<td>
 	{if $hideLevel < 5}
-		{html_options name='defaultDate' options=$default_values selected=$default_date}
+		{html_options name='defaultDate' id='defaultDate_date' options=$default_values selected=$default_date}
 	{else}
 		<input type='hidden' name='defaultDate' value='{$default_date}'>{$default_date}
 	{/if}
@@ -99,4 +99,9 @@
 	{/if}
 	</td>
 </tr>
+<script>
+addToValidateBinaryDependency('popup_form',"defaultTime_hours", 'alpha', false, "{$APP.ERR_MISSING_REQUIRED_FIELDS} {$APP.LBL_HOURS}" ,"defaultDate_date");
+addToValidateBinaryDependency('popup_form', "defaultTime_minutes", 'alpha', false, "{$APP.ERR_MISSING_REQUIRED_FIELDS} {$APP.LBL_MINUTES}" ,"defaultDate_date");
+addToValidateBinaryDependency('popup_form', "defaultTime_meridiem", 'alpha', false, "{$APP.ERR_MISSING_REQUIRED_FIELDS} {$APP.LBL_MERIDIEM}","defaultDate_date");
+</script>
 {include file="modules/DynamicFields/templates/Fields/Forms/coreBottom.tpl"}

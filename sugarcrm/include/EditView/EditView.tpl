@@ -116,7 +116,7 @@ class="yui-navset"
 			{{* Show the required symbol if field is required, but override not set.  Or show if override is set *}}
 			{{if ($fields[$colData.field.name].required && !isset($colData.field.displayParams.required)) || 
 			     (isset($colData.field.displayParams.required) && $colData.field.displayParams.required && $fields[$colData.field.name].required !== false)}}
-			    <span class="required" title="{{$APP.LBL_REQUIRED_TITLE}}">{{$APP.LBL_REQUIRED_SYMBOL}}</span>
+			    <span class="required">{{$APP.LBL_REQUIRED_SYMBOL}}</span>
 			{{/if}}
 		</td>
 		{{/if}}

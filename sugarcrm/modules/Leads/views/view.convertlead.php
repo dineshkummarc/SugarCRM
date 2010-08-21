@@ -108,6 +108,10 @@ class ViewConvertLead extends SugarView
 	                {
 	                    $focus->name = $this->focus->account_name;
 	                } 
+	                else if ($module == "Opportunities" && $field == 'amount')
+	                {
+	                    $focus->amount = $this->focus->opportunity_amount;
+	                } 
 	                else if ($field == "id")
                     {
 						//If it is not a contact, don't copy the ID from the lead
@@ -127,7 +131,7 @@ class ViewConvertLead extends SugarView
             }
             
             //Copy over email data
-            $ev->setup($module, $focus, $this->medataDataFile, "modules/Leads/tpls/ConvertLead.tpl");
+            $ev->setup($module, $focus, $this->medataDataFile, "modules/Leads/tpls/ConvertLead.tpl", false);
             $ev->process();
             echo($ev->display(false));
             echo($this->getValidationJS($module, $focus, $vdef[$ev->view]));
