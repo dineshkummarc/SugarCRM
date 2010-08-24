@@ -56,7 +56,7 @@
 </td></tr>
 {/if}
 {if !$hideDuplicatable}
-<tr><td class='mbLBL'>{$MOD.COLUMN_TITLE_DUPLICATE_MERGE}:</td><td>
+<tr><td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DUPLICATE_MERGE"}:</td><td>
 {if $hideLevel < 5}
     {html_options name="duplicate_merge" id="duplicate_merge" selected=$vardef.duplicate_merge_dom_value options=$duplicate_merge_options}
     {sugar_help text=$mod_strings.LBL_POPHELP_DUPLICATE_MERGE FIXX=260 FIXY=0}

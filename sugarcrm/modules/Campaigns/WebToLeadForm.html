@@ -59,14 +59,14 @@
 		<form name="WebToLeadForm" id="WebToLeadForm" method="POST" action="index.php" enctype="multipart/form-data">
 		<input type="hidden" name="module" value="Campaigns"> 
 		<input type="hidden" name="record" value="{ID}"> 
-		<input type="hidden" name="action"> <input type="hidden" name="form"> 
+		<input type="hidden" name="action"> <input type="hidden" name="form"> <input type="hidden" name="body_html_value">
 		<input type="hidden" name="return_module" value="{RETURN_MODULE}"> 
 		<input type="hidden" name="return_id" value="{RETURN_ID}">
 		<input type="hidden" name="return_action" value="{RETURN_ACTION}"> 
 		<input type="hidden" name="inpopupwindow" value="{INPOPUPWINDOW}"> 
 		<input type="hidden" name="old_id" value="{OLD_ID}"> 
 		<input title="{APP.LBL_SAVE_WEB_TO_LEAD_FORM}" accessKey="{APP.LBL_SAVE_WEB_TO_LEAD_FORM}" class="button"
-			onclick="this.form.action.value='WebToLeadFormSave';" type="submit" name="button"
+			onclick="this.form.action.value='WebToLeadFormSave';this.form.body_html_value.value=document.getElementById('body_html').innerHTML" type="submit" name="button"
 			value="{APP.LBL_SAVE_WEB_TO_LEAD_FORM}"> 
 		<input title="{APP.LBL_CANCEL_BUTTON_TITLE}"
 			accessKey="{APP.LBL_CANCEL_BUTTON_KEY}" class="button" onclick="{CANCEL_SCRIPT}" type="submit" name="button"
@@ -88,7 +88,7 @@
                 </td>
 				<!-- BEGIN: textarea -->
 				<td colspan="4" >
-                    <textarea id='body_html' tabindex='90' name='body_html' cols="100" rows="40">{BODY_HTML}</textarea> 
+                    <div id='body_html' name='body_html' >{BODY_HTML}</textarea> 
                 </td>
 				<!-- END: textarea -->
 			</tr>

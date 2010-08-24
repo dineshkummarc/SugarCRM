@@ -77,7 +77,7 @@
 		{if $showBack}
 			<input	title		= "{$MOD.LBL_BUTTON_BACK}"
 					class		= "button"
-					onclick		= "this.form.step.value='{$STEP_BACK}';"
+					onclick		= "document.getElementById('form').step.value='{$STEP_BACK}';"
 					type		= "submit"
 					value		= "  {$MOD.LBL_BUTTON_BACK}  ">
 		{/if}
@@ -85,7 +85,7 @@
 			<input	title		= "{$MOD.LBL_BUTTON_NEXT}"
 					class		= "button"
 					{$disableNextForLicense}
- 					onclick	= " handleUploadCheck('{$step}', {$u_allow}); if(!{$u_allow}) return; upgradeP('{$step}');this.form.step.value='{$STEP_NEXT}'; handlePreflight('{$step}'); document.getElementById('form').submit();"
+ 					onclick	= " handleUploadCheck('{$step}', {$u_allow}); if(!{$u_allow}) return; upgradeP('{$step}');document.getElementById('form').step.value='{$STEP_NEXT}'; handlePreflight('{$step}'); document.getElementById('form').submit();"
 					type		= "button"
 					value		= "  {$MOD.LBL_BUTTON_NEXT}  "
 					id			= "next_button" >
@@ -93,14 +93,14 @@
 		{if $showCancel}
 			<input	title		= "{$MOD.LBL_BUTTON_CANCEL}"
 					class		= "button"
-					onclick		= "cancelUpgrade();this.form.step.value='{$STEP_CANCEL}';"
+					onclick		= "cancelUpgrade();document.getElementById('form').step.value='{$STEP_CANCEL}';"
 					type		= "submit"
 					value		= "  {$MOD.LBL_BUTTON_CANCEL}  ">
 		{/if}
 		{if $showRecheck}
 			<input	title		= "{$MOD.LBL_BUTTON_RECHECK}"
 					class		= "button"
-					onclick		= "this.form.step.value='{$STEP_RECHECK}';"
+					onclick		= "document.getElementById('form').step.value='{$STEP_RECHECK}';"
 					type		= "submit"
 					value		= "  {$MOD.LBL_BUTTON_RECHECK}  ">
 		{/if}
@@ -178,7 +178,7 @@
 		{if $showBack}
 			<input	title		= "{$MOD.LBL_BUTTON_BACK}"
 					class		= "button"
-					onclick		= "this.form.step.value='{$STEP_BACK}';"
+					onclick		= "document.getElementById('form').step.value='{$STEP_BACK}';"
 					type		= "submit"
 					value		= "  {$MOD.LBL_BUTTON_BACK}  ">
 		{/if}
@@ -186,7 +186,7 @@
 			<input	title		= "{$MOD.LBL_BUTTON_NEXT}"
 					class		= "button"
 					{$disableNextForLicense}
- 					onclick	= " handleUploadCheck('{$step}', {$u_allow}); if(!{$u_allow}) return; upgradeP('{$step}');this.form.step.value='{$STEP_NEXT}'; handlePreflight('{$step}'); document.getElementById('form').submit();"
+ 					onclick	= " handleUploadCheck('{$step}', {$u_allow}); if(!{$u_allow}) return; upgradeP('{$step}');document.getElementById('form').step.value='{$STEP_NEXT}'; handlePreflight('{$step}'); document.getElementById('form').submit();"
 					type		= "button"
 					value		= "  {$MOD.LBL_BUTTON_NEXT}  "
 					id			= "next_button" >
@@ -194,14 +194,14 @@
 		{if $showCancel}
 			<input	title		= "{$MOD.LBL_BUTTON_CANCEL}"
 					class		= "button"
-					onclick		= "cancelUpgrade();this.form.step.value='{$STEP_CANCEL}';"
+					onclick		= "cancelUpgrade();document.getElementById('form').step.value='{$STEP_CANCEL}';"
 					type		= "submit"
 					value		= "  {$MOD.LBL_BUTTON_CANCEL}  ">
 		{/if}
 		{if $showRecheck}
 			<input	title		= "{$MOD.LBL_BUTTON_RECHECK}"
 					class		= "button"
-					onclick		= "this.form.step.value='{$STEP_RECHECK}';"
+					onclick		= "document.getElementById('form').step.value='{$STEP_RECHECK}';"
 					type		= "submit"
 					value		= "  {$MOD.LBL_BUTTON_RECHECK}  ">
 		{/if}

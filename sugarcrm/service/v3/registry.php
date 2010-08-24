@@ -49,11 +49,6 @@ class registry_v3 extends registry {
 		parent::registerFunction();
 
 		$this->serviceClass->registerFunction(
-		    'get_module_layout_md5',
-		    array('session'=>'xsd:string', 'module_name'=>'xsd:string', 'type'=>'xsd:string', 'view'=>'xsd:string'),
-		    array('return'=>'xsd:string'));	 
-		        
-		$this->serviceClass->registerFunction(
 		    'get_module_fields_md5',
 		    array('session'=>'xsd:string', 'module_name'=>'xsd:string'),
 		    array('return'=>'xsd:string'));	 

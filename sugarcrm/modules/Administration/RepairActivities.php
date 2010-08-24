@@ -36,7 +36,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  ********************************************************************************/
 if(!is_admin($current_user)) sugar_die("Unauthorized access to administration.");
 
-
+require_once('modules/Calendar/DateTimeUtil.php');
 
 global $timedate;
 

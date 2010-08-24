@@ -51,7 +51,9 @@ global $app_strings;
 
 
 $rawsource = false;
-
+if(!empty($_REQUEST['body_html_value'])){
+	$_REQUEST['body_html'] = $_REQUEST['body_html_value'];
+}
 if(!empty($_REQUEST['body_html'])){
   $dir_path = "{$GLOBALS['sugar_config']['cache_dir']}generated_forms/";
   if(!file_exists($dir_path)){

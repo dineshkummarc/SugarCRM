@@ -173,7 +173,7 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices {
 			foreach($value->field_defs as $var){
 				if(!empty($fields) && !in_array( $var['name'], $fields))continue;
 				if(isset($var['source']) && ($var['source'] != 'db' && $var['source'] != 'non-db' &&$var['source'] != 'custom_fields') && $var['name'] != 'email1' && $var['name'] != 'email2' && (!isset($var['type'])|| $var['type'] != 'relate'))continue;
-				if ($var['source'] == 'non_db' && (isset($var['type']) && $var['type'] != 'link')) {
+				if ((isset($var['source']) && $var['source'] == 'non_db') || (isset($var['type']) && $var['type'] == 'link')) {
 					continue;
 				}
 				$required = 0;
@@ -181,7 +181,7 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices {
 				$options_ret = array();
 				// Apparently the only purpose of this check is to make sure we only return fields
 				//   when we've read a record.  Otherwise this function is identical to get_module_field_list
-				if( isset($var['required']) && ($var['required'] || $var['required'] == 'true') ){
+				if( isset($var['required']) && ($var['required'] || $var['required'] == 'true' ) ){
 					$required = 1;
 				}
 				

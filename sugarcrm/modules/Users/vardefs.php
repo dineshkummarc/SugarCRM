@@ -113,6 +113,7 @@ $dictionary['User'] = array(
             'type' => 'name',
             'len' => '30',
             'importable' => 'required',
+        	'required' => true,
         ) ,
         'full_name' => array(
             'name' => 'full_name',
