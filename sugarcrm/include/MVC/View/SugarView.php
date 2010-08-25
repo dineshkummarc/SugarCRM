@@ -624,7 +624,7 @@ EOHTML;
                 echo "<script>var action_sugar_grp1 = '{$_REQUEST['action']}';</script>";
             }
             echo '<script>jscal_today = ' . (1000*strtotime($GLOBALS['timedate']->handle_offset(gmdate($GLOBALS['timedate']->get_db_date_time_format()), $GLOBALS['timedate']->get_db_date_time_format()))) . '; if(typeof app_strings == "undefined") app_strings = new Array();</script>';
-	        if (!is_file("include/javascript/sugar_grp1.js")) {
+	        if (!is_file("include/javascript/sugar_grp1.js") || !is_file("include/javascript/sugar_grp1_yui.js")) {
 	        	$_REQUEST['root_directory'] = ".";
 	        	require_once("jssource/minify_utils.php");
 	        	ConcatenateFiles(".");

@@ -117,7 +117,7 @@ function isValidEmail(emailStr){if(emailStr.length==0){return true;}
 var lastChar=emailStr.charAt(emailStr.length-1);if(!lastChar.match(/[^\.]/i)){return false;}
 var reg=/@.*?;/g;while((results=reg.exec(emailStr))!=null){orignial=results[0];parsedResult=results[0].replace(';','::;::');emailStr=emailStr.replace(orignial,parsedResult);}
 reg=/@.*?,/g;while((results=reg.exec(emailStr))!=null){orignial=results[0];parsedResult=results[0].replace(',','::;::');emailStr=emailStr.replace(orignial,parsedResult);}
-var emailArr=emailStr.split(/::;::/);for(var i=0;i<emailArr.length;i++){emailAddress=emailArr[i];if(trim(emailAddress)!=''){if(!/^\s*[\w.%+\-&'\/]+\w+@([A-Z0-9-]+\.)*[A-Z0-9-]+\.[\w-]{2,}\s*$/i.test(emailAddress)&&!/^.*<[A-Z0-9._%+\-&']+?@([A-Z0-9-]+\.)*[A-Z0-9-]+\.[\w-]{2,}>\s*$/i.test(emailAddress)){return false;}}}
+var emailArr=emailStr.split(/::;::/);for(var i=0;i<emailArr.length;i++){emailAddress=emailArr[i];if(trim(emailAddress)!=''){if(!/^\s*[\w.%+\-&'\/]+@([A-Z0-9-]+\.)*[A-Z0-9-]+\.[\w-]{2,}\s*$/i.test(emailAddress)&&!/^.*<[A-Z0-9._%+\-&']+?@([A-Z0-9-]+\.)*[A-Z0-9-]+\.[\w-]{2,}>\s*$/i.test(emailAddress)){return false;}}}
 return true;}
 function isValidPhone(phoneStr){if(phoneStr.length==0){return true;}
 if(!/^[0-9\-\(\)\s]+$/.test(phoneStr))
@@ -571,6 +571,7 @@ if((navigator.userAgent.match(/iPad/i)!=null)){return true;}
 return false;}
 SUGAR.util.isLoginPage=function(content)
 {var loginPageStart="<!DOCTYPE";if(content.substr(0,loginPageStart.length)==loginPageStart&&content.indexOf("<html>")!=-1){window.location.href=window.location.protocol+window.location.pathname;return true;}}
+SUGAR.util.ajaxCallInProgress=function(){return SUGAR_callsInProgress!=0;}
 SUGAR.util.closeActivityPanel={show:function(module,id,new_status,viewType,parentContainerId){if(SUGAR.util.closeActivityPanel.panel)
 SUGAR.util.closeActivityPanel.panel.destroy();var singleModule=SUGAR.language.get("app_list_strings","moduleListSingular")[module];singleModule=typeof(singleModule!='undefined')?singleModule.toLowerCase():'';var closeText=SUGAR.language.get("app_strings","LBL_CLOSE_ACTIVITY_CONFIRM").replace("#module#",singleModule);SUGAR.util.closeActivityPanel.panel=new YAHOO.widget.SimpleDialog("closeActivityDialog",{width:"300px",fixedcenter:true,visible:false,draggable:false,close:true,text:closeText,constraintoviewport:true,buttons:[{text:SUGAR.language.get("app_strings","LBL_EMAIL_OK"),handler:function(){if(SUGAR.util.closeActivityPanel.panel)
 SUGAR.util.closeActivityPanel.panel.hide();ajaxStatus.showStatus(SUGAR.language.get('app_strings','LBL_SAVING'));var args="action=save&id="+id+"&status="+new_status+"&module="+module;var callback={success:function(o)

@@ -1,5 +1,3 @@
-<?php
- if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 /*********************************************************************************
  * SugarCRM is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2010 SugarCRM Inc.
@@ -36,11 +34,15 @@
  ********************************************************************************/
 
 
+SUGAR_callsInProgress = 0;
 
-$sugar_version      = '6.1.0beta';
-$sugar_db_version   = '6.1.0beta';
-$sugar_flavor       = 'CE';
-$sugar_build		= '5140';
-$sugar_timestamp    = '2010-08-24 05:02pm';
+YAHOO.util.Connect.completeEvent.subscribe(function(event, data){
+	SUGAR_callsInProgress--;
+	if (SUGAR.util.isLoginPage(data[0].conn.responseText))
+		return false;
+});
 
-?>
+YAHOO.util.Connect.startEvent.subscribe(function(event, data)
+{
+	SUGAR_callsInProgress++;
+});

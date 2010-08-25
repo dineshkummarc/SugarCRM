@@ -50,7 +50,7 @@ class SugarEmailAddress extends SugarBean {
     var $module_name = "EmailAddresses";
     var $module_dir = 'EmailAddresses';
     var $object_name = 'EmailAddress';
-    var $regex = "/^\w+(['\.\-\+\/]?\w+)*@((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|\w+([\.-]?\w+)*(\.[\w-]{2,})+)\$/";
+    var $regex = "/^\w+(['\.\-\+\/\w]+)*@((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|\w+([\.-]?\w+)*(\.[\w-]{2,})+)\$/";
 
     var $db;
     var $smarty;

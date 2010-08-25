@@ -37,7 +37,7 @@
 <div>&nbsp;
 <link rel="stylesheet" type="text/css" href="modules/ModuleBuilder/tpls/ListEditor.css"></link>
 <link rel="stylesheet" type="text/css" href="modules/ModuleBuilder/tpls/MBModule/dropdown.css"></link> 
-<form name='dropdown_form'>
+<form name='dropdown_form' onsubmit = "return false">
 <input type='hidden' name='module' value='ModuleBuilder'>
 <input type='hidden' name='action' value='{$action}'>
 <input type='hidden' name='to_pdf' value='true'>

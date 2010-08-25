@@ -651,7 +651,7 @@ class Sugarpdf extends TCPDF
             ini_set('zlib.output_compression', 'Off');
         }
         
-        parent::Output($name,$dest);
+        return parent::Output($name,$dest);
     }
 }
 

@@ -99,6 +99,7 @@ class ViewConvertLead extends SugarView
         {
             $bean = $beanList[$module];
             $focus = new $bean();
+            $focus->fill_in_additional_detail_fields();
             foreach($focus->field_defs as $field => $def)
             {
             	

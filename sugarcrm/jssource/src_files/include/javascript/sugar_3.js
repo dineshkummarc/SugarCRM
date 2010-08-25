@@ -518,7 +518,7 @@ function isValidEmail(emailStr) {
 	for (var i = 0; i < emailArr.length; i++) {
 		emailAddress = emailArr[i];
 		if (trim(emailAddress) != '') {
-			if(!/^\s*[\w.%+\-&'\/]+\w+@([A-Z0-9-]+\.)*[A-Z0-9-]+\.[\w-]{2,}\s*$/i.test(emailAddress) &&
+			if(!/^\s*[\w.%+\-&'\/]+@([A-Z0-9-]+\.)*[A-Z0-9-]+\.[\w-]{2,}\s*$/i.test(emailAddress) &&
 			   !/^.*<[A-Z0-9._%+\-&']+?@([A-Z0-9-]+\.)*[A-Z0-9-]+\.[\w-]{2,}>\s*$/i.test(emailAddress)) {
 	
 			   return false;
@@ -3901,6 +3901,10 @@ SUGAR.util.isLoginPage = function(content)
 		window.location.href = window.location.protocol + window.location.pathname;
 		return true;
 	}
+}
+
+SUGAR.util.ajaxCallInProgress = function(){
+	return SUGAR_callsInProgress != 0;
 }
 
 SUGAR.util.closeActivityPanel = {
