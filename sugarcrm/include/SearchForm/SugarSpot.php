@@ -51,7 +51,8 @@ class SugarSpot
 	    $offset = -1
 	    )
 	{
-		$results = $this->_performSearch($query, $modules, $offset);
+		$query_encoded = urlencode($query);
+	    $results = $this->_performSearch($query, $modules, $offset);
 		$str = '<div id="SpotResults">';
 		$actions=0;
 		$foundData = false;
@@ -92,7 +93,7 @@ EOHTML;
 			$str.= '</ul>';
 		}
 		$str .= <<<EOHTML
-<button onclick="document.location.href='index.php?module=Home&action=UnifiedSearch&search_form=false&advanced=false&query_string={$query}'">{$GLOBALS['app_strings']['LBL_EMAIL_SHOW_READ']}</button>
+<button onclick="document.location.href='index.php?module=Home&action=UnifiedSearch&search_form=false&advanced=false&query_string={$query_encoded}'">{$GLOBALS['app_strings']['LBL_EMAIL_SHOW_READ']}</button>
 </div>
 EOHTML;
 		return $str;

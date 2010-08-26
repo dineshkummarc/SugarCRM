@@ -57,7 +57,7 @@ function getDurationMinutesOptions($focus, $field, $value, $view) {
    
     if($view == 'EditView' || $view == 'MassUpdate' || $view == "QuickCreate"
     ) {
-       $html = '<select ';
+       $html = '<select id="duration_minutes"';
        if($view != 'MassUpdate' 
        	)
        		$html .= 'onchange="SugarWidgetScheduler.update_time();"';
@@ -86,7 +86,7 @@ function getReminderTime($focus, $field, $value, $view) {
 	if($view == 'EditView' || $view == 'MassUpdate' || $view == "SubpanelCreates" || $view == "QuickCreate"
     ) {
 		global $app_list_strings;
-        $html = '<select name="reminder_time">';
+        $html = '<select id="reminder_time" name="reminder_time">';
         $html .= get_select_options_with_id($app_list_strings['reminder_time_options'], $reminder_t);
         $html .= '</select>';
         return $html;

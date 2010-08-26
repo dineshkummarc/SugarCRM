@@ -361,7 +361,7 @@ function disableReturnSubmission(e) {
             class="button" type="button" name="next_tab1" value="  {$MOD.LBL_WIZARD_BACK_BUTTON}  "
             onclick="SugarWizard.changeScreen('locale',true);" />&nbsp;
         <input title="{$MOD.LBL_WIZARD_CONTINUE_BUTTON}" class="button primary"
-            type="submit" name="continue" value="{$MOD.LBL_WIZARD_CONTINUE_BUTTON}" />&nbsp;
+            onclick="adjustEmailSettings(); this.form.submit();" type="button" name="continue" value="{$MOD.LBL_WIZARD_CONTINUE_BUTTON}" />&nbsp;
     </div>
 </div>
 			</div>
@@ -508,6 +508,19 @@ var SugarWizard = new function()
 } 
 SugarWizard.changeScreen('{/literal}{$START_PAGE}{literal}');
 document.onkeypress = SugarWizard.handleKeyStroke;
+
+function adjustEmailSettings(){
+    if( !document.getElementById('mail_smtpserver').value ||
+		!document.getElementById('mail_smtpuser').value ||
+		!document.getElementById('mail_smtppass').value ||
+		!document.getElementById('mail_smtpport').value)
+	{
+			document.getElementById('mail_smtpserver').value = null;
+			document.getElementById('mail_smtpuser').value = null;
+			document.getElementById('mail_smtppass').value = null;
+			document.getElementById('mail_smtpport').value = null;
+    }
+}
 
 function clearEmailFields() { 
  	document.getElementById('AdminWizard').mail_smtpuser.value = '';
