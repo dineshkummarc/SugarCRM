@@ -42,7 +42,7 @@ class TemplateField{
 		-list
 		-detail
 		-search
-	*/
+		*/
 	var $view = 'edit';
 	var $name = '';
 	var $vname = '';
@@ -62,7 +62,7 @@ class TemplateField{
 	var $audited= 0;
 	var $massupdate = 0;
 	var $importable = 'true' ;
-    var $duplicate_merge=0;
+	var $duplicate_merge=0;
 	var $new_field_definition;
 	var $reportable = true;
 	var $label_value = '';
@@ -72,12 +72,12 @@ class TemplateField{
 	var $vardef_map = array(
 		'name'=>'name',
 		'label'=>'vname',
-		// bug 15801 - need to ALWAYS keep default and default_value consistent as some methods/classes use one, some use another...
+	// bug 15801 - need to ALWAYS keep default and default_value consistent as some methods/classes use one, some use another...
 		'default_value'=>'default',
 		'default'=>'default_value',
 		'display_default'=>'default_value',
-//		'default_value'=>'default_value',
-//		'default'=>'default_value',
+	//		'default_value'=>'default_value',
+	//		'default'=>'default_value',
 		'len'=>'len',
 		'required'=>'required',
 		'type'=>'type',
@@ -95,13 +95,13 @@ class TemplateField{
 		'max'=>'ext2',
 		'ext2'=>'ext2',
 		'ext4'=>'ext4',
-	    //'disable_num_format'=>'ext3',
+	//'disable_num_format'=>'ext3',
 	    'ext3'=>'ext3',
 		'label_value'=>'label_value',
 	);
 	/*
 		HTML FUNCTIONS
-	*/
+		*/
 	function get_html(){
 		$view = $this->view;
 		if(!empty($GLOBALS['studioReadOnlyFields'][$this->name]))$view = 'detail';
@@ -165,7 +165,7 @@ class TemplateField{
 
 	/*
 		XTPL FUNCTIONS
-	*/
+		*/
 
 	function get_xtpl($bean = false){
 		if($bean)
@@ -210,7 +210,7 @@ class TemplateField{
 
 	/*
 		DB FUNCTIONS
-	*/
+		*/
 
 	function get_db_type(){
 		switch($GLOBALS['db']->dbType){
@@ -228,8 +228,8 @@ class TemplateField{
 					return " DEFAULT NULL";
 				}
 				else {
-				    return " DEFAULT '$this->default_value'";	
-				}				
+					return " DEFAULT '$this->default_value'";
+				}
 			}else{
 				return '';
 			}
@@ -245,66 +245,66 @@ class TemplateField{
 	 */
 
 	function get_db_required($modify=false){
-//		$GLOBALS['log']->debug('get_db_required required='.$this->required." and ".(($modify)?"true":"false")." and ".print_r($this->new_field_definition,true));
-        $req = "";
+		//		$GLOBALS['log']->debug('get_db_required required='.$this->required." and ".(($modify)?"true":"false")." and ".print_r($this->new_field_definition,true));
+		$req = "";
 
 		if ($modify) {
-        	if (!empty($this->new_field_definition['required'])) {
-        		if ($this->required and $this->new_field_definition['required'] != $this->required) {
-        			$req = " NULL ";
-        		}
-        	}
-        	else
-        	{
-        		$req = ($this->required) ? " NOT NULL " : ''; // bug 17184 tyoung - set required correctly when modifying custom field in Studio
-        	}
-        }
-        else
-        {
-        	if (empty($this->new_field_definition['required']) or $this->new_field_definition['required'] != $this->required ) {
-        		if(!empty($this->required) && $this->required){
-        			$req = " NOT NULL";
-        		}
-        	}
-        }
-
-        return $req;
-	}
-
-/*	function get_db_required($modify=false){
-		$GLOBALS['log']->debug('get_db_required required='.$this->required." and ".(($modify)?"true":"false")." and ".print_r($this->new_field_definition,true));
-        if ($modify) {
-        	if (!empty($this->new_field_definition['required'])) {
-        		if ($this->required and $this->new_field_definition['required'] != $this->required) {
-        			return " null ";
-        		}
-        		return "";
-        	}
-        }
-		if (empty($this->new_field_definition['required']) or $this->new_field_definition['required'] != $this->required ) {
-			if(!empty($this->required) && $this->required){
-				return " NOT NULL";
+			if (!empty($this->new_field_definition['required'])) {
+				if ($this->required and $this->new_field_definition['required'] != $this->required) {
+					$req = " NULL ";
+				}
+			}
+			else
+			{
+				$req = ($this->required) ? " NOT NULL " : ''; // bug 17184 tyoung - set required correctly when modifying custom field in Studio
 			}
 		}
-        return '';
+		else
+		{
+			if (empty($this->new_field_definition['required']) or $this->new_field_definition['required'] != $this->required ) {
+				if(!empty($this->required) && $this->required){
+					$req = " NOT NULL";
+				}
+			}
+		}
+
+		return $req;
 	}
-*/
+
+	/*	function get_db_required($modify=false){
+		$GLOBALS['log']->debug('get_db_required required='.$this->required." and ".(($modify)?"true":"false")." and ".print_r($this->new_field_definition,true));
+		if ($modify) {
+		if (!empty($this->new_field_definition['required'])) {
+		if ($this->required and $this->new_field_definition['required'] != $this->required) {
+		return " null ";
+		}
+		return "";
+		}
+		}
+		if (empty($this->new_field_definition['required']) or $this->new_field_definition['required'] != $this->required ) {
+		if(!empty($this->required) && $this->required){
+		return " NOT NULL";
+		}
+		}
+		return '';
+		}
+		*/
 	/**
 	 * Oracle Support: do not set required constraint if no default value is supplied.
 	 * In this case the default value will be handled by the application/sugarbean.
 	 */
 	function get_db_add_alter_table($table)
-    {
+	{
 		return $GLOBALS['db']->getHelper()->addColumnSQL($table, $this->get_field_def(), true);
 	}
 
-    function get_db_delete_alter_table($table)
-    {
-        return $GLOBALS['db']->getHelper()->dropColumnSQL(
-            $table,
-            $this->get_field_def()
-            );
-    }
+	function get_db_delete_alter_table($table)
+	{
+		return $GLOBALS['db']->getHelper()->dropColumnSQL(
+		$table,
+		$this->get_field_def()
+		);
+	}
 
 	/**
 	 * mysql requires the datatype caluse in the alter statment.it will be no-op anyway.
@@ -315,20 +315,20 @@ class TemplateField{
 		$db_required=$this->get_db_required(true);
 		switch ($GLOBALS['db']->dbType) {
 
-            case "mssql":
-                //Bug 21772: MSSQL handles alters in strange ways. Defer to DBHelpers guidance.
-                $query = $db->helper->alterColumnSQL($table, $this->get_field_def());
-                return $query;
-                break;
+			case "mssql":
+				//Bug 21772: MSSQL handles alters in strange ways. Defer to DBHelpers guidance.
+				$query = $db->helper->alterColumnSQL($table, $this->get_field_def());
+				return $query;
+				break;
 
-            case "mysql":
-                $query="ALTER TABLE $table MODIFY $this->name " .$this->get_db_type();
-                break;
-            default:
-                $query="ALTER TABLE $table MODIFY $this->name " .$this->get_db_type();;
-                break;
+			case "mysql":
+				$query="ALTER TABLE $table MODIFY $this->name " .$this->get_db_type();
+				break;
+			default:
+				$query="ALTER TABLE $table MODIFY $this->name " .$this->get_db_type();;
+				break;
 
-        }
+		}
 		if (!empty($db_default) && !empty($db_required)) {
 			$query .= $db_default . $db_required ;
 		} else if (!empty($db_default)) {
@@ -358,58 +358,58 @@ class TemplateField{
 			'duplicate_merge_dom_value'=> isset($this->duplicate_merge_dom_value) ? $this->duplicate_merge_dom_value : $this->duplicate_merge,
 			'audited'=>$this->convertBooleanValue($this->audited),
 			'reportable'=>$this->convertBooleanValue($this->reportable),
-			);
-			if(!empty($this->len)){
-				$array['len'] = $this->len;
-			}
-			if(!empty($this->size)){
-				$array['size'] = $this->size;
-			}
-			$this->get_dup_merge_def($array);
-			return $array;
+		);
+		if(!empty($this->len)){
+			$array['len'] = $this->len;
+		}
+		if(!empty($this->size)){
+			$array['size'] = $this->size;
+		}
+		$this->get_dup_merge_def($array);
+		return $array;
 	}
-	
+
 	protected function convertBooleanValue($value)
-    {
-    	if ($value === 'true' || $value === '1' || $value === 1)
-        	return  true;
-        else if ($value === 'false' || $value === '0' || $value === 0) 
-        	return  false;
-        else
-        	return $value;
-    }
+	{
+		if ($value === 'true' || $value === '1' || $value === 1)
+		return  true;
+		else if ($value === 'false' || $value === '0' || $value === 0)
+		return  false;
+		else
+		return $value;
+	}
 
 
-    /* if the field is duplicate merge enabled this function will return the vardef entry for the same.
-     */
-    function get_dup_merge_def(&$def) {
+	/* if the field is duplicate merge enabled this function will return the vardef entry for the same.
+	 */
+	function get_dup_merge_def(&$def) {
 
-        switch ($def['duplicate_merge_dom_value']) {
-            case 0:
-                $def['duplicate_merge']='disabled';
-                break;
-            case 1:
-                $def['duplicate_merge']='enabled';
-                break;
-            case 2:
-                $def['merge_filter']='enabled';
-                $def['duplicate_merge']='enabled';
-                break;
-            case 3:
-                $def['merge_filter']='selected';
-                $def['duplicate_merge']='enabled';
-                break;
-            case 4:
-                $def['merge_filter']='enabled';
-                $def['duplicate_merge']='disabled';
-                break;
-        }
+		switch ($def['duplicate_merge_dom_value']) {
+			case 0:
+				$def['duplicate_merge']='disabled';
+				break;
+			case 1:
+				$def['duplicate_merge']='enabled';
+				break;
+			case 2:
+				$def['merge_filter']='enabled';
+				$def['duplicate_merge']='enabled';
+				break;
+			case 3:
+				$def['merge_filter']='selected';
+				$def['duplicate_merge']='enabled';
+				break;
+			case 4:
+				$def['merge_filter']='enabled';
+				$def['duplicate_merge']='disabled';
+				break;
+		}
 
-    }
+	}
 
 	/*
 		HELPER FUNCTIONS
-	*/
+		*/
 
 
 	function prepare(){
@@ -421,13 +421,13 @@ class TemplateField{
 	/**
 	 * populateFromRow
 	 * This function supports setting the values of all TemplateField instances.
-     * @param $row The Array key/value pairs from fields_meta_data table
+	 * @param $row The Array key/value pairs from fields_meta_data table
 	 */
 	function populateFromRow($row=array()) {
 		$fmd_to_dyn_map = array('comments' => 'comment', 'require_option' => 'required', 'label' => 'vname',
 							    'mass_update' => 'massupdate', 'max_size' => 'len', 'default_value' => 'default');
 		if(!is_array($row)) {
-		   $GLOBALS['log']->error("Error: TemplateField->populateFromRow expecting Array");
+			$GLOBALS['log']->error("Error: TemplateField->populateFromRow expecting Array");
 		}
 		//Bug 24189: Copy fields from FMD format to Field objects
 		foreach ($fmd_to_dyn_map as $fmd_key => $dyn_key) {
@@ -435,9 +435,9 @@ class TemplateField{
 				$this->$dyn_key = $row[$fmd_key];
 			}
 		}
-	    foreach($row as	$key=>$value) {
-	       $this->$key = $value;
-	    }
+		foreach($row as	$key=>$value) {
+			$this->$key = $value;
+		}
 	}
 
 	function populateFromPost(){
@@ -449,8 +449,13 @@ class TemplateField{
 				}
 			}
 		}
+		$this->applyVardefRules();
 		$GLOBALS['log']->debug('populate: '.print_r($this,true));
 
+	}
+
+	protected function applyVardefRules()
+	{
 	}
 
 	function get_additional_defs(){
@@ -462,7 +467,7 @@ class TemplateField{
 	}
 
 	function save($df){
-//	    $GLOBALS['log']->debug('saving field: '.print_r($this,true));
+		//	    $GLOBALS['log']->debug('saving field: '.print_r($this,true));
 		$df->addFieldObject($this);
 	}
 

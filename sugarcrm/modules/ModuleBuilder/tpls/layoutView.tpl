@@ -245,10 +245,11 @@ Studio2.checkGridLayout = function()
 	   return false;
 	}
 	{/literal}
-	   {if $view != "detailview"}	
-	return Studio2.checkRequiredFields();
+	   {if $view == "detailview"}	
+	       return true;  
 	   {else}
-	return true;   
+    return Studio2.checkRequiredFields();
+	 
 	   {/if}
 	{literal}
 }

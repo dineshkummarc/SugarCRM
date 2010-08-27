@@ -524,9 +524,6 @@ class CalendarActivity
 
 		$where = "($field_date >= '{$start_day['start']}' AND $field_date < '{$end_day['start']}'";
 
-		if($rel_table != '') {
-			$where .= " AND $rel_table.accept_status != 'decline'";
-		}
 		$where .= ")";
 		return $where;
 	}

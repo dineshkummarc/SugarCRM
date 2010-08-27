@@ -188,9 +188,14 @@ EOQ;
 				} // if
 			} // foreach
 		} // if
-		
-		$focus->body_html = $emailTemplateBodyHtml;
-		$return_id = $focus->save();
+		if (isset($GLOBALS['check_notify'])) {
+            $check_notify = $GLOBALS['check_notify'];
+        }
+        else {
+            $check_notify = FALSE;
+        }
+        $focus->body_html = $emailTemplateBodyHtml;
+        $return_id = $focus->save($check_notify);
 		///////////////////////////////////////////////////////////////////////////////
 		////	ATTACHMENT HANDLING
 

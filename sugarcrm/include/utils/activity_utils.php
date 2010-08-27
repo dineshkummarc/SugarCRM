@@ -38,15 +38,15 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 function build_related_list_by_user_id($bean, $user_id,$where) {
 	$bean_id_name = strtolower($bean->object_name).'_id';
 
-	$select = "SELECT {$bean->table_name}.* from {$bean->rel_users_table},{$bean->table_name} ";
-
+	$select = "SELECT {$bean->table_name}.* from {$bean->table_name} LEFT JOIN {$bean->rel_users_table} on {$bean->rel_users_table}.{$bean_id_name}={$bean->table_name}.id ";
+	
 	$auto_where = ' WHERE ';
 	if(!empty($where)) {
 		$auto_where .= $where. ' AND ';
 	}
 
-	$auto_where .= " {$bean->rel_users_table}.{$bean_id_name}={$bean->table_name}.id AND {$bean->rel_users_table}.user_id='{$user_id}' AND {$bean->table_name}.deleted=0 AND {$bean->rel_users_table}.deleted=0";
-
+	$auto_where .= " (({$bean->rel_users_table}.user_id='{$user_id}' AND {$bean->rel_users_table}.accept_status != 'decline'  AND {$bean->rel_users_table}.deleted=0) OR {$bean->table_name}.assigned_user_id='{$user_id}' ) AND {$bean->table_name}.deleted=0 ";	
+	
 
 	$query = $select.$auto_where;
 

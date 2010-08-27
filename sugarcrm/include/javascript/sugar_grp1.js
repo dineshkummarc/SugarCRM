@@ -577,9 +577,8 @@ SUGAR.util.closeActivityPanel.panel.destroy();var singleModule=SUGAR.language.ge
 SUGAR.util.closeActivityPanel.panel.hide();ajaxStatus.showStatus(SUGAR.language.get('app_strings','LBL_SAVING'));var args="action=save&id="+id+"&status="+new_status+"&module="+module;var callback={success:function(o)
 {if(viewType=='dashlet')
 {SUGAR.mySugar.retrieveDashlet(o.argument['parentContainerId']);ajaxStatus.hideStatus();}
-else if(viewType=='subpanel')
-showSubPanel(o.argument['parentContainerId'],null,true);else if(viewType=='listview')
-document.location='index.php?module='+module+'&action=index';},argument:{'parentContainerId':parentContainerId}};YAHOO.util.Connect.asyncRequest('POST','index.php',callback,args);},isDefault:true},{text:SUGAR.language.get("app_strings","LBL_EMAIL_CANCEL"),handler:function(){SUGAR.util.closeActivityPanel.panel.hide();}}]});SUGAR.util.closeActivityPanel.panel.setHeader(SUGAR.language.get("app_strings","LBL_CLOSE_ACTIVITY_HEADER"));SUGAR.util.closeActivityPanel.panel.render(document.body);SUGAR.util.closeActivityPanel.panel.show();}}// End of File include/javascript/sugar_3.js
+else if(viewType=='subpanel'){showSubPanel(o.argument['parentContainerId'],null,true);if(o.argument['parentContainerId']=='activities'){showSubPanel('history',null,true);}
+ajaxStatus.hideStatus();}else if(viewType=='listview'){document.location='index.php?module='+module+'&action=index';}},argument:{'parentContainerId':parentContainerId}};YAHOO.util.Connect.asyncRequest('POST','index.php',callback,args);},isDefault:true},{text:SUGAR.language.get("app_strings","LBL_EMAIL_CANCEL"),handler:function(){SUGAR.util.closeActivityPanel.panel.hide();}}]});SUGAR.util.closeActivityPanel.panel.setHeader(SUGAR.language.get("app_strings","LBL_CLOSE_ACTIVITY_HEADER"));SUGAR.util.closeActivityPanel.panel.render(document.body);SUGAR.util.closeActivityPanel.panel.show();}}// End of File include/javascript/sugar_3.js
                                 
 /*********************************************************************************
  * SugarCRM is a customer relationship management program developed by

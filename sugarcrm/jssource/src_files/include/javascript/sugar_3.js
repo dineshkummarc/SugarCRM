@@ -3937,10 +3937,16 @@ SUGAR.util.closeActivityPanel = {
                                     SUGAR.mySugar.retrieveDashlet(o.argument['parentContainerId']);
                                     ajaxStatus.hideStatus();
                                 }
-                                else if(viewType == 'subpanel')
+                                else if(viewType == 'subpanel'){
                                     showSubPanel(o.argument['parentContainerId'],null,true);
-                                else if(viewType == 'listview')
+									if(o.argument['parentContainerId'] == 'activities'){
+										showSubPanel('history',null,true);
+									}
+									ajaxStatus.hideStatus();
+
+                                }else if(viewType == 'listview'){
                                     document.location = 'index.php?module=' + module +'&action=index';
+									}
                             },
                             argument:{'parentContainerId':parentContainerId}
                         };

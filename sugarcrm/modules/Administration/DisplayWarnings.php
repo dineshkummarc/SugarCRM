@@ -76,7 +76,8 @@ if(!empty($_SESSION['EXCEEDING_OC_LICENSES']) && $_SESSION['EXCEEDING_OC_LICENSE
 }
 if(isset($license) && !empty($license->settings['license_msg_admin'])){
     // UUDDLRLRBA
-	displayAdminError(base64_decode($license->settings['license_msg_admin']));
+	$GLOBALS['log']->fatal(base64_decode($license->settings['license_msg_admin']));
+    //displayAdminError(base64_decode($license->settings['license_msg_admin']));
 	return;
 }
 

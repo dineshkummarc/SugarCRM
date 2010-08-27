@@ -286,13 +286,6 @@ $uwMain = $upgrade_directories_not_found;
 		 		$copiedFiles = $split['copiedFiles'];
 		 		$skippedFiles = $split['skippedFiles'];
 				set_upgrade_progress('commit','in_progress','commitCopyNewFiles','done');
-
-				/// RELOAD to have new files loaded
-				LanguageManager::clearLanguageCache();
-				logThis('Reloading....');
-				$query=http_build_query($_REQUEST);
-				header("Location: index.php?$query");
-				exit();
          }
 		 //END COPY NEW FILES INTO TARGET INSTANCE
     ///////////////////////////////////////////////////////////////////////////////
@@ -559,17 +552,6 @@ commitHandleReminders($skippedFiles);
 ////	HANDLE REMINDERS
 ///////////////////////////////////////////////////////////////////////////////
 
-
-if(!didThisStepRunBefore('commit','cleanAll')){
-			set_upgrade_progress('commit','in_progress','cleanAll','done');
-			SugarThemeRegistry::buildRegistry();
-			SugarThemeRegistry::clearAllCaches();
-			/// RELOAD to have new files loaded
-			logThis('Reloading....');
-			$query=http_build_query($_REQUEST);
-			header("Location: index.php?$query");
-			exit();
-         }
 
 logThis("Resetting error_reporting() to system level.");
 error_reporting($standardErrorLevel);
