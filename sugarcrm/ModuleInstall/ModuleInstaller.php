@@ -2295,7 +2295,13 @@ private function dir_file_count($path){
 
 	public function reset_opcodes()
     {
-    	sugar_clean_opcodes();
+        /* Bug 39354 - added function_exists check. Not optimal fix, but safe nonetheless.
+         * This is for the upgrade to 6.1 from pre 6.1, since the utils files haven't been updated to 6.1 when this is called,
+         * but this file has been updated to 6.1
+         */
+        if(function_exists('sugar_clean_opcodes')){
+            sugar_clean_opcodes();
+        }
     }
 
 }

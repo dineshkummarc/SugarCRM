@@ -40,6 +40,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 global $current_user;
 
 $dashletData['MyMeetingsDashlet']['searchFields'] = array('name'             => array('default' => ''),
+                                                          'status'           => array('default' => array('Planned')),
                                                           'date_start'       => array('default' => ''),
                                                           'date_entered'     => array('default' => ''),
                                                           'assigned_user_id' => array('type'    => 'assigned_user_name', 
