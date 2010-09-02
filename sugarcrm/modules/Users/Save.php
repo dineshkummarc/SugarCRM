@@ -186,11 +186,11 @@ if(!$current_user->is_admin  && !is_admin_for_module($GLOBALS['current_user'],'U
 	    
 	    if(isset($_POST['use_group_tabs']))
 	    {
-	        $focus->setPreference('navigation_paradigm', 'gm', 0, 'global');
+	        $focus->setPreference('navigation_paradigm', $_POST['use_group_tabs'], 0, 'global');
 	    }
 	    else
 	    {
-	        $focus->setPreference('navigation_paradigm', 'm', 0, 'global');
+	        $focus->setPreference('navigation_paradigm', 'gm', 0, 'global');
 	    }
 
 	    if(isset($_POST['user_subpanel_tabs']))

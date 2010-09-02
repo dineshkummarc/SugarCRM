@@ -255,6 +255,7 @@ class ViewConvertLead extends SugarView
     	global $beanList;
     	$this->loadDefs();
         $beans = array();
+        $selectedBeans = array();
         $selects = array();
         //Make sure the contact object is availible for relationships.
         $beans['Contacts'] = new Contact();
@@ -286,11 +287,17 @@ class ViewConvertLead extends SugarView
 	                {
 	                    $beans['Contacts']->$select = $_REQUEST[$select];
 	                }
+	                // Bug 39268 - Add the existing beans to a list of beans we'll potentially add the lead's activities to
+	                $bean = loadBean($module);
+                    $bean->retrieve($_REQUEST[$fieldDef['id_name']]);
+                    $selectedBeans[$module] = $bean;
             	}
             }
         }
 		
 		$this->handleActivities($lead, $beans);
+		// Bug 39268 - Add the lead's activities to the selected beans
+		$this->handleActivities($lead, $selectedBeans);
 		
         //Handle non-contacts relationships
 	    foreach($beans as $bean)

@@ -467,7 +467,7 @@ EditView_tabs.on('contentReady', function(e){
                 </tr>
 							<tr id="use_group_tabs_row" style="display: {$DISPLAY_GROUP_TAB};">	
                                 <td scope="row"><span>{$MOD.LBL_USE_GROUP_TABS}:</span>&nbsp;{sugar_help text=$MOD.LBL_NAVIGATION_PARADIGM_DESCRIPTION }</td>
-                                <td colspan="3"><input id="use_group_tabs" type="checkbox" name="use_group_tabs" {$USE_GROUP_TABS} tabindex='12'></td>
+                                <td colspan="3"><input name="use_group_tabs" type="hidden" value="m"><input id="use_group_tabs" type="checkbox" name="use_group_tabs" {$USE_GROUP_TABS} tabindex='12' value="gm"></td>
                             </tr>
                             <tr>
                                 <td colspan="4">

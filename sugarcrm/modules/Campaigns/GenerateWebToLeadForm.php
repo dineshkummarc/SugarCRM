@@ -289,7 +289,7 @@ Calendar.setup ({
             }
           if ( $field_type == 'text' ) {
                $Web_To_Lead_Form_html .= "<td width='15%' style='text-align: left; font-size: 12px; font-weight: normal;'><span sugar='slot'>$field_label</span sugar='slot'></td>";
-               $Web_To_Lead_Form_html .= "<td width='35%' style='font-size: 12px; font-weight: normal;'><span sugar='slot'><textarea id=$field_name name=$field_name></textarea></span sugar='slot'></td>";
+			   $Web_To_Lead_Form_html .= "<td width='35%' style='font-size: 12px; font-weight: normal;'><span id='ta_replace' sugar='slot'><input id=$field_name name=$field_name type='text'></span sugar='slot'></td>";
            }
            if($field_type=='relate' &&  $field_name=='account_name'){
 	            $Web_To_Lead_Form_html .= "<td width='15%' style='text-align: left; font-size: 12px; font-weight: normal;'><span sugar='slot'>$field_label</span sugar='slot'></td>";
@@ -413,7 +413,7 @@ Calendar.setup ({
            }
            if ( $field1_type == 'text' ) {
                $Web_To_Lead_Form_html .= "<td width='15%' style='text-align: left; font-size: 12px; font-weight: normal;'><span sugar='slot'>$field1_label</span sugar='slot'></td>";
-               $Web_To_Lead_Form_html .= "<td width='35%' style='font-size: 12px; font-weight: normal;'><span sugar='slot'><textarea id=$field1_name name=$field1_name></textarea></span sugar='slot'></td>";
+				$Web_To_Lead_Form_html .= "<td width='35%' style='font-size: 12px; font-weight: normal;'><span id='ta_replace' sugar='slot'><input id=$field1_name name=$field1_name type='text'></span sugar='slot'></td>";
            }
            if($field1_type=='relate' &&  $field1_name=='account_name'){
 	            $Web_To_Lead_Form_html .= "<td width='15%' style='text-align: left; font-size: 12px; font-weight: normal;'><span sugar='slot'>$field1_label</span sugar='slot'></td>";

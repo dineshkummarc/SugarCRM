@@ -248,7 +248,7 @@ class aSubPanel
 							} else
 							{
 								$display_fields[$def['vname']] = array(
-									'name' => $field,
+									'name' => empty($def['alias']) ? $field : $def['alias'],
 									'vname' => $def['vname'],
 									'width' => $def['width'],
 								);
@@ -266,12 +266,18 @@ class aSubPanel
 				{
 					$field = $def['name'];
 					$list_key = isset($listFieldMap[$key][$field]) ? $listFieldMap[$key][$field] : $field;
-					if (isset($subpanel->panel_definition['list_fields'][$list_key]))
+					
+					if (isset($subpanel->panel_definition['list_fields'][$field]))
 					{
-						$list_fields[$list_key] = $subpanel->panel_definition['list_fields'][$list_key];
+						$list_fields[$field] = $subpanel->panel_definition['list_fields'][$field];
 					}
+				    else if ($list_key != $field && isset($subpanel->panel_definition['list_fields'][$list_key]))
+                    {
+                        $list_fields[$list_key] = $subpanel->panel_definition['list_fields'][$list_key];
+                    	
+                    }
 					else {
-						$list_fields[$list_key] = $display_fields[$vname];
+						$list_fields[$field] = $display_fields[$vname];
 					}
 				}
 				foreach($query_fields as $field => $def)

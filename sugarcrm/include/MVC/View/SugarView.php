@@ -438,9 +438,9 @@ class SugarView
 
 
                 // Setup the default group tab.
-                $tmp = array_keys($groupTabs);
-                $ss->assign('currentGroupTab',$tmp[0]);
-                $currentGroupTab = $tmp[0];
+                $allGroup = $app_strings['LBL_TABGROUP_ALL'];
+                $ss->assign('currentGroupTab',$allGroup);
+                $currentGroupTab = $allGroup;
                 $usersGroup = $current_user->getPreference('theme_current_group');
                 // Figure out which tab they currently have selected (stored as a user preference)
                 if ( !empty($usersGroup) && isset($groupTabs[$usersGroup]) ) {

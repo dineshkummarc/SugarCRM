@@ -329,7 +329,7 @@ $sugar_smarty->assign('getNameJs', $locale->getNameJs());
 $useGroupTabs = $current_user->getPreference('navigation_paradigm');
 if ( ! isset($useGroupTabs) ) {
     if ( ! isset($GLOBALS['sugar_config']['default_navigation_paradigm']) ) {
-        $GLOBALS['sugar_config']['default_navigation_paradigm'] = 'm';
+        $GLOBALS['sugar_config']['default_navigation_paradigm'] = 'gm';
     }
     $useGroupTabs = $GLOBALS['sugar_config']['default_navigation_paradigm'];
 }
