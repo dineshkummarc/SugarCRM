@@ -1580,31 +1580,71 @@ function initEditView(theForm) {
         editViewSnapshots = new Object();
     }
 
+    // console.log('DEBUG: Adding checks for '+theForm.id);
     editViewSnapshots[theForm.id] = snapshotForm(theForm);
 }
 
 function onUnloadEditView(theForm) {
-    if ( typeof editViewSnapshots == 'undefined' || typeof editViewSnapshots[theForm.id] == 'undefined' || editViewSnapshots[theForm.id] == null ) {
+    var dataHasChanged = false;
+
+    if ( typeof editViewSnapshots == 'undefined' ) {
+        // No snapshots, move along
         return;
     }
 
-    if ( editViewSnapshots[theForm.id] != snapshotForm(theForm) ) {
-        // Data has changed.
+    if ( typeof theForm == 'undefined' ) {
+        // Need to check all editViewSnapshots
+        for ( var idx in editViewSnapshots ) {
+            
+            theForm = document.getElementById(idx);
+            // console.log('DEBUG: Checking all forms '+theForm.id);
+            if ( theForm == null 
+                 || typeof editViewSnapshots[theForm.id] == 'undefined'
+                 || editViewSnapshots[theForm.id] == null ) {
+                continue;
+            }
+            
+            if ( editViewSnapshots[theForm.id] != snapshotForm(theForm) ) {
+                dataHasChanged = true;
+            }
+        }
+    } else {
+        // Just need to check a single form for changes
+        if ( typeof editViewSnapshots[theForm.id] == 'undefined' || editViewSnapshots[theForm.id] == null ) {
+            return;
+        }
+
+        // console.log('DEBUG: Checking one form '+theForm.id);
+        if ( editViewSnapshots[theForm.id] != snapshotForm(theForm) ) {
+            // Data has changed.
+            dataHasChanged = true;
+        }
+    }
+
+    if ( dataHasChanged == true ) {
         return SUGAR.language.get('app_strings','WARN_UNSAVED_CHANGES');
     } else {
         return;
     }
+
 }
 
 function disableOnUnloadEditView(theForm) {
     // If you don't pass anything in, it disables all checking
-    if ( typeof theForm == 'undefined' || typeof editViewSnapshots == 'undefined' ) {
+    if ( typeof theForm == 'undefined' || typeof editViewSnapshots == 'undefined' || editViewSnapshots == null ) {
         window.onbeforeunload = null;
+        editViewSnapshots = null;
+        
+        // console.log('DEBUG: Disabling all edit view checks');
+
     } else {
         // Otherwise, it just disables it for this form
         if ( typeof(theForm.id) != 'undefined' && typeof(editViewSnapshots[theForm.id]) != 'undefined' ) {
             editViewSnapshots[theForm.id] = null;
         }
+
+        // console.log('DEBUG : Disabling just checks for '+theForm.id);
+
     }
 }
 

@@ -358,7 +358,7 @@ $form5 =<<<eoq5
 <div id="upgradeDiv" style="display:none">
     <table cellspacing="0" cellpadding="0" border="0">
         <tr><td>
-           <p><img src='modules/UpgradeWizard/processing.gif'> <br>{$mod_strings['LBL_UPGRADE_TAKES_TIME_HAVE_PATIENCE']}</p>
+           <p>&nbsp;</p>
         </td></tr>
      </table>
  </div>

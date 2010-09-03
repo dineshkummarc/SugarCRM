@@ -363,6 +363,7 @@ $mod_strings = array(
 'LBL_EDIT_PORTAL'=>'Edit Portal for ',
 'LBL_EDIT_FIELDS'=>'Edit Fields',
 'LBL_EDITVIEW'=>'EditView',
+'LBL_CONVERTLEAD' => 'Convert Lead',
 'LBL_FILLER'=>'(filler)',
 'LBL_FIELDS'=>'Fields',
 'LBL_FAILED_TO_SAVE' => 'Failed To Save',

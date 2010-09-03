@@ -24,8 +24,6 @@
  * governing these rights and limitations under the License.  Portions created
  * by SugarCRM are Copyright (C) 2004-2010 SugarCRM, Inc.; All Rights Reserved.
  ********************************************************************************}
-
- <h1>{$CONFIRM_LAYOUT_HEADER}</h1>
  
  <br>
  <p>{$CONFIRM_LAYOUT_DESC}</p>

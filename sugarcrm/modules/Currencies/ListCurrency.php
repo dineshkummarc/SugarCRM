@@ -115,7 +115,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 					}
 					function ConvertRate(id,fields){
 							for(var i = 0; i < fields.length; i++){
-								fields[i].value = toDecimal(ConvertFromDollar(toDecimal(ConvertToDollar(fields[i].value, lastRate)), ConversionRates[id]));
+								fields[i].value = toDecimal(ConvertFromDollar(toDecimal(ConvertToDollar(toDecimal(fields[i].value), lastRate)), ConversionRates[id]));
 							}
 							lastRate = ConversionRates[id];
 						}

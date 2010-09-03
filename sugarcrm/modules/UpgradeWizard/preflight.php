@@ -371,14 +371,9 @@ $style_for_schemaChange = empty($schema)?'style=\'display:none\'':'';
 
 $final =<<<eoq
 <table cellpadding="3" cellspacing="0" border="0">
-    <tr>
-        <th colspan="2" align="left">
-            <b>{$mod_strings['LBL_UW_PREFLIGHT_COMPLETE']}<i>{$php_521}</i></b><hr />
-        </th>
-    </tr>
     <tr {$style_for_out}>
         <td colspan="2" align="left" valign="top">
-            {$out}
+            <br>{$out}
         </td>
     </tr>
     <tr {$style_for_dif}>

@@ -487,6 +487,10 @@ SUGAR.subpanelUtils = function() {
 		
 		cancelCreate: function(buttonName) {
 			var element = document.getElementById(buttonName);
+            
+            var theForm = element.form;
+            var confirmMsg = onUnloadEditView(theForm);
+
 			do {
 				element = element.parentNode;
 			} while ( element.className != 'quickcreate' && element.parentNode ) ;
@@ -496,6 +500,14 @@ SUGAR.subpanelUtils = function() {
 			if (typeof(subpanelContents[theDiv]) == 'undefined')
                 return false;
 			
+            if ( confirmMsg != null ) {
+                if ( !confirm(confirmMsg) ) {
+                    return false;
+                } else {
+                    disableOnUnloadEditView(theForm);
+                }
+            }
+
 			subpanelContents[theDiv]['newDiv'].parentNode.removeChild(subpanelContents[theDiv]['newDiv']);
 			subpanelContents[theDiv]['list'].style.display = '';
 

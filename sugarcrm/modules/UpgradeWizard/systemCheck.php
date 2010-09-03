@@ -236,6 +236,15 @@ $uwMain =<<<eoq
 </style>
 <table cellpadding="3" cellspacing="4" border="0">
 	<tr>
+		<td>
+			{$mod_strings['LBL_UW_NEXT_TO_UPLOAD']}:
+		</td>
+		<td align="left" valign="top">
+			<p>&nbsp;</p>
+		</td>
+	</tr>
+
+	<tr>
 		<td align="left" valign="top">
 			{$mod_strings['LBL_UW_FILE_ISSUES_PERMS']}:
 		</td>
@@ -273,7 +282,7 @@ $uwMain =<<<eoq
 <div id="upgradeDiv" style="display:none">
     <table border="0" cellspacing="0" cellpadding="0">
         <tr><td>
-           <p><img src='modules/UpgradeWizard/processing.gif'> <br>{$mod_strings['LBL_UPGRADE_TAKES_TIME_HAVE_PATIENCE']}</p>
+           <p><img src='modules/UpgradeWizard/processing.gif'> <br></p>
         </td></tr>
      </table>
  </div>

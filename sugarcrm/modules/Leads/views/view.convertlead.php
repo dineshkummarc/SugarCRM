@@ -261,12 +261,46 @@ class ViewConvertLead extends SugarView
         $beans['Contacts'] = new Contact();
         $beans['Contacts']->id = create_guid();
         $beans['Contacts']->new_with_id = true;
+        
+        // Bug 39287 - Check for Duplicates on selected modules before save
+        if ( !empty($_REQUEST['selectedContact']) ) {
+            $beans['Contacts']->retrieve($_REQUEST['selectedContact']);
+            if ( !empty($beans['Contacts']->id) ) {
+                $beans['Contacts']->new_with_id = false;
+                unset($_REQUEST["convert_create_Contacts"]);
+                unset($_POST["convert_create_Contacts"]);
+            }
+        }
+        elseif (!empty($_REQUEST["convert_create_Contacts"]) && $_REQUEST["convert_create_Contacts"] != "false" && !isset($_POST['ContinueContact'])) {
+            require_once('modules/Contacts/ContactFormBase.php');
+            $contactForm = new ContactFormBase();
+            $duplicateContacts = $contactForm->checkForDuplicates('Contacts');
+            if(isset($duplicateContacts)){
+                echo $contactForm->buildTableForm($duplicateContacts,  'Contacts');
+                return;
+            }
+        }
+        if ( !empty($_REQUEST['selectedAccount']) ) {
+            $_REQUEST['account_id'] = $_REQUEST['selectedAccount'];
+                unset($_REQUEST["convert_create_Accounts"]);
+                unset($_POST["convert_create_Accounts"]);
+        }
+        elseif (!empty($_REQUEST["convert_create_Accounts"]) && $_REQUEST["convert_create_Accounts"] != "false" && empty($_POST['ContinueAccount'])){
+            require_once('modules/Accounts/AccountFormBase.php');
+            $accountForm = new AccountFormBase();
+            $duplicateAccounts = $accountForm->checkForDuplicates('Accounts');
+            if(isset($duplicateAccounts)){
+                echo $accountForm->buildTableForm($duplicateAccounts);
+                return;
+            }
+        }
+        
         foreach($this->defs as $module => $vdef)
         {
-            //Craete a new record if "create" was selected
+            //Create a new record if "create" was selected
         	if (!empty($_REQUEST["convert_create_$module"]) && $_REQUEST["convert_create_$module"] != "false")
             {
-            	//Save the new record
+                //Save the new record
                 $bean = $beanList[$module];
 	            if (empty($beans[$module]))
 	            	$beans[$module] = new $bean();
@@ -359,10 +393,18 @@ class ViewConvertLead extends SugarView
         foreach($beans as $bean)
         {
             $beanName = $bean->object_name;
-        	echo "<li>" . translate("LBL_CREATED_NEW") . translate($beanName) . " - 
-        	<a href='index.php?module={$bean->module_dir}&action=DetailView&record={$bean->id}'> 
-        	   {$bean->get_summary_text()} 
-        	</a></li>";
+            if ( $beanName == 'Contact' && !$bean->new_with_id ) {
+                echo "<li>" . translate("LBL_EXISTING_CONTACT") . " - 
+                    <a href='index.php?module={$bean->module_dir}&action=DetailView&record={$bean->id}'> 
+                       {$bean->get_summary_text()} 
+                    </a></li>";
+            }
+            else {
+                echo "<li>" . translate("LBL_CREATED_NEW") . translate($beanName) . " - 
+                    <a href='index.php?module={$bean->module_dir}&action=DetailView&record={$bean->id}'> 
+                       {$bean->get_summary_text()} 
+                    </a></li>";
+            }
         }
     	
     	echo "</ul></div>";

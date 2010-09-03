@@ -327,7 +327,7 @@ $afterCurrentStep = $_REQUEST['step'] + 1;
 $installeds = $uh->getAll();
 $upgrades_installed = 0;
 
-$uwHistory  = $mod_strings['LBL_UW_DESC_MODULES_INSTALLED']."<br>\n";
+$uwHistory  = '<table width="100%" border="0" cellspacing="0" cellpadding="0" class="edit view"><tr><td>'.$mod_strings['LBL_UW_DESC_MODULES_INSTALLED']."<br>\n";
 $uwHistory .= "<ul>\n";
 $uwHistory .= "<table cellspacing=10>\n";
 $uwHistory .= <<<eoq
@@ -403,7 +403,8 @@ if($upgrades_installed == 0) {
 	$uwHistory .= "</td></tr>";
 }
 
-$uwHistory .= "</table>\n";
+$uwHistory .= "</table></td></tr>
+</table>\n";
 $uwHistory .= "</ul>\n";
 ////	END UPGRADE HISTORY
 ///////////////////////////////////////////////////////////////////////////////

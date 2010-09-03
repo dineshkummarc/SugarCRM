@@ -79,6 +79,7 @@ $mod_strings = array (
   'LBL_COLON' => ':',
   'LBL_DEFAULT_STATUS' => 'Planned',
   'LNK_NEW_CALL' => 'Log Call',
+  'LNK_NEW_MEETING' => 'Schedule Meeting',
   'LNK_CALL_LIST' => 'View Calls',
   'LNK_IMPORT_CALLS' => 'Import Calls',
   'ERR_DELETE_RECORD' => 'A record number must be specified to delete the account.',
