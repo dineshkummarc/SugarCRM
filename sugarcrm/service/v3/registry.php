@@ -51,8 +51,8 @@ class registry_v3 extends registry {
 		$this->serviceClass->registerFunction(
 		    'get_module_fields_md5',
 		    array('session'=>'xsd:string', 'module_name'=>'xsd:string'),
-		    array('return'=>'xsd:string'));	 
-		        
+		    array('return'=>'tns:md5_results'));    
+            
 		$this->serviceClass->registerFunction(
 		    'get_available_modules',
 	        array('session'=>'xsd:string','filter'=>'xsd:string'),
@@ -91,6 +91,17 @@ class registry_v3 extends registry {
 	
 	    parent::registerTypes();
 	    
+	    $this->serviceClass->registerType(
+		   	 'md5_results',
+		   	 'complexType',
+		   	 'struct',
+		   	 'all',
+		  	  '',
+			array(
+				'md5' => array('name'=>'id', 'type'=>'xsd:string'),
+			)
+		);
+		
 	    $this->serviceClass->registerType(
     	    'module_names',
     	    'complexType',

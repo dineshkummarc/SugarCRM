@@ -171,7 +171,7 @@ class SugarWebServiceImplv3 extends SugarWebServiceImpl {
         $GLOBALS['log']->info('Begin: SugarWebServiceImpl->get_module_fields_md5');
         $results = self::get_module_fields($session, $module_name);
         if(!empty($results))
-            return md5(serialize($results));
+            return array('md5' => md5(serialize($results)) );
         $GLOBALS['log']->info('End: SugarWebServiceImpl->get_module_fields_md5');
     }
     
@@ -251,7 +251,7 @@ class SugarWebServiceImplv3 extends SugarWebServiceImpl {
     function get_module_layout_md5($session, $module_name, $type, $view){
     	$GLOBALS['log']->info('Begin: SugarWebServiceImpl->get_module_layout_md5');
     	$results = self::get_module_layout($session, $module_name, $type, $view, TRUE);
-        return $results;
+            return array('md5'=> $results);
     	$GLOBALS['log']->info('End: SugarWebServiceImpl->get_module_layout_md5');
     }
     
