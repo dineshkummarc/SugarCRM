@@ -208,6 +208,7 @@ foreach($errors as $k => $type) {
 	}
 }
 
+$GLOBALS['top_message'] = "{$mod_strings['LBL_UW_NEXT_TO_UPLOAD']}";
 $showBack		= true;
 $showCancel		= true;
 $showRecheck	= true;
@@ -235,15 +236,6 @@ $uwMain =<<<eoq
 
 </style>
 <table cellpadding="3" cellspacing="4" border="0">
-	<tr>
-		<td>
-			{$mod_strings['LBL_UW_NEXT_TO_UPLOAD']}:
-		</td>
-		<td align="left" valign="top">
-			<p>&nbsp;</p>
-		</td>
-	</tr>
-
 	<tr>
 		<td align="left" valign="top">
 			{$mod_strings['LBL_UW_FILE_ISSUES_PERMS']}:

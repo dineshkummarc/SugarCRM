@@ -1,3 +1,4 @@
+{if false}
 /*********************************************************************************
  * SugarCRM is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2010 SugarCRM Inc.
@@ -32,6 +33,7 @@
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
  ********************************************************************************/
+{/if}
  
  <br>
  <p>{$CONFIRM_LAYOUT_DESC}</p>
@@ -72,7 +74,7 @@
 <div id="upgradeDiv" style="display:none">
     <table cellspacing="0" cellpadding="0" border="0">
         <tr><td>
-           <p><img src='modules/UpgradeWizard/processing.gif'> <br>{$MOD.LBL_UPGRADE_TAKES_TIME_HAVE_PATIENCE}</p>
+           <p><img src='modules/UpgradeWizard/processing.gif'></p>
         </td></tr>
      </table>
  </div>

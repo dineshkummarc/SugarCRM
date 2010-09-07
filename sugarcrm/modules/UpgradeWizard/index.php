@@ -53,7 +53,7 @@ require_once('modules/UpgradeWizard/uw_utils.php');
 
 require_once('modules/Administration/UpgradeHistory.php');
 
-
+$GLOBALS['top_message'] = '';
 
 
 if(!isset($locale) || empty($locale)) {
@@ -161,7 +161,12 @@ if(isset($_REQUEST['delete_package']) && $_REQUEST['delete_package'] == 'true') 
 
         if(!empty($error)) {
 			$out = "<b><span class='error'>{$error}</span></b><br />";
-			$smarty->assign('frozen', $out);
+			if(!empty($GLOBALS['top_message'])){
+			    $GLOBALS['top_message'] .= "<br />{$out}";
+			}
+			else{
+			    $GLOBALS['top_message'] = $out;
+			}
         }	    
 }
 
@@ -480,7 +485,7 @@ function handlePreflight(step) {
 
 function handleUploadCheck(step, u_allow) {
 	if(step == 'upload' && !u_allow) {
-		document.getElementById('error_messages').innerHTML = '<span class="error"><b>{$mod_strings['LBL_UW_FROZEN']}</b></span>';
+		document.getElementById('top_message').innerHTML = '<span class="error"><b>{$mod_strings['LBL_UW_FROZEN']}</b></span>';
 	}
 	  
 	return;
@@ -545,8 +550,8 @@ if(isset($stop) && $stop == true) {
 	    $u_allow = 'false';
 }
 $smarty->assign('u_allow', $u_allow);
-if(!empty($GLOBALS['upload_success'])){
-	$smarty->assign('upload_success', $GLOBALS['upload_success']);
+if(!empty($GLOBALS['top_message'])){
+	$smarty->assign('top_message', $GLOBALS['top_message']);
 }
 
 if ($sugar_config['sugar_version'] < '5.5') {

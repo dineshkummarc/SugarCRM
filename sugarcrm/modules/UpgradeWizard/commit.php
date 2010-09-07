@@ -577,11 +577,6 @@ $uwMain =<<<eoq
 		</td>
 	</tr>
 	<tr>
-		<td>
-			{$mod_strings['LBL_UW_COMMIT_DESC']}
-		</td>
-	</tr>
-	<tr>
 		<td align="left">
 			<p>
 			{$delete_chance}
@@ -645,6 +640,7 @@ $showCancel = false;
 $showRecheck = false;
 $showNext =($stop) ? false : true;
 
+$GLOBALS['top_message'] = "<b>{$mod_strings['LBL_UW_COMMIT_DESC']}</b>";
 $stepBack = $_REQUEST['step'] - 1;
 //Skip ahead to the end page as no layouts need to be merged.
 $stepNext = (count($_SESSION['sugarMergeRunResults']) > 0 ) ? $_REQUEST['step'] + 1 : $_REQUEST['step'] + 2; 
