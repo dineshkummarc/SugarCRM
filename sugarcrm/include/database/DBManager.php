@@ -210,14 +210,14 @@ abstract class DBManager
                     $my_db_helper = 'MysqliHelper';
                 break;
             case "mssql":
-                if (is_freetds()
+                if ( function_exists('sqlsrv_connect')
+                        && (empty($config['db_mssql_force_driver']) || $config['db_mssql_force_driver'] == 'sqlsrv' ))
+                    $my_db_manager = 'SqlsrvHelper';
+                elseif (is_freetds() 
                         && (empty($config['db_mssql_force_driver']) || $config['db_mssql_force_driver'] == 'freetds' ))
-                    $my_db_helper = 'FreeTDSHelper';
-                elseif (function_exists('mssql_connect')
-                        && (empty($config['db_mssql_force_driver']) || $config['db_mssql_force_driver'] == 'mssql' ))
-                    $my_db_helper = 'MssqlHelper';
+                    $my_db_manager = 'FreeTDSHelper';
                 else
-                    $my_db_helper = 'SqlsrvHelper';
+                    $my_db_manager = 'MssqlHelper';
                 break;
             default:
                 $my_db_helper = 'MysqlHelper';

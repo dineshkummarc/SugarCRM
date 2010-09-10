@@ -1,5 +1,5 @@
 <?php
-// created: 2010-09-07 20:26:54
+// created: 2010-09-09 11:25:02
 $md5_string = array (
   './LICENSE.txt' => 'd3f150e4a5bed444763ebe8a81742a95',
   './.htaccess' => 'd41d8cd98f00b204e9800998ecf8427e',
@@ -12,7 +12,7 @@ $md5_string = array (
   './examples/FormValidationTest.php' => '61dcc214288dd7833e37238e0efa5ccf',
   './examples/ProgressBarTest.php' => '1221c9c0372e16e0ef4f58008b37c6ea',
   './emailmandelivery.php' => '03589de9409e1abb4f0ad9ee4dce8e07',
-  './sugar_version.php' => '83a3741cab39b585484941aed3883e93',
+  './sugar_version.php' => '0fcbd14b2ce2cc90fff38849dace5935',
   './custom/index.html' => 'b0070a296647b6026d1800db14510e3c',
   './acceptDecline.php' => 'a8699214ad82527bb0ae1d3f0c9b64b6',
   './export.php' => '50f3b3c23ecb4d0a8b0a898f4f982a66',
@@ -1324,7 +1324,7 @@ $md5_string = array (
   './include/utils/activity_utils.php' => '46936a127737729cdfdafd9c70669f58',
   './include/utils/encryption_utils.php' => '34c58803c3939aff389f0c8ce0084309',
   './include/utils/progress_bar_utils.php' => 'ad34d73c2b9198c1d959d274d241dcf0',
-  './include/utils/mvc_utils.php' => '8281c416746ad1a19bd819ec6af83759',
+  './include/utils/mvc_utils.php' => '191fff420e1134d30084d8d480f3e350',
   './include/utils/external_cache.php' => '9a682783cf1ac4b32541f9bb426c2688',
   './include/utils/db_utils.php' => '0b253cc086f0259fb794ce2487f8fc56',
   './include/utils/sugar_file_utils.php' => '2c403ff36994b48b603d893af3fd7518',
@@ -2576,15 +2576,15 @@ $md5_string = array (
   './include/VarDefHandler/vardef_meta_arrays.php' => '00f9476eceb121aa1d0994bfabc94740',
   './include/database/FreeTDSManager.php' => '6ec8512533db76a855e2e7ed6f79eaeb',
   './include/database/SqlsrvManager.php' => '44751d40341ec12f2b46f749bfd85aaf',
-  './include/database/DBHelper.php' => '211e0dca8d4f673fd647bd98aadcfa38',
-  './include/database/DBManager.php' => 'e7cf1e76bf0549b5ed2900f40b8fc5c2',
+  './include/database/DBHelper.php' => '38fb8f931a3b3b8f386ff7b95124ec1e',
+  './include/database/DBManager.php' => 'd578162d276ba65a518fa71c2792dae6',
   './include/database/MysqliHelper.php' => '8b7de535f48591c810bb676a85842c90',
   './include/database/PearDatabase.php' => '8be04dd1c1a7cec1ac1c9e4beb41f2bf',
   './include/database/MysqliManager.php' => 'a45e813a7d1379eb3ea3ac2ecea726ab',
   './include/database/DBManagerFactory.php' => 'd29d5eb630721c50c8fea5a5e4512ca8',
   './include/database/MysqlHelper.php' => '0f4623054b0947927ed0ed0342da70a9',
   './include/database/MysqlManager.php' => '9791542a21f3fe95b757fda185d18305',
-  './include/database/MssqlHelper.php' => 'd4def7495fc7d4f67b01af27371f61ab',
+  './include/database/MssqlHelper.php' => '0e94896d6d7639cb7c960986a58c61d6',
   './include/database/FreeTDSHelper.php' => 'dd97f8a1422995441f31496a611f8e6f',
   './include/database/SqlsrvHelper.php' => 'eef8baee2fd053dd9d9bd5bb0da92132',
   './include/database/MssqlManager.php' => '73bb492b1fad5c3ded9778ecaa557220',

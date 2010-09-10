@@ -157,39 +157,32 @@ class MssqlHelper extends DBHelper
         $ignoreRequired = false
         )
     {
-        $pre_sql  = '';
-        $post_sql = '';
-        
-        $constraints = $this->get_indices($tablename);
+        $sql='';
+        $constraints = $this->get_field_default_constraint_name($tablename);
         if ($this->isFieldArray($fieldDefs)) {
             foreach ($fieldDefs as $def)
       		{
-          		// If the column is being modified has indexes, we need to drop them first before
-          		// modifying the field. We'll then add them back afterwards.
-          		foreach ( $constraints as $constraint ) {
-          		    if ( in_array($def['name'],$constraint['fields']) ) {
-          		        $pre_sql  .= $this->add_drop_constraint($tablename,$constraint,true).'; ';
-          		        $post_sql .= $this->add_drop_constraint($tablename,$constraint,false).'; ';
-          		    }
+          		//if the column is being modified drop the default value
+          		//constraint if it exists. alterSQLRep will add the constraint back
+          		if (!empty($constraints[$def['name']])) {
+          			$sql.=" ALTER TABLE " . $tablename . " DROP CONSTRAINT " . $constraints[$def['name']];
           		}
 
           		$columns[] = $this->alterSQLRep($action, $def, $ignoreRequired,$tablename);
       		}
         }
         else {
-            // If the column is being modified has indexes, we need to drop them first before
-            // modifying the field. We'll then add them back afterwards.
-            foreach ( $constraints as $constraint ) {
-                if ( in_array($fieldDefs['name'],$constraint['fields']) ) {
-                    $pre_sql  .= $this->add_drop_constraint($tablename,$constraint,true).'; ';
-                    $post_sql .= $this->add_drop_constraint($tablename,$constraint,false).'; ';
-                }
-            }
+            //if the column is being modified drop the default value
+      		//constraint if it exists. alterSQLRep will add the constraint back
+      		if (!empty($constraints[$fieldDefs['name']])) {
+      			$sql.=" ALTER TABLE " . $tablename . " DROP CONSTRAINT " . $constraints[$fieldDefs['name']];
+      		}
 
-            $columns[] = $this->alterSQLRep($action, $fieldDefs, $ignoreRequired,$tablename);
+          	$columns[] = $this->alterSQLRep($action, $fieldDefs, $ignoreRequired,$tablename);
         }
-        
-        $sql = $pre_sql . "ALTER TABLE $tablename " . implode(", ", $columns) . $post_sql;
+
+        $columns = implode(", ", $columns);
+        $sql .= " ALTER TABLE $tablename $columns";
         
         return $sql;
     }
