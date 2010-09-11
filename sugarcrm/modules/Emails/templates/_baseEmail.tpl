@@ -107,16 +107,7 @@
         {include file="modules/Emails/templates/emailSettings.tpl"}
     </div>
     
-    <div id="footerLinks" class="yui-hidden">
-        <table cellpadding="0" cellspacing="0" border="0" width="100%">
-            <tr>
-                <td NOWRAP width="100%" align="center">
-                    <img height="18" width="83" class="img" src="include/images/powered_by_sugarcrm.gif" border="0" align="absmiddle"/>
-                    &nbsp;{$app_strings.LBL_SUGAR_COPYRIGHT}
-                </td>
-            </tr>
-        </table>
-    </div>
+    <div id="footerLinks" class="yui-hidden"></div>
 </div>
 
 

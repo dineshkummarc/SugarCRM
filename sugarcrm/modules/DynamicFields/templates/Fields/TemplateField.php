@@ -425,7 +425,7 @@ class TemplateField{
 	 */
 	function populateFromRow($row=array()) {
 		$fmd_to_dyn_map = array('comments' => 'comment', 'require_option' => 'required', 'label' => 'vname',
-							    'mass_update' => 'massupdate', 'max_size' => 'len', 'default_value' => 'default');
+							    'mass_update' => 'massupdate', 'max_size' => 'len', 'default_value' => 'default', 'id_name' => 'ext3');
 		if(!is_array($row)) {
 			$GLOBALS['log']->error("Error: TemplateField->populateFromRow expecting Array");
 		}

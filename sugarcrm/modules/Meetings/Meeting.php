@@ -140,22 +140,11 @@ class Meeting extends SugarBean {
 
 		if(isset($this->date_start)
 			&& isset($this->duration_hours)
-			&& isset($this->duration_minutes))
-		{
-			$date_start_in_db_fmt=$this->date_start;
-			$date_start_array=explode(" ",trim($date_start_in_db_fmt));
-			$date_time_start =DateTimeUtil::get_time_start($date_start_array[0],$date_start_array[1]);
-
-			$date_start_timestamp=mktime($date_time_start->hour,$date_time_start->min,$date_time_start->sec,$date_time_start->month,$date_time_start->day,$date_time_start->year);
-			$date_start_timestamp+= (( $this->duration_hours * 3600 )+ ($this->duration_minutes * 60));
-
-			$this->date_end=date ($timedate->get_date_time_format(true, $current_user),$date_start_timestamp);
-			// Need to convert it to the db date right here so that we don't miss the time calculation
-			$this->date_end = $timedate->to_db_date($this->date_end);
-			if(empty($disable_date_format)){
-				$this->date_end = $timedate->swap_formats($this->date_end, $timedate->dbDayFormat, $timedate->get_date_format());
-           	}
-        }
+			&& isset($this->duration_minutes)) {
+    			$date_time_start = DateTimeUtil::get_time_start($this->date_start);
+    			$date_time_end = DateTimeUtil::get_time_end($date_time_start, $this->duration_hours, $this->duration_minutes);
+    			$this->date_end = gmdate("Y-m-d", $date_time_end->ts);
+		}
 
 		$check_notify =(!empty($_REQUEST['send_invites']) && $_REQUEST['send_invites'] == '1') ? true : false;
 		if(empty($_REQUEST['send_invites'])) {
@@ -193,7 +182,7 @@ class Meeting extends SugarBean {
 
 	// this is for calendar
 	function mark_deleted($id) {
-		
+
 		global $current_user;
 
 		parent::mark_deleted($id);
@@ -260,7 +249,7 @@ class Meeting extends SugarBean {
 			$query  = "SELECT first_name, last_name FROM contacts ";
 			$query .= "WHERE id='$this->contact_id' AND deleted=0";
 			$result = $this->db->limitQuery($query,0,1,true," Error filling in additional detail fields: ");
-	
+
 			// Get the contact name.
 			$row = $this->db->fetchByAssoc($result);
 			$GLOBALS['log']->info("additional call fields $query");
@@ -374,9 +363,9 @@ class Meeting extends SugarBean {
 			$meeting_fields['PARENT_MODULE'] = $this->parent_type;
 		if($this->status == "Planned") {
 			//cn: added this if() to deal with sequential Closes in Meetings.	this is a hack to a hack(formbase.php->handleRedirect)
-			if(empty($action))  
-			     $action = "index"; 
-			$setCompleteUrl = "<a onclick='SUGAR.util.closeActivityPanel.show(\"{$this->module_dir}\",\"{$this->id}\",\"Held\",\"listview\",\"1\");'>";
+			if(empty($action))
+			     $action = "index";
+			$setCompleteUrl = "<a onclick='SUGAR.util.closeActivityPanel.show(\"$currentModule\",\"{$this->id}\",\"Held\",\"listview\",\"1\");'>";
 			$meeting_fields['SET_COMPLETE'] = $setCompleteUrl . SugarThemeRegistry::current()->getImage("close_inline","title=".translate('LBL_LIST_CLOSE','Meetings')." border='0'")."</a>";
 		}
 		global $timedate;
@@ -489,7 +478,7 @@ class Meeting extends SugarBean {
 			$data_values = array('accept_status'=>$status);
 			$this->set_relationship($this->rel_users_table, $relate_values, true, true,$data_values);
 			global $current_user;
-			
+
 			if($this->update_vcal)
 			{
 				vCal::cache_sugar_vcal($user);
@@ -514,7 +503,7 @@ class Meeting extends SugarBean {
 		if($this->special_notification) {
 			return parent::get_notification_recipients();
 		}
-		
+
 		$list = array();
 		if(!is_array($this->contacts_arr)) {
 			$this->contacts_arr =	array();
@@ -622,7 +611,7 @@ class Meeting extends SugarBean {
 	        if ( !$this->leads->relationship_exists('leads',array('id'=>$this->parent_id)) )
 	            $this->leads->add($this->parent_id);
 	    }
-	    
+
 	    parent::afterImportSave();
 	}
 } // end class def

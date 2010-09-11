@@ -64,10 +64,6 @@ class SqlsrvHelper extends MssqlHelper
 		if ( in_array($columnType,array('char','varchar')) )
 			$columnType = 'n'.$columnType;
 		
-		if ( in_array($columnType,array('text','ntext','image')) ) {
-			$columnType = 'nvarchar(max)';
-		}
-		
         return $columnType;
     }
 	
@@ -128,95 +124,5 @@ class SqlsrvHelper extends MssqlHelper
         
         return $val;
 	}
-	
-	/**
-     * @see DBHelper::get_columns()
-     */
-    public function get_columns(
-        $tablename
-        ) 
-    {
-        //find all unique indexes and primary keys.
-        $result = $this->db->query("sp_columns_90 $tablename");
-        
-        $columns = array();
-        while (($row=$this->db->fetchByAssoc($result)) !=null) {
-            $column_name = strtolower($row['COLUMN_NAME']);
-            $columns[$column_name]['name']=$column_name;
-            $columns[$column_name]['type']=strtolower($row['TYPE_NAME']);
-            if ( $row['TYPE_NAME'] == 'decimal' ) {
-                $columns[$column_name]['len']=strtolower($row['PRECISION']);
-                $columns[$column_name]['len'].=','.strtolower($row['SCALE']);
-            }
-			elseif ( in_array($row['TYPE_NAME'],array('nchar','nvarchar')) ) {
-				$columns[$column_name]['len']=strtolower($row['PRECISION']);
-				if ( $row['TYPE_NAME'] == 'nvarchar' && $row['PRECISION'] == '0' ) {
-				    $columns[$column_name]['len']='max';
-				}
-			}
-            elseif ( !in_array($row['TYPE_NAME'],array('datetime','text')) ) {
-                $columns[$column_name]['len']=strtolower($row['LENGTH']);
-            }
-            if ( stristr($row['TYPE_NAME'],'identity') ) {
-                $columns[$column_name]['auto_increment'] = '1';
-                $columns[$column_name]['type']=str_replace(' identity','',strtolower($row['TYPE_NAME']));
-            }
-            
-            if (!empty($row['IS_NULLABLE']) && $row['IS_NULLABLE'] == 'NO' && (empty($row['KEY']) || !stristr($row['KEY'],'PRI')))
-                $columns[strtolower($row['COLUMN_NAME'])]['required'] = 'true';
-            
-            $column_def = 0;
-            if ( strtolower($tablename) == 'relationships' ) {
-                $column_def = $this->db->getOne("select cdefault from syscolumns where id = object_id('relationships') and name = '$column_name'");
-            }
-            if ( $column_def != 0 ) {
-                $matches = array();
-                $row['COLUMN_DEF'] = html_entity_decode($row['COLUMN_DEF'],ENT_QUOTES);
-                if ( preg_match("/\([\(|'](.*)[\)|']\)/i",$row['COLUMN_DEF'],$matches) )
-                    $columns[$column_name]['default'] = $matches[1];
-                elseif ( preg_match("/\(N'(.*)'\)/i",$row['COLUMN_DEF'],$matches) )
-                    $columns[$column_name]['default'] = $matches[1];
-                else
-                    $columns[$column_name]['default'] = $row['COLUMN_DEF'];
-            }
-        }
-        return $columns;
-    }
-    
-    /**
-     * @see DBHelper::get_indices()
-     */
-    public function get_indices(
-        $tablename
-        ) 
-    {
-        //find all unique indexes and primary keys.
-        $query = <<<EOSQL
-SELECT sys.tables.object_id, sys.tables.name as table_name, sys.columns.name as column_name, 
-        sys.indexes.name as index_name, sys.indexes.is_unique, sys.indexes.is_primary_key
-    FROM sys.tables, sys.indexes, sys.index_columns, sys.columns 
-    WHERE (sys.tables.object_id = sys.indexes.object_id 
-            AND sys.tables.object_id = sys.index_columns.object_id 
-            AND sys.tables.object_id = sys.columns.object_id
-            AND sys.indexes.index_id = sys.index_columns.index_id 
-            AND sys.index_columns.column_id = sys.columns.column_id) 
-        AND sys.tables.name = '$tablename'
-EOSQL;
-        $result = $this->db->query($query);
-        
-        $indices = array();
-        while (($row=$this->db->fetchByAssoc($result)) != null) {
-            $index_type = 'index';
-            if ($row['is_primary_key'] == '1')
-                $index_type = 'primary';
-            elseif ($row['is_unique'] == 1 )
-                $index_type = 'unique';
-            $name = strtolower($row['index_name']);
-            $indices[$name]['name']     = $name;
-            $indices[$name]['type']     = $index_type;
-            $indices[$name]['fields'][] = strtolower($row['column_name']);
-        }
-        return $indices;
-    }
 }
 ?>

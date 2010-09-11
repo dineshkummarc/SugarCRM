@@ -2126,6 +2126,7 @@ $app_strings = array (
     'LBL_HOURS' => 'Hours',
     'LBL_MINUTES' => 'Minutes',
     'LBL_MERIDIEM' => 'Meridiem',
+    'LBL_DATE' => 'Date',
     );
 
 $app_list_strings['moduleList']['Library'] = 'Library';

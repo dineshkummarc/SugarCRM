@@ -726,7 +726,7 @@ eoq;
 			$emailSettings['autoImport'] = '';
 			$emailSettings['alwaysSaveOutbound'] = '1';
 			$emailSettings['sendPlainText'] = '';
-			//$emailSettings['defaultOutboundCharset'] = $locale->default_email_charset;
+			$emailSettings['defaultOutboundCharset'] = $GLOBALS['sugar_config']['default_email_charset'];
 			$emailSettings['showNumInList'] = 20;
 		}
 

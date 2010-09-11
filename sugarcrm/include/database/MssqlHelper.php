@@ -460,7 +460,7 @@ EOSQL;
         case 'index':
         case 'alternate_key':
             if ($drop)
-                $sql = "DROP INDEX {$name} ON {$table}";
+                $sql = "DROP INDEX {$name} ";
             else
                 $sql = "CREATE INDEX {$name} ON {$table} ({$fields})";
             break;
@@ -473,7 +473,7 @@ EOSQL;
             break;
         case 'primary':
             if ($drop)
-                $sql = "ALTER TABLE {$table} DROP CONSTRAINT {$name}";
+                $sql = "ALTER TABLE {$table} DROP PRIMARY KEY";
             else
                 $sql = "ALTER TABLE {$table} ADD CONSTRAINT {$name} PRIMARY KEY ({$fields})";
             break;

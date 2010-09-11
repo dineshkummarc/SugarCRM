@@ -71,7 +71,7 @@ class OutboundEmail {
 	var $mail_sendtype; // smtp
 	var $mail_smtptype;
 	var $mail_smtpserver;
-	var $mail_smtpport;
+	var $mail_smtpport = 25;
 	var $mail_smtpuser;
 	var $mail_smtppass;
 	var $mail_smtpauth_req; // bool

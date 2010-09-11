@@ -1,5 +1,5 @@
 <?php
- if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+ if(!defined('sugarEntry'))define('sugarEntry', true);
 /*********************************************************************************
  * SugarCRM is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2010 SugarCRM Inc.
@@ -35,12 +35,15 @@
  * "Powered by SugarCRM".
  ********************************************************************************/
 
-
-
-$sugar_version      = '6.1.0beta2';
-$sugar_db_version   = '6.1.0beta2';
-$sugar_flavor       = 'CE';
-$sugar_build		= '5161';
-$sugar_timestamp    = '2010-09-10 09:53am';
-
-?>
+/**
+ * This is a rest entry point for rest version 3.1
+ */
+chdir('../..');
+require_once('SugarWebServiceImplv3_1.php');
+$webservice_class = 'SugarRestService';
+$webservice_path = 'service/core/SugarRestService.php';
+$webservice_impl_class = 'SugarWebServiceImplv3_1';
+$registry_class = 'registry';
+$location = '/service/v3_1/rest.php';
+$registry_path = 'service/v3_1/registry.php';
+require_once('service/core/webservice.php');

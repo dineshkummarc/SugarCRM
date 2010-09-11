@@ -1610,7 +1610,7 @@ function onUnloadEditView(theForm) {
         }
     } else {
         // Just need to check a single form for changes
-        if ( typeof editViewSnapshots[theForm.id] == 'undefined' || editViewSnapshots[theForm.id] == null ) {
+		if ( editViewSnapshots == null  || typeof editViewSnapshots[theForm.id] == 'undefined' || editViewSnapshots[theForm.id] == null ) {
             return;
         }
 

@@ -117,6 +117,7 @@ class ViewQuickcreate extends ViewAjax
 		$ev->defs['templateMeta']['form']['buttons'] = array('DCMENUSAVE', 'DCMENUCANCEL', 'DCMENUFULLFORM');
 		$ev->defs['templateMeta']['form']['button_location'] = 'bottom';
 		$ev->defs['templateMeta']['form']['hidden'] = '<input type="hidden" name="is_ajax_call" value="1" />';
+		$ev->defs['templateMeta']['form']['hidden'] .= '<input type="hidden" name="from_dcmenu" value="1" />';
 		$defaultProcess = true;
 		if(file_exists('modules/'.$module.'/views/view.edit.php')) {
             include('modules/'.$module.'/views/view.edit.php'); 

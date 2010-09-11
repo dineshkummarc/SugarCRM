@@ -100,8 +100,8 @@
 	</td>
 </tr>
 <script>
-addToValidateBinaryDependency('popup_form',"defaultTime_hours", 'alpha', false, "{$APP.ERR_MISSING_REQUIRED_FIELDS} {$APP.LBL_HOURS}" ,"defaultDate_date");
-addToValidateBinaryDependency('popup_form', "defaultTime_minutes", 'alpha', false, "{$APP.ERR_MISSING_REQUIRED_FIELDS} {$APP.LBL_MINUTES}" ,"defaultDate_date");
-addToValidateBinaryDependency('popup_form', "defaultTime_meridiem", 'alpha', false, "{$APP.ERR_MISSING_REQUIRED_FIELDS} {$APP.LBL_MERIDIEM}","defaultDate_date");
+addToValidateBinaryDependency('popup_form',"defaultDate_date", 'alpha', false, "{$APP.ERR_MISSING_REQUIRED_FIELDS} {$APP.LBL_DATE} {$APP.LBL_OR} {$APP.LBL_HOURS}" ,"defaultTime_hours");
+addToValidateBinaryDependency('popup_form',"defaultTime_hours", 'alpha', false, "{$APP.ERR_MISSING_REQUIRED_FIELDS} {$APP.LBL_HOURS} {$APP.LBL_OR} {$APP.LBL_MINUTES}" ,"defaultTime_minutes");
+addToValidateBinaryDependency('popup_form', "defaultTime_minutes", 'alpha', false, "{$APP.ERR_MISSING_REQUIRED_FIELDS} {$APP.LBL_MINUTES} {$APP.LBL_OR} {$APP.LBL_MERIDIEM}","defaultTime_meridiem");
 </script>
 {include file="modules/DynamicFields/templates/Fields/Forms/coreBottom.tpl"}

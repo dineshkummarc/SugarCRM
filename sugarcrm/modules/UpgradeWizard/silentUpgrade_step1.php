@@ -1077,16 +1077,6 @@ if(function_exists('deleteCache')){
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-////	TAKE OUT TRASH
-
-if(empty($errors)) {
-	set_upgrade_progress('end','in_progress','unlinkingfiles','in_progress');
-	logThis('Taking out the trash, unlinking temp files.', $path);
-	unlinkTempFiles(true);
-	set_upgrade_progress('end','in_progress','unlinkingfiles','done');
-}
-
-///////////////////////////////////////////////////////////////////////////////
 ////	HANDLE REMINDERS
 if(empty($errors)) {
 	commitHandleReminders($skippedFiles, $path);

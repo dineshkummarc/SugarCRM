@@ -952,13 +952,9 @@ abstract class DBHelper
         }
         $type = $this->getColumnType($fieldDef['dbType'],$fieldDef['name'],$tablename);
         $matches = array();
-        preg_match_all("/(\w+)(?:\(([A-z0-9]+,?[0-9]*)\)|)/i", $type, $matches);
-        if ( isset($matches[1][0]) ) {
+        preg_match_all("/(\w+)(?:\(([0-9]+,?[0-9]*)\)|)/i", $type, $matches);
+        if ( isset($matches[1][0]) )
             $fieldDef['type'] = $matches[1][0];
-        }
-        else{
-            $fieldDef['type'] = $type;
-        }
         if ( isset($matches[2][0]) && empty($fieldDef['len']) )
             $fieldDef['len'] = $matches[2][0];
         if ( !empty($fieldDef['precision']) && is_numeric($fieldDef['precision']) && !strstr($fieldDef['len'],',') )

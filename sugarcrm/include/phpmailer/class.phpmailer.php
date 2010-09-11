@@ -1326,6 +1326,9 @@ class PHPMailer {
      // Use a custom function which correctly encodes and wraps long
      // multibyte strings without breaking lines within a character
         $encoded = $this->Base64EncodeWrapMB($str);
+        // Bug 39171 - Need to change the passed back line-ending to \n, since that's what the
+        //             regex below expects.
+        $encoded = str_replace($this->LE, "\n", trim($encoded));
       } else {
         $encoded = base64_encode($str);
         $maxlen -= $maxlen % 4;

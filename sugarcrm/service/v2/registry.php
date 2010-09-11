@@ -485,17 +485,6 @@ class registry {
 		);
 		
 		$this->serviceClass->registerType(
-			'link_list2',
-			'complexType',
-			'struct',
-			'all',
-			'',
-			array(
-				'link_list'=>array('name'=>'link_list', 'type'=>'tns:link_list'),
-			)
-		);
-		
-		$this->serviceClass->registerType(
 		    'link_lists',
 			'complexType',
 		   	 'array',
@@ -503,9 +492,9 @@ class registry {
 		  	  'SOAP-ENC:Array',
 			array(),
 		    array(
-		        array('ref'=>'SOAP-ENC:arrayType', 'wsdl:arrayType'=>'tns:link_list2[]')
+		        array('ref'=>'SOAP-ENC:arrayType', 'wsdl:arrayType'=>'tns:link_list[]')
 		    ),
-			'tns:link_list2'
+			'tns:link_list'
 		);
 		
 		$this->serviceClass->registerType(

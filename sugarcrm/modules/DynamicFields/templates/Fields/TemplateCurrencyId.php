@@ -42,7 +42,7 @@ class TemplateCurrencyId extends TemplateId{
     function get_field_def(){
 		$def = parent::get_field_def();
 		$def['type'] = 'id';
-		$def['studio'] = 'hidden';
+		$def['studio'] = 'visible';
 		$def['function'] = array('name'=>'getCurrencyDropDown', 'returns'=>'html');
 		return $def;	
 	}

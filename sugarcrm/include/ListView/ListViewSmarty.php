@@ -113,14 +113,24 @@ class ListViewSmarty extends ListViewDisplay{
         $this->ss->assign('selectLinkString',$app_strings['LBL_LINK_SELECT']);
         if($this->overlib) $this->ss->assign('overlib', true);
 		if($this->select)$this->ss->assign('selectLink', $this->buildSelectLink('select_link', $this->data['pageData']['offsets']['total'], $this->data['pageData']['offsets']['next']-$this->data['pageData']['offsets']['current']));
-		$this->ss->assign('actionsLink', $this->buildActionsLink());
+		
+		if($this->show_action_dropdown)
+		{
+			$this->ss->assign('actionsLink', $this->buildActionsLink());
+		}
 		
 		$this->ss->assign('quickViewLinks', $this->quickViewLinks);
 		
 		// handle save checks and stuff
 		if($this->multiSelect) {
-		if($this->data['pageData']['bean']['moduleDir']== 'KBDocuments') $this->ss->assign('selectedObjectsSpan', $this->buildSelectedObjectsSpan(true, $this->data['pageData']['offsets']['current']));
-		else $this->ss->assign('selectedObjectsSpan', $this->buildSelectedObjectsSpan(true, $this->data['pageData']['offsets']['total']));
+		
+		//if($this->data['pageData']['bean']['moduleDir']== 'KBDocuments')
+		//{ 
+		//	$this->ss->assign('selectedObjectsSpan', $this->buildSelectedObjectsSpan(true, $this->data['pageData']['offsets']['current']));
+		//} else {
+			$this->ss->assign('selectedObjectsSpan', $this->buildSelectedObjectsSpan(true, $this->data['pageData']['offsets']['total']));
+		//}
+		
 		$this->ss->assign('multiSelectData', $this->getMultiSelectData());
 		}
 		// include button for Adding to Target List if in one of four applicable modules

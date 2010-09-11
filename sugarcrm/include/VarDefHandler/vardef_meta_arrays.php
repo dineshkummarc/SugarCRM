@@ -122,7 +122,6 @@ $vardef_meta_array = array (
 			'type' => array('id', 'link', 'team_list', 'time'),
 			'custom_type' => array('id', 'link', 'team_list', 'time'),
 			'name' => array('parent_type', 'team_name', 'assigned_user_name', 'parent_type', 'amount_usdollar', 'deleted' ,'filename', 'file_mime_type', 'file_url'),
-			'reportable' => array('true'),
 			'source' => array('non-db'),
 		//end exclusion
 		),

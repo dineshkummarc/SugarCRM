@@ -42,7 +42,7 @@ class ViewDisplaydeployresult extends SugarView
 		$this->show_title = false;
  		$this->show_subpanels = false;
  		$this->show_search = false;
- 		$this->show_footer = false;
+ 		$this->show_footer = true;
  		$this->show_javascript = true;
  		$this->view_print = false;
 	}

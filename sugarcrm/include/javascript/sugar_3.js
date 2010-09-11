@@ -295,7 +295,7 @@ function initEditView(theForm){if(typeof editViewSnapshots=='undefined'){editVie
 editViewSnapshots[theForm.id]=snapshotForm(theForm);}
 function onUnloadEditView(theForm){var dataHasChanged=false;if(typeof editViewSnapshots=='undefined'){return;}
 if(typeof theForm=='undefined'){for(var idx in editViewSnapshots){theForm=document.getElementById(idx);if(theForm==null||typeof editViewSnapshots[theForm.id]=='undefined'||editViewSnapshots[theForm.id]==null){continue;}
-if(editViewSnapshots[theForm.id]!=snapshotForm(theForm)){dataHasChanged=true;}}}else{if(typeof editViewSnapshots[theForm.id]=='undefined'||editViewSnapshots[theForm.id]==null){return;}
+if(editViewSnapshots[theForm.id]!=snapshotForm(theForm)){dataHasChanged=true;}}}else{if(editViewSnapshots==null||typeof editViewSnapshots[theForm.id]=='undefined'||editViewSnapshots[theForm.id]==null){return;}
 if(editViewSnapshots[theForm.id]!=snapshotForm(theForm)){dataHasChanged=true;}}
 if(dataHasChanged==true){return SUGAR.language.get('app_strings','WARN_UNSAVED_CHANGES');}else{return;}}
 function disableOnUnloadEditView(theForm){if(typeof theForm=='undefined'||typeof editViewSnapshots=='undefined'||editViewSnapshots==null){window.onbeforeunload=null;editViewSnapshots=null;}else{if(typeof(theForm.id)!='undefined'&&typeof(editViewSnapshots[theForm.id])!='undefined'){editViewSnapshots[theForm.id]=null;}}}

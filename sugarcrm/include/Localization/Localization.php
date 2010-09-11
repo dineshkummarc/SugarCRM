@@ -71,7 +71,7 @@ class Localization {
 		'KOI8-R',       //Cyrillic Russian
 		'KOI8-U',       //Cyrillic Ukranian
 		'SJIS',         //MS Japanese
-		'UTF-8',        //'UTF-8
+		'UTF-8',        //UTF-8
 		);
 	var $localeNameFormat;
 	var $localeNameFormatDefault;
@@ -129,6 +129,17 @@ class Localization {
 			$userPref = $user->getPreference($prefName);
 		} elseif(!empty($current_user)) {
 			$userPref = $current_user->getPreference($prefName);
+		}
+		// Bug 39171 - If we are asking for default_email_charset, check in emailSettings['defaultOutboundCharset'] as well
+		if ( $prefName == 'default_email_charset' ) {
+		    if($user != null) {
+                $emailSettings = $user->getPreference('emailSettings');
+            } elseif(!empty($current_user)) {
+                $emailSettings = $current_user->getPreference('emailSettings');
+            }
+            if ( isset($emailSettings['defaultOutboundCharset']) ) {
+                $userPref = $emailSettings['defaultOutboundCharset'];
+            }
 		}
 
 		// set fallback defaults defined in this class

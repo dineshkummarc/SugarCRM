@@ -4908,6 +4908,11 @@ function save_relationship_changes($is_update, $exclude=array())
     {
     	return false;
     }
+	/**
+	 * Check whether the user has access to a particular view for the current bean/module
+	 * @param $view string required, the view to determine access for i.e. DetailView, ListView...
+	 * @param $is_owner bool optional, this is part of the ACL check if the current user is an owner they will receive different access
+	 */
     function ACLAccess($view,$is_owner='not_set')
     {
     	global $current_user;

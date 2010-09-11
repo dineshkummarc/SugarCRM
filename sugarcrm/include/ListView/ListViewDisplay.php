@@ -43,6 +43,7 @@ require_once('include/MassUpdate.php');
 class ListViewDisplay {
 
 	var $show_mass_update_form = false;
+	var $show_action_dropdown = true;
 	var $rowCount;
 	var $mass = null;
 	var $seed;
