@@ -133,9 +133,9 @@ class Localization {
 		// Bug 39171 - If we are asking for default_email_charset, check in emailSettings['defaultOutboundCharset'] as well
 		if ( $prefName == 'default_email_charset' ) {
 		    if($user != null) {
-                $emailSettings = $user->getPreference('emailSettings');
+                $emailSettings = $user->getPreference('emailSettings', 'Emails');
             } elseif(!empty($current_user)) {
-                $emailSettings = $current_user->getPreference('emailSettings');
+                $emailSettings = $current_user->getPreference('emailSettings', 'Emails');
             }
             if ( isset($emailSettings['defaultOutboundCharset']) ) {
                 $userPref = $emailSettings['defaultOutboundCharset'];

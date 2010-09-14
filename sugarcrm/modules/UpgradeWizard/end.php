@@ -254,7 +254,7 @@ $uwMain =<<<eoq
 	<tr>
 		<td align="left">
 			<p><br>
-				<b>{$mod_strings['LBL_UW_END_LOGOUT']}</b>
+            <b>{$mod_strings['LBL_UW_END_LOGOUT_PRE']}</b> {$mod_strings['LBL_UW_END_LOGOUT']}
 			</p>
 		</td>
 	</tr>

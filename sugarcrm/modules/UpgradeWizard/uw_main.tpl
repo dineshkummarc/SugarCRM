@@ -117,6 +117,13 @@
 					type		= "button"
 					value		= "  {$MOD.LBL_BUTTON_DONE}  ">
 		{/if}
+		{if $showExit}
+			<input	title		= "{$MOD.LBL_BUTTON_EXIT}"
+					class		= "button"
+					onclick		= "window.location.href='index.php?module=Administration&action=index';"
+					type		= "button"
+					value		= "  {$MOD.LBL_BUTTON_EXIT}  ">
+		{/if}
 
 </form>
 		</td>
@@ -215,6 +222,13 @@
 					onclick		= "deleteCacheAjax();window.location.href='index.php?module=Home&action=About';"
 					type		= "button"
 					value		= "  {$MOD.LBL_BUTTON_DONE}  ">
+		{/if}
+		{if $showExit}
+			<input	title		= "{$MOD.LBL_BUTTON_EXIT}"
+					class		= "button"
+					onclick		= "window.location.href='index.php?module=Administration&action=index';"
+					type		= "button"
+					value		= "  {$MOD.LBL_BUTTON_EXIT}  ">
 		{/if}
 
 </form>

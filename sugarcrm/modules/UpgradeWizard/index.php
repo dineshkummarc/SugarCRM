@@ -85,6 +85,7 @@ $stepCancel = '';
 $stepBack = '';
 $stepRecheck = '';
 $showDone = '';
+$showExit = '';
 $disableNextForLicense='';
 
 if(!isset($_SESSION['step']) || !is_array($_SESSION['step'])){
@@ -334,28 +335,28 @@ $upgrades_installed = 0;
 
 $uwHistory  = '<table width="100%" border="0" cellspacing="0" cellpadding="0" class="edit view"><tr><td>'.$mod_strings['LBL_UW_DESC_MODULES_INSTALLED']."<br>\n";
 $uwHistory .= "<ul>\n";
-$uwHistory .= "<table cellspacing=10>\n";
+$uwHistory .= "<table class=\"edit view\" cellspacing=5>\n";
 $uwHistory .= <<<eoq
 	<tr>
-		<th></th>
-		<th align=left>
-			{$mod_strings['LBL_ML_NAME']}
-		</th>
-		<th align=left>
-			{$mod_strings['LBL_ML_TYPE']}
-		</th>
-		<th align=left>
-			{$mod_strings['LBL_ML_VERSION']}
-		</th>
-		<th align=left>
-			{$mod_strings['LBL_ML_INSTALLED']}
-		</th>
-		<th>
-			{$mod_strings['LBL_ML_DESCRIPTION']}
-		</th>
-		<th>
-			{$mod_strings['LBL_ML_ACTION']}
-		</th>
+		<td></td>
+		<td align=left>
+			<b>{$mod_strings['LBL_ML_NAME']}</b>
+		</td>
+		<td align=left>
+			<b>{$mod_strings['LBL_ML_TYPE']}</b>
+		</td>
+		<td align=left>
+			<b>{$mod_strings['LBL_ML_VERSION']}</b>
+		</td>
+		<td align=left>
+			<b>{$mod_strings['LBL_ML_INSTALLED']}</b>
+		</td>
+		<td align=left>
+			<b>{$mod_strings['LBL_ML_DESCRIPTION']}</b>
+		</td>
+		<td align=left>
+			<b>{$mod_strings['LBL_ML_ACTION']}</b>
+		</td>
 	</tr>
 eoq;
 
@@ -395,7 +396,7 @@ foreach($installeds as $installed) {
 			}
 
 			$uwHistory .= "<form action=\"index.php\" method=\"post\">\n".
-				"<tr><td>$icon</td><td>$name</td><td>$type</td><td>$version</td><td>$date_entered</td><td>$description</td><td>$link</td></tr>\n".
+				"<tr><td align=left>$icon</td><td align=left>$name</td><td align=left>$type</td><td align=left>$version</td><td align=left>$date_entered</td><td align=left>$description</td><td align=left>$link</td></tr>\n".
 				"</form>\n";
 		}
 	}
@@ -535,6 +536,7 @@ $smarty->assign('showCancel', $showCancel);
 $smarty->assign('showBack', $showBack);
 $smarty->assign('showRecheck', $showRecheck);
 $smarty->assign('showDone', $showDone);
+$smarty->assign('showExit', $showExit);
 $smarty->assign('STEP_NEXT', $stepNext);
 $smarty->assign('STEP_CANCEL', $stepCancel);
 $smarty->assign('STEP_BACK', $stepBack);

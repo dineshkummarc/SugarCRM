@@ -82,7 +82,7 @@ $popupMeta = array(
 	'searchdefs'   => array(
 	 	'first_name', 
 		'last_name', 
-		array('name' => 'account_name', 'displayParams' => array('hideButtons'=>'true', 'size'=>30, 'class'=>'sqsEnabled sqsNoAutofill')),
+		array('name' => 'account_name', 'type' => 'varchar',),
 		'title',
 		'lead_source',
 		array('name' => 'campaign_name', 'displayParams' => array('hideButtons'=>'true', 'size'=>30, 'class'=>'sqsEnabled sqsNoAutofill')),

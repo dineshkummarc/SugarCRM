@@ -2409,7 +2409,7 @@ function save_relationship_changes($is_update, $exclude=array())
 						$value = implode($list_column,' ');
 						// Bug 38803 - Use CONVERT() function when doing an order by on ntext, text, and image fields
 						if ( $this->db->dbType == 'mssql' 
-						     && $source == 'db'
+						     && $source != 'non-db'
                             && in_array(
                                 $this->db->getHelper()->getColumnType($this->db->getHelper()->getFieldType($bean_queried->field_defs[$list_column_name])),
                                 array('ntext','text','image')
@@ -2419,7 +2419,7 @@ function save_relationship_changes($is_update, $exclude=array())
                         }
 						// Bug 29011 - Use TO_CHAR() function when doing an order by on a clob field
 						if ( $this->db->dbType == 'oci8' 
-						     && $source == 'db'
+						     && $source != 'non-db'
                             && in_array(
                                 $this->db->getHelper()->getColumnType($this->db->getHelper()->getFieldType($bean_queried->field_defs[$list_column_name])),
                                 array('clob')

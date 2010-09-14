@@ -993,8 +993,8 @@ function check_for_duplicate_contacts(&$seed){
 			return null;
 		}
 	}else{
-	    $query = "contacts.last_name = '$trimmed_last'";
-        $query .= " AND contacts.first_name = '$trimmed_first'";
+	    $query = "contacts.last_name = '".$seed->db->quote($trimmed_last,false)."'";
+        $query .= " AND contacts.first_name = '".$seed->db->quote($trimmed_first,false)."'";
         $contacts = $seed->get_list('', $query);
         if (count($contacts) == 0){
             return null;

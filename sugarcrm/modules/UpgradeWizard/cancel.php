@@ -56,11 +56,6 @@ resetUwSession();
 $uwMain =<<<eoq
 <table cellpadding="3" cellspacing="0" border="0">
 	<tr>
-		<th align="left">
-			{$mod_strings['LBL_UW_TITLE_CANCEL']}
-		</th>
-	</tr>
-	<tr>
 		<td align="left">
 			<p>
 			{$mod_strings['LBL_UW_CANCEL_DESC']}
@@ -69,12 +64,12 @@ $uwMain =<<<eoq
 	</tr>
 	<tr>
 		<th align="left">
-			<input	title		= "{$mod_strings['LBL_BUTTON_DONE']}"
+			<input	title		= "{$mod_strings['LBL_BUTTON_RESTART']}"
 					class		= "button"
 					onclick		= "window.location.href ='{$sugar_config['site_url']}/index.php?module=UpgradeWizard&action=index';"
 					type		= "submit"
-					value		= "  {$mod_strings['LBL_BUTTON_DONE']}  "
-					id			= "done_button" >
+					value		= "  {$mod_strings['LBL_BUTTON_RESTART']}  "
+					id			= "restart_button" >
 		</th>
 	</tr>
 </table>

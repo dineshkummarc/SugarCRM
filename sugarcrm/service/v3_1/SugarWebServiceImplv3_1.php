@@ -71,6 +71,49 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3 {
     }
 
     /**
+     * Retrieve the md5 hash of the vardef entries for a particular module.
+     *
+     * @param String $session -- Session ID returned by a previous call to login.
+     * @param String $module_name -- The name of the module to return records from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method)..
+     * @return String The md5 hash of the vardef definition.
+     * @exception 'SoapFault' -- The SOAP error, if any
+     */
+    function get_module_fields_md5($session, $module_name){
+        
+        $GLOBALS['log']->info('Begin: SugarWebServiceImpl->get_module_fields_md5');
+        
+        $results = array();
+        if( is_array($module_name) )
+        {
+            foreach ($module_name as $module)
+                $results[$module] = md5(serialize(self::get_module_fields($session, $module)));
+        }
+        else 
+            $results[$module_name] = md5(serialize(self::get_module_fields($session, $module_name)));
+        
+        return $results;
+        
+        $GLOBALS['log']->info('End: SugarWebServiceImpl->get_module_fields_md5');
+    }
+    
+    /**
+     * Retrieve the md5 hash of a layout metadata for a given module given a specific type and view.
+     *
+     * @param String $session -- Session ID returned by a previous call to login.
+     * @param array $module_name(s) -- The name of the module to return records from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method)..
+     * @return array $type(s) The type of view requested.  Current supported types are 'default' (for application) and 'wireless'
+     * @return array $view(s) The view requested.  Current supported types are edit, detail, and list.
+     * @exception 'SoapFault' -- The SOAP error, if any
+     */
+    function get_module_layout_md5($session, $module_name, $type, $view){
+    	$GLOBALS['log']->info('Begin: SugarWebServiceImpl->get_module_layout_md5');
+    	$results = self::get_module_layout($session, $module_name, $type, $view, TRUE);
+            return array('md5'=> $results);
+    	$GLOBALS['log']->info('End: SugarWebServiceImpl->get_module_layout_md5');
+    }
+    
+    
+    /**
     * Retrieve a list of SugarBean's based on provided IDs. This API will not wotk with report module
     *
     * @param String $session -- Session ID returned by a previous call to login.
