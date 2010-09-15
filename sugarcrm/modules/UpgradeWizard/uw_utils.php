@@ -732,25 +732,25 @@ function getValidPatchName($returnFull = true) {
 	$ready .= "
 		<table>
 			<tr>
-				<th></th>
-				<th align=left>
-					{$mod_strings['LBL_ML_NAME']}
-				</th>
-				<th>
-					{$mod_strings['LBL_ML_TYPE']}
-				</th>
-				<th>
-					{$mod_strings['LBL_ML_VERSION']}
-				</th>
-				<th>
-					{$mod_strings['LBL_ML_PUBLISHED']}
-				</th>
-				<th>
-					{$mod_strings['LBL_ML_UNINSTALLABLE']}
-				</th>
-				<th>
-					{$mod_strings['LBL_ML_DESCRIPTION']}
-				</th>
+				<td></td>
+				<td align=left>
+					<b>{$mod_strings['LBL_ML_NAME']}</b>
+				</td>
+				<td align=left>
+					<b>{$mod_strings['LBL_ML_TYPE']}</b>
+				</td>
+				<td align=left>
+					<b>{$mod_strings['LBL_ML_VERSION']}</b>
+				</td>
+				<td align=left>
+					<b>{$mod_strings['LBL_ML_PUBLISHED']}</b>
+				</td>
+				<td align=left>
+					<b>{$mod_strings['LBL_ML_UNINSTALLABLE']}</b>
+				</td>
+				<td align=left>
+					<b>{$mod_strings['LBL_ML_DESCRIPTION']}</b>
+				</td>
 			</tr>";
 	$disabled = '';
 

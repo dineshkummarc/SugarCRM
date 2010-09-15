@@ -80,6 +80,7 @@ $showBack		= false;
 $showCancel		= false;
 $showRecheck	= false;
 $showNext		= false;
+$showExit       = true;
 
 $stepBack		= $_REQUEST['step'] - 1;
 $stepNext		= $_REQUEST['step'] + 1;

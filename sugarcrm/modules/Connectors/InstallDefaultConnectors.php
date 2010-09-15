@@ -49,6 +49,16 @@ $default_connectors = array (
 
 );
 
+// Gather a list of the previous Connectors available for a potential merge
+$previous_connectors = array();
+if(file_exists('custom/modules/Connectors/metadata/connectors.php')){
+    require('custom/modules/Connectors/metadata/connectors.php');
+
+    foreach($connectors as $connector_array){
+        $connector_id = $connector_array['id'];
+        $previous_connectors[$connector_id] = $connector_id;
+    }
+} 
 
 $default_modules_sources = array (
   'Accounts' => 
@@ -71,6 +81,34 @@ $default_modules_sources = array (
   ),
     
 );
+
+// Merge in old modules the customer added instead of overriding it completely with defaults
+// If they have customized their connectors modules
+if(file_exists('custom/modules/Connectors/metadata/display_config.php')){
+    require('custom/modules/Connectors/metadata/display_config.php');
+    
+    // Remove the default settings from being copied over since they already existed
+    foreach($default_modules_sources as $module => $sources){
+        foreach($sources as $source_key => $source){
+            foreach($previous_connectors as $previous_connector){
+                if(in_array($previous_connector, $default_modules_sources[$module])){
+                    unset($default_modules_sources[$module][$previous_connector]);
+                }
+            }
+        }
+    }
+    
+    // Merge in the new connector default settings with the current settings
+    foreach($modules_sources as $module => $sources){
+        if(!empty($default_modules_sources[$module])){
+            $merged = array_merge($modules_sources[$module], $default_modules_sources[$module]);
+            $default_modules_sources[$module] = $merged;
+        }
+        else{
+            $default_modules_sources[$module] = $modules_sources[$module];
+        }
+    }
+}
 
 if(!file_exists('custom/modules/Connectors/metadata')) {
    mkdir_recursive('custom/modules/Connectors/metadata');
