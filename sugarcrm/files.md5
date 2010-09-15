@@ -1,5 +1,5 @@
 <?php
-// created: 2010-09-14 17:40:10
+// created: 2010-09-15 11:43:06
 $md5_string = array (
   './LICENSE.txt' => 'd3f150e4a5bed444763ebe8a81742a95',
   './.htaccess' => 'd41d8cd98f00b204e9800998ecf8427e',
@@ -12,7 +12,7 @@ $md5_string = array (
   './examples/FormValidationTest.php' => '61dcc214288dd7833e37238e0efa5ccf',
   './examples/ProgressBarTest.php' => '1221c9c0372e16e0ef4f58008b37c6ea',
   './emailmandelivery.php' => '03589de9409e1abb4f0ad9ee4dce8e07',
-  './sugar_version.php' => '7090c2c6c7dd132242c7d46ad38141a1',
+  './sugar_version.php' => '0fef36ead8b77f4fe14d784e767ba5f7',
   './custom/index.html' => 'b0070a296647b6026d1800db14510e3c',
   './acceptDecline.php' => 'a8699214ad82527bb0ae1d3f0c9b64b6',
   './export.php' => '50f3b3c23ecb4d0a8b0a898f4f982a66',
@@ -1255,11 +1255,6 @@ $md5_string = array (
   './service/example/example.html' => '9b6e960374042087bded4878b8f9f3c9',
   './service/example/Rest_Proxy.php' => 'b2f568fcad5f6d8d1c45d5921ee1f50f',
   './service/example/test.html' => '7ee887847a9b79f9275029367d40b371',
-  './service/v3_1/registry.php' => '51ee5c97f4fa3105409dfec7a575d5f7',
-  './service/v3_1/SugarWebServiceUtilv3_1.php' => '11d80a2aa7221e9c7f23b9ff83f1deec',
-  './service/v3_1/soap.php' => '8970f3d3dc5dc85821c6f02db55b6e97',
-  './service/v3_1/rest.php' => '52816d5dc65f0c830c2f2eb9888f0e20',
-  './service/v3_1/SugarWebServiceImplv3_1.php' => 'aa38f779998288cff57c3678f62188d7',
   './service/v3/registry.php' => '3dfe539811e843d6bea508d7d0b344c5',
   './service/v3/SugarWebServiceUtilv3.php' => '9c9d9573fafc43470dae3735f0ed8883',
   './service/v3/soap.php' => '6c663a4eadabb2a5961c66e288f414d5',
@@ -1329,7 +1324,7 @@ $md5_string = array (
   './include/utils/activity_utils.php' => '46936a127737729cdfdafd9c70669f58',
   './include/utils/encryption_utils.php' => '34c58803c3939aff389f0c8ce0084309',
   './include/utils/progress_bar_utils.php' => 'ad34d73c2b9198c1d959d274d241dcf0',
-  './include/utils/mvc_utils.php' => 'ad88a16488a68bc940e1f31f683b7668',
+  './include/utils/mvc_utils.php' => '5147ea2ccfb0d13c8d767da9b01de837',
   './include/utils/external_cache.php' => '9a682783cf1ac4b32541f9bb426c2688',
   './include/utils/db_utils.php' => '0b253cc086f0259fb794ce2487f8fc56',
   './include/utils/sugar_file_utils.php' => '2c403ff36994b48b603d893af3fd7518',
@@ -2591,7 +2586,7 @@ $md5_string = array (
   './include/database/MysqlManager.php' => '9791542a21f3fe95b757fda185d18305',
   './include/database/MssqlHelper.php' => 'abb6aacf088cf01f5cb57aba61527210',
   './include/database/FreeTDSHelper.php' => 'dd97f8a1422995441f31496a611f8e6f',
-  './include/database/SqlsrvHelper.php' => '7ecf432edc5ee6e322ae3c3bbcb471da',
+  './include/database/SqlsrvHelper.php' => 'a461dc0a50c5dd0909d76b288387ef3c',
   './include/database/MssqlManager.php' => '73bb492b1fad5c3ded9778ecaa557220',
   './include/SugarTheme/SugarTheme.php' => '39d88d8a0c219c2025c05c69f2c5cce8',
   './include/SugarTheme/getImage.php' => '6d88ff3f13e0e849aadc152d9b002a50',

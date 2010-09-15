@@ -310,7 +310,7 @@ EOSQL;
         )
     {
         $sql = '';
-        if ( $this->doesTableHaveAFulltextIndexDefined($tableName) ) {
+        if ( $this->doesTableHaveAFulltextIndexDefined($tablename) ) {
             $sql .= "DROP FULLTEXT INDEX ON {$table}";
         }
         
