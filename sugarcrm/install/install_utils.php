@@ -1063,6 +1063,14 @@ function handleSugarConfig() {
             }
         }
     }
+    if(file_exists('install/lang.config.php')){
+    	include('install/lang.config.php');
+    	if(!empty($config['languages'])){
+    		foreach($config['languages'] as $lang=>$label){
+    			$sugar_config['languages'][$lang] = $label;	
+    		}
+    	}
+    }
 
     ksort($sugar_config);
     $sugar_config_string = "<?php\n" .

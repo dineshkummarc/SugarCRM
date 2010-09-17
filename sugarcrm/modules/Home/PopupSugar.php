@@ -45,7 +45,7 @@ global $theme;
 
 insert_popup_header($theme);
 
-$sugarteam = array( 'Julian Ostrow', 'Lam Huynh', 'Majed Itani', 'Joey Parsons', 'Ajay Gupta', 'Jason Nassi', 'Andy Dreisch', 'Roger Smith', 'Matt Heitzenroder', 'Liliya Bederov', 'Sadek Baroudi', 'Yun-Ping Hsu', 'Franklin Liu', 'Jennifer Yim', 'Sujata Pamidi', 'Andrew Wu', 'Eddy Ramirez', 'Jenny Gonsalves', 'Collin Lee',  'Joey Chao', 'Tom Young', 'David Wheeler', 'Samir Gandhi', 'Donald Wong',  'Benjamin Soufflet', 'John Mertic', 'Ran Zhou', 'Fabrice Aissah' , 'Maxime Aubert', 'Joshua Chi','Wynn Dong','Martin Hu','Mason Hu','Catherine Ma','Shine Ye','Leon Zhang', 'Gloria Chen','Emily Gan','Penny Gao','Randy Lee','Doni Shen','Eric Yang','Jane Ye','Stacey Zhu','Oliver Yang','Ray Yu' );
+$sugarteam = array( 'Julian Ostrow', 'Lam Huynh', 'Majed Itani', 'Joey Parsons', 'Ajay Gupta', 'Jason Nassi', 'Andy Dreisch', 'Roger Smith', 'Liliya Bederov', 'Sadek Baroudi', 'Franklin Liu', 'Jennifer Yim', 'Sujata Pamidi', 'Eddy Ramirez', 'Jenny Gonsalves', 'Collin Lee', 'David Wheeler', 'John Mertic', 'Ran Zhou', 'Shine Ye','Emily Gan','Randy Lee','Eric Yang','Oliver Yang','Andreas Sandberg');
 switch($_REQUEST['style']){
 	case 'rev':
 			$sugarteam = array_map('strrev', $sugarteam);

@@ -643,7 +643,13 @@ $showNext =($stop) ? false : true;
 $GLOBALS['top_message'] = "<b>{$mod_strings['LBL_UW_COMMIT_DESC']}</b>";
 $stepBack = $_REQUEST['step'] - 1;
 //Skip ahead to the end page as no layouts need to be merged.
-$stepNext = (count($_SESSION['sugarMergeRunResults']) > 0 ) ? $_REQUEST['step'] + 1 : $_REQUEST['step'] + 2; 
+$skipLayouts = true;
+foreach($_SESSION['sugarMergeRunResults'] as $mergeModule => $mergeModuleFileList){
+    if(!empty($mergeModuleFileList)){
+        $skipLayouts = false;
+    }
+}
+$stepNext = $skipLayouts ? $_REQUEST['step'] + 2 : $_REQUEST['step'] + 1; 
 $stepCancel = -1;
 $stepRecheck = $_REQUEST['step'];
 

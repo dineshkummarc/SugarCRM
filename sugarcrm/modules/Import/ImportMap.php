@@ -165,6 +165,24 @@ class ImportMap extends SugarBean
         }
         $this->default_values = implode("&", $output);
     }
+    
+    /**
+     * @see SugarBean::retrieve()
+     */
+    public function retrieve($id = -1, $encode=true,$deleted=true)
+	{
+	    $returnVal = parent::retrieve($id,$encode,$deleted);
+	    
+	    if ( !($returnVal instanceOf $this) ) {
+	        return $returnVal;
+	    }
+	    
+	    if ( $this->source == 'tab' && $this->delimiter == '' ) {
+	        $this->delimiter = "\t";
+	    }
+	    
+	    return $this;
+	}
 
     /**
      * Save

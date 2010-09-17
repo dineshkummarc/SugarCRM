@@ -880,14 +880,14 @@ EOHTML;
             $final_module_menu = array();
             
             if (file_exists('modules/' . $module . '/Menu.php')) {
-                $GLOBAL['module_menu'] = $module_menu = array();
+                $GLOBALS['module_menu'] = $module_menu = array();
                 require('modules/' . $module . '/Menu.php');
-                $final_module_menu = array_merge($final_module_menu,$GLOBAL['module_menu'],$module_menu);
+                $final_module_menu = array_merge($final_module_menu,$GLOBALS['module_menu'],$module_menu);
             }
             if (file_exists('custom/modules/' . $module . '/Ext/Menus/menu.ext.php')) {
-                $GLOBAL['module_menu'] = $module_menu = array();
+                $GLOBALS['module_menu'] = $module_menu = array();
                 require('custom/modules/' . $module . '/Ext/Menus/menu.ext.php');
-                $final_module_menu = array_merge($final_module_menu,$GLOBAL['module_menu'],$module_menu);
+                $final_module_menu = array_merge($final_module_menu,$GLOBALS['module_menu'],$module_menu);
             }
             if (!file_exists('modules/' . $module . '/Menu.php') 
                     && !file_exists('custom/modules/' . $module . '/Ext/Menus/menu.ext.php') 
@@ -905,9 +905,9 @@ EOHTML;
                             $app_strings['LBL_IMPORT'], "Import", $module);
             }
             if (file_exists('custom/application/Ext/Menus/menu.ext.php')) {
-                $GLOBAL['module_menu'] = $module_menu = array();
+                $GLOBALS['module_menu'] = $module_menu = array();
                 require('custom/application/Ext/Menus/menu.ext.php');
-                $final_module_menu = array_merge($final_module_menu,$GLOBAL['module_menu'],$module_menu);
+                $final_module_menu = array_merge($final_module_menu,$GLOBALS['module_menu'],$module_menu);
             }
             $module_menu = $final_module_menu;
             sugar_cache_put("{$current_user->id}_{$module}_module_menu_{$current_language}",$module_menu);

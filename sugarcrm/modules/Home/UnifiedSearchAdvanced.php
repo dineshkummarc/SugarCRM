@@ -45,7 +45,18 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 
 class UnifiedSearchAdvanced {
-
+    
+    var $query_string = '';
+    
+    function __construct(){
+        if(!empty($_REQUEST['query_string'])){
+            $query_string = trim($_REQUEST['query_string']);
+            if(!empty($query_string)){
+                $this->query_string = $query_string;
+            }
+        }
+    }
+    
 	function getDropDownDiv($tpl = 'modules/Home/UnifiedSearchAdvanced.tpl') {
 		global $app_list_strings;
 
@@ -76,7 +87,7 @@ class UnifiedSearchAdvanced {
             }
 		}
 
-		if(!empty($_REQUEST['query_string'])) $sugar_smarty->assign('query_string', securexss($_REQUEST['query_string']));
+		if(!empty($this->query_string)) $sugar_smarty->assign('query_string', securexss($this->query_string));
 		else $sugar_smarty->assign('query_string', '');
 		$sugar_smarty->assign('USE_SEARCH_GIF', 0);
 		$sugar_smarty->assign('LBL_SEARCH_BUTTON_LABEL', $app_strings['LBL_SEARCH_BUTTON_LABEL']);
@@ -98,7 +109,7 @@ class UnifiedSearchAdvanced {
 		$home_mod_strings = return_module_language($current_language, 'Home');
 
 		$overlib = true;
-		$_REQUEST['query_string'] = $GLOBALS['db']->quote(securexss(from_html(clean_string($_REQUEST['query_string'], 'UNIFIED_SEARCH'))));
+		$this->query_string = $GLOBALS['db']->quote(securexss(from_html(clean_string($this->query_string, 'UNIFIED_SEARCH'))));
 
 		if(!empty($_REQUEST['advanced']) && $_REQUEST['advanced'] != 'false') {
 			$modules_to_search = array();
@@ -133,9 +144,7 @@ class UnifiedSearchAdvanced {
 		$module_counts = array();
 		$has_results = false;
 
-		if(!empty($_REQUEST['query_string'])) {
-			// MFH BUG 15404: Added support to trim off whitespace at the beginning and end of a search string
-			$_REQUEST['query_string'] = trim($_REQUEST['query_string']);
+		if(!empty($this->query_string)) {
 			foreach($modules_to_search as $moduleName => $beanName) {
                 $unifiedSearchFields = array () ;
                 $innerJoins = array();
@@ -150,7 +159,7 @@ class UnifiedSearchAdvanced {
                         $def['innerjoin'] = str_replace('INNER', 'LEFT', $def['innerjoin']);
                     }
                     $unifiedSearchFields[ $moduleName ] [ $field ] = $def ;
-                    $unifiedSearchFields[ $moduleName ] [ $field ][ 'value' ] = $_REQUEST['query_string'] ;
+                    $unifiedSearchFields[ $moduleName ] [ $field ][ 'value' ] = $this->query_string ;
                 }
 
                 /*
@@ -169,7 +178,7 @@ class UnifiedSearchAdvanced {
                 foreach($innerJoins as $field=>$def) {
                     if (isset ($def['db_field'])) {
                       foreach($def['db_field'] as $dbfield)
-                          $where_clauses[] = $dbfield . " LIKE '" . $_REQUEST['query_string'] . "%'";
+                          $where_clauses[] = $dbfield . " LIKE '" . $this->query_string . "%'";
                           $params['custom_select'] .= ", $dbfield";
                           $params['distinct'] = true;
                           //$filterFields[$dbfield] = $dbfield;

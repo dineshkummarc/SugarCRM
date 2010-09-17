@@ -285,7 +285,7 @@ EOSQL;
 SELECT 1
     FROM sys.fulltext_indexes i
         JOIN sys.objects o ON i.object_id = o.object_id
-    WHERE o.name = {$tableName}
+    WHERE o.name = '{$tableName}'
 EOSQL;
 
         $result = $this->db->getOne($query);
