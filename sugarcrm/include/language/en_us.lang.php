@@ -1794,6 +1794,11 @@ $app_strings = array (
 
 
 
+    // The following version of LBL_SUGAR_COPYRIGHT is for Professional and Enterprise editions.
+
+    'LBL_SUGAR_COPYRIGHT_SUB' => '&copy; 2004-2010 <a href="http://www.sugarcrm.com" target="_blank" class="copyRightLink">SugarCRM Inc.</a> All Rights Reserved.<br />SugarCRM is a trademark of SugarCRM, Inc. All other company and product names may be trademarks of the respective companies with which they are associated.',
+
+
     'LBL_SYNC' => 'Sync',
     'LBL_SYNC' => 'Sync',
     'LBL_TABGROUP_ALL' => 'All',

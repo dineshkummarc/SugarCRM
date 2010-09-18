@@ -142,7 +142,8 @@ class SearchForm {
                 case 'basic_search':
                     foreach($this->searchFields as $name => $params) {
                         if(isset($array[$name . '_basic'])) {
-                            $this->searchFields[$name]['value'] = trim($array[$name . '_basic']);
+                            $this->searchFields[$name]['value'] =
+                                is_string($array[$name . '_basic'])?trim($array[$name . '_basic']):$array[$name . '_basic'];
                         }
                     }
                     if($addAllBeanFields) {
@@ -158,7 +159,7 @@ class SearchForm {
                 case 'advanced_search':
                    foreach($this->searchFields as $name => $params) {
                         if(isset($array[$name])) {
-                            $this->searchFields[$name]['value'] = trim($array[$name]);
+                            $this->searchFields[$name]['value'] = is_string($array[$name])?trim($array[$name]):$array[$name];
                         }
                     }
                     if((empty($array['massupdate']) || $array['massupdate'] == 'false') && $addAllBeanFields) {

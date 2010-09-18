@@ -6519,10 +6519,18 @@ var AjaxObject = {
 		//Set the error array so we can notify the user when they try to hit send if any errors 
 		//are present.  We will also notify them now (after hitting compose button).
 		SUGAR.email2.composeLayout.outboundAccountErrors = ret.errorArray;
-                
-        for(i in ret.errorArray)
-			overlay(app_strings.LBL_EMAIL_ERROR_DESC, ret.errorArray[i], 'alert');
 
+
+		//if error element is returning an array, then check the length to make sure we have error messages
+		if (typeof(ret.errorArray)=='object' && ret.errorArray instanceof Array && ret.errorArray.length > 0){
+			//add error messages for display
+			for(i in ret.errorArray)
+				overlay(app_strings.LBL_EMAIL_ERROR_DESC, ret.errorArray[i], 'alert');
+		}else if (typeof(ret.errorArray)=='object' && ret.errorArray!=null && ret.errorArray!='' ) {
+			//if error element is returning an object, and the object value is not empty or null, then display error message
+				overlay(app_strings.LBL_EMAIL_ERROR_DESC, ret.errorArray, 'alert');
+		}
+		
 		//YUI bug with IE6 - Wont restore visibility property for nested select elements.
 		if(SUGAR.isIE) {
 			var overlayPanel = YAHOO.SUGAR.MessageBox.panel;

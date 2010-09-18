@@ -355,7 +355,7 @@ else if(!isset($_GET['execute'])){
 	}
 	
 	echo "<BR><input type=button class=\"button\" value=\"{$mod_strings_users['LBL_REASS_BUTTON_GO_BACK']}\" onclick='document.location=\"index.php?module=Users&action=reassignUserRecords\"'>\n";
-	echo "&nbsp;<input type=submit class=\"button\" value=\"{$mod_strings_users['LBL_REASS_BUTTON_REASSIGN']}\">\n";
+	echo "&nbsp;<input type=submit class=\"button\" value=\"{$mod_strings_users['LBL_REASS_BUTTON_CONTINUE']}\">\n";
 	echo "&nbsp;<input type=button class=\"button\" value=\"{$mod_strings_users['LBL_REASS_BUTTON_RESTART']}\" onclick='document.location=\"index.php?module=Users&action=reassignUserRecords&clear=true\"'>\n";
 	
 	echo "</form>\n";

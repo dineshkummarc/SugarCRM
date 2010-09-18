@@ -494,14 +494,19 @@ function confirmDelete() {
         confirmDeletePopup.hide();
         return false;
      };
-
+    var user_portal_group = '{$usertype}';
+    var confirm_text = SUGAR.language.get('Users', 'LBL_DELETE_USER_CONFIRM');
+    if(user_portal_group == 'GroupUser'){
+        confirm_text = SUGAR.language.get('Users', 'LBL_DELETE_GROUP_CONFIRM');
+    }
+    
     var confirmDeletePopup = new YAHOO.widget.SimpleDialog(\"Confirm \", {
                 width: \"400px\",
                 draggable: true,
                 constraintoviewport: true,
                 modal: true,
                 fixedcenter: true,
-                text: SUGAR.language.get('Users', 'LBL_DELETE_USER_CONFIRM'),
+                text: confirm_text,
                 bodyStyle: \"padding:5px\",
                 buttons: [{
                         text: SUGAR.language.get('Users', 'LBL_OK'),
