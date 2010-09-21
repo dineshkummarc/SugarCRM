@@ -607,7 +607,7 @@ function check_form(formname) {
 
 function add_error_style(formname, input, txt) {
   try {
-	inputHandle = document.forms[formname][input];
+	inputHandle = typeof input == "object" ? input : document.forms[formname][input];
 	style = get_current_bgcolor(inputHandle);
 
 	// strip off the colon at the end of the warning strings

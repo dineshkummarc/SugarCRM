@@ -39,7 +39,13 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 //the code and end-user application.
 
 global $sugar_config, $mod_strings;
+include('ThirdPartyCredits.php');
 ?>
+<style type="text/css">
+ul li {
+list-style-type: square;
+}
+</style>
 <script language="javascript" src="modules/Home/about.js"></script>
 <span>
 <div class="about" style="padding: 10px 15px 20px 15px;">
@@ -149,6 +155,7 @@ echo $theProductName."&#8482; ".$mod_strings['LBL_AND']." Sugar&#8482; ".$mod_st
 
 <P>&nbsp;</p>
 <P><h3><?php echo $mod_strings['LBL_SOURCE_CODE']; ?></h3></p>
+<ul style="margin-bottom: 20px; padding-left: 0px;">
 <LI><?php echo $mod_strings['LBL_SOURCE_SUGAR']; ?> (<A href="http://www.sugarcrm.com" target="_blank">http://www.sugarcrm.com</A>)</LI>
 <LI><?php echo $mod_strings['LBL_SOURCE_XTEMPLATE']; ?> (<A href="http://sourceforge.net/projects/xtpl" target="_blank">http://sourceforge.net/projects/xtpl</A>)</LI>
 <LI><?php echo $mod_strings['LBL_SOURCE_NUSOAP']; ?> (<a href="http://dietrich.ganx4.com/nusoap" target="_blank">http://dietrich.ganx4.com/nusoap</a>)</LI>
@@ -175,7 +182,14 @@ echo $theProductName."&#8482; ".$mod_strings['LBL_AND']." Sugar&#8482; ".$mod_st
 <LI><?php echo $mod_strings['LBL_SOURCE_RECAPTCHA']; ?> (<a href="http://recaptcha.net/" target="_blank">http://recaptcha.net/</a>)</LI>
 </ul>
 
-
+<?php foreach($credits as $type => $details) {
+	echo "<P><h3>". $type . "</h3></p>";
+	echo "<ul style=\"margin-bottom: 20px; padding-left: 0px;\">";
+		foreach($details as $key => $value) {
+			echo "<li>".$value['name']." - ".$value['description']." (".$value['website'].")</li>";
+		}
+	echo "</ul>";
+}?>
 	</td>
 
 </tr>

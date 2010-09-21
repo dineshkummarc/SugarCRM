@@ -120,13 +120,7 @@ class Popup_Picker
 			else {
 				$date_due = $task->date_due;
 			}
-			 if (!empty($task->date_due) and !empty($task->time_due)) {
 
-				$sort_date_time=$timedate->to_db_date_time($task->date_due,$task->time_due);
-				$sort_date_time=implode(' ', $sort_date_time);
-				// kbrill - Bug #16714
-				//$sort_date_time=$timedate->handle_offset($sort_date_time,'Y-m-d H:i:s',true);
-			 }
 			if ($task->status != "Not Started" && $task->status != "In Progress" && $task->status != "Pending Input") {
 				$history_list[] = array('name' => $task->name,
 									 'id' => $task->id,
@@ -142,7 +136,7 @@ class Popup_Picker
 									 'date_modified' => $date_due,
 									 'description' => $this->getTaskDetails($task),
 									 'date_type' => $app_strings['DATA_TYPE_DUE'],
-									 'sort_value' => $sort_date_time
+									 'sort_value' => $task->date_entered,
 									 );
 			} else {
 				$open_activity_list[] = array('name' => $task->name,
@@ -165,14 +159,6 @@ class Popup_Picker
 
 		foreach ($focus_meetings_list as $meeting) {
 			if ($meeting->status != "Planned") {
-				$sort_date_time='';
-  				 if (!empty($meeting->date_start) and !empty($meeting->time_start)) {
-					$sort_date_time=$timedate->to_db_date_time($meeting->date_start,$meeting->time_start);
-					$sort_date_time=implode(' ', $sort_date_time);
-					// kbrill - Bug #16714
-					//$sort_date_time=$timedate->handle_offset($sort_date_time,'Y-m-d H:i:s',true);
-				 }
-
 
 				$history_list[] = array('name' => $meeting->name,
 									 'id' => $meeting->id,
@@ -188,7 +174,7 @@ class Popup_Picker
 									 'date_modified' => $meeting->date_start,
 									 'description' => $this->formatDescription($meeting->description),
 									 'date_type' => $app_strings['DATA_TYPE_START'],
-									 'sort_value' => $sort_date_time
+									 'sort_value' => $meeting->date_entered,
 									 );
 			} else {
 				$open_activity_list[] = array('name' => $meeting->name,
@@ -210,25 +196,7 @@ class Popup_Picker
 		} // end Meetings
 
 		foreach ($focus_calls_list as $call) {
-			if ($call->status != "Planned") {
-				$sort_date_time='';
-  				 if (!empty($call->date_start) and !empty($call->time_start)) {
-					$sort_date_time=$timedate->to_db_date_time($call->date_start,$call->time_start);
-					$sort_date_time=implode(' ', $sort_date_time);
-					// kbrill - Bug #16714
-					//$sort_date_time=$timedate->handle_offset($sort_date_time,'Y-m-d H:i:s',true);
-				 }
-         elseif(!empty($call->date_start) && empty($call->time_start))
-         {
-           //jc - Bug#19862
-           //for some reason the calls module does not populate the time_start variable in
-           //this case, so the date_start attribute contains the information we need
-           //to determine where in the history this call belongs.
-           //using swap_formats to get from the format '03/31/2008 09:45pm' to the format
-           //'2008-03-31 09:45:00'
-           $sort_date_time = $timedate->swap_formats($call->date_start, $timedate->get_date_time_format(), $timedate->get_db_date_time_format());
-         }
-
+			if ($call->status != "Planned") {		
 				$history_list[] = array('name' => $call->name,
 									 'id' => $call->id,
 									 'type' => "Call",
@@ -243,7 +211,7 @@ class Popup_Picker
 									 'date_modified' => $call->date_start,
 									 'description' => $this->formatDescription($call->description),
 									 'date_type' => $app_strings['DATA_TYPE_START'],
-									 'sort_value' => $sort_date_time
+									 'sort_value' => $call->date_entered,
 									 );
 			} else {
 				$open_activity_list[] = array('name' => $call->name,
@@ -265,13 +233,6 @@ class Popup_Picker
 		} // end Calls
 
 		foreach ($focus_emails_list as $email) {
-			$sort_date_time='';
-			 if (!empty($email->date_start) and !empty($email->time_start)) {
-				$sort_date_time=$timedate->to_db_date_time($email->date_start,$email->time_start);
-				$sort_date_time=implode(' ', $sort_date_time);
-				// kbrill - Bug #16714
-				//$sort_date_time=$timedate->handle_offset($sort_date_time,'Y-m-d H:i:s',true);
-			 }
 
 			$history_list[] = array('name' => $email->name,
 									 'id' => $email->id,
@@ -287,14 +248,11 @@ class Popup_Picker
 									 'date_modified' => $email->date_start." ".$email->time_start,
 									 'description' => $this->getEmailDetails($email),
 									 'date_type' => $app_strings['DATA_TYPE_SENT'],
-									 'sort_value' => $sort_date_time
+									 'sort_value' => $email->date_entered,
 									 );
 		} //end Emails
 
 		foreach ($focus_notes_list as $note) {
-			 if (!empty($note->date_modified)) {
-                 $sort_date_time = $timedate->swap_formats($note->date_modified, $timedate->get_date_time_format(), $timedate->get_db_date_time_format());
-			 }
 
 			$history_list[] = array('name' => $note->name,
 									 'id' => $note->id,
@@ -310,7 +268,7 @@ class Popup_Picker
 									 'date_modified' => $note->date_modified,
 									 'description' => $this->formatDescription($note->description),
 									 'date_type' => $app_strings['DATA_TYPE_MODIFIED'],
-									 'sort_value' => $sort_date_time
+									 'sort_value' => $note->date_entered,
 									 );
 			if(!empty($note->filename)) {
 				$count = count($history_list);

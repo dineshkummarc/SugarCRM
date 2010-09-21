@@ -165,6 +165,13 @@ $listViewDefs['Contacts'] = array(
         'default' => true),
     'MODIFIED_BY_NAME' => array(
         'width' => '10', 
-        'label' => 'LBL_MODIFIED')
+        'label' => 'LBL_MODIFIED'),
+    'SYNC_CONTACT' => array (
+        'type' => 'bool',
+        'label' => 'LBL_SYNC_CONTACT',
+        'width' => '10%',
+        'default' => false,
+        'sortable' => false,
+        ),
 );
 ?>

@@ -2190,7 +2190,8 @@ function get_bean_select_array($add_blank=true, $bean_name, $display_columns, $w
 
 		$db = DBManagerFactory::getInstance();
 		$temp_result = Array();
-		$query = "SELECT id, {$display_columns} as display from {$focus->table_name} where ";
+		$query = "SELECT id, {$display_columns} as display from {$focus->table_name} ";
+		$query .= "where ";
 		if ( $where != '')
 		{
 			$query .= $where." AND ";

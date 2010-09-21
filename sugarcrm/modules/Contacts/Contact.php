@@ -368,7 +368,7 @@ class Contact extends Person {
 		{
 			$this->account_name = $row['name'];
 			$this->account_id = $row['id'];
-			$this->report_to_name = $locale->getLocaleFormattedName($row['first_name'], $row['last_name']);
+			$this->report_to_name = $locale->getLocaleFormattedName($row['first_name'], $row['last_name'],'','','',null,true);
 		}
 		else
 		{

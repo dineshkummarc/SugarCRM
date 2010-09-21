@@ -363,6 +363,15 @@ class SearchForm {
                         }
                         switch(strtolower($operator)) {
                         	case 'subquery':
+                                $in = 'IN';
+                                if ( isset($parms['subquery_in_clause']) ) {
+                                    if ( !is_array($parms['subquery_in_clause']) ) {
+                                        $in = $parms['subquery_in_clause'];
+                                    }
+                                    elseif ( isset($parms['subquery_in_clause'][$field_value]) ) {
+                                        $in = $parms['subquery_in_clause'][$field_value];
+                                    }
+                                }
                                 $sq = $parms['subquery'];
                                 if(is_array($sq)){
                                     $and_or = ' AND ';
@@ -375,13 +384,14 @@ class SearchForm {
                                         if(!$first){
                                             $where .= $and_or;
                                         }
-                                        $where .= " {$db_field} IN ({$q} '{$field_value}%') ";
+                                        $where .= " {$db_field} $in ({$q} '{$field_value}%') ";
                                         $first = false;
                                     }
                                 }elseif(!empty($parms['query_type']) && $parms['query_type'] == 'format'){
-                                	$where .= "{$db_field} IN (".string_format($parms['subquery'], array($field_value)).")";
+                                    $stringFormatParams = array(0 => $field_value, 1 => $GLOBALS['current_user']->id);
+                                    $where .= "{$db_field} $in (".string_format($parms['subquery'], $stringFormatParams).")";
                                 }else{
-                                    $where .= "{$db_field} IN ({$parms['subquery']} '{$field_value}%')";
+                                    $where .= "{$db_field} $in ({$parms['subquery']} '{$field_value}%')";
                                 }
 
     	                    	break;

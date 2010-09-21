@@ -147,7 +147,7 @@ while(s.substring(s.length-1,s.length)==' '){s=s.substring(0,s.length-1);}
 return s;}
 function check_form(formname){if(typeof(siw)!='undefined'&&siw&&typeof(siw.selectingSomething)!='undefined'&&siw.selectingSomething)
 return false;return validate_form(formname,'');}
-function add_error_style(formname,input,txt){try{inputHandle=document.forms[formname][input];style=get_current_bgcolor(inputHandle);if(txt.substring(txt.length-1)==':')
+function add_error_style(formname,input,txt){try{inputHandle=typeof input=="object"?input:document.forms[formname][input];style=get_current_bgcolor(inputHandle);if(txt.substring(txt.length-1)==':')
 txt=txt.substring(0,txt.length-1)
 if(inputHandle.parentNode.innerHTML.search(txt)==-1){errorTextNode=document.createElement('span');errorTextNode.className='required';errorTextNode.innerHTML='<br />'+txt;if(inputHandle.parentNode.className.indexOf('x-form-field-wrap')!=-1){inputHandle.parentNode.parentNode.appendChild(errorTextNode);}
 else{inputHandle.parentNode.appendChild(errorTextNode);}

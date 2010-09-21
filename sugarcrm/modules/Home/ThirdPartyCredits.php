@@ -1,5 +1,5 @@
 <?php
- if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 /*********************************************************************************
  * SugarCRM is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2010 SugarCRM Inc.
@@ -35,12 +35,41 @@
  * "Powered by SugarCRM".
  ********************************************************************************/
 
+//NOTE: Under the License referenced above, you are required to leave in all copyright statements in both
+//the code and end-user application.
 
+$credits = array(
+	'Language Packs' => array(
+		'fr' => array (
+			'name' => 'French Language Pack',
+			'author' => 'CARRENET',
+			'description' => 'French Language Pack by CARRENT',
+			'website' => 'www.carrenet.com',
+		),
+		'de' => array (
+			'name' => 'German Language Pack',
+			'author' => 'ISCONGROUP',
+			'description' => 'German Language Pack by ISCONGROUP',
+			'website' => 'www.iscongroup.com',
+		),
+	),
+/*	'Modules' => array(
+		'module_id' => array (
+			'name' => 'Module Name',
+			'author' => 'Author',
+			'description' => 'Description',
+			'website' => 'www.website.com',
+		),
+	),
+	'Themes' => array(
+		'theme_id' => array (
+			'name' => 'Theme Name',
+			'author' => 'Author',
+			'description' => 'Description',
+			'website' => 'www.website.com',
+		),
+	)
+*/
 
-$sugar_version      = '6.1.0beta3';
-$sugar_db_version   = '6.1.0beta3';
-$sugar_flavor       = 'CE';
-$sugar_build		= '5180';
-$sugar_timestamp    = '2010-09-20 04:37pm';
-
+);
 ?>

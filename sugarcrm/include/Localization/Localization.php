@@ -559,11 +559,18 @@ eoq;
 	 * @param string title
 	 * @param string format If a particular format is desired, then pass this optional parameter as a simple string.
 	 * sfl is "Salutation FirstName LastName", "l, f s" is "LastName[comma][space]FirstName[space]Salutation"
+	 * @param object user object
+	 * @param bool returnEmptyStringIfEmpty true if we should return back an empty string rather than a single space
+	 * when the formatted name would be blank             
 	 * @return string formattedName
 	 */
-	function getLocaleFormattedName($firstName, $lastName, $salutationKey='', $title='', $format="", $user=null) {
+	function getLocaleFormattedName($firstName, $lastName, $salutationKey='', $title='', $format="", $user=null, $returnEmptyStringIfEmpty = false) {
 		global $current_user;
 		global $app_list_strings;
+		
+		if ( $user == null ) {
+		    $user = $current_user;
+		}
 
 		$salutation = $salutationKey;
 		if(!empty($salutationKey) && !empty($app_list_strings['salutation_dom'][$salutationKey])) {
@@ -592,7 +599,7 @@ eoq;
 
 		$formattedName = trim($formattedName);
         if (strlen($formattedName)==0) {
-            return ' ';
+            return $returnEmptyStringIfEmpty ? '' : ' ';
         }
 
 		if(strpos($formattedName,',',strlen($formattedName)-1)) { // remove trailing commas
