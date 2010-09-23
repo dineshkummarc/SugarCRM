@@ -315,54 +315,40 @@ class SqlsrvManager extends MssqlManager
         )
     {
         static $last_returned_result = array();
-
+		
         if ( !is_int($result) || !isset($this->_resultsCache[$result]) )
         	return false;
-
+        
         if ( !isset($last_returned_result[$result]) )
             $last_returned_result[$result] = 0;
-
-        if ($rowNum < 0) {
-        	if ( !isset($this->_resultsCache[$result][$last_returned_result[$result]]) ) {
-            	$this->_resultsCache[$result] = null;
-            	unset($this->_resultsCache[$result]);
-            	return false;
-            }
-
-            $row = $this->_resultsCache[$result][$last_returned_result[$result]];
-            if ( $last_returned_result[$result] >= count($this->_resultsCache[$result]) ) {
-            	$this->_resultsCache[$result] = null;
-            	unset($this->_resultsCache[$result]);
-            }
-            $last_returned_result[$result]++;
-            //MSSQL returns a space " " when a varchar column is empty ("") and not null.
-            //We need to iterate through the returned row array and strip empty spaces
-            if(!empty($row)){
-                foreach($row as $key => $column) {
-                    //notice we only strip if one space is returned.  we do not want to strip
-                    //strings with intentional spaces (" foo ")
-                    if (!empty($column) && $column ==" ") {
-                        $row[$key] = '';
-                    }
+        
+        if ( !isset($this->_resultsCache[$result][$last_returned_result[$result]]) ) {
+            $this->_resultsCache[$result] = null;
+            unset($this->_resultsCache[$result]);
+            return false;
+        }
+        
+        $row = $this->_resultsCache[$result][$last_returned_result[$result]];
+        if ( $last_returned_result[$result] >= count($this->_resultsCache[$result]) ) {
+            $this->_resultsCache[$result] = null;
+            unset($this->_resultsCache[$result]);
+        }
+        $last_returned_result[$result]++;
+        //MSSQL returns a space " " when a varchar column is empty ("") and not null.
+        //We need to iterate through the returned row array and strip empty spaces
+        if(!empty($row)){
+            foreach($row as $key => $column) {
+                //notice we only strip if one space is returned.  we do not want to strip
+                //strings with intentional spaces (" foo ")
+                if (!empty($column) && $column ==" ") {
+                    $row[$key] = '';
                 }
             }
+        }
 
-            if($encode && $this->encode&& is_array($row))
-                return array_map('to_html', $row);
-
-            return $row;
-		}
-
-		if ( !isset($this->_resultsCache[$result][$rowNum]) )
-			return false;
-
-        $row = $this->_resultsCache[$result][$rowNum];
-        $last_returned_result[$result] = $rowNum;
-
-        $this->lastmysqlrow = $rowNum;
-        if($encode && $this->encode && is_array($row))
+        if($encode && $this->encode&& is_array($row))
             return array_map('to_html', $row);
-
+        
         return $row;
 	}
 

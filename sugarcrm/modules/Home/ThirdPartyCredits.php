@@ -39,21 +39,10 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 //the code and end-user application.
 
 $credits = array(
-	'Language Packs' => array(
-		'fr' => array (
-			'name' => 'French Language Pack',
-			'author' => 'CARRENET',
-			'description' => 'French Language Pack by CARRENT',
-			'website' => 'www.carrenet.com',
-		),
-		'de' => array (
-			'name' => 'German Language Pack',
-			'author' => 'ISCONGROUP',
-			'description' => 'German Language Pack by ISCONGROUP',
-			'website' => 'www.iscongroup.com',
-		),
+/*	'Language Packs' => array(
+
 	),
-/*	'Modules' => array(
+	'Modules' => array(
 		'module_id' => array (
 			'name' => 'Module Name',
 			'author' => 'Author',

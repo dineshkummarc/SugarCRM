@@ -474,7 +474,7 @@ function clearCurrentRecords()
                 }
             };
             
-    YAHOO.util.Connect.asyncRequest('POST', 'index.php?module=Users&action=clearreassignrecords', callback, null);
+    YAHOO.util.Connect.asyncRequest('POST', 'index.php?module=Users&action=clearreassignrecords&to_pdf=1', callback, null);
 }
 
 var allselected = [];

@@ -634,8 +634,8 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
             	$return[] = $app_strings['LBL_EMAIL_MESSAGE_NO'] . " " . $count . ", " . $app_strings['LBL_STATUS'] . " " . ($status ? $app_strings['LBL_EMAIL_IMPORT_SUCCESS'] : $app_strings['LBL_EMAIL_IMPORT_FAIL']);
             	$count++;
 	            if(($_REQUEST['delete'] == 'true') && $status && ($current_user->is_admin == 1 || $ie->group_id == $current_user->id)) {
-	                $ie->deleteMessageOnMailServer($_REQUEST['uid']);
-	                $ie->deleteMessageFromCache($_REQUEST['uid']);
+	                $ie->deleteMessageOnMailServer($uid);
+	                $ie->deleteMessageFromCache($uid);
 	        	} // if
             } // for
         } else {

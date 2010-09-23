@@ -106,6 +106,7 @@ else
     $smarty->assign("CONFIRM_LAYOUT_HEADER", $mod_strings['LBL_UW_CONFIRM_LAYOUTS']);
     $smarty->assign("CONFIRM_LAYOUT_DESC", $mod_strings['LBL_LAYOUT_MERGE_DESC']);
     $layoutMergeData = $_SESSION['sugarMergeRunResults'];
+    $stepNext = $_REQUEST['step'];
     $showCheckBoxes = TRUE;
     $GLOBALS['top_message'] = "<b>{$mod_strings['LBL_LAYOUT_MERGE_TITLE']}</b>";
 }

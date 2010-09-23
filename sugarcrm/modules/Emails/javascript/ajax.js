@@ -85,7 +85,8 @@ var AjaxObject = {
 				overlay(app_strings.LBL_EMAIL_ERROR_DESC, ret.errorArray[i], 'alert');
 		}else if (typeof(ret.errorArray)=='object' && ret.errorArray!=null && ret.errorArray!='' ) {
 			//if error element is returning an object, and the object value is not empty or null, then display error message
-				overlay(app_strings.LBL_EMAIL_ERROR_DESC, ret.errorArray, 'alert');
+			for(i in ret.errorArray)
+				overlay(app_strings.LBL_EMAIL_ERROR_DESC, ret.errorArray[i], 'alert');
 		}
 		
 		//YUI bug with IE6 - Wont restore visibility property for nested select elements.
