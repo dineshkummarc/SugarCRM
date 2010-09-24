@@ -3573,7 +3573,7 @@ function set_upgrade_progress($currStep,$currState,$currStepSub='',$currStepSubS
 			if($currStepSub != null && $currStepSubState !=null){
 				//check if new status to be set or update
 				//get the latest in array. since it has sub components prepare an array
-				if(is_array($upgrade_config[sizeof($upgrade_config)][$currStep])){
+				if(!empty($upgrade_config[sizeof($upgrade_config)][$currStep]) && is_array($upgrade_config[sizeof($upgrade_config)][$currStep])){
 					$latestStepSub = currSubStep($upgrade_config[sizeof($upgrade_config)][$currStep]);
 					if($latestStepSub == $currStepSub){
 						$upgrade_config[sizeof($upgrade_config)][$currStep][$latestStepSub]=$currStepSubState;

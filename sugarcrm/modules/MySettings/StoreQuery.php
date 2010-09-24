@@ -128,12 +128,10 @@ class StoreQuery{
 				$this->saveQuery($name);
 				
 			}else if($saveType == 'all'){
-                $blockVariables = array('mass', 'uid', 'massupdate', 'delete', 'merge', 'selectCount', 'current_query_by_page');
-				
-				//make new request array out of superglobal post and get arrays, this is done manually so as to avoid cookie array
-				$request =  array_merge($_POST,$_GET);	
-				
-				$this->query = $request;
+                // Bug 39580 - Added 'EmailTreeLayout','EmailGridWidths' to the list as these are added merely as side-effects of the fact that we store the entire
+                // $_REQUEST object which includes all cookies.  These are potentially quite long strings as well.
+				$blockVariables = array('mass', 'uid', 'massupdate', 'delete', 'merge', 'selectCount', 'current_query_by_page','EmailTreeLayout','EmailGridWidths');
+				$this->query = $_REQUEST;
                 foreach($blockVariables as $block) {
                     unset($this->query[$block]);
                 }

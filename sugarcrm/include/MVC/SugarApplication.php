@@ -417,6 +417,11 @@ class SugarApplication
 		if ( !empty($sugar_config['http_referer']['list']) ) {
 			$whiteListReferers = array_merge($whiteListReferers,$sugar_config['http_referer']['list']);
 		}
+		// Bug 39691 - Make sure localhost and 127.0.0.1 are always valid HTTP referers
+		$whiteListReferers = array('127.0.0.1','localhost');
+		if ( !empty($sugar_config['http_referer']['list']) ) {
+			$whiteListReferers = array_merge($whiteListReferers,$sugar_config['http_referer']['list']);
+		}
 		if(!empty($_SERVER['HTTP_REFERER']) && !empty($_SERVER['SERVER_NAME'])){
 			$http_ref = parse_url($_SERVER['HTTP_REFERER']);
 			if($http_ref['host'] !== $_SERVER['SERVER_NAME']  && !in_array($this->controller->action, $whiteListActions) && 

@@ -714,6 +714,12 @@ EOQ;
 	    	if(stristr($colType, 'decimal')){
 				$fieldDef['len'] = isset($fieldDef['len'])? min($fieldDef['len'],38) : 38;
 			}
+			//bug: 39690 float(8) is interpreted as real and this generates a diff when doing repair
+			if(stristr($colType, 'float')){
+				if(isset($fieldDef['len']) && $fieldDef['len'] == 8){
+					unset($fieldDef['len']);
+				}
+			}
 		}
 		
 		$ref = parent::oneColumnSQLRep($fieldDef, $ignoreRequired, $table, true);

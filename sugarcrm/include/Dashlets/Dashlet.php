@@ -202,10 +202,23 @@ class Dashlet {
         
         if(!isset($dashletStrings[$dashletClassname])) {
             // load current language strings for current language, else default to english
-            if(is_file($dashletDirectory . $dashletClassname . '/' . $dashletClassname . '.' . $current_language . '.lang.php')) 
-                require_once($dashletDirectory . $dashletClassname . '/' . $dashletClassname . '.' . $current_language . '.lang.php');
-            else 
-                require_once($dashletDirectory . $dashletClassname . '/' . $dashletClassname . '.en_us.lang.php');
+            if(is_file($dashletDirectory . $dashletClassname . '/' . $dashletClassname . '.' . $current_language . '.lang.php')
+                    || is_file('custom/' . $dashletDirectory . $dashletClassname . '/' . $dashletClassname . '.' . $current_language . '.lang.php') ) {
+                if(is_file($dashletDirectory . $dashletClassname . '/' . $dashletClassname . '.' . $current_language . '.lang.php')) {
+                    require($dashletDirectory . $dashletClassname . '/' . $dashletClassname . '.' . $current_language . '.lang.php');
+                }
+                if(is_file('custom/' . $dashletDirectory . $dashletClassname . '/' . $dashletClassname . '.' . $current_language . '.lang.php')) {
+                    require('custom/' . $dashletDirectory . $dashletClassname . '/' . $dashletClassname . '.' . $current_language . '.lang.php');
+                }
+            }
+            else {
+                if(is_file($dashletDirectory . $dashletClassname . '/' . $dashletClassname . '.en_us.lang.php')) {
+                    require($dashletDirectory . $dashletClassname . '/' . $dashletClassname . '.en_us.lang.php');
+                }
+                if(is_file('custom/' . $dashletDirectory . $dashletClassname . '/' . $dashletClassname . '.en_us.lang.php')) {
+                    require('custom/' . $dashletDirectory . $dashletClassname . '/' . $dashletClassname . '.en_us.lang.php');
+                }
+            }
         }
 
         $this->dashletStrings = $dashletStrings[$dashletClassname];

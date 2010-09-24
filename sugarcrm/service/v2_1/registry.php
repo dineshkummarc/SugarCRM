@@ -108,20 +108,6 @@ class registry_v2_1 extends registry {
 			'link_value'=>array('name'=>'link_value', 'type'=>'tns:link_value'),
 			)
 		);
-		
-		 $this->serviceClass->registerType(
-			'report_field_list',
-			'complexType',
-			'array',
-			'',
-			'SOAP-ENC:Array',
-			array(),
-			array(
-			array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'tns:field_list2[]')
-			),
-			'tns:field_list2'
-		);
-		
 		$this->serviceClass->registerType(
 			'field_list2',
 			'complexType',
@@ -132,20 +118,6 @@ class registry_v2_1 extends registry {
 			"field_list"=>array('name'=>'field_list', 'type'=>'tns:field_list'),
 			)
 		);
-		
-		 $this->serviceClass->registerType(
-			'report_entry_list',
-			'complexType',
-			'array',
-			'',
-			'SOAP-ENC:Array',
-			array(),
-			array(
-			array('ref'=>'SOAP-ENC:arrayType', 'wsdl:arrayType'=>'tns:entry_list2[]')
-			),
-			'tns:entry_list2'
-		);
-		
 		$this->serviceClass->registerType(
 			'entry_list2',
 			'complexType',

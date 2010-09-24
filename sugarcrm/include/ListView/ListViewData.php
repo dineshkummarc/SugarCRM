@@ -142,8 +142,16 @@ class ListViewData {
                 $blockVariables[] = 'Home2_'.strtoupper($bean).'_ORDER_BY';
             }
             $blockVariables[] = 'Home2_CASE_ORDER_BY';
-            foreach(array_merge($_POST, $_GET) as $name=>$value) {
-                if(!in_array($name, $blockVariables)){
+
+            $params = array();
+            if ( isset($_POST) && is_array($_POST) ) {
+                $params = array_merge($params,$_POST);
+            }
+            if ( isset($_GET) && is_array($_GET) ) {
+                $params = array_merge($params,$_GET);
+            }
+            foreach($params as $name=>$value) {
+                if(!in_array($name, $blockVariables)){ 
 					if(is_array($value)) {
 						foreach($value as $v) {
                             $base_url .= $name.urlencode('[]').'='.urlencode($v) . '&';
