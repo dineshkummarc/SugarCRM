@@ -1231,7 +1231,11 @@ function microtime_diff($a, $b) {
 }
 
 // check if Studio is displayed.
-function displayStudioForCurrentUser(){
+function displayStudioForCurrentUser()
+{
+    if ( is_admin($GLOBALS['current_user']) ) {
+        return true;
+    }
 
 
 
@@ -1239,7 +1243,8 @@ function displayStudioForCurrentUser(){
 
 }
 
-function displayWorkflowForCurrentUser(){
+function displayWorkflowForCurrentUser()
+{
     $_SESSION['display_workflow_for_user'] = false;
     return false;
 }
@@ -2190,8 +2195,7 @@ function get_bean_select_array($add_blank=true, $bean_name, $display_columns, $w
 
 		$db = DBManagerFactory::getInstance();
 		$temp_result = Array();
-		$query = "SELECT id, {$display_columns} as display from {$focus->table_name} ";
-		$query .= "where ";
+		$query = "SELECT id, {$display_columns} as display from {$focus->table_name} where ";
 		if ( $where != '')
 		{
 			$query .= $where." AND ";
