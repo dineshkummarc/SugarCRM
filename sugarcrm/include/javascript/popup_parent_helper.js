@@ -75,7 +75,10 @@ else
 {for(i=form_index;i>=0;i--)
 {if(form_name==window.document.forms[form_index])
 {form_index=i;break;}}
-window.document.forms[form_index].elements[the_key].value=name_to_value_array[the_key];}}
-window.document.forms[form_index].return_module.value=window.document.forms[form_index].module.value;window.document.forms[form_index].return_action.value='ListView';window.document.forms[form_index].uids.value=uids;window.document.forms[form_index].submit();}
+window.document.forms[form_index].elements[get_element_index(form_index,the_key)].value=name_to_value_array[the_key];}}
+window.document.forms[form_index].elements[get_element_index(form_index,"return_module")].value=window.document.forms[form_index].elements[get_element_index(form_index,"module")].value;window.document.forms[form_index].elements[get_element_index(form_index,"return_action")].value='ListView';window.document.forms[form_index].elements[get_element_index(form_index,"uids")].value=uids;window.document.forms[form_index].submit();}
+function get_element_index(form_index,element_name){var j=0;while(j<window.document.forms[form_index].elements.length){if(window.document.forms[form_index].elements[j].name==element_name){index=j;break;}
+j++;}
+return index;}
 function get_initial_filter_by_account(form_name)
 {var account_id=window.document.forms[form_name].account_id.value;var account_name=escape(window.document.forms[form_name].account_name.value);var initial_filter="&account_id="+account_id+"&account_name="+account_name;return initial_filter;}

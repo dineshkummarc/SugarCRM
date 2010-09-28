@@ -1,5 +1,5 @@
 <?php
-// created: 2010-09-24 10:16:50
+// created: 2010-09-27 14:05:58
 $md5_string = array (
   './LICENSE.txt' => 'd3f150e4a5bed444763ebe8a81742a95',
   './.htaccess' => 'd41d8cd98f00b204e9800998ecf8427e',
@@ -12,7 +12,7 @@ $md5_string = array (
   './examples/FormValidationTest.php' => '61dcc214288dd7833e37238e0efa5ccf',
   './examples/ProgressBarTest.php' => '1221c9c0372e16e0ef4f58008b37c6ea',
   './emailmandelivery.php' => '03589de9409e1abb4f0ad9ee4dce8e07',
-  './sugar_version.php' => '1a9c27373a37e06f0ae0d5cf36d073d1',
+  './sugar_version.php' => '33d78a564cae1c37a6b8f02a43d05c6c',
   './custom/index.html' => 'b0070a296647b6026d1800db14510e3c',
   './acceptDecline.php' => 'a8699214ad82527bb0ae1d3f0c9b64b6',
   './export.php' => '50f3b3c23ecb4d0a8b0a898f4f982a66',
@@ -1328,7 +1328,7 @@ $md5_string = array (
   './include/utils/activity_utils.php' => '46936a127737729cdfdafd9c70669f58',
   './include/utils/encryption_utils.php' => '34c58803c3939aff389f0c8ce0084309',
   './include/utils/progress_bar_utils.php' => 'ad34d73c2b9198c1d959d274d241dcf0',
-  './include/utils/mvc_utils.php' => '8ca46c165a2998e4ae3c480aa826180a',
+  './include/utils/mvc_utils.php' => '358744dd4022042e33a57ede5c7facd9',
   './include/utils/external_cache.php' => '9a682783cf1ac4b32541f9bb426c2688',
   './include/utils/db_utils.php' => '0b253cc086f0259fb794ce2487f8fc56',
   './include/utils/sugar_file_utils.php' => '2c403ff36994b48b603d893af3fd7518',
@@ -1581,7 +1581,7 @@ $md5_string = array (
   './include/javascript/sugar_connection_event_listener.js' => '60f607a8dcdb04d917f86f8f0f578079',
   './include/javascript/dashlets.js' => 'b0ff36b56e44d9672d9ded05ef97bf4b',
   './include/javascript/cookie.js' => 'aaeea9d14e0b1e23ff10e952e0b3fe62',
-  './include/javascript/popup_parent_helper.js' => 'af841805ba38efbf23a355af0fa49562',
+  './include/javascript/popup_parent_helper.js' => 'b10369154d0bab383d2e4054ea98d037',
   './include/javascript/overlibmws_iframe.js' => 'e3c045ac5f7b73aeb761395339d82f30',
   './include/javascript/include.js' => '111549b33d8ca4011ca99a23105050fe',
   './include/javascript/swfobject.js' => '52ce7b9e2bf41b265102db45f6cc765a',
@@ -5042,7 +5042,7 @@ $md5_string = array (
   './jssource/src_files/include/javascript/sugar_connection_event_listener.js' => 'ae9ce34c59422241ba97ca0dd171e5f0',
   './jssource/src_files/include/javascript/dashlets.js' => 'dcebda76e99dff2a366e891641aaab05',
   './jssource/src_files/include/javascript/cookie.js' => '456e73eea815671fcf5eb15df454a881',
-  './jssource/src_files/include/javascript/popup_parent_helper.js' => '19654ce383e1561346721f97a92fb9fb',
+  './jssource/src_files/include/javascript/popup_parent_helper.js' => '3700034b295e70d33524767481b5fcf3',
   './jssource/src_files/include/javascript/overlibmws_iframe.js' => '3714ae1a5be03f1470b30e8920386d14',
   './jssource/src_files/include/javascript/yui3/build/profiler/profiler.js' => '4ef3fe8390933622310743dad9a2e08f',
   './jssource/src_files/include/javascript/yui3/build/profiler/profiler-min.js' => '2f479e3c711a7481fccd7acda1fa1291',
