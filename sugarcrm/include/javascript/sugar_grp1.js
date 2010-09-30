@@ -147,15 +147,19 @@ while(s.substring(s.length-1,s.length)==' '){s=s.substring(0,s.length-1);}
 return s;}
 function check_form(formname){if(typeof(siw)!='undefined'&&siw&&typeof(siw.selectingSomething)!='undefined'&&siw.selectingSomething)
 return false;return validate_form(formname,'');}
-function add_error_style(formname,input,txt){try{inputHandle=typeof input=="object"?input:document.forms[formname][input];style=get_current_bgcolor(inputHandle);if(txt.substring(txt.length-1)==':')
+function add_error_style(formname,input,txt,flash){if(typeof flash=="undefined")
+flash=true;try{inputHandle=typeof input=="object"?input:document.forms[formname][input];style=get_current_bgcolor(inputHandle);if(txt.substring(txt.length-1)==':')
 txt=txt.substring(0,txt.length-1)
 if(inputHandle.parentNode.innerHTML.search(txt)==-1){errorTextNode=document.createElement('span');errorTextNode.className='required';errorTextNode.innerHTML='<br />'+txt;if(inputHandle.parentNode.className.indexOf('x-form-field-wrap')!=-1){inputHandle.parentNode.parentNode.appendChild(errorTextNode);}
 else{inputHandle.parentNode.appendChild(errorTextNode);}
+if(flash)
 inputHandle.style.backgroundColor="#FF0000";inputsWithErrors.push(inputHandle);}
-if(inputsWithErrors.length==1){for(wp=1;wp<=10;wp++){window.setTimeout('fade_error_style(style, '+wp*10+')',1000+(wp*50));}}
-if(typeof(window[formname+"_tabs"])!="undefined"){var tabView=window[formname+"_tabs"];var parentDiv=YAHOO.util.Dom.getAncestorByTagName(inputHandle,"div");if(tabView.get){var tabs=tabView.get("tabs");for(var i in tabs){if(tabs[i].get("contentEl")==parentDiv||YAHOO.util.Dom.isAncestor(tabs[i].get("contentEl"),inputHandle)){tabs[i].get("labelEl").style.color="red";if(inputsWithErrors.length==1)
+if(flash)
+{if(inputsWithErrors.length==1){for(wp=1;wp<=10;wp++){window.setTimeout('fade_error_style(style, '+wp*10+')',1000+(wp*50));}}
+if(typeof(window[formname+"_tabs"])!="undefined"){var tabView=window[formname+"_tabs"];var parentDiv=YAHOO.util.Dom.getAncestorByTagName(inputHandle,"div");if(tabView.get){var tabs=tabView.get("tabs");for(var i in tabs){if(tabs[i].get("contentEl")==parentDiv||YAHOO.util.Dom.isAncestor(tabs[i].get("contentEl"),inputHandle))
+{tabs[i].get("labelEl").style.color="red";if(inputsWithErrors.length==1)
 tabView.selectTab(i);}}}}
-window.setTimeout("inputsWithErrors["+(inputsWithErrors.length-1)+"].style.backgroundColor = null;",2000);}catch(e){}}
+window.setTimeout("inputsWithErrors["+(inputsWithErrors.length-1)+"].style.backgroundColor = null;",2000);}}catch(e){}}
 function clear_all_errors(){for(var wp=0;wp<inputsWithErrors.length;wp++){if(typeof(inputsWithErrors[wp])!='undefined'&&typeof inputsWithErrors[wp].parentNode!='undefined'&&inputsWithErrors[wp].parentNode!=null){if(inputsWithErrors[wp].parentNode.className.indexOf('x-form-field-wrap')!=-1)
 {inputsWithErrors[wp].parentNode.parentNode.removeChild(inputsWithErrors[wp].parentNode.parentNode.lastChild);}
 else
@@ -291,13 +295,15 @@ else if(elemType=='select'||elemType=='select-one'||elemType=='select-multiple')
 else if(elemType=='radio'||elemType=='checkbox'){if(elem.selected){snapshotTxt=snapshotTxt+'checked';}}
 else if(elemType=='hidden'){snapshotTxt=snapshotTxt+elem.value;}}
 return snapshotTxt;}
-function initEditView(theForm){if(typeof editViewSnapshots=='undefined'){editViewSnapshots=new Object();}
-editViewSnapshots[theForm.id]=snapshotForm(theForm);}
+function initEditView(theForm){if(SUGAR.util.ajaxCallInProgress()){window.setTimeout(function(){initEditView(theForm);},100);return;}
+if(typeof editViewSnapshots=='undefined'){editViewSnapshots=new Object();}
+if(typeof SUGAR.loadedForms=='undefined'){SUGAR.loadedForms=new Object();}
+editViewSnapshots[theForm.id]=snapshotForm(theForm);SUGAR.loadedForms[theForm.id]=true;}
 function onUnloadEditView(theForm){var dataHasChanged=false;if(typeof editViewSnapshots=='undefined'){return;}
-if(typeof theForm=='undefined'){for(var idx in editViewSnapshots){theForm=document.getElementById(idx);if(theForm==null||typeof editViewSnapshots[theForm.id]=='undefined'||editViewSnapshots[theForm.id]==null){continue;}
-if(editViewSnapshots[theForm.id]!=snapshotForm(theForm)){dataHasChanged=true;}}}else{if(editViewSnapshots==null||typeof editViewSnapshots[theForm.id]=='undefined'||editViewSnapshots[theForm.id]==null){return;}
-if(editViewSnapshots[theForm.id]!=snapshotForm(theForm)){dataHasChanged=true;}}
-if(dataHasChanged==true){return SUGAR.language.get('app_strings','WARN_UNSAVED_CHANGES');}else{return;}}
+if(typeof theForm=='undefined'){for(var idx in editViewSnapshots){theForm=document.getElementById(idx);if(theForm==null||typeof editViewSnapshots[theForm.id]=='undefined'||editViewSnapshots[theForm.id]==null||!SUGAR.loadedForms[theForm.id]){continue;}
+var snap=snapshotForm(theForm);if(editViewSnapshots[theForm.id]!=snap){debugger;dataHasChanged=true;}}}else{if(editViewSnapshots==null||typeof editViewSnapshots[theForm.id]=='undefined'||editViewSnapshots[theForm.id]==null){return;}
+if(editViewSnapshots[theForm.id]!=snapshotForm(theForm)){debugger;dataHasChanged=true;}}
+if(dataHasChanged==true){debugger;return SUGAR.language.get('app_strings','WARN_UNSAVED_CHANGES');}else{return;}}
 function disableOnUnloadEditView(theForm){if(typeof theForm=='undefined'||typeof editViewSnapshots=='undefined'||editViewSnapshots==null){window.onbeforeunload=null;editViewSnapshots=null;}else{if(typeof(theForm.id)!='undefined'&&typeof(editViewSnapshots[theForm.id])!='undefined'){editViewSnapshots[theForm.id]=null;}}}
 function saveForms(savingStr,completeStr){index=0;theForms=ajaxFormArray;function success(data){var theForm=document.getElementById(ajaxFormArray[0]);document.getElementById('multiedit_'+theForm.id).innerHTML=data.responseText;var saveAllButton=document.getElementById('ajaxsaveall');ajaxFormArray.splice(index,1);if(saveAllButton&&ajaxFormArray.length<=1){saveAllButton.style.visibility='hidden';}
 index++;if(index==theForms.length){ajaxStatus.showStatus(completeStr);window.setTimeout('ajaxStatus.hideStatus();',2000);if(saveAllButton)

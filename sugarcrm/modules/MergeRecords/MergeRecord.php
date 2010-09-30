@@ -168,8 +168,11 @@ class MergeRecord extends SugarBean {
     function ACLAccess($view,$is_owner='not_set'){
         global $current_user;
 
-        //if the module doesn't implement ACLS    
-        if(!$this->merge_bean->bean_implements('ACL'))return true;
+        //if the module doesn't implement ACLS or is empty  
+        if(empty($this->merge_bean) || !$this->merge_bean->bean_implements('ACL'))
+        {
+        	return true;
+        }
         
         if($is_owner == 'not_set'){
             $is_owner = $this->merge_bean->isOwner($current_user->id);

@@ -93,8 +93,8 @@ value='{$app_strings.LBL_ADD_BUTTON}'><img src="{sugar_getimagepath file="id-ff-
 </table>
 <input type="hidden" name="useEmailWidget" value="true">
 <script type="text/javascript" language="javascript">
-
-function init(){ldelim}
+SUGAR_callsInProgress++;
+function init{$module}Email{$index}(){ldelim}
 	if(emailAddressWidgetLoaded || SUGAR.EmailAddressWidget){ldelim}
 		var table = YAHOO.util.Dom.get("{$module}emailAddressesTable{$index}");
 	    var eaw = SUGAR.EmailAddressWidget.instances.{$module}{$index} = new SUGAR.EmailAddressWidget("{$module}");
@@ -112,10 +112,11 @@ function init(){ldelim}
 		if('{$module}_email_widget_id') {ldelim}
 		   document.getElementById('{$module}_email_widget_id').value = eaw.count;
 		{rdelim}
+		SUGAR_callsInProgress--;
 	{rdelim}else{ldelim}
-		setTimeout("init();", 500);
+		setTimeout("init{$module}Email{$index}();", 500);
 	{rdelim}
 {rdelim}
 
-YAHOO.util.Event.onDOMReady(init);
+YAHOO.util.Event.onDOMReady(init{$module}Email{$index});
 </script>

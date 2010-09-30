@@ -2,7 +2,7 @@
 if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 /*
-$Id: nusoap.php 57813 2010-08-19 17:34:44Z kjing $
+$Id: nusoap.php 58361 2010-09-29 23:59:02Z kjing $
 
 NuSOAP - Web Services Toolkit for PHP
 
@@ -104,7 +104,7 @@ class nusoap_base {
 	 * @var string
 	 * @access private
 	 */
-	var $revision = '$Revision: 57813 $';
+	var $revision = '$Revision: 58361 $';
     /**
      * Current error string (manipulated by getError/setError)
 	 *
@@ -7226,7 +7226,7 @@ class nusoap_client extends nusoap_base  {
 	var $response = '';				// HTTP response
 	var $responseData = '';			// SOAP payload of response
 	var $cookies = array();			// Cookies from response or for request
-    var $decode_utf8 = true;		// toggles whether the parser decodes element content w/ utf8_decode()
+    var $decode_utf8 = false;		// toggles whether the parser decodes element content w/ utf8_decode()
 	var $operations = array();		// WSDL operations, empty for WSDL initialization error
 	var $curl_options = array();	// User-specified cURL options
 	var $bindingType = '';			// WSDL operation binding type

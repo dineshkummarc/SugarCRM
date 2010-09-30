@@ -181,6 +181,8 @@ var {{$form_name}}_tabs = new YAHOO.widget.TabView("{{$form_name}}_tabs");
 </script> 
 {{/if}}
 <script type="text/javascript">
-window.setTimeout(function () {ldelim} initEditView(document.forms.{{$form_name}}) {rdelim}, 100);
+YAHOO.util.Event.onContentReady("form_QuickCreate_Accounts", 
+    function () {ldelim} initEditView(document.forms.{{$form_name}}) {rdelim});
+//window.setTimeout(, 100);
 window.onbeforeunload = function () {ldelim} return onUnloadEditView(); {rdelim};
 </script>

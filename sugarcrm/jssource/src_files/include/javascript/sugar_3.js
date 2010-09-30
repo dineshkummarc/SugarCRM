@@ -605,8 +605,10 @@ function check_form(formname) {
 	return validate_form(formname, '');
 }
 
-function add_error_style(formname, input, txt) {
-  try {
+function add_error_style(formname, input, txt, flash) {
+	if (typeof flash == "undefined")
+		flash = true;
+	try {
 	inputHandle = typeof input == "object" ? input : document.forms[formname][input];
 	style = get_current_bgcolor(inputHandle);
 
@@ -624,30 +626,36 @@ function add_error_style(formname, input, txt) {
         else {
             inputHandle.parentNode.appendChild(errorTextNode);
         }
-        inputHandle.style.backgroundColor = "#FF0000";
+        if (flash)
+        	inputHandle.style.backgroundColor = "#FF0000";
         inputsWithErrors.push(inputHandle);
 	}
-    // We only need to setup the flashy-flashy on the first entry, it loops through all fields automatically
-    if ( inputsWithErrors.length == 1 ) {
-      for(wp = 1; wp <= 10; wp++) {
-        window.setTimeout('fade_error_style(style, '+wp*10+')',1000+(wp*50));
-      }
+    if (flash)
+    {
+		// We only need to setup the flashy-flashy on the first entry, it loops through all fields automatically
+	    if ( inputsWithErrors.length == 1 ) {
+	      for(wp = 1; wp <= 10; wp++) {
+	        window.setTimeout('fade_error_style(style, '+wp*10+')',1000+(wp*50));
+	      }
+	    }
+		if(typeof (window[formname + "_tabs"]) != "undefined") {
+	        var tabView = window[formname + "_tabs"];
+	        var parentDiv = YAHOO.util.Dom.getAncestorByTagName(inputHandle, "div");
+	        if ( tabView.get ) {
+	            var tabs = tabView.get("tabs");
+	            for (var i in tabs) {
+	                if (tabs[i].get("contentEl") == parentDiv 
+	                		|| YAHOO.util.Dom.isAncestor(tabs[i].get("contentEl"), inputHandle)) 
+	                {
+	                    tabs[i].get("labelEl").style.color = "red";
+	                    if ( inputsWithErrors.length == 1 )
+	                        tabView.selectTab(i);
+	                }
+	            }
+	        }
+		} 
+		window.setTimeout("inputsWithErrors[" + (inputsWithErrors.length - 1) + "].style.backgroundColor = null;", 2000);
     }
-	if(typeof (window[formname + "_tabs"]) != "undefined") {
-        var tabView = window[formname + "_tabs"];
-        var parentDiv = YAHOO.util.Dom.getAncestorByTagName(inputHandle, "div");
-        if ( tabView.get ) {
-            var tabs = tabView.get("tabs");
-            for (var i in tabs) {
-                if (tabs[i].get("contentEl") == parentDiv || YAHOO.util.Dom.isAncestor(tabs[i].get("contentEl"), inputHandle)) {
-                    tabs[i].get("labelEl").style.color = "red";
-                    if ( inputsWithErrors.length == 1 )
-                        tabView.selectTab(i);
-                }
-            }
-        }
-	} 
-	window.setTimeout("inputsWithErrors[" + (inputsWithErrors.length - 1) + "].style.backgroundColor = null;", 2000);
 
   } catch ( e ) {
       // Catch errors here so we don't allow an incomplete record through the javascript validation
@@ -1576,16 +1584,26 @@ function snapshotForm(theForm) {
 }
 
 function initEditView(theForm) {
-    if ( typeof editViewSnapshots == 'undefined' ) {
+    if (SUGAR.util.ajaxCallInProgress()) {
+    	window.setTimeout(function(){initEditView(theForm);}, 100);
+    	return;
+    }
+	if ( typeof editViewSnapshots == 'undefined' ) {
         editViewSnapshots = new Object();
+    }
+    if ( typeof SUGAR.loadedForms == 'undefined' ) {
+    	SUGAR.loadedForms = new Object();
     }
 
     // console.log('DEBUG: Adding checks for '+theForm.id);
     editViewSnapshots[theForm.id] = snapshotForm(theForm);
+    SUGAR.loadedForms[theForm.id] = true;
+    
 }
 
 function onUnloadEditView(theForm) {
-    var dataHasChanged = false;
+	
+	var dataHasChanged = false;
 
     if ( typeof editViewSnapshots == 'undefined' ) {
         // No snapshots, move along
@@ -1600,12 +1618,15 @@ function onUnloadEditView(theForm) {
             // console.log('DEBUG: Checking all forms '+theForm.id);
             if ( theForm == null 
                  || typeof editViewSnapshots[theForm.id] == 'undefined'
-                 || editViewSnapshots[theForm.id] == null ) {
+                 || editViewSnapshots[theForm.id] == null
+                 || !SUGAR.loadedForms[theForm.id]) {
                 continue;
             }
             
-            if ( editViewSnapshots[theForm.id] != snapshotForm(theForm) ) {
-                dataHasChanged = true;
+            var snap = snapshotForm(theForm);
+            if ( editViewSnapshots[theForm.id] != snap ) {
+                debugger;
+            	dataHasChanged = true;
             }
         }
     } else {
@@ -1617,12 +1638,14 @@ function onUnloadEditView(theForm) {
         // console.log('DEBUG: Checking one form '+theForm.id);
         if ( editViewSnapshots[theForm.id] != snapshotForm(theForm) ) {
             // Data has changed.
-            dataHasChanged = true;
+        	debugger;
+        	dataHasChanged = true;
         }
     }
 
     if ( dataHasChanged == true ) {
-        return SUGAR.language.get('app_strings','WARN_UNSAVED_CHANGES');
+    	debugger;
+    	return SUGAR.language.get('app_strings','WARN_UNSAVED_CHANGES');
     } else {
         return;
     }
