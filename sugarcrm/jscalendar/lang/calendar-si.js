@@ -54,7 +54,7 @@ Calendar._MN = new Array
 
 // tooltips
 // tooltips
-Calendar._TT = {};
+if(Calendar._TT == undefined) Calendar._TT = {};
 Calendar._TT["INFO"] = "O koledarju";
 
 Calendar._TT["ABOUT"] =

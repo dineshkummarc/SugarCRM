@@ -36,20 +36,29 @@
 
 
 if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
-function display_flow_bar($name,$delay, $size=200){
+
+function progress_bar_flush()
+{
+	if(ob_get_level()) {
+	    @ob_flush();
+	} else {
+        @flush();
+	}
+}
+
+function display_flow_bar($name,$delay, $size=200)
+{
 	$chunk = $size/5;
 	echo "<div id='{$name}_flow_bar'><table  class='list view' cellpading=0 cellspacing=0><tr><td id='{$name}_flow_bar0' width='{$chunk}px' bgcolor='#cccccc' align='center'>&nbsp;</td><td id='{$name}_flow_bar1' width='{$chunk}px' bgcolor='#ffffff' align='center'>&nbsp;</td><td id='{$name}_flow_bar2' width='{$chunk}px' bgcolor='#ffffff' align='center'>&nbsp;</td><td id='{$name}_flow_bar3' width='{$chunk}px' bgcolor='#ffffff' align='center'>&nbsp;</td><td id='{$name}_flow_bar4' width='{$chunk}px' bgcolor='#ffffff' align='center'>&nbsp;</td></tr></table></div><br>";
 
 	echo str_repeat(' ',256);
-	
-	ob_flush();
-//	flush();
+
+	progress_bar_flush();
 	start_flow_bar($name, $delay);
-
-
 }
 
-function start_flow_bar($name, $delay){
+function start_flow_bar($name, $delay)
+{
 	$delay *= 1000;
 	$timer_id = $name . '_id';
 	echo "<script>
@@ -66,21 +75,21 @@ function start_flow_bar($name, $delay){
 	</script>
 ";
 	echo str_repeat(' ',256);
-	
-	ob_flush();
-//	flush();	
+
+	progress_bar_flush();
 }
-function destroy_flow_bar($name){
+
+function destroy_flow_bar($name)
+{
 	$timer_id = $name . '_id';
 	echo "<script>clearTimeout($timer_id);document.getElementById('{$name}_flow_bar').innerHTML = '';</script>";
 	echo str_repeat(' ',256);
-	
-	ob_flush();
-//	flush();
-	
-}		
-	
-function display_progress_bar($name,$current, $total){
+
+	progress_bar_flush();
+}
+
+function display_progress_bar($name,$current, $total)
+{
 	$percent = $current/$total * 100;
 	$remain = 100 - $percent;
 	$status = floor($percent);
@@ -91,20 +100,19 @@ function display_progress_bar($name,$current, $total){
 		$remain = 1;
 	}
 	if($percent == 0){
-		$percent = 1;	
+		$percent = 1;
 	}
 	echo "<div id='{$name}_progress_bar' style='width: 50%;'><table class='list view' cellpading=0 cellspacing=0><tr><td id='{$name}_complete_bar' width='{$percent}px' bgcolor='#cccccc' align='center'>$status% </td><td id='{$name}_remain_bar' width={$remain}px' bgcolor='#ffffff'>&nbsp;</td></tr></table></div><br>";
 	if($status == 0){
 		echo "<script>document.getElementById('{$name}_complete_bar').style.backgroundColor='#ffffff';</script>";
 	}
 	echo str_repeat(' ',256);
-	
-	ob_flush();
-//	flush();
-	
-}	
 
-function update_progress_bar($name,$current, $total){
+	progress_bar_flush();
+}
+
+function update_progress_bar($name,$current, $total)
+{
 	$percent = $current/$total * 100;
 	$remain = 100 - $percent;
 	$status = floor($percent);
@@ -124,22 +132,16 @@ function update_progress_bar($name,$current, $total){
 	if($status > 0){
 		echo "<script>document.getElementById('{$name}_complete_bar').style.backgroundColor='#cccccc';</script>";
 	}
-	
-		
+
+
 	if($percent == 0){
-		$percent = 1;	
+		$percent = 1;
 	}
-		
+
 	echo "<script>
 		document.getElementById('{$name}_complete_bar').width='{$percent}px';
 		document.getElementById('{$name}_complete_bar').innerHTML = '$status%';
 		document.getElementById('{$name}_remain_bar').width='{$remain}px';
 		</script>";
-	ob_flush();
-//	flush();
-	
-	
-	
-}	
-
-?>
+	progress_bar_flush();
+}

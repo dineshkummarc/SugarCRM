@@ -16,7 +16,7 @@ Calendar._SMN = new Array
 ("Sty", "Lut", "Mar", "Kwi", "Maj", "Cze", "Lip", "Sie", "Wrz", "Paź", "Lis", "Gru");
 
 // tooltips
-Calendar._TT = {};
+if(Calendar._TT == undefined) Calendar._TT = {};
 Calendar._TT["INFO"] = "O kalendarzu";
 
 Calendar._TT["ABOUT"] =

@@ -287,7 +287,7 @@ class ModuleInstaller{
 	function install_copy(){
 		if(isset($this->installdefs['copy'])){
 			/* BEGIN - RESTORE POINT - by MR. MILK August 31, 2005 02:22:11 PM */
-			$backup_path = clean_path( remove_file_extension(urldecode($_REQUEST['install_file']))."-restore" );
+			$backup_path = clean_path( remove_file_extension(urldecode(hashToFile($_REQUEST['install_file'])))."-restore" );
 			/* END - RESTORE POINT - by MR. MILK August 31, 2005 02:22:18 PM */
 			foreach($this->installdefs['copy'] as $cp){
 				$GLOBALS['log']->debug("Copying ..." . $cp['from'].  " to " .$cp['to'] );
@@ -309,12 +309,12 @@ class ModuleInstaller{
 				/* BEGIN - RESTORE POINT - by MR. MILK August 31, 2005 02:22:11 PM */
 						//rmdir_recursive($cp['to']);
 
-						$backup_path = clean_path( remove_file_extension(urldecode($_REQUEST['install_file']))."-restore/".$cp['to'] );
+						$backup_path = clean_path( remove_file_extension(urldecode(hashToFile($_REQUEST['install_file'])))."-restore/".$cp['to'] );
 						$this->uninstall_new_files($cp, $backup_path);
 						$this->copy_path($backup_path, $cp['to'], $backup_path, true);
 				/* END - RESTORE POINT - by MR. MILK August 31, 2005 02:22:18 PM */
 					}
-					$backup_path = clean_path( remove_file_extension(urldecode($_REQUEST['install_file']))."-restore");
+					$backup_path = clean_path( remove_file_extension(urldecode(hashToFile($_REQUEST['install_file'])))."-restore");
 					if(file_exists($backup_path))
 						rmdir_recursive($backup_path);
 				}
@@ -2241,7 +2241,7 @@ private function dir_file_count($path){
 			if(!empty($this->installdefs['copy'])){
 				foreach($this->installdefs['copy'] as $cp){
 					$cp['to'] = clean_path(str_replace('<basepath>', $this->base_dir, $cp['to']));
-					$backup_path = clean_path( remove_file_extension(urldecode($_REQUEST['install_file']))."-restore/".$cp['to'] );
+					$backup_path = clean_path( remove_file_extension(urldecode(hashToFile($_REQUEST['install_file'])))."-restore/".$cp['to'] );
 
 					//check if this file exists in the -restore directory
 					if(file_exists($backup_path)){
@@ -2272,7 +2272,7 @@ private function dir_file_count($path){
 //				$GLOBALS['log']->debug('ModuleInstaller.php->disable_copy(): installdefs not empty');
 				foreach($this->installdefs['copy'] as $cp){
 					$cp['to'] = clean_path(str_replace('<basepath>', $this->base_dir, $cp['to']));
-					$backup_path = clean_path( remove_file_extension(urldecode($_REQUEST['install_file']))."-restore/".$cp['to'] ); // bug 16966 tyoung - replaced missing assignment to $backup_path
+					$backup_path = clean_path( remove_file_extension(urldecode(hashToFile($_REQUEST['install_file'])))."-restore/".$cp['to'] ); // bug 16966 tyoung - replaced missing assignment to $backup_path
 					//check if this file exists in the -restore directory
 //					$GLOBALS['log']->debug("ModuleInstaller.php->disable_copy(): backup_path=".$backup_path);
 					if(file_exists($backup_path)){

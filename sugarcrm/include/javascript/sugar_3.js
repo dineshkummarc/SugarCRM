@@ -301,9 +301,9 @@ if(typeof SUGAR.loadedForms=='undefined'){SUGAR.loadedForms=new Object();}
 editViewSnapshots[theForm.id]=snapshotForm(theForm);SUGAR.loadedForms[theForm.id]=true;}
 function onUnloadEditView(theForm){var dataHasChanged=false;if(typeof editViewSnapshots=='undefined'){return;}
 if(typeof theForm=='undefined'){for(var idx in editViewSnapshots){theForm=document.getElementById(idx);if(theForm==null||typeof editViewSnapshots[theForm.id]=='undefined'||editViewSnapshots[theForm.id]==null||!SUGAR.loadedForms[theForm.id]){continue;}
-var snap=snapshotForm(theForm);if(editViewSnapshots[theForm.id]!=snap){debugger;dataHasChanged=true;}}}else{if(editViewSnapshots==null||typeof editViewSnapshots[theForm.id]=='undefined'||editViewSnapshots[theForm.id]==null){return;}
-if(editViewSnapshots[theForm.id]!=snapshotForm(theForm)){debugger;dataHasChanged=true;}}
-if(dataHasChanged==true){debugger;return SUGAR.language.get('app_strings','WARN_UNSAVED_CHANGES');}else{return;}}
+var snap=snapshotForm(theForm);if(editViewSnapshots[theForm.id]!=snap){dataHasChanged=true;}}}else{if(editViewSnapshots==null||typeof editViewSnapshots[theForm.id]=='undefined'||editViewSnapshots[theForm.id]==null){return;}
+if(editViewSnapshots[theForm.id]!=snapshotForm(theForm)){dataHasChanged=true;}}
+if(dataHasChanged==true){return SUGAR.language.get('app_strings','WARN_UNSAVED_CHANGES');}else{return;}}
 function disableOnUnloadEditView(theForm){if(typeof theForm=='undefined'||typeof editViewSnapshots=='undefined'||editViewSnapshots==null){window.onbeforeunload=null;editViewSnapshots=null;}else{if(typeof(theForm.id)!='undefined'&&typeof(editViewSnapshots[theForm.id])!='undefined'){editViewSnapshots[theForm.id]=null;}}}
 function saveForms(savingStr,completeStr){index=0;theForms=ajaxFormArray;function success(data){var theForm=document.getElementById(ajaxFormArray[0]);document.getElementById('multiedit_'+theForm.id).innerHTML=data.responseText;var saveAllButton=document.getElementById('ajaxsaveall');ajaxFormArray.splice(index,1);if(saveAllButton&&ajaxFormArray.length<=1){saveAllButton.style.visibility='hidden';}
 index++;if(index==theForms.length){ajaxStatus.showStatus(completeStr);window.setTimeout('ajaxStatus.hideStatus();',2000);if(saveAllButton)

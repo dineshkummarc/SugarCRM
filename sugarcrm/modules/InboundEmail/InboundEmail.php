@@ -5872,6 +5872,7 @@ eoq;
 
 		// cache
 		$ret = array();
+		$cacheUsed = false;
 		if($forceRefresh == 'false' && $this->validCacheExists($this->mailbox)) {
 			$emailSettings = $current_user->getPreference('emailSettings', 'Emails');
 

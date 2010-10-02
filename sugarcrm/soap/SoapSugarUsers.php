@@ -829,6 +829,13 @@ function get_module_fields($session, $module_name){
 		return array('module_fields'=>$module_fields, 'error'=>$error->get_soap_array());
 	}
 	$class_name = $beanList[$module_name];
+	
+	if(empty($beanFiles[$class_name]))
+	{
+       $error->set_error('no_file');
+       return array('module_fields'=>$module_fields, 'error'=>$error->get_soap_array());		
+	}
+	
 	require_once($beanFiles[$class_name]);
 	$seed = new $class_name();
 	if($seed->ACLAccess('ListView', true) || $seed->ACLAccess('DetailView', true) || 	$seed->ACLAccess('EditView', true) )

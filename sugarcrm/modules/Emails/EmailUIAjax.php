@@ -803,7 +803,11 @@ eoq;
             $email->et->saveListView($_REQUEST['ieId'], $_REQUEST['mbox']);
             // list output
             $ie->retrieve($_REQUEST['ieId']);
-            $page = ceil($_REQUEST['start'] / $_REQUEST['limit']) + 1;
+            if(isset($_REQUEST['start']) && isset($_REQUEST['limit'])) {
+	            $page = ceil($_REQUEST['start'] / $_REQUEST['limit']) + 1;
+	        } else {
+	        	$page = 1;
+	        }
             $list = $ie->displayFolderContents($_REQUEST['mbox'], $_REQUEST['forceRefresh'], $page);
             $count = $ie->getCacheCount($_REQUEST['mbox']);
             $unread = $ie->getCacheUnread($_REQUEST['mbox']);
@@ -824,7 +828,11 @@ eoq;
         if(isset($_REQUEST['ieId']) && !empty($_REQUEST['ieId'])) {
             // user view preferences
             $email->et->saveListView($_REQUEST['ieId'], "SUGAR.{$_REQUEST['mbox']}");
-            $page = ceil($_REQUEST['start'] / $_REQUEST['limit']) + 1;
+            if(isset($_REQUEST['start']) && isset($_REQUEST['limit'])) {
+	            $page = ceil($_REQUEST['start'] / $_REQUEST['limit']) + 1;
+	        } else {
+	        	$page = 1;
+	        }
             if(!isset($_REQUEST['sort']) || !isset($_REQUEST['dir'])) {
                 $_REQUEST['sort'] = '';
                 $_REQUEST['dir']  = '';

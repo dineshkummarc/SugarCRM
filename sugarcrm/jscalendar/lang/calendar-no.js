@@ -23,7 +23,7 @@ Calendar._MN = new Array
  "Desember");
 
 // tooltips
-Calendar._TT = {};
+if(Calendar._TT == undefined) Calendar._TT = {};
 Calendar._TT["TOGGLE"] = "Skift første ukedag";
 Calendar._TT["PREV_YEAR"] = "Et år tilbake (hold for meny)";
 Calendar._TT["PREV_MONTH"] = "En måned tilbake (hold for meny)";
@@ -40,6 +40,6 @@ Calendar._TT["TODAY"] = "I dag";
 
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "y-mm-dd";
-Calendar._TT["TT_DATE_FORMAT"] = "D d. M, y";
+Calendar._TT["TT_DATE_FORMAT"] = "%A %e. %B, %Y";
 
 Calendar._TT["WK"] = "wk";

@@ -58,7 +58,7 @@ Calendar._SMN = new Array
  "Jou");
 
 // tooltips
-Calendar._TT = {};
+if(Calendar._TT == undefined) Calendar._TT = {};
 Calendar._TT["INFO"] = "Tietoja kalenterista";
 
 Calendar._TT["ABOUT"] =

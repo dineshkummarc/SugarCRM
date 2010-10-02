@@ -146,6 +146,13 @@ eval({/literal}{$ul_list}{literal});
 SimpleList.ul_list = list;
 SimpleList.init({/literal}'{$editImage}'{literal}, {/literal}'{$deleteImage}'{literal});
 ModuleBuilder.helpSetup('dropdowns','editdropdown');
+
+var addListenerFields = ['drop_name','drop_value' ]
+YAHOO.util.Event.addListener(addListenerFields,"keydown", function(e){
+	if (e.keyCode == 13) {
+		YAHOO.util.Event.stopEvent(e);
+	}
+});
 </script>
 {/literal}
 </div>

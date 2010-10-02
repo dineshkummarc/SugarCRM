@@ -77,7 +77,7 @@ Calendar._SMN = new Array
  "12");
 
 // tooltips
-Calendar._TT = {};
+if(Calendar._TT == undefined) Calendar._TT = {};
 Calendar._TT["INFO"] = "calendar 에 대해서";
 
 Calendar._TT["ABOUT"] =

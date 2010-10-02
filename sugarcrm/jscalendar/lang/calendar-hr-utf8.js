@@ -27,7 +27,7 @@ Calendar._MN = new Array
  "Prosinac");
 
 // tooltips
-Calendar._TT = {};
+if(Calendar._TT == undefined) Calendar._TT = {};
 Calendar._TT["TOGGLE"] = "Promjeni dan s kojim počinje tjedan";
 Calendar._TT["PREV_YEAR"] = "Prethodna godina (dugi pritisak za meni)";
 Calendar._TT["PREV_MONTH"] = "Prethodni mjesec (dugi pritisak za meni)";
@@ -44,6 +44,6 @@ Calendar._TT["TODAY"] = "Danas";
 
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "dd-mm-y";
-Calendar._TT["TT_DATE_FORMAT"] = "DD, dd.mm.y";
+Calendar._TT["TT_DATE_FORMAT"] = "%A, %d.%m.%Y";
 
 Calendar._TT["WK"] = "Tje";

@@ -23,7 +23,7 @@ Calendar._MN = new Array
  "Desembre");
 
 // tooltips
-Calendar._TT = {};
+if(Calendar._TT == undefined) Calendar._TT = {};
 Calendar._TT["TOGGLE"] = "Canvia el primer dia de la setmana";
 Calendar._TT["PREV_YEAR"] = "Any anterior (mantenir per a menu)";
 Calendar._TT["PREV_MONTH"] = "Mes anterior (mantenir per a menu)";
@@ -40,6 +40,6 @@ Calendar._TT["TODAY"] = "Avui";
 
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "dd-mm-yy";
-Calendar._TT["TT_DATE_FORMAT"] = "D, M d";
+Calendar._TT["TT_DATE_FORMAT"] = "%A, %B %e";
 
 Calendar._TT["WK"] = "sem";

@@ -23,7 +23,7 @@ Calendar._MN = new Array
  "Desember");
 
 // tooltips
-Calendar._TT = {};
+if(Calendar._TT == undefined) Calendar._TT = {};
 Calendar._TT["TOGGLE"] = "Verander eerste dag van die week";
 Calendar._TT["PREV_YEAR"] = "Vorige jaar (hou vir keuselys)";
 Calendar._TT["PREV_MONTH"] = "Vorige maand (hou vir keuselys)";

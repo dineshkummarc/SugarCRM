@@ -149,6 +149,7 @@ class ViewModulefield extends SugarView
             if($isClone){
                 unset($vardef['name']);
             }
+          
             if(empty($vardef['name'])){
                 if(!empty($_REQUEST['type']))
                     $vardef['type'] = $_REQUEST['type'];
@@ -159,7 +160,10 @@ class ViewModulefield extends SugarView
                 $action = 'saveSugarField'; // tyoung - for OOB fields we currently only support modifying the label
                 $fv->ss->assign('hideLevel', 3);
             }
-
+            if($isClone && isset($vardef['type']) && $vardef['type'] == 'datetime'){
+            	$vardef['type'] = 'datetimecombo';
+            }
+            
 			require_once ('modules/DynamicFields/FieldCases.php') ;
             $tf = get_widget ( empty($vardef [ 'type' ]) ?  "" : $vardef [ 'type' ]) ;
             $tf->module = $module;

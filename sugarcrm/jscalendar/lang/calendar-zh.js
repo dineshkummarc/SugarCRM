@@ -70,7 +70,7 @@ Calendar._SMN = new Array
  "十二月");
 
 // tooltips
-Calendar._TT = {};
+if(Calendar._TT == undefined) Calendar._TT = {};
 Calendar._TT["INFO"] = "帮助";
 
 Calendar._TT["ABOUT"] =

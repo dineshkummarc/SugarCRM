@@ -36,7 +36,7 @@ Calendar._MN = new Array
  "Aralık");
 
 // tooltips
-Calendar._TT = {};
+if(Calendar._TT == undefined) Calendar._TT = {};
 Calendar._TT["TOGGLE"] = "Haftanın ilk gününü kaydır";
 Calendar._TT["PREV_YEAR"] = "Önceki Yıl (Menü için basılı tutunuz)";
 Calendar._TT["PREV_MONTH"] = "Önceki Ay (Menü için basılı tutunuz)";
@@ -53,6 +53,6 @@ Calendar._TT["TODAY"] = "Bugün";
 
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "dd-mm-y";
-Calendar._TT["TT_DATE_FORMAT"] = "d MM y, DD";
+Calendar._TT["TT_DATE_FORMAT"] = "%e %B %Y, %A";
 
 Calendar._TT["WK"] = "Hafta";

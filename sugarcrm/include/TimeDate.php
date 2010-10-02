@@ -993,6 +993,28 @@ S	S	S	12	20	-8	0	0
 		$newDate = $this->swap_formats($date, $noMerFormat, $fakeMerFormat);
 		return str_replace('!@!', $mer, $newDate);
 	}
+	
+	/**
+	 * Returns the time portion of a datetime string
+	 *
+	 * @param string $datetime
+	 * @return string
+	 */
+	public function getTimePart($datetime)
+	{
+	    return trim(array_pop($this->split_date_time($datetime)));
+	}
+	
+	/**
+	 * Returns the date portion of a datetime string
+	 *
+	 * @param string $datetime
+	 * @return string
+	 */
+	public function getDatePart($datetime)
+	{
+	    return trim(array_shift($this->split_date_time($datetime)));
+	}
 
 	/**
 	 * @deprecated for public use

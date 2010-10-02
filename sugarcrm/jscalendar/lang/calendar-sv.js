@@ -53,7 +53,7 @@ Calendar._MN = new Array
  "december");
 
 // tooltips
-Calendar._TT = {};
+if(Calendar._TT == undefined) Calendar._TT = {};
 Calendar._TT["INFO"] = "Om kalendern";
 
 Calendar._TT["ABOUT"] =

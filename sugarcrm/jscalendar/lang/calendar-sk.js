@@ -59,7 +59,7 @@ Calendar._SMN = new Array
  "Dec");
 
 // tooltips
-Calendar._TT = {};
+if(Calendar._TT == undefined) Calendar._TT = {};
 Calendar._TT["INFO"] = "O kalendĂˇri";
 
 Calendar._TT["ABOUT"] =

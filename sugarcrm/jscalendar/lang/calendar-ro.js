@@ -24,7 +24,7 @@ Calendar._MN = new Array
  "Decembrie");
 
 // tooltips
-Calendar._TT = {};
+if(Calendar._TT == undefined) Calendar._TT = {};
 
 Calendar._TT["INFO"] = "Despre calendar";
 

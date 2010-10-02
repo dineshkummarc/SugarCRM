@@ -48,7 +48,7 @@ Calendar._SMN = new Array
  "Δεκ");
 
 // tooltips
-Calendar._TT = {};
+if(Calendar._TT == undefined) Calendar._TT = {};
 Calendar._TT["INFO"] = "Για το ημερολόγιο";
 
 Calendar._TT["ABOUT"] =
@@ -83,7 +83,7 @@ Calendar._TT["TIME_PART"] = "(Shift-)κλικ ή μετακίνηση για α�
 
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "dd-mm-y";
-Calendar._TT["TT_DATE_FORMAT"] = "D, d M";
+Calendar._TT["TT_DATE_FORMAT"] = "%a, %e %b";
 
 Calendar._TT["WK"] = "εβδ";
 

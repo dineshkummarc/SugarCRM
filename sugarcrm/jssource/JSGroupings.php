@@ -33,15 +33,15 @@
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
  ********************************************************************************/
-/* 
+/*
  * This is the array that is used to determine how to group/concatenate js files together
  * The format is to define the location of the file to be concatenated as the array element key
  * and the location of the file to be created that holds the child files as the array element value.
  * So: $original_file_location => $Concatenated_file_location
- * 
+ *
  * If you wish to add a grouping that contains a file that is part of another group already,
  * add a '.' after the .js in order to make the element key unique.  Make sure you pare the extension out
- *    
+ *
  */
 
        $js_groupings = array(
@@ -51,17 +51,17 @@
                 'include/javascript/cookie.js'          => 'include/javascript/sugar_grp1.js',
                 'include/javascript/menu.js'            => 'include/javascript/sugar_grp1.js',
                 'jscalendar/calendar.js'                => 'include/javascript/sugar_grp1.js',
-                //'jscalendar/lang/calendar-en.js'        => 'include/javascript/sugar_grp1.js',
+                'jscalendar/lang/calendar-en.js'        => 'include/javascript/sugar_grp1.js',
                 'jscalendar/calendar-setup_3.js'        => 'include/javascript/sugar_grp1.js',
                 'include/javascript/quickCompose.js'        => 'include/javascript/sugar_grp1.js',
                 'include/javascript/yui/build/yuiloader/yuiloader-min.js' => 'include/javascript/sugar_grp1.js',
-            ),            
-            
+            ),
+
             $sugar_grp1_yui = array(
 			//YUI scripts loaded on first page
 			'include/javascript/yui/build/yahoo/yahoo-min.js'           => 'include/javascript/sugar_grp1_yui.js',
             'include/javascript/yui/build/dom/dom-min.js'               => 'include/javascript/sugar_grp1_yui.js',
-			'include/javascript/yui/build/yahoo-dom-event/yahoo-dom-event-min.js'               
+			'include/javascript/yui/build/yahoo-dom-event/yahoo-dom-event-min.js'
 			    => 'include/javascript/sugar_grp1_yui.js',
 			'include/javascript/yui/build/event/event-min.js'           => 'include/javascript/sugar_grp1_yui.js',
 			'include/javascript/yui/build/logger/logger-min.js'         => 'include/javascript/sugar_grp1_yui.js',
@@ -81,8 +81,8 @@
             'include/javascript/yui/build/menu/menu-min.js'             => 'include/javascript/sugar_grp1_yui.js',
 			'include/javascript/sugar_connection_event_listener.js'     => 'include/javascript/sugar_grp1_yui.js',
             ),
-            
-            $sugar_grp_yui_widgets = array( 
+
+            $sugar_grp_yui_widgets = array(
 			//sugar_grp1_yui must be laoded before sugar_grp_yui_widgets
 			'include/javascript/yui/build/element/element-min.js'       => 'include/javascript/sugar_grp_yui_widgets.js',
             'include/javascript/yui/build/datatable/datatable-min.js'   => 'include/javascript/sugar_grp_yui_widgets.js',
@@ -94,28 +94,28 @@
 
 			$sugar_grp_yui_widgets_css = array(
 				"include/javascript/yui/build/fonts/fonts-min.css" => 'include/javascript/sugar_grp_yui_widgets.css',
-				"include/javascript/yui/build/treeview/assets/skins/sam/treeview.css" 
+				"include/javascript/yui/build/treeview/assets/skins/sam/treeview.css"
 					=> 'include/javascript/sugar_grp_yui_widgets.css',
-				"include/javascript/yui/build/datatable/assets/skins/sam/datatable.css" 
+				"include/javascript/yui/build/datatable/assets/skins/sam/datatable.css"
 					=> 'include/javascript/sugar_grp_yui_widgets.css',
-				"include/javascript/yui/build/container/assets/skins/sam/container.css" 
+				"include/javascript/yui/build/container/assets/skins/sam/container.css"
 					=> 'include/javascript/sugar_grp_yui_widgets.css',
-                "include/javascript/yui/build/button/assets/skins/sam/button.css" 
+                "include/javascript/yui/build/button/assets/skins/sam/button.css"
 					=> 'include/javascript/sugar_grp_yui_widgets.css',
-			),           
-            
+			),
+
             $sugar_grp_yui2 = array(
-            //YUI combination 2     
+            //YUI combination 2
             'include/javascript/yui/build/dragdrop/dragdrop-min.js'    => 'include/javascript/sugar_grp_yui2.js',
             'include/javascript/yui/build/container/container-min.js'  => 'include/javascript/sugar_grp_yui2.js',
-            ),            
-            
-            $sugar_grp_overlib = array(            
-            //overlib combination            
+            ),
+
+            $sugar_grp_overlib = array(
+            //overlib combination
             'include/javascript/overlibmws.js'              => 'include/javascript/sugar_grp_overlib.js',
             'include/javascript/overlibmws_iframe.js'       => 'include/javascript/sugar_grp_overlib.js',
-            ),     
-            
+            ),
+
             //Grouping for emails module.
             $sugar_grp_emails = array(
             'include/javascript/yui/ygDDList.js' => 'include/javascript/sugar_grp_emails.js',
@@ -133,9 +133,9 @@
             'modules/Emails/javascript/displayOneEmailTemplate.js' => 'include/javascript/sugar_grp_emails.js',
             'modules/Emails/javascript/viewPrintable.js' => 'include/javascript/sugar_grp_emails.js',
             'include/javascript/quicksearch.js' => 'include/javascript/sugar_grp_emails.js',
-            
-            ),    
-            
+
+            ),
+
             //Grouping for the quick compose functionality.
             $sugar_grp_quick_compose = array(
             'modules/Emails/javascript/vars.js' => 'include/javascript/sugar_grp_quickcomp.js',
@@ -146,7 +146,7 @@
             'modules/Emails/javascript/EmailUICompose.js' => 'include/javascript/sugar_grp_quickcomp.js',
             'modules/Emails/javascript/composeEmailTemplate.js' => 'include/javascript/sugar_grp_quickcomp.js',
             'modules/Emails/javascript/complexLayout.js' => 'include/javascript/sugar_grp_quickcomp.js',
-            ),  
+            ),
         );
-        
+
 ?>

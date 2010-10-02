@@ -74,7 +74,7 @@ Calendar._SMN = new Array
  "Gru");
 
 // tooltips
-Calendar._TT = {};
+if(Calendar._TT == undefined) Calendar._TT = {};
 Calendar._TT["INFO"] = "Apie kalendorių";
 
 Calendar._TT["ABOUT"] =

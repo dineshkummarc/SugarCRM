@@ -193,16 +193,15 @@ function template_cal_tabs(& $args) {
 
 				if(empty($act->sugar_bean->name)) {
 					echo "<td width=\"100%\">";
-					echo $timedate->to_display_time($act->sugar_bean->time_start, true, false);
+					echo $timedate->getTimePart($act->sugar_bean->date_start); 
 					echo "</td></tr>";
 				} else {
 					echo "<td width=\"100%\">
 						<a href=\"index.php?module=Calls&action=DetailView&record=".
 						$act->sugar_bean->id."\">".
-						$app_list_strings['call_status_dom'][$act->sugar_bean->status].":".
-						$act->sugar_bean->name."(".
-						$timedate->to_display_time($act->sugar_bean->time_start, true, false)."
-						)</a></td></tr>";
+						$app_list_strings['call_status_dom'][$act->sugar_bean->status].": ".
+						$act->sugar_bean->name."<br>(".
+						$timedate->getTimePart($act->sugar_bean->date_start).")</a></td></tr>";
 				}
 			} else if($act->sugar_bean->object_name == 'Meeting') {
 				echo "<td>".
@@ -211,7 +210,7 @@ function template_cal_tabs(& $args) {
 
 				if(empty($act->sugar_bean->name)) {
 					echo "<td width=\"100%\">".
-						$timedate->to_display_time($act->sugar_bean->time_start, true, false);
+						$timedate->getTimePart($act->sugar_bean->date_start); 
 					echo "</td></tr>";
 				} else {
 					echo "<td width=\"100%\">
@@ -219,9 +218,8 @@ function template_cal_tabs(& $args) {
 						$act->sugar_bean->id."\">".
 						$app_list_strings['meeting_status_dom'][$act->sugar_bean->status].":".
 						$act->sugar_bean->name."<br>(".
-						$timedate->to_display_time($act->sugar_bean->time_start, true, false).")
-						</a>";
-
+						$timedate->getTimePart($act->sugar_bean->date_start).")</a>";
+						
 					// MEETING INTEGRATION
 					if($act->sugar_bean->hasIntegratedMeeting()) {
 						$out .= $act->sugar_bean->miIcon;
@@ -238,15 +236,14 @@ function template_cal_tabs(& $args) {
 
 				if(empty($act->sugar_bean->name)) {
 					echo "<td width=\"100%\">".
-						$timedate->to_display_time($act->sugar_bean->time_due, true, false);
+						$timedate->getTimePart($act->sugar_bean->date_due); 
 					echo "</td></tr>";
 				} else {
 					echo "<td width=\"100%\">
 						<a href=\"index.php?module=Tasks&action=DetailView&record=".
 						$act->sugar_bean->id."\">".
-						$act->sugar_bean->status.': '.$act->sugar_bean->name."(".
-						$timedate->to_display_time($act->sugar_bean->time_due, true, false).")
-						</a></td></tr>";
+						$act->sugar_bean->status.': '.$act->sugar_bean->name."<br>(".
+						$timedate->getTimePart($act->sugar_bean->date_due).")</a></td></tr>";
 				}
 			}
 			echo "</table></div>";

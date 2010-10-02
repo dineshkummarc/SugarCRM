@@ -23,7 +23,7 @@ Calendar._MN = new Array
  "December");
 
 // tooltips
-Calendar._TT = {};
+if(Calendar._TT == undefined) Calendar._TT = {};
 Calendar._TT["TOGGLE"] = "Toggle startdag van de week";
 Calendar._TT["PREV_YEAR"] = "Vorig jaar (indrukken voor menu)";
 Calendar._TT["PREV_MONTH"] = "Vorige month (indrukken voor menu)";
@@ -40,6 +40,6 @@ Calendar._TT["TODAY"] = "Vandaag";
 
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "y-mm-dd";
-Calendar._TT["TT_DATE_FORMAT"] = "D, M d";
+Calendar._TT["TT_DATE_FORMAT"] = "%A, %B %e";
 
 Calendar._TT["WK"] = "wk";

@@ -23,7 +23,7 @@ Calendar._MN = new Array
  "december");
 
 // tooltips
-Calendar._TT = {};
+if(Calendar._TT == undefined) Calendar._TT = {};
 Calendar._TT["TOGGLE"] = "A hét elsõ napjának beállítása";
 Calendar._TT["PREV_YEAR"] = "Elõzõ év (tartsa nyomva a menühöz)";
 Calendar._TT["PREV_MONTH"] = "Elõzõ hónap (tartsa nyomva a menühöz)";
@@ -40,6 +40,6 @@ Calendar._TT["TODAY"] = "Ma";
 
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "y-mm-dd";
-Calendar._TT["TT_DATE_FORMAT"] = "M d, D";
+Calendar._TT["TT_DATE_FORMAT"] = "%B %e, %A";
 
 Calendar._TT["WK"] = "hét";
