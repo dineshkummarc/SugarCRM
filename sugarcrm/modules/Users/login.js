@@ -34,6 +34,7 @@
  ********************************************************************************/
 function set_focus(){if(document.DetailView.user_name.value!=''){document.DetailView.user_password.focus();document.DetailView.user_password.select();}
 else document.DetailView.user_name.focus();}
+function switchLanguage(lang){var loc=window.location+"";loc=loc.replace(/\&login_language=[^&]*/i,"");loc+="&login_language="+lang;window.location=loc;}
 function toggleDisplay(id){if(this.document.getElementById(id).style.display=='none'){this.document.getElementById(id).style.display='inline'
 if(this.document.getElementById(id+"link")!=undefined){this.document.getElementById(id+"link").style.display='none';}
 document.getElementById(id+"_options").src='index.php?entryPoint=getImage&themeName='+SUGAR.themes.theme_name+'&imageName=basic_search.gif';}else{this.document.getElementById(id).style.display='none'

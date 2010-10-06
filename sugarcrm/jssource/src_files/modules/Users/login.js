@@ -41,6 +41,14 @@ function set_focus() {
 	else document.DetailView.user_name.focus();
 }
 
+function switchLanguage(lang) {
+	var loc = window.location + "";
+	loc = loc.replace(/\&login_language=[^&]*/i, "");
+	loc += "&login_language=" + lang;
+	window.location = loc;
+
+}
+
 function toggleDisplay(id){
 
 	if(this.document.getElementById(id).style.display=='none'){

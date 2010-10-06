@@ -41,9 +41,16 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
  ********************************************************************************/
+global $current_language, $mod_strings, $app_strings;
+if(isset($_REQUEST['login_language'])){
+    $lang = $_REQUEST['login_language'];
+    $_REQUEST['ck_login_language_20'] = $lang;
+	$current_language = $lang;
+    $_SESSION['authenticated_user_language'] = $lang;
+    $mod_strings = return_module_language($lang, "Users");
+    $app_strings = return_application_language($lang);
+}
 $sugar_smarty = new Sugar_Smarty();
-$sugar_smarty->assign('MOD', $mod_strings);
-$sugar_smarty->assign('APP', $app_strings);
 echo '<link rel="stylesheet" type="text/css" media="all" href="'.getJSPath('modules/Users/login.css').'">';
 echo '<script type="text/javascript" src="'.getJSPath('modules/Users/login.js').'"></script>';
 global $app_language, $sugar_config;
