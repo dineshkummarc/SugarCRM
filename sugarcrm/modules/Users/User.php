@@ -116,19 +116,19 @@ class User extends Person {
 
 	function User() {
 		parent::Person();
-		
+
 		$this->_loadUserPreferencesFocus();
 	}
-	
+
 	protected function _loadUserPreferencesFocus()
 	{
 	    $this->_userPreferenceFocus = new UserPreference($this);
 	}
-	
+
     /**
      * returns an admin user
      */
-    public function getSystemUser() 
+    public function getSystemUser()
     {
         if (null === $this->retrieve('1'))
             // handle cases where someone deleted user with id "1"
@@ -136,7 +136,7 @@ class User extends Person {
                 'status' => 'Active',
                 'is_admin' => '1',
                 ));
-        
+
         return $this;
     }
 
@@ -157,10 +157,10 @@ class User extends Person {
 	 * @param string id ID of user_signature
 	 * @return array ID, signature, and signature_html
 	 */
-	public function getSignature($id) 
+	public function getSignature($id)
 	{
 	    $signatures = $this->getSignaturesArray();
-	    
+
 	    return $signatures[$id];
 	}
 
@@ -182,10 +182,10 @@ class User extends Person {
 	 * retrieves any signatures that the User may have created as <select>
 	 */
 	public function getSignatures(
-	    $live = false, 
+	    $live = false,
 	    $defaultSig = '',
 	    $forSettings = false
-	    ) 
+	    )
 	{
 		$sig = $this->getSignaturesArray();
 		$sigs = array();
@@ -193,7 +193,7 @@ class User extends Person {
 		{
 			$sigs[$key] = !empty($arr['name']) ? $arr['name'] : '';
 		}
-		
+
 		$change = '';
 		if(!$live) {
 			$change = ($forSettings) ? "onChange='displaySignatureEdit();'" : "onChange='setSigEditButtonVisibility();'";
@@ -203,7 +203,7 @@ class User extends Person {
 
 		$out  = "<select {$change} id='{$id}' name='{$id}'>";
 		$out .= get_select_options_with_id($sigs, $defaultSig).'</select>';
-		
+
 		return $out;
 	}
 
@@ -232,11 +232,11 @@ class User extends Person {
 	 *
 	 * @return bool
 	 */
-	public function hasPersonalEmail() 
+	public function hasPersonalEmail()
 	{
 	    $focus = new InboundEmail;
 	    $focus->retrieve_by_string_fields(array('group_id' => $this->id));
-	    
+
 	    return !empty($focus->id);
 	}
 
@@ -277,11 +277,11 @@ class User extends Person {
 	 * @param string $category Name of the category to retrieve
 	 */
 	public function setPreference(
-	    $name, 
-	    $value, 
-	    $nosession = 0, 
+	    $name,
+	    $value,
+	    $nosession = 0,
 	    $category = 'global'
-	    ) 
+	    )
 	{
 	    // for BC
 	    if ( func_num_args() > 4 ) {
@@ -290,7 +290,7 @@ class User extends Person {
 	    }
 	    else
 	        $user = $this;
-	        
+
         $user->_userPreferenceFocus->setPreference($name, $value, $category);
 	}
 
@@ -303,7 +303,7 @@ class User extends Person {
 	 */
 	public function resetPreferences(
 	    $category = null
-	    ) 
+	    )
 	{
 	    // for BC
 	    if ( func_num_args() > 1 ) {
@@ -312,7 +312,7 @@ class User extends Person {
 	    }
 	    else
 	        $user = $this;
-	        
+
         $user->_userPreferenceFocus->resetPreferences($category);
 	}
 
@@ -321,7 +321,7 @@ class User extends Person {
 	 *
 	 * @see UserPreference::savePreferencesToDB()
 	 */
-	public function savePreferencesToDB() 
+	public function savePreferencesToDB()
 	{
         // for BC
 	    if ( func_num_args() > 0 ) {
@@ -330,8 +330,18 @@ class User extends Person {
 	    }
 	    else
 	        $user = $this;
-	        
+
         $user->_userPreferenceFocus->savePreferencesToDB();
+	}
+
+	/**
+	 * Unconditionally reloads user preferences from the DB and updates the session
+	 * @param string $category name of the category to retreive, defaults to global scope
+	 * @return bool successful?
+	 */
+	public function reloadPreferences($category = 'global')
+	{
+	    return $this->_userPreferenceFocus->reloadPreferences($category = 'global');
 	}
 
 	/**
@@ -341,7 +351,7 @@ class User extends Person {
 	 *
 	 * @return array 'date' - date format for user ; 'time' - time format for user
 	 */
-	public function getUserDateTimePreferences() 
+	public function getUserDateTimePreferences()
 	{
         // for BC
 	    if ( func_num_args() > 0 ) {
@@ -350,7 +360,7 @@ class User extends Person {
 	    }
 	    else
 	        $user = $this;
-	        
+
         return $user->_userPreferenceFocus->getUserDateTimePreferences();
 	}
 
@@ -364,7 +374,7 @@ class User extends Person {
 	 */
 	public function loadPreferences(
 	    $category = 'global'
-	    ) 
+	    )
 	{
 	    // for BC
 	    if ( func_num_args() > 1 ) {
@@ -373,8 +383,8 @@ class User extends Person {
 	    }
 	    else
 	        $user = $this;
-	        
-        return $user->_userPreferenceFocus->loadPreferences($category); 
+
+        return $user->_userPreferenceFocus->loadPreferences($category);
 	}
 
 	/**
@@ -387,9 +397,9 @@ class User extends Person {
 	 * @return mixed the value of the preference (string, array, int etc)
 	 */
 	public function getPreference(
-	    $name, 
+	    $name,
 	    $category = 'global'
-	    ) 
+	    )
 	{
 	    // for BC
 	    if ( func_num_args() > 2 ) {
@@ -398,7 +408,7 @@ class User extends Person {
 	    }
 	    else
 	        $user = $this;
-	        
+
         return $user->_userPreferenceFocus->getPreference($name, $category);
 	}
 
@@ -415,15 +425,15 @@ class User extends Person {
 			$this->is_group = 0;
 			$this->portal_only = 0;
 		}
-		
 
-		
+
+
 
 
 		parent::save($check_notify);
-		
 
-		
+
+
         $this->savePreferencesToDB();
         return $this->id;
 	}
@@ -439,7 +449,7 @@ class User extends Person {
 	* Contributor(s): ______________________________________..
 	*/
 	function check_role_membership($role_name, $user_id = ''){
-		
+
 		global $current_user;
 
 		if(empty($user_id))
@@ -510,7 +520,7 @@ class User extends Person {
 	 */
 	public function authenticate_user(
 	    $password
-	    ) 
+	    )
 	{
 		$password = $GLOBALS['db']->quote($password);
 		$user_name = $GLOBALS['db']->quote($this->user_name);
@@ -636,7 +646,7 @@ EOQ;
 		}
 
 		$this->loadPreferences();
-		
+
 
 		require_once ('modules/Versions/CheckVersions.php');
 		$invalid_versions = get_invalid_versions();
@@ -675,10 +685,10 @@ EOQ;
 	 * @return boolean - If passwords pass verification and query succeeds, return true, else return false.
 	 */
 	function change_password(
-	    $user_password, 
-	    $new_password, 
+	    $user_password,
+	    $new_password,
 	    $system_generated = '0'
-	    ) 
+	    )
 	{
 	    global $mod_strings;
 		global $current_user;
@@ -743,13 +753,13 @@ EOQ;
 
 	public function retrieve_user_id(
 	    $user_name
-	    ) 
+	    )
 	{
 	    $userFocus = new User;
 	    $userFocus->retrieve_by_string_fields(array('user_name'=>$user_name));
 	    if ( empty($userFocus->id) )
 	        return false;
-	    
+
         return $userFocus->id;
 	}
 
@@ -882,7 +892,7 @@ EOQ;
 		if(!$current_user->is_admin){
 			$query .= " AND users.is_admin=0";
 		}
-		
+
 		if ($order_by != "")
 			$query .= " ORDER BY $order_by";
 		else
@@ -1001,7 +1011,7 @@ EOQ;
 	} // fn
 
 	function getSystemDefaultNameAndEmail() {
-		
+
 		$email = new Email();
 		$return = $email->getSystemDefaultEmail();
 		$prefAddr = $return['email'];
@@ -1081,7 +1091,7 @@ EOQ;
 		if(!isset($sugar_config['email_default_client'])) {
 			$this->setDefaultsInConfig();
 		}
-	
+
 		$userPref = $this->getPreference('email_link_type');
 		$defaultPref = $sugar_config['email_default_client'];
 		if($userPref != '') {
@@ -1114,7 +1124,7 @@ EOQ;
 				$to_addrs_names = $fullName;
 				$to_addrs_emails = $focus->email1;
 			}
-			
+
 			$emailLinkUrl = 'contact_id='.$contact_id.
 				'&parent_type='.$focus->module_dir.
 				'&parent_id='.$focus->id.
@@ -1126,21 +1136,21 @@ EOQ;
 				'&return_module='.$ret_module.
 				'&return_action='.$ret_action.
 				'&return_id='.$ret_id;
-					
+
     		//Generate the compose package for the quick create options.
     		//$json = getJSONobj();
     		//$composeOptionsLink = $json->encode( array('composeOptionsLink' => $emailLinkUrl,'id' => $focus->id) );
 			require_once('modules/Emails/EmailUI.php');
             $eUi = new EmailUI();
             $j_quickComposeOptions = $eUi->generateComposePackageForQuickCreateFromComposeUrl($emailLinkUrl);
-            
+
     		$emailLink = "<a href='javascript:void(0);' onclick='SUGAR.quickCompose.init($j_quickComposeOptions);' class='$class'>";
-			
+
 		} else {
 			// straight mailto:
 			$emailLink = '<a href="mailto:'.$emailAddress.'" class="'.$class.'">';
 		}
-		
+
 		return $emailLink;
 	}
 
@@ -1212,13 +1222,13 @@ EOQ;
 				'&return_module='.$ret_module.
 				'&return_action='.$ret_action.
 				'&return_id='.$ret_id;
-				
+
 			//Generate the compose package for the quick create options.
     		require_once('modules/Emails/EmailUI.php');
             $eUi = new EmailUI();
             $j_quickComposeOptions = $eUi->generateComposePackageForQuickCreateFromComposeUrl($emailLinkUrl);
     		$emailLink = "<a href='javascript:void(0);' onclick='SUGAR.quickCompose.init($j_quickComposeOptions);' class='$class'>";
-				
+
 		} else {
 			// straight mailto:
 			$emailLink = '<a href="mailto:'.$focus->$attribute.'" class="'.$class.'">';

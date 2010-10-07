@@ -34,7 +34,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
  ********************************************************************************/
- 
+
 
 
 require_once('include/MySugar/MySugar.php');
@@ -42,8 +42,11 @@ require_once('include/MySugar/MySugar.php');
 $mySugar = new MySugar($_REQUEST['module']);
 if (!isset($_REQUEST['DynamicAction'])) {
 	$_REQUEST['DynamicAction'] = 'displayDashlet';
-} 
-echo $mySugar->$_REQUEST['DynamicAction']();
-
-
-?>
+}
+// commit session before returning output so we can serialize AJAX requests
+// and not get session into a wrong state
+$res = $mySugar->$_REQUEST['DynamicAction']();
+if(isset($_REQUEST['commit_session'])) {
+    session_commit();
+}
+echo $res;

@@ -68,9 +68,9 @@ class vCal extends SugarBean {
 	// This is used to retrieve related fields from form posts.
 	var $additional_column_fields = Array();
 
-	function vCal() 
+	function vCal()
 	{
-		
+
 		parent::SugarBean();
 		$this->disable_row_level_security = true;
 	}
@@ -85,7 +85,7 @@ class vCal extends SugarBean {
 	{
 	}
 
-	function fill_in_additional_detail_fields() 
+	function fill_in_additional_detail_fields()
 	{
 	}
 
@@ -122,9 +122,9 @@ class vCal extends SugarBean {
 		return $str;
 	}
 
-	// query and create the FREEBUSY lines for SugarCRM Meetings and Calls and 
-        // return the string	
-	function create_sugar_freebusy(&$user_bean,&$start_date_time,&$end_date_time)
+	// query and create the FREEBUSY lines for SugarCRM Meetings and Calls and
+        // return the string
+	function create_sugar_freebusy($user_bean, $start_date_time, $end_date_time)
 	{
 		$str = '';
 		global $DO_USER_TIME_OFFSET,$timedate;
@@ -146,7 +146,7 @@ class vCal extends SugarBean {
 
 			$startTimeUTC = gmdate($utcFormat, $act->start_time->ts) . "00Z";
 			$endTimeUTC = gmdate($utcFormat, $act->end_time->ts) . "00Z";
-			
+
 			$str .= "FREEBUSY:". $startTimeUTC ."/". $endTimeUTC."\n";
 
 		}
@@ -154,27 +154,21 @@ class vCal extends SugarBean {
 
 	}
 
-        // return a freebusy vcal string 
-        function get_vcal_freebusy(&$user_focus,$cached=true)
+        // return a freebusy vcal string
+        function get_vcal_freebusy($user_focus,$cached=true)
         {
            global $locale;
            $str = "BEGIN:VCALENDAR\n";
            $str .= "VERSION:2.0\n";
            $str .= "PRODID:-//SugarCRM//SugarCRM Calendar//EN\n";
            $str .= "BEGIN:VFREEBUSY\n";
-                                                                                                   
+
            $name = $locale->getLocaleFormattedName($user_focus->first_name, $user_focus->last_name);
            $email = $user_focus->email1;
-                                                                                                   
-                                                                                                   
-           // get current time local
-           $date_arr = array();
-           $now_date_time_local = new DateTimeUtil($date_arr,true);
-                                                                                                   
-           // get current time GMT
-           $date_arr = array('ts'=>$now_date_time_local->ts - $now_date_time_local->tz_offset);
-           $now_date_time = new DateTimeUtil($date_arr,true);
-                                                                                                   
+
+           // get current date for the user
+           $now_date_time = new DateTimeUtil(array(), true);
+
            // get start date GMT ( 1 day ago )
            $date_arr = array(
              'day'=>$now_date_time->day - 1,
@@ -182,9 +176,9 @@ class vCal extends SugarBean {
              'hour'=>($now_date_time->hour),
              'min'=>($now_date_time->min),
              'year'=>$now_date_time->year);
-                                                                                                   
+
            $start_date_time = new DateTimeUtil($date_arr,true);
-                                                                                                   
+
 
            // get date 2 months from start date
 			global $sugar_config;
@@ -199,18 +193,18 @@ class vCal extends SugarBean {
              'hour'=>($start_date_time->hour),
              'min'=>($start_date_time->min),
              'year'=>$start_date_time->year);
-                                                                                                   
+
            $end_date_time = new DateTimeUtil($date_arr,true);
-                                                                                                   
+
            // get UTC time format
            $utc_start_time = $start_date_time->get_utc_date_time();
            $utc_end_time = $end_date_time->get_utc_date_time();
            $utc_now_time = $now_date_time->get_utc_date_time();
-                                                                                                   
+
            $str .= "ORGANIZER;CN=$name:$email\n";
            $str .= "DTSTART:$utc_start_time\n";
            $str .= "DTEND:$utc_end_time\n";
-                                                                                                   
+
            // now insert the freebusy lines
            // retrieve cached freebusy lines from vcals
 		   if ($timeOffset != 0)
@@ -218,14 +212,14 @@ class vCal extends SugarBean {
            if ($cached == true)
            {
              $str .= $this->get_freebusy_lines_cache($user_focus);
-           } 
+           }
            // generate freebusy from Meetings and Calls
            else
-           {      
+           {
                $str .= $this->create_sugar_freebusy($user_focus,$start_date_time,$end_date_time);
 			}
            }
-                                                                                                   
+
            // UID:20030724T213406Z-10358-1000-1-12@phoenix
            $str .= "DTSTAMP:$utc_now_time\n";
            $str .= "END:VFREEBUSY\n";
@@ -246,11 +240,11 @@ class vCal extends SugarBean {
         function cache_sugar_vcal_freebusy(&$user_focus)
         {
             $focus = new vCal();
-            // set freebusy members and save 
+            // set freebusy members and save
             $arr = array('user_id'=>$user_focus->id,'type'=>'vfb','source'=>'sugar');
             $focus->retrieve_by_string_fields($arr);
-                                                                                                   
-                                                                                                   
+
+
             $focus->content = $focus->get_vcal_freebusy($user_focus,false);
             $focus->type = 'vfb';
             $focus->date_modified = null;

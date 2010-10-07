@@ -102,8 +102,10 @@ function generateComposeDataPackage($data,$forFullCompose = TRUE)
 		$bean->retrieve($data['parent_id']);
 		if (isset($bean->full_name)) {
 			$parentName = $bean->full_name;
-		} else {
-			$parentName = isset($bean->name) ? $bean->name : "";
+		} elseif(isset($bean->name)) {
+			$parentName = $bean->name;
+		}else{
+			$parentName = '';
 		}
 		$parentName = from_html($parentName);
 		$namePlusEmail = '';

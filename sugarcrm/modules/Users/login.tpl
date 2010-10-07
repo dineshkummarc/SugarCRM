@@ -78,7 +78,7 @@ var LBL_REQUEST_SUBMIT = '{sugar_translate module="Users" label="LBL_REQUEST_SUB
 								{/if}
 									<tr>
 										<td scope="row" colspan="2" width="100%" style="font-size: 12px; font-weight: normal; padding-bottom: 4px;">
-										{sugar_translate label="NTC_LOGIN_MESSAGE"}
+										{sugar_translate label="NTC_LOGIN_MESSAGE"}.
 										<input type="hidden" name="module" value="Users">
 										<input type="hidden" name="action" value="Authenticate">
 										<input type="hidden" name="return_module" value="Users">
@@ -89,6 +89,8 @@ var LBL_REQUEST_SUBMIT = '{sugar_translate module="Users" label="LBL_REQUEST_SUB
 										<input type="hidden" name="login_record" value="{$LOGIN_RECORD}">
 										</td>
 									</tr>
+									
+                                    <tr><td>&nbsp;</td></tr>
 									<tr>
 										<td scope="row" width="30%">{sugar_translate module="Users" label="LBL_USER_NAME"}:</td>
 										<td width="70%"><input type="text" size='35' tabindex="1" id="user_name" name="user_name"  value='{$LOGIN_USER_NAME}' /></td>
@@ -99,10 +101,12 @@ var LBL_REQUEST_SUBMIT = '{sugar_translate module="Users" label="LBL_REQUEST_SUB
 									</tr>
 									{if !empty($SELECT_LANGUAGE)}
 									
+									
 									<tr>
 									    <td scope="row">{sugar_translate module="Users" label="LBL_LANGUAGE"}:</td>
                                         <td><select style='width: 152px' name='login_language' onchange="switchLanguage(this.value)">{$SELECT_LANGUAGE}</select></td>
 									</tr>
+                                    <tr><td>&nbsp;</td></tr>
 									{/if}
 									<tr>
 										<td>&nbsp;</td>

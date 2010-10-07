@@ -66,7 +66,9 @@ $probability_script=<<<EOQ
 	<script>
 	prob_array = $prob_array;
 	document.getElementsByName('sales_stage')[0].onchange = function() {
-			if(typeof(document.getElementsByName('sales_stage')[0].value) != "undefined" && prob_array[document.getElementsByName('sales_stage')[0].value]) {
+			if(typeof(document.getElementsByName('sales_stage')[0].value) != "undefined" && prob_array[document.getElementsByName('sales_stage')[0].value]
+			&& typeof(document.getElementsByName('probability')[0]) != "undefined"
+			) {
 				document.getElementsByName('probability')[0].value = prob_array[document.getElementsByName('sales_stage')[0].value];
 			} 
 		};

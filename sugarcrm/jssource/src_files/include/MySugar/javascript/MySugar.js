@@ -229,12 +229,12 @@ SUGAR.mySugar = function() {
 			ajaxStatus.showStatus(SUGAR.language.get('app_strings', 'LBL_LOADING'));
 					
 			if(!url) {
-				url = 'index.php?action=DynamicAction&DynamicAction=displayDashlet&module='+module+'&to_pdf=1&id=' + id;
+				url = 'index.php?action=DynamicAction&DynamicAction=displayDashlet&session_commit=1&module='+module+'&to_pdf=1&id=' + id;
 				is_chart_dashlet = false;
 			}
 			else if (url == 'predefined_chart'){
-				url = 'index.php?action=DynamicAction&DynamicAction=displayDashlet&module='+module+'&to_pdf=1&id=' + id;
-				scriptUrl = 'index.php?action=DynamicAction&DynamicAction=getPredefinedChartScript&module='+module+'&to_pdf=1&id=' + id;
+				url = 'index.php?action=DynamicAction&DynamicAction=displayDashlet&session_commit=1&module='+module+'&to_pdf=1&id=' + id;
+				scriptUrl = 'index.php?action=DynamicAction&DynamicAction=getPredefinedChartScript&session_commit=1&module='+module+'&to_pdf=1&id=' + id;
 				is_chart_dashlet = true;
 			}
 			
@@ -379,7 +379,9 @@ SUGAR.mySugar = function() {
 					anim.onComplete.subscribe(function() { document.getElementById('dashlet_entire_' + data.responseText).style.height = '100%'; });	
 					anim.animate();
 					
-					window.setTimeout('ajaxStatus.hideStatus()', 2000);
+					newLayout =	SUGAR.mySugar.getLayout(true);
+					SUGAR.mySugar.saveLayout(newLayout);	
+//					window.setTimeout('ajaxStatus.hideStatus()', 2000);
 				}
 				
 				if (type == 'module' || type == 'web'){
@@ -396,9 +398,6 @@ SUGAR.mySugar = function() {
 				}
 				
 				SUGAR.mySugar.retrieveDashlet(data.responseText, url, finishRetrieve, true); // retrieve it from the server
-				
-				newLayout =	SUGAR.mySugar.getLayout(true);
-				SUGAR.mySugar.saveLayout(newLayout);	
 			}
 			var cObj = YAHOO.util.Connect.asyncRequest('GET','index.php?to_pdf=1&module='+module+'&action=DynamicAction&DynamicAction=addDashlet&activeTab=' + activeTab + '&id=' + id+'&type=' + type + '&type_module=' + type_module, 
 													  {success: success, failure: success}, null);						  
