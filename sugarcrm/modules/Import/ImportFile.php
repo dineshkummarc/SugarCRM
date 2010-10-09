@@ -175,7 +175,12 @@ class ImportFile
         
         // explode on delimiter instead if enclosure is an empty string
         if ( empty($this->_enclosure) ) {
-            $row = explode($this->_delimiter,rtrim(fgets($this->_fp, 8192),"\r\n"));
+            $rawRow = rtrim(fgets($this->_fp, 8192),"\r\n");
+            // Bug 39494 - Remove the BOM (Byte Order Mark) from the beginning of the import row if it exists 
+            if(substr($rawRow, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
+                $rawRow=substr($rawRow, 3);
+            }
+            $row = explode($this->_delimiter,$rawRow);
             if ($row !== false && !( count($row) == 1 && trim($row[0]) == '') )
                 $this->_currentRow = $row;
             else

@@ -120,7 +120,7 @@ class MyMeetingsDashlet extends DashletGeneric {
                 if ($this->lvs->data['data'][$rowNum]['ACCEPT_STATUS'] == '' ||
                     $this->lvs->data['data'][$rowNum]['ACCEPT_STATUS'] == 'none')
                 {
-                    $this->lvs->data['data'][$rowNum]['SET_ACCEPT_LINKS'] = "<div id=\"accept".$this->id."\"><a title=\"".
+                    $this->lvs->data['data'][$rowNum]['SET_ACCEPT_LINKS'] = "<div id=\"accept".$this->id."\" class=\"acceptMeeting\"><a title=\"".
                         $app_list_strings['dom_meeting_accept_options']['accept'].
                         "\" href=\"javascript:SUGAR.util.retrieveAndFill('index.php?module=Activities&to_pdf=1&action=SetAcceptStatus&id=".$this->id."&object_type=Meeting&object_id=".$this->lvs->data['data'][$rowNum]['ID'] . "&accept_status=accept', null, null, SUGAR.mySugar.retrieveDashlet, '{$this->id}');\">". 
                         SugarThemeRegistry::current()->getImage("accept_inline","alt='".$app_list_strings['dom_meeting_accept_options']['accept'].

@@ -361,7 +361,7 @@ function disableReturnSubmission(e) {
             class="button" type="button" name="next_tab1" value="  {$MOD.LBL_WIZARD_BACK_BUTTON}  "
             onclick="SugarWizard.changeScreen('locale',true);" />&nbsp;
         <input title="{$MOD.LBL_WIZARD_CONTINUE_BUTTON}" class="button primary"
-            onclick="adjustEmailSettings(); this.form.submit();" type="button" name="continue" value="{$MOD.LBL_WIZARD_CONTINUE_BUTTON}" />&nbsp;
+            onclick="if(adjustEmailSettings())this.form.submit();" type="button" name="continue" value="{$MOD.LBL_WIZARD_CONTINUE_BUTTON}" />&nbsp;
     </div>
 </div>
 			</div>
@@ -510,16 +510,37 @@ SugarWizard.changeScreen('{/literal}{$START_PAGE}{literal}');
 document.onkeypress = SugarWizard.handleKeyStroke;
 
 function adjustEmailSettings(){
-    if( !document.getElementById('mail_smtpserver').value ||
-		!document.getElementById('mail_smtpuser').value ||
-		!document.getElementById('mail_smtppass').value ||
-		!document.getElementById('mail_smtpport').value)
+    var server = document.getElementById('mail_smtpserver'),
+	    user = document.getElementById('mail_smtpuser'),
+		pass = document.getElementById('mail_smtppass'),
+		port = document.getElementById('mail_smtpport');
+	if( !server.value || !user.value || !pass.value || !port.value)
 	{
-			document.getElementById('mail_smtpserver').value = null;
-			document.getElementById('mail_smtpuser').value = null;
-			document.getElementById('mail_smtppass').value = null;
-			document.getElementById('mail_smtpport').value = null;
-    }
+			server.value = ""; 
+			user.value = ""; 
+			pass.value = ""; 
+			port.value = "";
+			return true;
+    } else {
+		if (validate['AdminWizard'])
+		{
+			removeFromValidate('AdminWizard', 'mail_smtpserver');
+			removeFromValidate('AdminWizard', 'mail_smtpuser');
+			removeFromValidate('AdminWizard', 'mail_smtppass');
+			removeFromValidate('AdminWizard', 'mail_smtpport');
+		}
+		if (server.value == "smtp.gmail.com" && !isValidEmail(user.value)) {
+		    addToValidate("AdminWizard", 'mail_smtpuser', 'email', false, 
+			  SUGAR.language.get('Configurator','LBL_GMAIL_SMTPUSER'));
+	    }
+		else if (server.value == "plus.smtp.mail.yahoo.com" && !isValidEmail(user.value)) {
+            addToValidate("AdminWizard", 'mail_smtpuser', 'email', false, 
+              SUGAR.language.get('Configurator','LBL_YAHOOMAIL_SMTPUSER'));
+        }
+		addToValidateMoreThan("AdminWizard", 'mail_smtpport', 'int', false, 
+              document.getElementById("mail_smtpport_label").innerHTML, 1);
+		return check_form("AdminWizard");
+	}
 }
 
 function clearEmailFields() { 

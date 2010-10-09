@@ -44,7 +44,7 @@ class TemplateFloat extends TemplateText{
 	
 	function TemplateFloat(){
 		$this->vardef_map['precision']='ext1';
-		$this->vardef_map['precision']='precision';
+		//$this->vardef_map['precision']='precision';
 	}
 
     function get_field_def(){

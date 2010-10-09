@@ -78,7 +78,7 @@ var LBL_REQUEST_SUBMIT = '{sugar_translate module="Users" label="LBL_REQUEST_SUB
 								{/if}
 									<tr>
 										<td scope="row" colspan="2" width="100%" style="font-size: 12px; font-weight: normal; padding-bottom: 4px;">
-										{sugar_translate label="NTC_LOGIN_MESSAGE"}.
+										{sugar_translate label="NTC_LOGIN_MESSAGE"}
 										<input type="hidden" name="module" value="Users">
 										<input type="hidden" name="action" value="Authenticate">
 										<input type="hidden" name="return_module" value="Users">
