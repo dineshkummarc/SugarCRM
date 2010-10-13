@@ -164,9 +164,18 @@ class UnifiedSearchAdvanced {
                 $innerJoins = array();
                 foreach ( $unified_search_modules[ $moduleName ]['fields'] as $field=>$def )
                 {
-                    if ( empty($listViewDefs[$seed->module_dir][strtoupper($field)]['default']) )
-                        continue;
-                            
+                    $listViewCheckField = strtoupper($field);
+                    if ( empty($listViewDefs[$seed->module_dir][$listViewCheckField]['default']) ) {
+                        // Bug 40032 - Add special case for field EMAIL; check for matching column 
+                        //             EMAIL1 in the listviewdefs as an alternate column.
+                        if ( $listViewCheckField == 'EMAIL' 
+                                && !empty($listViewDefs[$seed->module_dir]['EMAIL1']['default']) ) {
+                            // we've found the alternate matching column
+                        }
+                        else {
+                            continue;
+                        }
+                    }
                     //bug: 34125 we might want to try to use the LEFT JOIN operator instead of the INNER JOIN in the case we are
                     //joining against a field that has not been populated.
                     if(!empty($def['innerjoin']) ){

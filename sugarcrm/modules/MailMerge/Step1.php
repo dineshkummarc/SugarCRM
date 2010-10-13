@@ -219,7 +219,7 @@ if($_SESSION['MAILMERGE_MODULE'] == 'Campaigns'){
 $admin = new Administration();
 $admin->retrieveSettings();
 $user_merge = $current_user->getPreference('mailmerge_on');
-if ($user_merge != 'on' || !$admin->settings['system_mailmerge_on']){
+if ($user_merge != 'on' || !isset($admin->settings['system_mailmerge_on']) || !$admin->settings['system_mailmerge_on']){
 	$xtpl->assign("ADDIN_NOTICE", $mod_strings['LBL_ADDIN_NOTICE']);
 	$xtpl->assign("DISABLE_NEXT_BUTTON", "disabled");
 }

@@ -76,11 +76,13 @@ class BreadCrumbStack {
       
       $module_query = '';
       if(!empty($modules)) {
+      	 $history_max_viewed = 10;
          $module_query = is_array($modules) ? ' AND module_name IN (\'' . implode("','" , $modules) . '\')' :  ' AND module_name = \'' . $modules . '\'';
-      }       
+      } else {
+      	 $history_max_viewed = (!empty($GLOBALS['sugar_config']['history_max_viewed']))? $GLOBALS['sugar_config']['history_max_viewed'] : 50;
+      }         
       
       $query = 'SELECT distinct item_id AS item_id, id, item_summary, module_name, monitor_id, date_modified FROM tracker WHERE user_id = \'' . $user_id . '\' AND visible = 1 ' . $module_query . ' ORDER BY date_modified DESC';	
-      $history_max_viewed = (!empty($GLOBALS['sugar_config']['history_max_viewed']))? $GLOBALS['sugar_config']['history_max_viewed'] : 50;
       $result = $db->limitQuery($query, 0, $history_max_viewed);
       $items = array();
       while(($row = $db->fetchByAssoc($result))) {	     
