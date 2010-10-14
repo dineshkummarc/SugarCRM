@@ -335,19 +335,29 @@ class SugarView
             
             foreach ($value as $linkattribute => $attributevalue) {
                 // get the main link info
-                if ( $linkattribute == 'linkinfo' )
+                if ( $linkattribute == 'linkinfo' ) {
                     $gcls[$key] = array(
                         "LABEL" => key($attributevalue),
                         "URL"   => current($attributevalue),
                         "SUBMENU" => array(),
                         );
+                   if(substr($gcls[$key]["URL"], 0, 11) == "javascript:") {
+                       $gcls[$key]["ONCLICK"] = substr($gcls[$key]["URL"],11);
+                       $gcls[$key]["URL"] = "#";
+                   }
+                }
                 // and now the sublinks
-                if ( $linkattribute == 'submenu' && is_array($attributevalue) )
+                if ( $linkattribute == 'submenu' && is_array($attributevalue) ) {
                     foreach ($attributevalue as $submenulinkkey => $submenulinkinfo)
                         $gcls[$key]['SUBMENU'][$submenulinkkey] = array(
                             "LABEL" => key($submenulinkinfo),
                             "URL"   => current($submenulinkinfo),
                         );
+                       if(substr($gcls[$key]['SUBMENU'][$submenulinkkey]["URL"], 0, 11) == "javascript:") {
+                           $gcls[$key]['SUBMENU'][$submenulinkkey]["ONCLICK"] = substr($gcls[$key]['SUBMENU'][$submenulinkkey]["URL"],11);
+                           $gcls[$key]['SUBMENU'][$submenulinkkey]["URL"] = "#";
+                       }
+                }
             }
         }
         $ss->assign("GCLS",$gcls);

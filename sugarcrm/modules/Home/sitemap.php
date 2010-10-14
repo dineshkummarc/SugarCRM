@@ -74,7 +74,7 @@ $tpl = 'modules/Home/sitemap.tpl';
 if ( sugar_is_file('custom/modules/Home/sitemap.tpl') ) {
     $tpl = 'custom/modules/Home/sitemap.tpl';
 }
-return $sm_smarty->fetch($tpl);
+echo $sm_smarty->fetch($tpl);
 
 function sm_build_array()
 {

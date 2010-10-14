@@ -536,7 +536,7 @@ $mod_strings = array(
 'ERROR_MINIMUM_FIELDS' => 'The layout must contain at least one field',
 'ERROR_GENERIC_TITLE' => 'An error has occured',
 'ERROR_REQUIRED_FIELDS' => 'Are you sure you wish to continue? The following required fields are missing from the layout:  ',
-
+'ERROR_ARE_YOU_SURE' => 'Are you sure you wish to continue?',
 
 
 
@@ -674,7 +674,6 @@ $mod_strings = array(
                 'text' => 'TextArea',
                 'url' => 'URL',
                 'iframe' => 'IFrame',
-                'encrypt'=>'Encrypt',
                 'datetimecombo' =>'Datetime',
 				'decimal'=>'Decimal',
 ),

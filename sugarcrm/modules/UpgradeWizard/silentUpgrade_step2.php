@@ -64,6 +64,7 @@ ini_set('memory_limit',-1);
  		}
      }
 }
+
 function checkLoggerSettings(){
 	if(file_exists(getcwd().'/config.php')){
          require(getcwd().'/config.php');
@@ -414,9 +415,11 @@ foreach ($dictionary as $meta) {
 
 logThis('database repaired', $path);  	
 
+
 include("{$cwd}/{$sugar_config['upload_dir']}upgrades/temp/manifest.php");
 $ce_to_pro_ent = isset($manifest['name']) && ($manifest['name'] == 'SugarCE to SugarPro' || $manifest['name'] == 'SugarCE to SugarEnt');
 $origVersion = substr(preg_replace("/[^0-9]/", "", $sugar_version),0,3);
+
 
 if($origVersion < '550' || $ce_to_pro_ent) {	
 	//add the global team if it does not exist

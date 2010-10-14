@@ -105,7 +105,7 @@ else
     logThis('Layout Commits about to show selection table');
     $smarty->assign("CONFIRM_LAYOUT_HEADER", $mod_strings['LBL_UW_CONFIRM_LAYOUTS']);
     $smarty->assign("CONFIRM_LAYOUT_DESC", $mod_strings['LBL_LAYOUT_MERGE_DESC']);
-    $layoutMergeData = $_SESSION['sugarMergeRunResults'];
+    $layoutMergeData = cleanMergeData($_SESSION['sugarMergeRunResults']);
     $stepNext = $_REQUEST['step'];
     $showCheckBoxes = TRUE;
     $GLOBALS['top_message'] = "<b>{$mod_strings['LBL_LAYOUT_MERGE_TITLE']}</b>";
@@ -126,7 +126,26 @@ $showNext = TRUE;
 
 set_upgrade_progress('layouts','done');
 
-
+/**
+ * Clean the merge data results, removing any emptys or blanks that should not be displayed 
+ * to the user on the confirm layout screen.
+ *
+ * @param array $data
+ * @return array
+ */
+function cleanMergeData($data)
+{
+    $results = array();
+    foreach ($data as $m => $layouts)
+    {
+        if(count($layouts) > 0)
+        {
+            $results[$m] = $layouts;
+        }
+    }
+    
+    return $results;
+}
 /**
  * Rollback metadata files for each module provided in the list.
  *

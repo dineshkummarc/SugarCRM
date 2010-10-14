@@ -180,9 +180,11 @@
 <input type='hidden' name='view_module' value='{$view_module}'>
 <input type='hidden' name='view' value='{$view}'>
 <input type='hidden' name="panels_as_tabs" value='{$displayAsTabs}'>
+<!-- BEGIN SUGARCRM flav=ent ONLY -->
 {if $fromPortal}
     <input type='hidden' name='PORTAL' value='1'>
 {/if}
+<!-- END SUGARCRM flav=ent ONLY -->
 {if $fromModuleBuilder}
     <input type='hidden' name='MB' value='1'>
     <input type='hidden' name='view_package' value='{$view_package}'>

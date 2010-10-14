@@ -414,11 +414,7 @@ class SugarApplication
 		$whiteListActions = (!empty($sugar_config['http_referer']['actions']))?$sugar_config['http_referer']['actions']:array('index', 'ListView', 'DetailView', 'EditView');
 		// Bug 39691 - Make sure localhost and 127.0.0.1 are always valid HTTP referers
 		$whiteListReferers = array('127.0.0.1','localhost');
-		if ( !empty($sugar_config['http_referer']['list']) ) {
-			$whiteListReferers = array_merge($whiteListReferers,$sugar_config['http_referer']['list']);
-		}
-		// Bug 39691 - Make sure localhost and 127.0.0.1 are always valid HTTP referers
-		$whiteListReferers = array('127.0.0.1','localhost');
+		if(!empty($_SERVER['SERVER_ADDR']))$whiteListReferers[]  = $_SERVER['SERVER_ADDR'];
 		if ( !empty($sugar_config['http_referer']['list']) ) {
 			$whiteListReferers = array_merge($whiteListReferers,$sugar_config['http_referer']['list']);
 		}
