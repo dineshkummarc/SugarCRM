@@ -1,5 +1,5 @@
 <?php
-// created: 2010-10-13 18:22:43
+// created: 2010-10-14 11:30:10
 $md5_string = array (
   './LICENSE.txt' => 'd3f150e4a5bed444763ebe8a81742a95',
   './.htaccess' => 'd41d8cd98f00b204e9800998ecf8427e',
@@ -12,7 +12,7 @@ $md5_string = array (
   './examples/FormValidationTest.php' => '61dcc214288dd7833e37238e0efa5ccf',
   './examples/ProgressBarTest.php' => '1221c9c0372e16e0ef4f58008b37c6ea',
   './emailmandelivery.php' => '03589de9409e1abb4f0ad9ee4dce8e07',
-  './sugar_version.php' => 'd65b507022ee8964111efd21322c91e9',
+  './sugar_version.php' => '90fdfa2c2223548963a49cf9481ac488',
   './custom/index.html' => 'b0070a296647b6026d1800db14510e3c',
   './acceptDecline.php' => 'a8699214ad82527bb0ae1d3f0c9b64b6',
   './export.php' => '50f3b3c23ecb4d0a8b0a898f4f982a66',
@@ -1328,7 +1328,7 @@ $md5_string = array (
   './include/utils/activity_utils.php' => '46936a127737729cdfdafd9c70669f58',
   './include/utils/encryption_utils.php' => '34c58803c3939aff389f0c8ce0084309',
   './include/utils/progress_bar_utils.php' => '48cc3b0b530c026c78b119d6f1701b19',
-  './include/utils/mvc_utils.php' => '886b89e66d155b81626867b3b3c0be34',
+  './include/utils/mvc_utils.php' => '494712085ab3039a517ca31a88f2150f',
   './include/utils/external_cache.php' => '9a682783cf1ac4b32541f9bb426c2688',
   './include/utils/db_utils.php' => '0b253cc086f0259fb794ce2487f8fc56',
   './include/utils/sugar_file_utils.php' => '2c403ff36994b48b603d893af3fd7518',
@@ -4481,7 +4481,7 @@ $md5_string = array (
   './modules/Import/UsersLastImport.php' => 'e4140ffe151c96475526aca297bda26e',
   './modules/Import/ImportMapSalesforce.php' => '10864317592595d3034477e67baf393e',
   './modules/Import/ImportMapOther.php' => '01110aea901cdbe6209d5bb7251e07b4',
-  './modules/Import/ImportFile.php' => '4cd569f1c12ca50fc19a877f4f1ee257',
+  './modules/Import/ImportFile.php' => '652b850a2339e626833bbb4769ccd9a7',
   './modules/Import/ImportMap.php' => 'eb268794b55a52bf0b4563c7d8423265',
   './modules/Import/views/view.step4.php' => 'f62e4aad5688e3dce744685fc656158e',
   './modules/Import/views/view.step3.php' => '8ec119862d294bedac164b4540c2bc7f',
@@ -4518,7 +4518,7 @@ $md5_string = array (
   './modules/UpgradeWizard/SugarMerge/DetailViewMerge.php' => 'f0b5bab95f9571d1cf52e74eba2ecff5',
   './modules/UpgradeWizard/SugarMerge/SubpanelMerge.php' => '2b852224eddc5f513851c95d575f490b',
   './modules/UpgradeWizard/index.php' => 'e82788c13f6d1a39ed17e65b02851a41',
-  './modules/UpgradeWizard/end.php' => 'a7dbfc86779d3b894341fa3fa43f8eeb',
+  './modules/UpgradeWizard/end.php' => '3f2f99c42f9e3fc13362ecddf06693db',
   './modules/UpgradeWizard/Menu.php' => '56d3b1850121909a0ca140a7eb5624b5',
   './modules/UpgradeWizard/uw_emptyFunctions.php' => 'b90ebf09ac7a2c4e7d50b41ae502d1be',
   './modules/UpgradeWizard/SILENTUPGRADE.txt' => '1c0bf566632ac6d551592f2adff59fe9',

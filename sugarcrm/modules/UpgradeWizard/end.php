@@ -130,7 +130,6 @@ logThis(" Finish Rebuilding the config file again", $path);
 set_upgrade_progress('end','in_progress');
 
 
-
 if(isset($_SESSION['current_db_version']) && isset($_SESSION['target_db_version'])){
 	if($_SESSION['current_db_version'] != $_SESSION['target_db_version']){
 		logThis("Upgrading multienum data", $path);
