@@ -689,7 +689,7 @@ class Email extends SugarBean {
 						$note->name = $filename;
 						$note->filename = $filename;
 						$noteFile = "{$sugar_config['upload_dir']}{$note->id}";
-						$note->file_mime_type = $this->email2GetMime($noteFile);
+						$note->file_mime_type = $this->email2GetMime($fileLocation);
 
 						if(!copy($fileLocation, $noteFile)) {
 							$GLOBALS['log']->debug("EMAIL 2.0: could not copy attachment file to cache/upload [ {$fileLocation} ]");
