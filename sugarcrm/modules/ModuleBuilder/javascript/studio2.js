@@ -832,6 +832,79 @@ Studio2 = {
 		saveForm.appendChild(inputField);
 		ModuleBuilder.submitForm('prepareForSave');
 		ajaxStatus.flashStatus(SUGAR.language.get('ModuleBuilder','LBL_DEPLOYE_COMPLETE'),5000);
+	},
+	
+	checkGridLayout : function(view)
+	{
+	    if (Studio2.countGridFields() == 0) {
+		   ModuleBuilder.layoutValidation.popup() ;
+		   return false;
+		}
+		if (view == "detailview")	
+			return true;  
+		
+	    return Studio2.checkRequiredFields();
+	},
+
+	countGridFields : function() {
+	    var count = 0;
+	    var divs = document.getElementById( 'panels' ).getElementsByTagName( 'div' ) ;
+	    for ( var j=0;j<divs.length;j++) {
+	        if (divs[j].className == 'le_field')
+			    count++;
+	    }
+	    return count;
+	},  
+
+    checkRequiredFields : function(){
+		var Dom = YAHOO.util.Dom;
+		var availablefields = Dom.get('availablefields');
+		var fields = Dom.getElementsByClassName('field_name', '', 'availablefields');
+		var missing = [ ];
+		for(field in fields){
+		    if (Studio2.requiredFields.indexOf(fields[field].innerHTML) != -1) {
+				missing[missing.length] = fields[field].innerHTML;
+			}
+		}
+		if (missing.length > 0)	
+		{
+		    var msg = SUGAR.language.get("ModuleBuilder", "ERROR_REQUIRED_FIELDS");
+			for (var i = 0; i < missing.length; i++) {
+			  msg += '"' + missing[i] + '"';
+			  if (i != missing.length - 1)
+			      msg += ",";
+			}
+	        return window.confirm(msg);
+		}
+				
+	    return true;
+	},
+	
+	checkCalcFields: function(view, error) {
+		if (view == "DetailView")
+           return true;
+		
+   		var Dom = YAHOO.util.Dom;
+	    var panels = Dom.get('panels');
+	    var fields = Dom.getElementsByClassName('field_name', 'span', 'panels');
+	    var cfs = [ ];
+	    for(i in fields){
+	        if (Studio2.calcFieldList.indexOf(fields[i].innerHTML) != -1) {
+	            cfs.push(fields[i].innerHTML);
+	        }
+	    }
+	    if (cfs.length > 0) 
+	    {
+	        var msg = SUGAR.language.get("ModuleBuilder", error) + "\n";
+	        for (var i = 0; i < cfs.length; i++) {
+	          msg += '"' + cfs[i] + '"';
+	          if (i != cfs.length - 1)
+	              msg += ",";
+	        }
+	        return window.confirm(msg);
+	    }
+	    return true;
+		
 	}
 
 

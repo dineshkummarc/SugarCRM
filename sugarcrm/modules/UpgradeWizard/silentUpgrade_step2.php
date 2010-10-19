@@ -453,6 +453,10 @@ if($origVersion < '550' || $ce_to_pro_ent) {
     }  
 } 
 
+//also add the cache cleaning here.
+if(function_exists('deleteCache')){
+	@deleteCache();
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 ////	TAKE OUT TRASH

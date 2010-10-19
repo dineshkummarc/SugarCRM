@@ -717,13 +717,21 @@ class GridLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
     public function setUseTabs($useTabs){
         $this->_viewdefs  [ 'templateMeta' ]['useTabs'] = $useTabs;
     }
-	
-    static function validField ( $def, $view = "")
-    {
-    	if (!parent::validField($def, $view))
-    		return false;
-    	
-    	return true;
+    
+    /**
+     * @return Array list of fields in this module that have the calculated property
+     */
+    public function getCalculatedFields() {
+        $ret = array();
+        foreach ($this->_fielddefs as $field => $def)
+        {
+            if(!empty($def['calculated']) && !empty($def['formula']))
+            {
+                $ret[] = $field;
+            }
+        }
+        
+        return $ret;
     }
 }
 

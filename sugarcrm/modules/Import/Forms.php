@@ -127,16 +127,18 @@ function handleImportErrors(
     
     switch ($errno) {
     case E_USER_ERROR:
-        echo "ERROR: [$errno] $errstr on line $errline in file $errfile<br />\n";
+    	$err_str = "ERROR: [$errno] $errstr on line $errline in file $errfile<br />\n";
+    	$GLOBALS['log']->fatal('IMPORT ERROR:: '.$err_str);
+        echo $err_str;
         exit(1);
         break;
     case E_USER_WARNING:
     case E_WARNING:
-        echo "WARNING: [$errno] $errstr on line $errline in file $errfile<br />\n";
+        $GLOBALS['log']->fatal("IMPORT WARNING::  [$errno] $errstr on line $errline in file $errfile<br />\n");
         break;
     case E_USER_NOTICE:
     case E_NOTICE:
-        echo "NOTICE: [$errno] $errstr on line $errline in file $errfile<br />\n";
+    	$GLOBALS['log']->fatal("IMPORT NOTICE::   [$errno] $errstr on line $errline in file $errfile<br />\n");
         break;
     case E_STRICT:
     case E_DEPRECATED:
@@ -145,12 +147,15 @@ function handleImportErrors(
         //echo "STRICT ERROR: [$errno] $errstr on line $errline in file $errfile<br />\n";
         break;
     default:
-        echo "Unknown error type: [$errno] $errstr on line $errline in file $errfile<br />\n";
+    	$err_str = "Unknown error type: [$errno] $errstr on line $errline in file $errfile<br />\n";
+        echo $err_str;
+        $GLOBALS['log']->fatal('IMPORT ERROR:: '.$err_str);
         break;
     }
 
     return true;
 }
+
 
 /**
  * Returns an input control for this fieldname given

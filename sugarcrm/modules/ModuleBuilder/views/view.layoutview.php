@@ -125,17 +125,45 @@ class ViewLayoutView extends ViewEdit
             $smarty->assign ( 'layouttitle', translate ( 'LBL_CURRENT_LAYOUT', 'ModuleBuilder' ) ) ;
             if (! $this->fromModuleBuilder)
             {
-                $buttons [] = array ( 'id' => 'saveBtn' , 'text' => translate ( 'LBL_BTN_SAVE' ) , 'actionScript' => "onclick='if(Studio2.checkGridLayout()) Studio2.handleSave();'" ) ;
-                $buttons [] = array ( 'id' => 'publishBtn' , 'text' => translate ( 'LBL_BTN_SAVEPUBLISH' ) , 'actionScript' => "onclick='if(Studio2.checkGridLayout()) Studio2.handlePublish();'" ) ;
+                $buttons [] = array ( 
+                    'id' => 'saveBtn' , 
+                    'text' => translate ( 'LBL_BTN_SAVE' ) , 
+                    'actionScript' => "onclick='if(Studio2.checkGridLayout(\"{$this->editLayout}\")) Studio2.handleSave();'" 
+                ) ;
+                $buttons [] = array ( 
+                    'id' => 'publishBtn' , 
+                    'text' => translate ( 'LBL_BTN_SAVEPUBLISH' ) , 
+                    'actionScript' => "onclick='if(Studio2.checkGridLayout(\"{$this->editLayout}\")) Studio2.handlePublish();'" 
+                ) ;
                 $buttons [] = array ( 'id' => 'spacer' , 'width' => '50px' ) ;
-                $buttons [] = array ( 'id' => 'historyBtn' , 'text' => translate ( 'LBL_HISTORY' ) , 'actionScript' => "onclick='ModuleBuilder.history.browse(\"{$this->editModule}\", \"{$this->editLayout}\")'") ;
-                $buttons [] = array ( 'id' => 'historyDefault' , 'text' => translate ( 'LBL_RESTORE_DEFAULT' ) , 'actionScript' => "onclick='ModuleBuilder.history.revert(\"{$this->editModule}\", \"{$this->editLayout}\", \"{$history->getLast()}\", \"\")'" ) ;
+                $buttons [] = array ( 
+	                'id' => 'historyBtn' , 
+	                'text' => translate ( 'LBL_HISTORY' ) , 
+	                'actionScript' => "onclick='ModuleBuilder.history.browse(\"{$this->editModule}\", \"{$this->editLayout}\")'"
+                ) ;
+                $buttons [] = array ( 
+	                'id' => 'historyDefault' , 
+	                'text' => translate ( 'LBL_RESTORE_DEFAULT' ) , 
+	                'actionScript' => "onclick='ModuleBuilder.history.revert(\"{$this->editModule}\", \"{$this->editLayout}\", \"{$history->getLast()}\", \"\")'" 
+                ) ;
             } else
             {
-                $buttons [] = array ( 'id' => 'saveBtn' , 'text' => $GLOBALS [ 'mod_strings' ] [ 'LBL_BTN_SAVE' ] , 'actionScript' => "onclick='if(Studio2.checkGridLayout()) Studio2.handlePublish();'" ) ;
+                $buttons [] = array ( 
+                    'id' => 'saveBtn' , 
+                    'text' => $GLOBALS [ 'mod_strings' ] [ 'LBL_BTN_SAVE' ] , 
+                    'actionScript' => "onclick='if(Studio2.checkGridLayout(\"{$this->editLayout}\")) Studio2.handlePublish();'" 
+                ) ;
                 $buttons [] = array ( 'id' => 'spacer' , 'width' => '50px' ) ;
-                $buttons [] = array ( 'id' => 'historyBtn' , 'text' => translate ( 'LBL_HISTORY' ) , 'actionScript' => "onclick='ModuleBuilder.history.browse(\"{$this->editModule}\", \"{$this->editLayout}\")'" ) ;
-                $buttons [] = array ( 'id' => 'historyDefault' , 'text' => translate ( 'LBL_RESTORE_DEFAULT' ) , 'actionScript' => "onclick='ModuleBuilder.history.revert(\"{$this->editModule}\", \"{$this->editLayout}\", \"{$history->getLast()}\", \"\")'" ) ;
+                $buttons [] = array (
+                    'id' => 'historyBtn' , 
+                    'text' => translate ( 'LBL_HISTORY' ) , 
+                    'actionScript' => "onclick='ModuleBuilder.history.browse(\"{$this->editModule}\", \"{$this->editLayout}\")'" 
+                ) ;
+                $buttons [] = array ( 
+                    'id' => 'historyDefault' , 
+                    'text' => translate ( 'LBL_RESTORE_DEFAULT' ) , 
+                    'actionScript' => "onclick='ModuleBuilder.history.revert(\"{$this->editModule}\", \"{$this->editLayout}\", \"{$history->getLast()}\", \"\")'" 
+                ) ;
             }
         }
 
@@ -206,6 +234,7 @@ class ViewLayoutView extends ViewEdit
         // set up language files
 		$smarty->assign ( 'language', $parser->getLanguage() ) ; // for sugar_translate in the smarty template
         $smarty->assign('from_mb',$this->fromModuleBuilder);
+        $smarty->assign('calc_field_list', json_encode($parser->getCalculatedFields()));
 		if ($this->fromModuleBuilder) {
 			$mb = new ModuleBuilder ( ) ;
             $module = & $mb->getPackageModule ( $this->package, $this->editModule ) ;
