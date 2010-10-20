@@ -94,7 +94,7 @@ class ImportViewLast extends SugarView
 	    global $mod_strings;
 	    
     	return array(
-    	   "<a href='index.php?module={$_REQUEST['import_module']}&action=index'>".translate('LBL_MODULE_NAME',$_REQUEST['import_module'])."</a>",
+           "<a href='index.php?module={$_REQUEST['import_module']}&action=index'>".translate('LBL_MODULE_NAME',$_REQUEST['import_module'])."</a>",    	
     	   "<a href='index.php?module=Import&action=Step1&import_module={$_REQUEST['import_module']}'>".$mod_strings['LBL_MODULE_NAME']."</a>",
     	   $mod_strings['LBL_RESULTS'],
     	   );

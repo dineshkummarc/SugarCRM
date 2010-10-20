@@ -58,7 +58,7 @@ class Person extends Basic
 	/**
 	 * Generate the name field from the first_name and last_name fields.
 	 */
-	protected function _create_proper_name_field() 
+	function _create_proper_name_field() 
 	{
 		global $locale, $app_list_strings;
 		    // Bug 38648 - If the given saluation doesn't exist in the dropdown, don't display it as part of the full name
